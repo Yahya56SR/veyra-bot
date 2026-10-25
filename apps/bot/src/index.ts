@@ -14,6 +14,7 @@ import { AutomodService } from './modules/automod/service.js';
 import { HeartbeatService } from './modules/heartbeat.js';
 import { LevelingService } from './modules/leveling/service.js';
 import { ModerationScheduler } from './modules/moderation/scheduler.js';
+import { ReminderService } from './modules/reminders/service.js';
 
 async function main(): Promise<void> {
   const env = loadEnv();
@@ -33,6 +34,7 @@ async function main(): Promise<void> {
     if (client) {
       client.heartbeat?.stop();
       client.moderation?.stop();
+      client.reminders?.stop();
       await client.leveling?.stop();
       stopSettingsPoller(client);
       await client.destroy().catch((error: unknown) => {
@@ -127,13 +129,17 @@ async function main(): Promise<void> {
     client.heartbeat = new HeartbeatService(client);
     client.heartbeat.start();
 
+    client.reminders = new ReminderService(client);
+
     await client.login(env.DISCORD_TOKEN);
+    client.reminders.start();
   } catch (error) {
     logger.fatal({ err: error }, 'fatal startup error');
 
     if (client) {
       client.heartbeat?.stop();
       client.moderation?.stop();
+      client.reminders?.stop();
       await client.leveling?.stop();
       stopSettingsPoller(client);
       await client.destroy().catch(() => {});

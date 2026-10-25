@@ -28,6 +28,8 @@ export interface Command {
   userPermissions?: PermissionResolvable[];
   /** Preflight for the bot's own permissions in the channel. */
   botPermissions?: PermissionResolvable[];
+  /** Allows closing/managing existing resources while the module is disabled. */
+  allowWhenDisabled?: boolean;
   cooldownSeconds?: number;
   execute: (context: CommandContext) => Promise<void>;
 }

@@ -3,9 +3,9 @@
 An all-in-one Discord bot for a **single server**: moderation, logging, utility, tickets,
 leveling, economy, community features, music, usage stats, and a Next.js dashboard.
 
-> **Status:** Phase 1 — moderation, cases, automod, logging, welcome, and leveling are
-> implemented. Utility, tickets, economy, community, music, stats, and the dashboard are in
-> progress. See `DEPLOY.md` for the free-tier runbook.
+> **Status:** Phase 2 - moderation, cases, automod, logging, welcome, leveling,
+> utility commands, reminders, and tickets are implemented. Economy, community, music,
+> stats, and the dashboard are in progress. See `DEPLOY.md` for the free-tier runbook.
 
 ## Why this repository is unusual
 
@@ -68,23 +68,33 @@ the database. For production, always configure the database.
 
 ## Commands
 
-| Command                                       | What it does                                               |
-| --------------------------------------------- | ---------------------------------------------------------- |
-| `/ping`, `/help`                              | Health check and permission-aware command list             |
-| `/setup status`                               | Overview of logging, moderation, leveling, and welcome     |
-| `/setup logging`, `/setup modlog`             | Route log events and moderation cases                      |
-| `/setup automod`                              | Toggle a rule and choose its action                        |
-| `/setup link-allow`, `/setup filtered-word`   | Manage the links allowlist and filtered words              |
-| `/setup leveling`                             | Enable leveling and tune XP range, cooldown, announcements |
-| `/setup welcome`, `/setup autorole`           | Join/leave messages and automatic roles                    |
-| `/setup exempt-role`, `/setup exempt-channel` | Automod exemptions                                         |
-| `/setup reset`                                | Restore one module to defaults                             |
-| `/warn`, `/warnings`, `/clearwarnings`        | Warning cases with active-warning tracking                 |
-| `/timeout`, `/untimeout`                      | Discord timeouts up to 28 days                             |
-| `/kick`, `/ban`, `/unban`, `/softban`         | Punitive actions, optional temporary bans                  |
-| `/case`, `/cases`                             | Inspect the case log                                       |
-| `/purge`, `/slowmode`                         | Channel cleanup                                            |
-| `/rank`, `/leaderboard`                       | XP progress and top members                                |
+| Command                                         | What it does                                                    |
+| ----------------------------------------------- | --------------------------------------------------------------- |
+| `/ping`, `/help`                                | Health check and permission-aware command list                  |
+| `/setup status`                                 | Overview of logging, moderation, leveling, welcome, and tickets |
+| `/setup logging`, `/setup modlog`               | Route log events and moderation cases                           |
+| `/setup automod`                                | Toggle a rule and choose its action                             |
+| `/setup link-allow`, `/setup filtered-word`     | Manage the links allowlist and filtered words                   |
+| `/setup leveling`                               | Enable leveling and tune XP range, cooldown, announcements      |
+| `/setup welcome`, `/setup autorole`             | Join/leave messages and automatic roles                         |
+| `/setup exempt-role`, `/setup exempt-channel`   | Automod exemptions                                              |
+| `/setup tickets`                                | Set the category, staff role, panel, log, and open limit        |
+| `/setup reset`                                  | Restore one module to defaults                                  |
+| `/warn`, `/warnings`, `/clearwarnings`          | Warning cases with active-warning tracking                      |
+| `/timeout`, `/untimeout`                        | Discord timeouts up to 28 days                                  |
+| `/kick`, `/ban`, `/unban`, `/softban`           | Punitive actions, optional temporary bans                       |
+| `/case`, `/cases`                               | Inspect the case log                                            |
+| `/purge`, `/slowmode`                           | Channel cleanup                                                 |
+| `/rank`, `/leaderboard`                         | XP progress and top members                                     |
+| `/ticket panel`                                 | Publish the button panel                                        |
+| `/ticket close`, `/claim`, `/add`, `/remove`    | Manage the current ticket                                       |
+| `/serverinfo`, `/userinfo`, `/roleinfo`         | Server, member, and role details                                |
+| `/channelinfo`, `/emojis`                       | Channel details and custom emoji/sticker lists                  |
+| `/avatar`, `/banner`                            | Avatar and profile/server banner links                          |
+| `/poll`                                         | Native Discord poll with 2–10 answers                           |
+| `/remind set`, `/remind list`, `/remind cancel` | Database-backed reminders with DM fallback                      |
+| `/timestamp`                                    | Convert durations, dates, or Unix times to Discord stamps       |
+| `/embed`, `/announce`                           | Post a custom embed or announcement                             |
 
 Every configuration write is recorded in `config_audit`.
 

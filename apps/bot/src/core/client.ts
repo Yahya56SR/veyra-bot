@@ -8,6 +8,7 @@ import type { AutomodService } from '../modules/automod/service.js';
 import type { HeartbeatService } from '../modules/heartbeat.js';
 import type { LevelingService } from '../modules/leveling/service.js';
 import type { ModerationScheduler } from '../modules/moderation/scheduler.js';
+import type { ReminderService } from '../modules/reminders/service.js';
 
 /**
  * The single process-wide client. Memory is deliberately bounded because the
@@ -27,6 +28,7 @@ export class NervanaClient extends Client {
   moderation: ModerationScheduler | null = null;
   automod: AutomodService | null = null;
   heartbeat: HeartbeatService | null = null;
+  reminders: ReminderService | null = null;
 
   constructor() {
     super({

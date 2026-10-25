@@ -29,7 +29,7 @@ export async function handleChatInputCommand(
   const errorId = newErrorId();
 
   try {
-    if (!client.isCategoryEnabled(command.category)) {
+    if (!client.isCategoryEnabled(command.category) && !command.allowWhenDisabled) {
       await replyError(interaction, `**/${command.data.name}** is disabled on this server.`);
       return;
     }

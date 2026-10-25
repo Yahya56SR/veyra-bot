@@ -3,7 +3,10 @@ import { cases, warnings } from '@nervana/db';
 import { BRAND, formatDuration } from '@nervana/shared';
 import { EmbedBuilder } from 'discord.js';
 import type { NervanaClient } from '../../core/client.js';
+import { requireDb } from '../../core/database.js';
 import { UserFacingError } from '../../core/errors.js';
+
+export { requireDb };
 
 export type CaseType =
   | 'warn'
@@ -59,11 +62,6 @@ const CASE_COLORS: Record<CaseType, number> = {
   purge: BRAND.info,
   slowmode: BRAND.info,
 };
-
-export function requireDb(client: NervanaClient): Database {
-  if (!client.db) throw new UserFacingError('The database is not configured.');
-  return client.db;
-}
 
 export function caseLabel(type: string): string {
   return CASE_LABELS[type as CaseType] ?? type;

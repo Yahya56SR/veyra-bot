@@ -157,6 +157,17 @@ export const WelcomeConfigSchema = z.object({
   autoRoleIds: z.array(SnowflakeSchema),
 });
 
+export const TicketCategorySchema = z.object({
+  id: z
+    .string()
+    .min(1)
+    .max(32)
+    .regex(/^[a-z0-9-]+$/, 'Use lowercase letters, numbers, and hyphens'),
+  label: z.string().min(1).max(80),
+  emoji: z.string().min(1).max(64).optional(),
+  description: z.string().max(200).optional(),
+});
+
 export const TicketsConfigSchema = z.object({
   enabled: z.boolean(),
   categoryId: NullableSnowflakeSchema,
@@ -165,6 +176,7 @@ export const TicketsConfigSchema = z.object({
   panelMessageId: NullableSnowflakeSchema,
   logChannelId: NullableSnowflakeSchema,
   maxOpenPerUser: z.number().int().min(1).max(5),
+  categories: z.array(TicketCategorySchema).min(1).max(5),
 });
 
 export const MusicConfigSchema = z.object({
@@ -210,6 +222,7 @@ export type LevelingConfig = z.infer<typeof LevelingConfigSchema>;
 export type EconomyConfig = z.infer<typeof EconomyConfigSchema>;
 export type WelcomeConfig = z.infer<typeof WelcomeConfigSchema>;
 export type TicketsConfig = z.infer<typeof TicketsConfigSchema>;
+export type TicketCategory = z.infer<typeof TicketCategorySchema>;
 export type MusicConfig = z.infer<typeof MusicConfigSchema>;
 export type CommunityConfig = z.infer<typeof CommunityConfigSchema>;
 
@@ -293,6 +306,26 @@ export const DEFAULT_CONFIG = {
     panelMessageId: null,
     logChannelId: null,
     maxOpenPerUser: 1,
+    categories: [
+      {
+        id: 'general',
+        label: 'General',
+        emoji: '🎫',
+        description: 'Questions, help, and anything else',
+      },
+      {
+        id: 'report',
+        label: 'Report',
+        emoji: '🚨',
+        description: 'Report a member or a message',
+      },
+      {
+        id: 'appeal',
+        label: 'Appeal',
+        emoji: '⚖️',
+        description: 'Appeal a moderation action',
+      },
+    ],
   },
   music: {
     enabled: true,

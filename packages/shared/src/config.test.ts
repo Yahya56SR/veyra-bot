@@ -33,7 +33,35 @@ describe('config', () => {
     expect(result.success).toBe(false);
   });
 
-  it('ignores prototype-polluting keys', () => {
+  it('fills ticket categories for settings saved before categories existed', () => {
+    const config = parseConfig({
+      tickets: {
+        enabled: false,
+        categoryId: null,
+        staffRoleId: null,
+        panelChannelId: null,
+        panelMessageId: null,
+        logChannelId: null,
+        maxOpenPerUser: 1,
+      },
+    });
+
+    expect(config.tickets.categories).toEqual(DEFAULT_CONFIG.tickets.categories);
+  });
+
+  it('rejects invalid ticket categories', () => {
+    const result = safeParseConfig({
+      tickets: {
+        categories: [{ id: 'Not Valid!', label: 'Bad' }],
+      },
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0]?.path.join('.')).toContain('tickets.categories');
+    }
+  });
+
+  it('rejects prototype-polluting keys', () => {
     const raw = JSON.parse('{"__proto__":{"polluted":true},"leveling":{"enabled":true}}');
     const config = parseConfig(raw);
     expect(config.leveling.enabled).toBe(true);

@@ -6,6 +6,7 @@ import {
   type LogEvent,
 } from '@nervana/shared';
 import {
+  ChannelType,
   EmbedBuilder,
   PermissionFlagsBits,
   SlashCommandBuilder,
@@ -222,6 +223,36 @@ export const setupCommand: Command = {
         )
         .addBooleanOption((option) =>
           option.setName('remove').setDescription('Remove the auto role instead'),
+        ),
+    )
+    .addSubcommand((sub) =>
+      sub
+        .setName('tickets')
+        .setDescription('Configure the ticket category, staff role, and panel.')
+        .addBooleanOption((option) =>
+          option.setName('enabled').setDescription('Enable or disable tickets'),
+        )
+        .addChannelOption((option) =>
+          option
+            .setName('category')
+            .setDescription('Category where ticket channels are created')
+            .addChannelTypes(ChannelType.GuildCategory),
+        )
+        .addRoleOption((option) =>
+          option.setName('staff-role').setDescription('Role that can see and manage tickets'),
+        )
+        .addChannelOption((option) =>
+          option.setName('panel-channel').setDescription('Channel for the ticket panel'),
+        )
+        .addChannelOption((option) =>
+          option.setName('log-channel').setDescription('Channel for closed-ticket transcripts'),
+        )
+        .addIntegerOption((option) =>
+          option
+            .setName('max-open')
+            .setDescription('Maximum open tickets per member (1–5)')
+            .setMinValue(1)
+            .setMaxValue(5),
         ),
     )
     .addSubcommand((sub) =>
@@ -498,6 +529,63 @@ export const setupCommand: Command = {
       return;
     }
 
+    if (sub === 'tickets') {
+      const enabled = interaction.options.getBoolean('enabled');
+      const category = interaction.options.getChannel('category');
+      const staffRole = interaction.options.getRole('staff-role');
+      const panel = textChannel(interaction.options.getChannel('panel-channel'));
+      const log = textChannel(interaction.options.getChannel('log-channel'));
+      const maxOpen = interaction.options.getInteger('max-open');
+
+      const tickets = structuredClone(settings.tickets);
+
+      if (category) {
+        if (category.type !== ChannelType.GuildCategory) {
+          throw new UserFacingError('Pick a server category, not a channel.');
+        }
+        tickets.categoryId = category.id;
+      }
+
+      if (staffRole) {
+        if (staffRole.id === interaction.guildId) {
+          throw new UserFacingError('Pick a real staff role, not @everyone.');
+        }
+        tickets.staffRoleId = staffRole.id;
+      }
+
+      if (panel) {
+        if (tickets.panelChannelId !== panel.id) tickets.panelMessageId = null;
+        tickets.panelChannelId = panel.id;
+      }
+
+      if (log) tickets.logChannelId = log.id;
+      if (maxOpen !== null) tickets.maxOpenPerUser = maxOpen;
+      if (enabled !== null) tickets.enabled = enabled;
+
+      if (tickets.enabled && (!tickets.categoryId || !tickets.staffRoleId)) {
+        throw new UserFacingError(
+          'Set a ticket category and a staff role before enabling tickets.',
+        );
+      }
+
+      await updateModule(client, interaction.user.id, 'tickets', tickets);
+
+      const lines = [
+        `Tickets: **${tickets.enabled ? 'enabled' : 'disabled'}**`,
+        `Category: ${tickets.categoryId ? `<#${tickets.categoryId}>` : '*not set*'}`,
+        `Staff role: ${tickets.staffRoleId ? `<@&${tickets.staffRoleId}>` : '*not set*'}`,
+        `Panel channel: ${tickets.panelChannelId ? `<#${tickets.panelChannelId}>` : '*not set*'}`,
+        `Log channel: ${tickets.logChannelId ? `<#${tickets.logChannelId}>` : '*not set*'}`,
+        `Max open per member: **${tickets.maxOpenPerUser}**`,
+      ];
+
+      await interaction.editReply({
+        content: `${lines.join('\n')}\n\nRun \`/ticket panel\` to publish the panel.`,
+        allowedMentions: { parse: [] },
+      });
+      return;
+    }
+
     if (sub === 'reset') {
       const module = interaction.options.getString('module', true) as keyof AppConfig;
       await resetModule(client, interaction.user.id, module);
@@ -574,10 +662,27 @@ async function showStatus(
         ].join('\n'),
       },
       {
+        name: 'Tickets',
+        value: [
+          `Enabled: **${settings.tickets.enabled ? 'on' : 'off'}**`,
+          `Category: ${
+            settings.tickets.categoryId ? `<#${settings.tickets.categoryId}>` : '**not set**'
+          }`,
+          `Staff role: ${
+            settings.tickets.staffRoleId ? `<@&${settings.tickets.staffRoleId}>` : '**not set**'
+          }`,
+          `Panel: ${
+            settings.tickets.panelChannelId
+              ? `<#${settings.tickets.panelChannelId}>`
+              : '**not set**'
+          }`,
+          `Max open per member: ${settings.tickets.maxOpenPerUser}`,
+        ].join('\n'),
+      },
+      {
         name: 'Other modules',
         value: [
           `Economy: **${settings.economy.enabled ? 'on' : 'off'}**`,
-          `Tickets: **${settings.tickets.enabled ? 'on' : 'off'}**`,
           `Music: **${settings.music.enabled ? 'on' : 'off'}**`,
           `Stats: **${settings.stats.enabled ? 'on' : 'off'}**`,
         ].join('\n'),

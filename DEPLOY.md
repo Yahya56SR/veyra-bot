@@ -17,9 +17,9 @@ node index.js
 
 There is no install or build step on the host. `index.js` and `drizzle/` must stay committed.
 
-Current status: core, moderation, logging, welcome, leveling, automod, and the heartbeat are
-implemented. Utility, tickets, economy, community, music, stats, and the dashboard are still
-being built.
+Current status: core, moderation, logging, welcome, leveling, automod, utility, reminders,
+tickets, and the heartbeat are implemented. Economy, community, music, stats, and the dashboard
+are still being built.
 
 ---
 
@@ -35,13 +35,13 @@ being built.
    Enable Discord's Developer Mode to copy the server ID.
 5. Invite the bot with the `bot` and `applications.commands` scopes and these permissions:
 
-   | Purpose         | Permissions                                                     |
-   | --------------- | --------------------------------------------------------------- |
-   | Basic operation | View Channels, Send Messages, Embed Links, Read Message History |
-   | Moderation      | Manage Messages, Moderate Members, Kick Members, Ban Members    |
-   | Configuration   | Manage Channels, Manage Roles                                   |
-   | Community       | Add Reactions                                                   |
-   | Music (later)   | Connect, Speak, Use Voice Activity                              |
+   | Purpose         | Permissions                                                                               |
+   | --------------- | ----------------------------------------------------------------------------------------- |
+   | Basic operation | View Channels, Send Messages, Embed Links, Read Message History, Attach Files, Send Polls |
+   | Moderation      | Manage Messages, Moderate Members, Kick Members, Ban Members                              |
+   | Configuration   | Manage Channels, Manage Roles                                                             |
+   | Community       | Add Reactions                                                                             |
+   | Music (later)   | Connect, Speak, Use Voice Activity                                                        |
 
    Use the OAuth2 URL generator; do not hand-build the permission integer.
 
@@ -162,6 +162,8 @@ These steps are prepared but the `apps/web` workspace does not exist yet.
 /setup leveling enabled:true xp-min:15 xp-max:25 cooldown:60
 /setup welcome kind:join channel:#welcome
 /setup autorole role:@Member
+/setup tickets category:"Tickets" staff-role:@Staff panel-channel:#open-a-ticket log-channel:#ticket-logs
+/ticket panel
 ```
 
 Then send a few messages and run `/rank` and `/leaderboard`. If `/rank` shows no progress, check
@@ -183,6 +185,31 @@ Moderation smoke test in a private channel:
 Temporary bans are lifted by a sweep that runs every 60 seconds. Manual unbans mark the original
 ban case inactive.
 
+Ticket smoke test:
+
+```
+/ticket panel                  # post buttons in the configured panel channel
+# click a category button, send a message, then:
+/ticket claim
+/ticket add @member
+/ticket remove @member
+/ticket close reason:test
+```
+
+Closing writes a gzipped HTML transcript to `tickets.transcript`, sends it to the configured log
+channel, and deletes the channel. A staff member must have Manage Channels to close a ticket.
+
+Utility smoke test:
+
+```
+/remind set when:10m message:test
+/remind list
+/poll question:"Test?" options:"Yes|No" hours:1
+/timestamp time:2h
+/serverinfo
+/userinfo
+```
+
 ---
 
 ## 7. Operating notes
@@ -193,6 +220,8 @@ ban case inactive.
   30 seconds of XP. Cooldowns are persisted in `last_xp_at`.
 - **Restarts** are safe: migrations skip applied files, the settings row is reused, and the
   temporary-ban sweep resumes from the database.
+- **Reminders** are delivered by a 30-second database sweep. If a DM is blocked, the bot falls
+  back to the channel where the reminder was created.
 - **Token rotation:** reset the token in the Developer Portal, update the host secret, and
   redeploy. The old token is invalid immediately.
 - **Disabling music:** set `MUSIC_ENABLED=false`. This overrides the database and does not
