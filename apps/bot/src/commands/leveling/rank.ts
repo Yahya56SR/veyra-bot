@@ -1,8 +1,9 @@
 import { members } from '@nervana/db';
 import { BRAND, levelFromXp, progressBar } from '@nervana/shared';
 import { count, eq, gt } from 'drizzle-orm';
-import { EmbedBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
+import { deferPublic } from '../../core/respond.js';
 
 export const rankCommand: Command = {
   data: new SlashCommandBuilder()
@@ -13,12 +14,11 @@ export const rankCommand: Command = {
     ),
   category: 'leveling',
   async execute({ client, interaction }) {
+    await deferPublic(interaction);
+
     const db = client.db;
     if (!db) {
-      await interaction.reply({
-        content: 'The database is not configured.',
-        flags: MessageFlags.Ephemeral,
-      });
+      await interaction.editReply({ content: 'The database is not configured.' });
       return;
     }
 
@@ -34,10 +34,7 @@ export const rankCommand: Command = {
     const messageCount = rows[0]?.messages ?? 0;
     const progress = levelFromXp(xp);
 
-    const rankRows = await db
-      .select({ value: count() })
-      .from(members)
-      .where(gt(members.xp, xp));
+    const rankRows = await db.select({ value: count() }).from(members).where(gt(members.xp, xp));
     const rank = (rankRows[0]?.value ?? 0) + 1;
 
     const embed = new EmbedBuilder()
@@ -55,6 +52,6 @@ export const rankCommand: Command = {
       )
       .setFooter({ text: BRAND.footer });
 
-    await interaction.reply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed] });
   },
 };

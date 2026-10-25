@@ -1,5 +1,6 @@
 import { Events } from 'discord.js';
 import { startSettingsPoller } from '../config/settings.js';
+import { registerGuildCommands } from '../core/commands.js';
 import type { BotEvent } from '../core/events.js';
 
 export const readyEvent: BotEvent = {
@@ -46,14 +47,10 @@ export const readyEvent: BotEvent = {
       );
     }
 
-    if (client.env.REGISTER_COMMANDS && client.application) {
-      try {
-        const payload = [...client.commands.values()].map((command) => command.data.toJSON());
-        await client.application.commands.set(payload, client.env.GUILD_ID);
-        client.logger.info({ count: payload.length }, 'registered guild commands');
-      } catch (error) {
-        client.logger.error({ err: error }, 'failed to register guild commands');
-      }
+    try {
+      await registerGuildCommands(client);
+    } catch (error) {
+      client.logger.error({ err: error }, 'failed to register guild commands');
     }
 
     if (client.db) startSettingsPoller(client);

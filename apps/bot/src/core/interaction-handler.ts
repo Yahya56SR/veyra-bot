@@ -1,4 +1,4 @@
-import { MessageFlags } from 'discord.js';
+import { MessageFlags, PermissionsBitField } from 'discord.js';
 import type { NervanaClient } from './client.js';
 import { takeCooldown } from './cooldowns.js';
 import { newErrorId, UserFacingError } from './errors.js';
@@ -39,7 +39,7 @@ export async function handleChatInputCommand(
       if (missing.length > 0) {
         await replyError(
           interaction,
-          `You need the following permissions: ${missing.map((p) => `\`${p}\``).join(', ')}.`,
+          `You need the following permissions: ${new PermissionsBitField(missing).toArray().join(', ')}.`,
         );
         return;
       }
@@ -50,7 +50,7 @@ export async function handleChatInputCommand(
       if (missing.length > 0) {
         await replyError(
           interaction,
-          `I am missing permissions: ${missing.map((p) => `\`${p}\``).join(', ')}.`,
+          `I am missing permissions: ${new PermissionsBitField(missing).toArray().join(', ')}.`,
         );
         return;
       }

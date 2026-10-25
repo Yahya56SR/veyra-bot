@@ -304,12 +304,12 @@ function __metadata(metadataKey, metadataValue) {
   if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
 }
 function __awaiter(thisArg, _arguments, P, generator) {
-  function adopt(value) {
+  function adopt2(value) {
     return value instanceof P ? value : new P(function(resolve3) {
       resolve3(value);
     });
   }
-  __name(adopt, "adopt");
+  __name(adopt2, "adopt");
   return new (P || (P = Promise))(function(resolve3, reject) {
     function fulfilled(value) {
       try {
@@ -328,7 +328,7 @@ function __awaiter(thisArg, _arguments, P, generator) {
     }
     __name(rejected, "rejected");
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve3(result.value) : adopt2(result.value).then(fulfilled, rejected);
     }
     __name(step, "step");
     step((generator = generator.apply(thisArg, _arguments || [])).next());
@@ -2904,7 +2904,7 @@ var require_timers = __commonJS({
     "use strict";
     var fastNow = 0;
     var RESOLUTION_MS = 1e3;
-    var TICK_MS = (RESOLUTION_MS >> 1) - 1;
+    var TICK_MS2 = (RESOLUTION_MS >> 1) - 1;
     var fastNowTimeout;
     var kFastTimer = /* @__PURE__ */ Symbol("kFastTimer");
     var fastTimers = [];
@@ -2913,13 +2913,13 @@ var require_timers = __commonJS({
     var PENDING = 0;
     var ACTIVE = 1;
     function onTick() {
-      fastNow += TICK_MS;
+      fastNow += TICK_MS2;
       let idx = 0;
       let len = fastTimers.length;
       while (idx < len) {
         const timer2 = fastTimers[idx];
         if (timer2._state === PENDING) {
-          timer2._idleStart = fastNow - TICK_MS;
+          timer2._idleStart = fastNow - TICK_MS2;
           timer2._state = ACTIVE;
         } else if (timer2._state === ACTIVE && fastNow >= timer2._idleStart + timer2._idleTimeout) {
           timer2._state = TO_BE_CLEARED;
@@ -2946,7 +2946,7 @@ var require_timers = __commonJS({
         fastNowTimeout.refresh();
       } else {
         clearTimeout(fastNowTimeout);
-        fastNowTimeout = setTimeout(onTick, TICK_MS);
+        fastNowTimeout = setTimeout(onTick, TICK_MS2);
         if (fastNowTimeout.unref) {
           fastNowTimeout.unref();
         }
@@ -15670,11 +15670,11 @@ var require_progressevent = __commonJS({
 var require_encoding = __commonJS({
   "node_modules/undici/lib/web/fileapi/encoding.js"(exports2, module2) {
     "use strict";
-    function getEncoding(label) {
-      if (!label) {
+    function getEncoding(label2) {
+      if (!label2) {
         return "failure";
       }
-      switch (label.trim().toLowerCase()) {
+      switch (label2.trim().toLowerCase()) {
         case "unicode-1-1-utf-8":
         case "unicode11utf8":
         case "unicode20utf8":
@@ -21622,23 +21622,23 @@ var require_message = __commonJS({
       MessageReferenceType2[MessageReferenceType2["Default"] = 0] = "Default";
       MessageReferenceType2[MessageReferenceType2["Forward"] = 1] = "Forward";
     })(MessageReferenceType || (exports2.MessageReferenceType = MessageReferenceType = {}));
-    var MessageFlags6;
-    (function(MessageFlags7) {
-      MessageFlags7[MessageFlags7["Crossposted"] = 1] = "Crossposted";
-      MessageFlags7[MessageFlags7["IsCrosspost"] = 2] = "IsCrosspost";
-      MessageFlags7[MessageFlags7["SuppressEmbeds"] = 4] = "SuppressEmbeds";
-      MessageFlags7[MessageFlags7["SourceMessageDeleted"] = 8] = "SourceMessageDeleted";
-      MessageFlags7[MessageFlags7["Urgent"] = 16] = "Urgent";
-      MessageFlags7[MessageFlags7["HasThread"] = 32] = "HasThread";
-      MessageFlags7[MessageFlags7["Ephemeral"] = 64] = "Ephemeral";
-      MessageFlags7[MessageFlags7["Loading"] = 128] = "Loading";
-      MessageFlags7[MessageFlags7["FailedToMentionSomeRolesInThread"] = 256] = "FailedToMentionSomeRolesInThread";
-      MessageFlags7[MessageFlags7["ShouldShowLinkNotDiscordWarning"] = 1024] = "ShouldShowLinkNotDiscordWarning";
-      MessageFlags7[MessageFlags7["SuppressNotifications"] = 4096] = "SuppressNotifications";
-      MessageFlags7[MessageFlags7["IsVoiceMessage"] = 8192] = "IsVoiceMessage";
-      MessageFlags7[MessageFlags7["HasSnapshot"] = 16384] = "HasSnapshot";
-      MessageFlags7[MessageFlags7["IsComponentsV2"] = 32768] = "IsComponentsV2";
-    })(MessageFlags6 || (exports2.MessageFlags = MessageFlags6 = {}));
+    var MessageFlags4;
+    (function(MessageFlags5) {
+      MessageFlags5[MessageFlags5["Crossposted"] = 1] = "Crossposted";
+      MessageFlags5[MessageFlags5["IsCrosspost"] = 2] = "IsCrosspost";
+      MessageFlags5[MessageFlags5["SuppressEmbeds"] = 4] = "SuppressEmbeds";
+      MessageFlags5[MessageFlags5["SourceMessageDeleted"] = 8] = "SourceMessageDeleted";
+      MessageFlags5[MessageFlags5["Urgent"] = 16] = "Urgent";
+      MessageFlags5[MessageFlags5["HasThread"] = 32] = "HasThread";
+      MessageFlags5[MessageFlags5["Ephemeral"] = 64] = "Ephemeral";
+      MessageFlags5[MessageFlags5["Loading"] = 128] = "Loading";
+      MessageFlags5[MessageFlags5["FailedToMentionSomeRolesInThread"] = 256] = "FailedToMentionSomeRolesInThread";
+      MessageFlags5[MessageFlags5["ShouldShowLinkNotDiscordWarning"] = 1024] = "ShouldShowLinkNotDiscordWarning";
+      MessageFlags5[MessageFlags5["SuppressNotifications"] = 4096] = "SuppressNotifications";
+      MessageFlags5[MessageFlags5["IsVoiceMessage"] = 8192] = "IsVoiceMessage";
+      MessageFlags5[MessageFlags5["HasSnapshot"] = 16384] = "HasSnapshot";
+      MessageFlags5[MessageFlags5["IsComponentsV2"] = 32768] = "IsComponentsV2";
+    })(MessageFlags4 || (exports2.MessageFlags = MessageFlags4 = {}));
     var BaseThemeType;
     (function(BaseThemeType2) {
       BaseThemeType2[BaseThemeType2["Unset"] = 0] = "Unset";
@@ -33314,9 +33314,9 @@ var require_CachedManager = __commonJS({
 var require_PermissionsBitField = __commonJS({
   "node_modules/discord.js/src/util/PermissionsBitField.js"(exports2, module2) {
     "use strict";
-    var { PermissionFlagsBits } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits16 } = require_v106();
     var BitField = require_BitField();
-    var PermissionsBitField2 = class extends BitField {
+    var PermissionsBitField4 = class extends BitField {
       static {
         __name(this, "PermissionsBitField");
       }
@@ -33326,13 +33326,13 @@ var require_PermissionsBitField = __commonJS({
        * @memberof PermissionsBitField
        * @see {@link https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags}
        */
-      static Flags = PermissionFlagsBits;
+      static Flags = PermissionFlagsBits16;
       /**
        * Bitfield representing every permission combined
        * @type {bigint}
        * @memberof PermissionsBitField
        */
-      static All = Object.values(PermissionFlagsBits).reduce((all, p) => all | p, 0n);
+      static All = Object.values(PermissionFlagsBits16).reduce((all, p) => all | p, 0n);
       /**
        * Bitfield representing the default permissions for users
        * @type {bigint}
@@ -33344,7 +33344,7 @@ var require_PermissionsBitField = __commonJS({
        * @type {bigint}
        * @memberof PermissionsBitField
        */
-      static StageModerator = PermissionFlagsBits.ManageChannels | PermissionFlagsBits.MuteMembers | PermissionFlagsBits.MoveMembers;
+      static StageModerator = PermissionFlagsBits16.ManageChannels | PermissionFlagsBits16.MuteMembers | PermissionFlagsBits16.MoveMembers;
       /**
        * @type {bigint}
        * @memberof PermissionsBitField
@@ -33371,7 +33371,7 @@ var require_PermissionsBitField = __commonJS({
        * @returns {string[]}
        */
       missing(bits, checkAdmin = true) {
-        return checkAdmin && this.has(PermissionFlagsBits.Administrator) ? [] : super.missing(bits);
+        return checkAdmin && this.has(PermissionFlagsBits16.Administrator) ? [] : super.missing(bits);
       }
       /**
        * Checks whether the bitfield has a permission, or any of multiple permissions.
@@ -33380,7 +33380,7 @@ var require_PermissionsBitField = __commonJS({
        * @returns {boolean}
        */
       any(permission, checkAdmin = true) {
-        return checkAdmin && super.has(PermissionFlagsBits.Administrator) || super.any(permission);
+        return checkAdmin && super.has(PermissionFlagsBits16.Administrator) || super.any(permission);
       }
       /**
        * Checks whether the bitfield has a permission, or multiple permissions.
@@ -33389,7 +33389,7 @@ var require_PermissionsBitField = __commonJS({
        * @returns {boolean}
        */
       has(permission, checkAdmin = true) {
-        return checkAdmin && super.has(PermissionFlagsBits.Administrator) || super.has(permission);
+        return checkAdmin && super.has(PermissionFlagsBits16.Administrator) || super.has(permission);
       }
       /**
        * Gets an {@link Array} of bitfield names based on the permissions available.
@@ -33399,7 +33399,7 @@ var require_PermissionsBitField = __commonJS({
         return super.toArray(false);
       }
     };
-    module2.exports = PermissionsBitField2;
+    module2.exports = PermissionsBitField4;
   }
 });
 
@@ -33430,10 +33430,10 @@ var require_Role = __commonJS({
     "use strict";
     var { roleMention } = require_dist7();
     var { DiscordSnowflake } = require_cjs();
-    var { PermissionFlagsBits } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits16 } = require_v106();
     var Base = require_Base();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var RoleFlagsBitField = require_RoleFlagsBitField();
     var Role = class extends Base {
       static {
@@ -33468,7 +33468,7 @@ var require_Role = __commonJS({
           this.rawPosition = data.position;
         }
         if ("permissions" in data) {
-          this.permissions = new PermissionsBitField2(BigInt(data.permissions)).freeze();
+          this.permissions = new PermissionsBitField4(BigInt(data.permissions)).freeze();
         }
         if ("managed" in data) {
           this.managed = data.managed;
@@ -33545,7 +33545,7 @@ var require_Role = __commonJS({
       get editable() {
         if (this.managed) return false;
         const clientMember = this.guild.members.resolve(this.client.user);
-        if (!clientMember.permissions.has(PermissionFlagsBits.ManageRoles)) return false;
+        if (!clientMember.permissions.has(PermissionFlagsBits16.ManageRoles)) return false;
         return clientMember.roles.highest.comparePositionTo(this) > 0;
       }
       /**
@@ -33816,7 +33816,7 @@ var require_PermissionOverwrites = __commonJS({
     var Base = require_Base();
     var { Role } = require_Role();
     var { DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var PermissionOverwrites = class extends Base {
       static {
         __name(this, "PermissionOverwrites");
@@ -33832,10 +33832,10 @@ var require_PermissionOverwrites = __commonJS({
           this.type = data.type;
         }
         if ("deny" in data) {
-          this.deny = new PermissionsBitField2(BigInt(data.deny)).freeze();
+          this.deny = new PermissionsBitField4(BigInt(data.deny)).freeze();
         }
         if ("allow" in data) {
-          this.allow = new PermissionsBitField2(BigInt(data.allow)).freeze();
+          this.allow = new PermissionsBitField4(BigInt(data.allow)).freeze();
         }
       }
       /**
@@ -33895,8 +33895,8 @@ var require_PermissionOverwrites = __commonJS({
        * @returns {ResolvedOverwriteOptions}
        */
       static resolveOverwriteOptions(options, { allow, deny } = {}) {
-        allow = new PermissionsBitField2(allow);
-        deny = new PermissionsBitField2(deny);
+        allow = new PermissionsBitField4(allow);
+        deny = new PermissionsBitField4(deny);
         for (const [perm, value] of Object.entries(options)) {
           if (value === true) {
             allow.add(perm);
@@ -33945,8 +33945,8 @@ var require_PermissionOverwrites = __commonJS({
           return {
             id: overwrite.id,
             type: overwrite.type,
-            allow: PermissionsBitField2.resolve(overwrite.allow ?? PermissionsBitField2.DefaultBit).toString(),
-            deny: PermissionsBitField2.resolve(overwrite.deny ?? PermissionsBitField2.DefaultBit).toString()
+            allow: PermissionsBitField4.resolve(overwrite.allow ?? PermissionsBitField4.DefaultBit).toString(),
+            deny: PermissionsBitField4.resolve(overwrite.deny ?? PermissionsBitField4.DefaultBit).toString()
           };
         }
         const userOrRole = guild.roles.resolve(overwrite.id) ?? guild.client.users.resolve(overwrite.id);
@@ -33957,8 +33957,8 @@ var require_PermissionOverwrites = __commonJS({
         return {
           id: userOrRole.id,
           type,
-          allow: PermissionsBitField2.resolve(overwrite.allow ?? PermissionsBitField2.DefaultBit).toString(),
-          deny: PermissionsBitField2.resolve(overwrite.deny ?? PermissionsBitField2.DefaultBit).toString()
+          allow: PermissionsBitField4.resolve(overwrite.allow ?? PermissionsBitField4.DefaultBit).toString(),
+          deny: PermissionsBitField4.resolve(overwrite.deny ?? PermissionsBitField4.DefaultBit).toString()
         };
       }
     };
@@ -34121,12 +34121,12 @@ var require_GuildChannel = __commonJS({
   "node_modules/discord.js/src/structures/GuildChannel.js"(exports2, module2) {
     "use strict";
     var { Snowflake } = require_cjs();
-    var { PermissionFlagsBits, ChannelType } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits16, ChannelType } = require_v106();
     var { BaseChannel } = require_BaseChannel();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var PermissionOverwriteManager = require_PermissionOverwriteManager();
     var { VoiceBasedChannelTypes } = require_Constants();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var { getSortableGroupTypes } = require_Util();
     var GuildChannel = class extends BaseChannel {
       static {
@@ -34190,7 +34190,7 @@ var require_GuildChannel = __commonJS({
         return [...overwriteIds].every((key) => {
           const channelVal = this.permissionOverwrites.cache.get(key);
           const parentVal = parent.permissionOverwrites.cache.get(key);
-          if (key === this.guildId && (!channelVal && parentVal.deny.bitfield === PermissionsBitField2.DefaultBit && parentVal.allow.bitfield === PermissionsBitField2.DefaultBit || !parentVal && channelVal.deny.bitfield === PermissionsBitField2.DefaultBit && channelVal.allow.bitfield === PermissionsBitField2.DefaultBit)) {
+          if (key === this.guildId && (!channelVal && parentVal.deny.bitfield === PermissionsBitField4.DefaultBit && parentVal.allow.bitfield === PermissionsBitField4.DefaultBit || !parentVal && channelVal.deny.bitfield === PermissionsBitField4.DefaultBit && channelVal.allow.bitfield === PermissionsBitField4.DefaultBit)) {
             return true;
           }
           return channelVal !== void 0 && parentVal !== void 0 && channelVal.deny.bitfield === parentVal.deny.bitfield && channelVal.allow.bitfield === parentVal.allow.bitfield;
@@ -34261,15 +34261,15 @@ var require_GuildChannel = __commonJS({
        */
       memberPermissions(member, checkAdmin) {
         if (checkAdmin && member.id === this.guild.ownerId) {
-          return new PermissionsBitField2(PermissionsBitField2.All).freeze();
+          return new PermissionsBitField4(PermissionsBitField4.All).freeze();
         }
         const roles = member.roles.cache;
-        const permissions = new PermissionsBitField2(roles.map((role) => role.permissions));
-        if (checkAdmin && permissions.has(PermissionFlagsBits.Administrator)) {
-          return new PermissionsBitField2(PermissionsBitField2.All).freeze();
+        const permissions = new PermissionsBitField4(roles.map((role) => role.permissions));
+        if (checkAdmin && permissions.has(PermissionFlagsBits16.Administrator)) {
+          return new PermissionsBitField4(PermissionsBitField4.All).freeze();
         }
         const overwrites = this.overwritesFor(member, true, roles);
-        return permissions.remove(overwrites.everyone?.deny ?? PermissionsBitField2.DefaultBit).add(overwrites.everyone?.allow ?? PermissionsBitField2.DefaultBit).remove(overwrites.roles.length > 0 ? overwrites.roles.map((role) => role.deny) : PermissionsBitField2.DefaultBit).add(overwrites.roles.length > 0 ? overwrites.roles.map((role) => role.allow) : PermissionsBitField2.DefaultBit).remove(overwrites.member?.deny ?? PermissionsBitField2.DefaultBit).add(overwrites.member?.allow ?? PermissionsBitField2.DefaultBit).freeze();
+        return permissions.remove(overwrites.everyone?.deny ?? PermissionsBitField4.DefaultBit).add(overwrites.everyone?.allow ?? PermissionsBitField4.DefaultBit).remove(overwrites.roles.length > 0 ? overwrites.roles.map((role) => role.deny) : PermissionsBitField4.DefaultBit).add(overwrites.roles.length > 0 ? overwrites.roles.map((role) => role.allow) : PermissionsBitField4.DefaultBit).remove(overwrites.member?.deny ?? PermissionsBitField4.DefaultBit).add(overwrites.member?.allow ?? PermissionsBitField4.DefaultBit).freeze();
       }
       /**
        * Gets the overall set of permissions for a role in this channel, taking into account channel overwrites.
@@ -34280,13 +34280,13 @@ var require_GuildChannel = __commonJS({
        * @private
        */
       rolePermissions(role, checkAdmin) {
-        if (checkAdmin && role.permissions.has(PermissionFlagsBits.Administrator)) {
-          return new PermissionsBitField2(PermissionsBitField2.All).freeze();
+        if (checkAdmin && role.permissions.has(PermissionFlagsBits16.Administrator)) {
+          return new PermissionsBitField4(PermissionsBitField4.All).freeze();
         }
-        const basePermissions = new PermissionsBitField2([role.permissions, role.guild.roles.everyone.permissions]);
+        const basePermissions = new PermissionsBitField4([role.permissions, role.guild.roles.everyone.permissions]);
         const everyoneOverwrites = this.permissionOverwrites.cache.get(this.guild.id);
         const roleOverwrites = this.permissionOverwrites.cache.get(role.id);
-        return basePermissions.remove(everyoneOverwrites?.deny ?? PermissionsBitField2.DefaultBit).add(everyoneOverwrites?.allow ?? PermissionsBitField2.DefaultBit).remove(roleOverwrites?.deny ?? PermissionsBitField2.DefaultBit).add(roleOverwrites?.allow ?? PermissionsBitField2.DefaultBit).freeze();
+        return basePermissions.remove(everyoneOverwrites?.deny ?? PermissionsBitField4.DefaultBit).add(everyoneOverwrites?.allow ?? PermissionsBitField4.DefaultBit).remove(roleOverwrites?.deny ?? PermissionsBitField4.DefaultBit).add(roleOverwrites?.allow ?? PermissionsBitField4.DefaultBit).freeze();
       }
       /**
        * Locks in the permission overwrites from the parent channel.
@@ -34306,7 +34306,7 @@ var require_GuildChannel = __commonJS({
        */
       get members() {
         return this.guild.members.cache.filter(
-          (member) => this.permissionsFor(member).has(PermissionFlagsBits.ViewChannel, false)
+          (member) => this.permissionsFor(member).has(PermissionFlagsBits16.ViewChannel, false)
         );
       }
       /**
@@ -34440,10 +34440,10 @@ var require_GuildChannel = __commonJS({
         if (this.client.user.id === this.guild.ownerId) return true;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits.Administrator, false)) return true;
+        if (permissions.has(PermissionFlagsBits16.Administrator, false)) return true;
         if (this.guild.members.me.communicationDisabledUntilTimestamp > Date.now()) return false;
-        const baseBitfield = PermissionFlagsBits.ViewChannel | PermissionFlagsBits.ManageChannels;
-        const bitfield = VoiceBasedChannelTypes.includes(this.type) ? baseBitfield | PermissionFlagsBits.Connect : baseBitfield;
+        const baseBitfield = PermissionFlagsBits16.ViewChannel | PermissionFlagsBits16.ManageChannels;
+        const bitfield = VoiceBasedChannelTypes.includes(this.type) ? baseBitfield | PermissionFlagsBits16.Connect : baseBitfield;
         return permissions.has(bitfield, false);
       }
       /**
@@ -34455,7 +34455,7 @@ var require_GuildChannel = __commonJS({
         if (this.client.user.id === this.guild.ownerId) return true;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        return permissions.has(PermissionFlagsBits.ViewChannel, false);
+        return permissions.has(PermissionFlagsBits16.ViewChannel, false);
       }
       /**
        * Deletes this channel.
@@ -35761,7 +35761,7 @@ var require_InteractionCollector = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Collector = require_Collector();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var InteractionCollector = class extends Collector {
       static {
         __name(this, "InteractionCollector");
@@ -35786,27 +35786,27 @@ var require_InteractionCollector = __commonJS({
         }, "bulkDeleteListener");
         if (this.messageId || this.messageInteractionId) {
           this._handleMessageDeletion = this._handleMessageDeletion.bind(this);
-          this.client.on(Events7.MessageDelete, this._handleMessageDeletion);
-          this.client.on(Events7.MessageBulkDelete, bulkDeleteListener);
+          this.client.on(Events16.MessageDelete, this._handleMessageDeletion);
+          this.client.on(Events16.MessageBulkDelete, bulkDeleteListener);
         }
         if (this.channelId) {
           this._handleChannelDeletion = this._handleChannelDeletion.bind(this);
           this._handleThreadDeletion = this._handleThreadDeletion.bind(this);
-          this.client.on(Events7.ChannelDelete, this._handleChannelDeletion);
-          this.client.on(Events7.ThreadDelete, this._handleThreadDeletion);
+          this.client.on(Events16.ChannelDelete, this._handleChannelDeletion);
+          this.client.on(Events16.ThreadDelete, this._handleThreadDeletion);
         }
         if (this.guildId) {
           this._handleGuildDeletion = this._handleGuildDeletion.bind(this);
-          this.client.on(Events7.GuildDelete, this._handleGuildDeletion);
+          this.client.on(Events16.GuildDelete, this._handleGuildDeletion);
         }
-        this.client.on(Events7.InteractionCreate, this.handleCollect);
+        this.client.on(Events16.InteractionCreate, this.handleCollect);
         this.once("end", () => {
-          this.client.removeListener(Events7.InteractionCreate, this.handleCollect);
-          this.client.removeListener(Events7.MessageDelete, this._handleMessageDeletion);
-          this.client.removeListener(Events7.MessageBulkDelete, bulkDeleteListener);
-          this.client.removeListener(Events7.ChannelDelete, this._handleChannelDeletion);
-          this.client.removeListener(Events7.ThreadDelete, this._handleThreadDeletion);
-          this.client.removeListener(Events7.GuildDelete, this._handleGuildDeletion);
+          this.client.removeListener(Events16.InteractionCreate, this.handleCollect);
+          this.client.removeListener(Events16.MessageDelete, this._handleMessageDeletion);
+          this.client.removeListener(Events16.MessageBulkDelete, bulkDeleteListener);
+          this.client.removeListener(Events16.ChannelDelete, this._handleChannelDeletion);
+          this.client.removeListener(Events16.ThreadDelete, this._handleThreadDeletion);
+          this.client.removeListener(Events16.GuildDelete, this._handleGuildDeletion);
           this.client.decrementMaxListeners();
         });
         this.on("collect", (interaction) => {
@@ -35924,7 +35924,7 @@ var require_MessageCollector = __commonJS({
   "node_modules/discord.js/src/structures/MessageCollector.js"(exports2, module2) {
     "use strict";
     var Collector = require_Collector();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var MessageCollector = class extends Collector {
       static {
         __name(this, "MessageCollector");
@@ -35945,19 +35945,19 @@ var require_MessageCollector = __commonJS({
         this._handleThreadDeletion = this._handleThreadDeletion.bind(this);
         this._handleGuildDeletion = this._handleGuildDeletion.bind(this);
         this.client.incrementMaxListeners();
-        this.client.on(Events7.MessageCreate, this.handleCollect);
-        this.client.on(Events7.MessageDelete, this.handleDispose);
-        this.client.on(Events7.MessageBulkDelete, bulkDeleteListener);
-        this.client.on(Events7.ChannelDelete, this._handleChannelDeletion);
-        this.client.on(Events7.ThreadDelete, this._handleThreadDeletion);
-        this.client.on(Events7.GuildDelete, this._handleGuildDeletion);
+        this.client.on(Events16.MessageCreate, this.handleCollect);
+        this.client.on(Events16.MessageDelete, this.handleDispose);
+        this.client.on(Events16.MessageBulkDelete, bulkDeleteListener);
+        this.client.on(Events16.ChannelDelete, this._handleChannelDeletion);
+        this.client.on(Events16.ThreadDelete, this._handleThreadDeletion);
+        this.client.on(Events16.GuildDelete, this._handleGuildDeletion);
         this.once("end", () => {
-          this.client.removeListener(Events7.MessageCreate, this.handleCollect);
-          this.client.removeListener(Events7.MessageDelete, this.handleDispose);
-          this.client.removeListener(Events7.MessageBulkDelete, bulkDeleteListener);
-          this.client.removeListener(Events7.ChannelDelete, this._handleChannelDeletion);
-          this.client.removeListener(Events7.ThreadDelete, this._handleThreadDeletion);
-          this.client.removeListener(Events7.GuildDelete, this._handleGuildDeletion);
+          this.client.removeListener(Events16.MessageCreate, this.handleCollect);
+          this.client.removeListener(Events16.MessageDelete, this.handleDispose);
+          this.client.removeListener(Events16.MessageBulkDelete, bulkDeleteListener);
+          this.client.removeListener(Events16.ChannelDelete, this._handleChannelDeletion);
+          this.client.removeListener(Events16.ThreadDelete, this._handleThreadDeletion);
+          this.client.removeListener(Events16.GuildDelete, this._handleGuildDeletion);
           this.client.decrementMaxListeners();
         });
       }
@@ -36895,7 +36895,7 @@ var require_InviteGuild = __commonJS({
 var require_Invite = __commonJS({
   "node_modules/discord.js/src/structures/Invite.js"(exports2, module2) {
     "use strict";
-    var { RouteBases, Routes: Routes2, PermissionFlagsBits } = require_v106();
+    var { RouteBases, Routes: Routes2, PermissionFlagsBits: PermissionFlagsBits16 } = require_v106();
     var Base = require_Base();
     var { GuildScheduledEvent } = require_GuildScheduledEvent();
     var IntegrationApplication = require_IntegrationApplication();
@@ -37032,7 +37032,7 @@ var require_Invite = __commonJS({
         if (!guild || !this.client.guilds.cache.has(guild.id)) return false;
         if (!guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
         return Boolean(
-          this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits.ManageChannels, false) || guild.members.me.permissions.has(PermissionFlagsBits.ManageGuild)
+          this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits16.ManageChannels, false) || guild.members.me.permissions.has(PermissionFlagsBits16.ManageGuild)
         );
       }
       /**
@@ -37114,7 +37114,7 @@ var require_GuildTemplate = __commonJS({
     var { RouteBases, Routes: Routes2 } = require_v106();
     var Base = require_Base();
     var { resolveImage } = require_DataResolver();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildTemplate2 = class extends Base {
       static {
         __name(this, "GuildTemplate");
@@ -37183,7 +37183,7 @@ var require_GuildTemplate = __commonJS({
         if (client.guilds.cache.has(data.id)) return client.guilds.cache.get(data.id);
         return new Promise((resolve3) => {
           const resolveGuild = /* @__PURE__ */ __name((guild) => {
-            client.off(Events7.GuildCreate, handleGuild);
+            client.off(Events16.GuildCreate, handleGuild);
             client.decrementMaxListeners();
             resolve3(guild);
           }, "resolveGuild");
@@ -37194,7 +37194,7 @@ var require_GuildTemplate = __commonJS({
             }
           }, "handleGuild");
           client.incrementMaxListeners();
-          client.on(Events7.GuildCreate, handleGuild);
+          client.on(Events16.GuildCreate, handleGuild);
           const timeout = setTimeout2(() => resolveGuild(client.guilds._add(data)), 1e4).unref();
         });
       }
@@ -37343,7 +37343,7 @@ var require_DataResolver = __commonJS({
 var require_MessageFlagsBitField = __commonJS({
   "node_modules/discord.js/src/util/MessageFlagsBitField.js"(exports2, module2) {
     "use strict";
-    var { MessageFlags: MessageFlags6 } = require_v106();
+    var { MessageFlags: MessageFlags4 } = require_v106();
     var BitField = require_BitField();
     var MessageFlagsBitField = class extends BitField {
       static {
@@ -37354,7 +37354,7 @@ var require_MessageFlagsBitField = __commonJS({
        * @type {MessageFlags}
        * @memberof MessageFlagsBitField
        */
-      static Flags = MessageFlags6;
+      static Flags = MessageFlags4;
     };
     module2.exports = MessageFlagsBitField;
   }
@@ -37371,7 +37371,7 @@ var require_BaseInteraction = __commonJS({
     var AuthorizingIntegrationOwners = require_AuthorizingIntegrationOwners();
     var Base = require_Base();
     var { SelectMenuTypes } = require_Constants();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var BaseInteraction = class extends Base {
       static {
         __name(this, "BaseInteraction");
@@ -37387,8 +37387,8 @@ var require_BaseInteraction = __commonJS({
         this.user = this.client.users._add(data.user ?? data.member.user);
         this.member = data.member ? this.guild?.members._add(data.member) ?? data.member : null;
         this.version = data.version;
-        this.appPermissions = new PermissionsBitField2(data.app_permissions).freeze();
-        this.memberPermissions = data.member?.permissions ? new PermissionsBitField2(data.member.permissions).freeze() : null;
+        this.appPermissions = new PermissionsBitField4(data.app_permissions).freeze();
+        this.memberPermissions = data.member?.permissions ? new PermissionsBitField4(data.member.permissions).freeze() : null;
         this.locale = data.locale;
         this.guildLocale = data.guild_locale ?? null;
         this.entitlements = data.entitlements.reduce(
@@ -38232,7 +38232,7 @@ var require_ApplicationCommand = __commonJS({
     var isEqual = require_fast_deep_equal();
     var Base = require_Base();
     var ApplicationCommandPermissionsManager = require_ApplicationCommandPermissionsManager();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var ApplicationCommand = class extends Base {
       static {
         __name(this, "ApplicationCommand");
@@ -38281,7 +38281,7 @@ var require_ApplicationCommand = __commonJS({
           this.options ??= [];
         }
         if ("default_member_permissions" in data) {
-          this.defaultMemberPermissions = data.default_member_permissions ? new PermissionsBitField2(BigInt(data.default_member_permissions)).freeze() : null;
+          this.defaultMemberPermissions = data.default_member_permissions ? new PermissionsBitField4(BigInt(data.default_member_permissions)).freeze() : null;
         } else {
           this.defaultMemberPermissions ??= null;
         }
@@ -38502,10 +38502,10 @@ var require_ApplicationCommand = __commonJS({
         let defaultMemberPermissions = null;
         let dmPermission = command.dmPermission ?? command.dm_permission;
         if ("default_member_permissions" in command) {
-          defaultMemberPermissions = command.default_member_permissions ? new PermissionsBitField2(BigInt(command.default_member_permissions)).bitfield : null;
+          defaultMemberPermissions = command.default_member_permissions ? new PermissionsBitField4(BigInt(command.default_member_permissions)).bitfield : null;
         }
         if ("defaultMemberPermissions" in command) {
-          defaultMemberPermissions = command.defaultMemberPermissions !== null ? new PermissionsBitField2(command.defaultMemberPermissions).bitfield : null;
+          defaultMemberPermissions = command.defaultMemberPermissions !== null ? new PermissionsBitField4(command.defaultMemberPermissions).bitfield : null;
         }
         if (command.name !== this.name || "description" in command && command.description !== this.description || "version" in command && command.version !== this.version || command.type && command.type !== this.type || "nsfw" in command && command.nsfw !== this.nsfw || // Future proof for options being nullable
         // TODO: remove ?? 0 on each when nullable
@@ -38681,7 +38681,7 @@ var require_ApplicationCommandManager = __commonJS({
     var CachedManager = require_CachedManager();
     var { DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var ApplicationCommand = require_ApplicationCommand();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var ApplicationCommandManager = class extends CachedManager {
       static {
         __name(this, "ApplicationCommandManager");
@@ -38881,10 +38881,10 @@ var require_ApplicationCommandManager = __commonJS({
         if (isJSONEncodable(command)) return command.toJSON();
         let default_member_permissions;
         if ("default_member_permissions" in command) {
-          default_member_permissions = command.default_member_permissions ? new PermissionsBitField2(BigInt(command.default_member_permissions)).bitfield.toString() : command.default_member_permissions;
+          default_member_permissions = command.default_member_permissions ? new PermissionsBitField4(BigInt(command.default_member_permissions)).bitfield.toString() : command.default_member_permissions;
         }
         if ("defaultMemberPermissions" in command) {
-          default_member_permissions = command.defaultMemberPermissions !== null ? new PermissionsBitField2(command.defaultMemberPermissions).bitfield.toString() : command.defaultMemberPermissions;
+          default_member_permissions = command.defaultMemberPermissions !== null ? new PermissionsBitField4(command.defaultMemberPermissions).bitfield.toString() : command.defaultMemberPermissions;
         }
         return {
           name: command.name,
@@ -39566,7 +39566,7 @@ var require_ClientApplication = __commonJS({
     var { SubscriptionManager } = require_SubscriptionManager();
     var ApplicationFlagsBitField = require_ApplicationFlagsBitField();
     var { resolveImage } = require_DataResolver();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var ClientApplication = class extends Application {
       static {
         __name(this, "ClientApplication");
@@ -39584,7 +39584,7 @@ var require_ClientApplication = __commonJS({
         if ("install_params" in data) {
           this.installParams = {
             scopes: data.install_params.scopes,
-            permissions: new PermissionsBitField2(data.install_params.permissions).freeze()
+            permissions: new PermissionsBitField4(data.install_params.permissions).freeze()
           };
         } else {
           this.installParams ??= null;
@@ -39596,7 +39596,7 @@ var require_ClientApplication = __commonJS({
               if (config2.oauth2_install_params) {
                 oauth2InstallParams = {
                   scopes: config2.oauth2_install_params.scopes,
-                  permissions: new PermissionsBitField2(config2.oauth2_install_params.permissions).freeze()
+                  permissions: new PermissionsBitField4(config2.oauth2_install_params.permissions).freeze()
                 };
               }
               const context = {
@@ -44803,7 +44803,7 @@ var require_dist8 = __commonJS({
       ContextMenuCommandAssertions: /* @__PURE__ */ __name(() => Assertions_exports11, "ContextMenuCommandAssertions"),
       ContextMenuCommandBuilder: /* @__PURE__ */ __name(() => ContextMenuCommandBuilder, "ContextMenuCommandBuilder"),
       EmbedAssertions: /* @__PURE__ */ __name(() => Assertions_exports, "EmbedAssertions"),
-      EmbedBuilder: /* @__PURE__ */ __name(() => EmbedBuilder5, "EmbedBuilder"),
+      EmbedBuilder: /* @__PURE__ */ __name(() => EmbedBuilder11, "EmbedBuilder"),
       FileBuilder: /* @__PURE__ */ __name(() => FileBuilder, "FileBuilder"),
       FileUploadAssertions: /* @__PURE__ */ __name(() => Assertions_exports4, "FileUploadAssertions"),
       FileUploadBuilder: /* @__PURE__ */ __name(() => FileUploadBuilder, "FileUploadBuilder"),
@@ -44829,7 +44829,7 @@ var require_dist8 = __commonJS({
       SlashCommandAssertions: /* @__PURE__ */ __name(() => Assertions_exports10, "SlashCommandAssertions"),
       SlashCommandAttachmentOption: /* @__PURE__ */ __name(() => SlashCommandAttachmentOption, "SlashCommandAttachmentOption"),
       SlashCommandBooleanOption: /* @__PURE__ */ __name(() => SlashCommandBooleanOption, "SlashCommandBooleanOption"),
-      SlashCommandBuilder: /* @__PURE__ */ __name(() => SlashCommandBuilder5, "SlashCommandBuilder"),
+      SlashCommandBuilder: /* @__PURE__ */ __name(() => SlashCommandBuilder19, "SlashCommandBuilder"),
       SlashCommandChannelOption: /* @__PURE__ */ __name(() => SlashCommandChannelOption, "SlashCommandChannelOption"),
       SlashCommandIntegerOption: /* @__PURE__ */ __name(() => SlashCommandIntegerOption, "SlashCommandIntegerOption"),
       SlashCommandMentionableOption: /* @__PURE__ */ __name(() => SlashCommandMentionableOption, "SlashCommandMentionableOption"),
@@ -44937,7 +44937,7 @@ var require_dist8 = __commonJS({
     }
     __name(normalizeArray, "normalizeArray");
     __name2(normalizeArray, "normalizeArray");
-    var EmbedBuilder5 = class {
+    var EmbedBuilder11 = class {
       static {
         __name(this, "EmbedBuilder");
       }
@@ -45215,8 +45215,8 @@ var require_dist8 = __commonJS({
        *
        * @param label - The label to use
        */
-      setLabel(label) {
-        this.data.label = labelValueDescriptionValidator.parse(label);
+      setLabel(label2) {
+        this.data.label = labelValueDescriptionValidator.parse(label2);
         return this;
       }
       /**
@@ -45295,8 +45295,8 @@ var require_dist8 = __commonJS({
     __name(validateRequiredSelectMenuParameters, "validateRequiredSelectMenuParameters");
     __name2(validateRequiredSelectMenuParameters, "validateRequiredSelectMenuParameters");
     var defaultValidator = import_shapeshift2.s.boolean();
-    function validateRequiredSelectMenuOptionParameters(label, value) {
-      labelValueDescriptionValidator.parse(label);
+    function validateRequiredSelectMenuOptionParameters(label2, value) {
+      labelValueDescriptionValidator.parse(label2);
       labelValueDescriptionValidator.parse(value);
     }
     __name(validateRequiredSelectMenuOptionParameters, "validateRequiredSelectMenuOptionParameters");
@@ -45305,12 +45305,12 @@ var require_dist8 = __commonJS({
     var urlValidator = import_shapeshift2.s.string().url({
       allowedProtocols: ["http:", "https:", "discord:"]
     }).setValidationEnabled(isValidationEnabled);
-    function validateRequiredButtonParameters(style, label, emoji3, customId, skuId, url2) {
+    function validateRequiredButtonParameters(style, label2, emoji3, customId, skuId, url2) {
       if (style === import_v10.ButtonStyle.Premium) {
         if (!skuId) {
           throw new RangeError("Premium buttons must have an SKU id.");
         }
-        if (customId || label || url2 || emoji3) {
+        if (customId || label2 || url2 || emoji3) {
           throw new RangeError("Premium buttons cannot have a custom id, label, URL, or emoji.");
         }
       } else {
@@ -45320,7 +45320,7 @@ var require_dist8 = __commonJS({
         if (url2 && customId) {
           throw new RangeError("URL and custom id are mutually exclusive.");
         }
-        if (!label && !emoji3) {
+        if (!label2 && !emoji3) {
           throw new RangeError("Non-premium buttons must have a label and/or an emoji.");
         }
         if (style === import_v10.ButtonStyle.Link) {
@@ -45476,8 +45476,8 @@ var require_dist8 = __commonJS({
        *
        * @param label - The label to use
        */
-      setLabel(label) {
-        this.data.label = buttonLabelValidator.parse(label);
+      setLabel(label2) {
+        this.data.label = buttonLabelValidator.parse(label2);
         return this;
       }
       /**
@@ -45665,8 +45665,8 @@ var require_dist8 = __commonJS({
        *
        * @param label - The label to use
        */
-      setLabel(label) {
-        this.data.label = label;
+      setLabel(label2) {
+        this.data.label = label2;
         return this;
       }
       /**
@@ -45886,8 +45886,8 @@ var require_dist8 = __commonJS({
        *
        * @param label - The label to use
        */
-      setLabel(label) {
-        this.data.label = label;
+      setLabel(label2) {
+        this.data.label = label2;
         return this;
       }
       /**
@@ -46820,8 +46820,8 @@ var require_dist8 = __commonJS({
        * @param label - The label to use
        * @deprecated Use a label builder to create a label (and optionally a description) instead.
        */
-      setLabel(label) {
-        this.data.label = labelValidator.parse(label);
+      setLabel(label2) {
+        this.data.label = labelValidator.parse(label2);
         return this;
       }
       /**
@@ -46967,8 +46967,8 @@ var require_dist8 = __commonJS({
        *
        * @param label - The label to use
        */
-      setLabel(label) {
-        this.data.label = label;
+      setLabel(label2) {
+        this.data.label = label2;
         return this;
       }
       /**
@@ -48106,7 +48106,7 @@ var require_dist8 = __commonJS({
        */
       addLabelComponents(...components) {
         const normalized = normalizeArray(components);
-        const resolved = normalized.map((label) => resolveBuilder(label, LabelBuilder));
+        const resolved = normalized.map((label2) => resolveBuilder(label2, LabelBuilder));
         this.components.push(...resolved);
         return this;
       }
@@ -48173,7 +48173,7 @@ var require_dist8 = __commonJS({
        * @param labels - The replacing label objects
        */
       spliceLabelComponents(index2, deleteCount, ...labels) {
-        const resolved = labels.map((label) => resolveBuilder(label, LabelBuilder));
+        const resolved = labels.map((label2) => resolveBuilder(label2, LabelBuilder));
         this.components.splice(index2, deleteCount, ...resolved);
         return this;
       }
@@ -49217,7 +49217,7 @@ var require_dist8 = __commonJS({
         return this;
       }
     };
-    var SlashCommandBuilder5 = class {
+    var SlashCommandBuilder19 = class {
       static {
         __name(this, "SlashCommandBuilder");
       }
@@ -49273,10 +49273,10 @@ var require_dist8 = __commonJS({
        */
       nsfw = void 0;
     };
-    __name2(SlashCommandBuilder5, "SlashCommandBuilder");
-    SlashCommandBuilder5 = __decorateClass([
+    __name2(SlashCommandBuilder19, "SlashCommandBuilder");
+    SlashCommandBuilder19 = __decorateClass([
       (0, import_ts_mixer6.mix)(SharedSlashCommandOptions, SharedNameAndDescription, SharedSlashCommandSubcommands, SharedSlashCommand)
-    ], SlashCommandBuilder5);
+    ], SlashCommandBuilder19);
     var Assertions_exports11 = {};
     __export2(Assertions_exports11, {
       contextsPredicate: /* @__PURE__ */ __name(() => contextsPredicate2, "contextsPredicate"),
@@ -49925,7 +49925,7 @@ var require_ReactionCollector = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Collector = require_Collector();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var ReactionCollector = class _ReactionCollector extends Collector {
       static {
         __name(this, "ReactionCollector");
@@ -49948,23 +49948,23 @@ var require_ReactionCollector = __commonJS({
           if (messages2.has(this.message.id)) this.stop("messageDelete");
         }, "bulkDeleteListener");
         this.client.incrementMaxListeners();
-        this.client.on(Events7.MessageReactionAdd, this.handleCollect);
-        this.client.on(Events7.MessageReactionRemove, this.handleDispose);
-        this.client.on(Events7.MessageReactionRemoveAll, this.empty);
-        this.client.on(Events7.MessageDelete, this._handleMessageDeletion);
-        this.client.on(Events7.MessageBulkDelete, bulkDeleteListener);
-        this.client.on(Events7.ChannelDelete, this._handleChannelDeletion);
-        this.client.on(Events7.ThreadDelete, this._handleThreadDeletion);
-        this.client.on(Events7.GuildDelete, this._handleGuildDeletion);
+        this.client.on(Events16.MessageReactionAdd, this.handleCollect);
+        this.client.on(Events16.MessageReactionRemove, this.handleDispose);
+        this.client.on(Events16.MessageReactionRemoveAll, this.empty);
+        this.client.on(Events16.MessageDelete, this._handleMessageDeletion);
+        this.client.on(Events16.MessageBulkDelete, bulkDeleteListener);
+        this.client.on(Events16.ChannelDelete, this._handleChannelDeletion);
+        this.client.on(Events16.ThreadDelete, this._handleThreadDeletion);
+        this.client.on(Events16.GuildDelete, this._handleGuildDeletion);
         this.once("end", () => {
-          this.client.removeListener(Events7.MessageReactionAdd, this.handleCollect);
-          this.client.removeListener(Events7.MessageReactionRemove, this.handleDispose);
-          this.client.removeListener(Events7.MessageReactionRemoveAll, this.empty);
-          this.client.removeListener(Events7.MessageDelete, this._handleMessageDeletion);
-          this.client.removeListener(Events7.MessageBulkDelete, bulkDeleteListener);
-          this.client.removeListener(Events7.ChannelDelete, this._handleChannelDeletion);
-          this.client.removeListener(Events7.ThreadDelete, this._handleThreadDeletion);
-          this.client.removeListener(Events7.GuildDelete, this._handleGuildDeletion);
+          this.client.removeListener(Events16.MessageReactionAdd, this.handleCollect);
+          this.client.removeListener(Events16.MessageReactionRemove, this.handleDispose);
+          this.client.removeListener(Events16.MessageReactionRemoveAll, this.empty);
+          this.client.removeListener(Events16.MessageDelete, this._handleMessageDeletion);
+          this.client.removeListener(Events16.MessageBulkDelete, bulkDeleteListener);
+          this.client.removeListener(Events16.ChannelDelete, this._handleChannelDeletion);
+          this.client.removeListener(Events16.ThreadDelete, this._handleThreadDeletion);
+          this.client.removeListener(Events16.GuildDelete, this._handleGuildDeletion);
           this.client.decrementMaxListeners();
         });
         this.on("collect", (reaction, user) => {
@@ -50411,7 +50411,7 @@ var require_GuildEmojiRoleManager = __commonJS({
 var require_GuildEmoji = __commonJS({
   "node_modules/discord.js/src/structures/GuildEmoji.js"(exports2, module2) {
     "use strict";
-    var { PermissionFlagsBits } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits16 } = require_v106();
     var BaseGuildEmoji = require_BaseGuildEmoji();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var GuildEmojiRoleManager = require_GuildEmojiRoleManager();
@@ -50447,7 +50447,7 @@ var require_GuildEmoji = __commonJS({
        */
       get deletable() {
         if (!this.guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        return !this.managed && this.guild.members.me.permissions.has(PermissionFlagsBits.ManageGuildExpressions);
+        return !this.managed && this.guild.members.me.permissions.has(PermissionFlagsBits16.ManageGuildExpressions);
       }
       /**
        * A manager for roles this emoji is active for.
@@ -51865,8 +51865,8 @@ var require_Message = __commonJS({
       InteractionType,
       ChannelType,
       MessageType,
-      MessageFlags: MessageFlags6,
-      PermissionFlagsBits,
+      MessageFlags: MessageFlags4,
+      PermissionFlagsBits: PermissionFlagsBits16,
       MessageReferenceType
     } = require_v106();
     var Attachment = require_Attachment();
@@ -51884,7 +51884,7 @@ var require_Message = __commonJS({
     var { createComponent, findComponentByCustomId } = require_Components();
     var { NonSystemMessageTypes, MaxBulkDeletableMessageAge, UndeletableMessageTypes } = require_Constants();
     var MessageFlagsBitField = require_MessageFlagsBitField();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var { _transformAPIMessageInteractionMetadata } = require_Transformers();
     var { cleanContent, resolvePartialEmoji, transformResolved } = require_Util();
     var Message = class extends Base {
@@ -52185,7 +52185,7 @@ var require_Message = __commonJS({
        * @readonly
        */
       get hasThread() {
-        return this.flags.has(MessageFlags6.HasThread);
+        return this.flags.has(MessageFlags4.HasThread);
       }
       /**
        * The thread started by this message
@@ -52325,7 +52325,7 @@ var require_Message = __commonJS({
           if (this.channel.archived) return false;
           if (this.channel.locked) {
             const permissions = this.channel.permissionsFor(this.client.user);
-            if (!permissions?.has(PermissionFlagsBits.ManageThreads, true)) return false;
+            if (!permissions?.has(PermissionFlagsBits16.ManageThreads, true)) return false;
           }
         }
         return precheck;
@@ -52345,8 +52345,8 @@ var require_Message = __commonJS({
         }
         const permissions = this.channel?.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits.Administrator, false)) return true;
-        return this.type !== MessageType.AutoModerationAction && this.author.id === this.client.user.id || permissions.has(PermissionFlagsBits.ManageMessages, false) && !this.guild.members.me.isCommunicationDisabled();
+        if (permissions.has(PermissionFlagsBits16.Administrator, false)) return true;
+        return this.type !== MessageType.AutoModerationAction && this.author.id === this.client.user.id || permissions.has(PermissionFlagsBits16.ManageMessages, false) && !this.guild.members.me.isCommunicationDisabled();
       }
       /**
        * Whether the message is bulk deletable by the client user
@@ -52357,7 +52357,7 @@ var require_Message = __commonJS({
        * channel.bulkDelete(messages.filter(message => message.bulkDeletable));
        */
       get bulkDeletable() {
-        return (this.inGuild() && Date.now() - this.createdTimestamp < MaxBulkDeletableMessageAge && this.deletable && this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits.ManageMessages, false)) ?? false;
+        return (this.inGuild() && Date.now() - this.createdTimestamp < MaxBulkDeletableMessageAge && this.deletable && this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits16.ManageMessages, false)) ?? false;
       }
       /**
        * Whether the message is pinnable by the client user
@@ -52371,7 +52371,7 @@ var require_Message = __commonJS({
         if (!channel || channel.isVoiceBased() || !channel.viewable) return false;
         const permissions = channel?.permissionsFor(this.client.user);
         if (!permissions) return false;
-        return permissions.has(PermissionFlagsBits.ReadMessageHistory | PermissionFlagsBits.PinMessages);
+        return permissions.has(PermissionFlagsBits16.ReadMessageHistory | PermissionFlagsBits16.PinMessages);
       }
       /**
        * Fetches the Message this crosspost/reply/pin-add references, if available to the client
@@ -52392,10 +52392,10 @@ var require_Message = __commonJS({
        * @readonly
        */
       get crosspostable() {
-        const bitfield = PermissionFlagsBits.SendMessages | (this.author.id === this.client.user.id ? PermissionsBitField2.DefaultBit : PermissionFlagsBits.ManageMessages);
+        const bitfield = PermissionFlagsBits16.SendMessages | (this.author.id === this.client.user.id ? PermissionsBitField4.DefaultBit : PermissionFlagsBits16.ManageMessages);
         const { channel } = this;
         return Boolean(
-          channel?.type === ChannelType.GuildAnnouncement && !this.flags.has(MessageFlags6.Crossposted) && this.reference?.type !== MessageReferenceType.Forward && this.type === MessageType.Default && !this.poll && channel.viewable && channel.permissionsFor(this.client.user)?.has(bitfield, false)
+          channel?.type === ChannelType.GuildAnnouncement && !this.flags.has(MessageFlags4.Crossposted) && this.reference?.type !== MessageReferenceType.Forward && this.type === MessageType.Default && !this.poll && channel.viewable && channel.permissionsFor(this.client.user)?.has(bitfield, false)
         );
       }
       /**
@@ -52596,9 +52596,9 @@ var require_Message = __commonJS({
       suppressEmbeds(suppress = true) {
         const flags = new MessageFlagsBitField(this.flags.bitfield);
         if (suppress) {
-          flags.add(MessageFlags6.SuppressEmbeds);
+          flags.add(MessageFlags4.SuppressEmbeds);
         } else {
-          flags.remove(MessageFlags6.SuppressEmbeds);
+          flags.remove(MessageFlags4.SuppressEmbeds);
         }
         return this.edit({ flags });
       }
@@ -53600,14 +53600,14 @@ var require_GuildMemberFlagsBitField = __commonJS({
 var require_GuildMember = __commonJS({
   "node_modules/discord.js/src/structures/GuildMember.js"(exports2) {
     "use strict";
-    var { PermissionFlagsBits } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits16 } = require_v106();
     var Base = require_Base();
     var VoiceState = require_VoiceState();
     var TextBasedChannel = require_TextBasedChannel();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var GuildMemberRoleManager = require_GuildMemberRoleManager();
     var { GuildMemberFlagsBitField } = require_GuildMemberFlagsBitField();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var { _transformCollectibles } = require_Transformers();
     var GuildMember = class extends Base {
       static {
@@ -53832,8 +53832,8 @@ var require_GuildMember = __commonJS({
        * @readonly
        */
       get permissions() {
-        if (this.user.id === this.guild.ownerId) return new PermissionsBitField2(PermissionsBitField2.All).freeze();
-        return new PermissionsBitField2(this.roles.cache.map((role) => role.permissions)).freeze();
+        if (this.user.id === this.guild.ownerId) return new PermissionsBitField4(PermissionsBitField4.All).freeze();
+        return new PermissionsBitField4(this.roles.cache.map((role) => role.permissions)).freeze();
       }
       /**
        * Whether the client user is above this user in the hierarchy, according to role position and guild ownership.
@@ -53855,7 +53855,7 @@ var require_GuildMember = __commonJS({
        */
       get kickable() {
         if (!this.guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits.KickMembers);
+        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits16.KickMembers);
       }
       /**
        * Whether this member is bannable by the client user
@@ -53864,7 +53864,7 @@ var require_GuildMember = __commonJS({
        */
       get bannable() {
         if (!this.guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits.BanMembers);
+        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits16.BanMembers);
       }
       /**
        * Whether this member is moderatable by the client user
@@ -53872,7 +53872,7 @@ var require_GuildMember = __commonJS({
        * @readonly
        */
       get moderatable() {
-        return !this.permissions.has(PermissionFlagsBits.Administrator) && this.manageable && (this.guild.members.me?.permissions.has(PermissionFlagsBits.ModerateMembers) ?? false);
+        return !this.permissions.has(PermissionFlagsBits16.Administrator) && this.manageable && (this.guild.members.me?.permissions.has(PermissionFlagsBits16.ModerateMembers) ?? false);
       }
       /**
        * Whether this member is currently timed out
@@ -54420,7 +54420,7 @@ var require_MessagePayload = __commonJS({
     var { Buffer: Buffer2 } = require("node:buffer");
     var { lazy: lazy2, isJSONEncodable } = require_dist();
     var { DiscordSnowflake } = require_cjs();
-    var { MessageFlags: MessageFlags6, MessageReferenceType } = require_v106();
+    var { MessageFlags: MessageFlags4, MessageReferenceType } = require_v106();
     var { DiscordjsError: DiscordjsError2, DiscordjsRangeError: DiscordjsRangeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var { resolveFile } = require_DataResolver();
     var MessageFlagsBitField = require_MessageFlagsBitField();
@@ -54549,7 +54549,7 @@ var require_MessagePayload = __commonJS({
           flags = new MessageFlagsBitField(this.options.flags).bitfield;
         }
         if (isInteraction && this.options.ephemeral) {
-          flags |= MessageFlags6.Ephemeral;
+          flags |= MessageFlags4.Ephemeral;
         }
         let allowedMentions = this.options.allowedMentions === void 0 ? this.target.client.options.allowedMentions : this.options.allowedMentions;
         if (allowedMentions?.repliedUser !== void 0) {
@@ -55820,14 +55820,14 @@ var require_ApplicationCommandPermissionsUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/ApplicationCommandPermissionsUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var ApplicationCommandPermissionsUpdateAction = class extends Action {
       static {
         __name(this, "ApplicationCommandPermissionsUpdateAction");
       }
       handle(data) {
         const client = this.client;
-        client.emit(Events7.ApplicationCommandPermissionsUpdate, {
+        client.emit(Events16.ApplicationCommandPermissionsUpdate, {
           permissions: data.permissions,
           id: data.id,
           guildId: data.guild_id,
@@ -55904,7 +55904,7 @@ var require_AutoModerationActionExecution2 = __commonJS({
     "use strict";
     var Action = require_Action();
     var AutoModerationActionExecution = require_AutoModerationActionExecution();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var AutoModerationActionExecutionAction = class extends Action {
       static {
         __name(this, "AutoModerationActionExecutionAction");
@@ -55913,7 +55913,7 @@ var require_AutoModerationActionExecution2 = __commonJS({
         const { client } = this;
         const guild = client.guilds.cache.get(data.guild_id);
         if (guild) {
-          client.emit(Events7.AutoModerationActionExecution, new AutoModerationActionExecution(data, guild));
+          client.emit(Events16.AutoModerationActionExecution, new AutoModerationActionExecution(data, guild));
         }
         return {};
       }
@@ -55927,7 +55927,7 @@ var require_AutoModerationRuleCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/AutoModerationRuleCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var AutoModerationRuleCreateAction = class extends Action {
       static {
         __name(this, "AutoModerationRuleCreateAction");
@@ -55937,7 +55937,7 @@ var require_AutoModerationRuleCreate = __commonJS({
         const guild = client.guilds.cache.get(data.guild_id);
         if (guild) {
           const autoModerationRule = guild.autoModerationRules._add(data);
-          client.emit(Events7.AutoModerationRuleCreate, autoModerationRule);
+          client.emit(Events16.AutoModerationRuleCreate, autoModerationRule);
         }
         return {};
       }
@@ -55951,7 +55951,7 @@ var require_AutoModerationRuleDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/AutoModerationRuleDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var AutoModerationRuleDeleteAction = class extends Action {
       static {
         __name(this, "AutoModerationRuleDeleteAction");
@@ -55963,7 +55963,7 @@ var require_AutoModerationRuleDelete = __commonJS({
           const autoModerationRule = guild.autoModerationRules.cache.get(data.id);
           if (autoModerationRule) {
             guild.autoModerationRules.cache.delete(autoModerationRule.id);
-            client.emit(Events7.AutoModerationRuleDelete, autoModerationRule);
+            client.emit(Events16.AutoModerationRuleDelete, autoModerationRule);
           }
         }
         return {};
@@ -55978,7 +55978,7 @@ var require_AutoModerationRuleUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/AutoModerationRuleUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var AutoModerationRuleUpdateAction = class extends Action {
       static {
         __name(this, "AutoModerationRuleUpdateAction");
@@ -55989,7 +55989,7 @@ var require_AutoModerationRuleUpdate = __commonJS({
         if (guild) {
           const oldAutoModerationRule = guild.autoModerationRules.cache.get(data.id)?._clone() ?? null;
           const newAutoModerationRule = guild.autoModerationRules._add(data);
-          client.emit(Events7.AutoModerationRuleUpdate, oldAutoModerationRule, newAutoModerationRule);
+          client.emit(Events16.AutoModerationRuleUpdate, oldAutoModerationRule, newAutoModerationRule);
         }
         return {};
       }
@@ -56003,7 +56003,7 @@ var require_ChannelCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/ChannelCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var ChannelCreateAction = class extends Action {
       static {
         __name(this, "ChannelCreateAction");
@@ -56013,7 +56013,7 @@ var require_ChannelCreate = __commonJS({
         const existing = client.channels.cache.has(data.id);
         const channel = client.channels._add(data);
         if (!existing && channel) {
-          client.emit(Events7.ChannelCreate, channel);
+          client.emit(Events16.ChannelCreate, channel);
         }
         return { channel };
       }
@@ -56027,7 +56027,7 @@ var require_ChannelDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/ChannelDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var ChannelDeleteAction = class extends Action {
       static {
         __name(this, "ChannelDeleteAction");
@@ -56037,7 +56037,7 @@ var require_ChannelDelete = __commonJS({
         const channel = client.channels.cache.get(data.id);
         if (channel) {
           client.channels._remove(channel.id);
-          client.emit(Events7.ChannelDelete, channel);
+          client.emit(Events16.ChannelDelete, channel);
         }
       }
     };
@@ -56834,7 +56834,7 @@ var require_ThreadChannel = __commonJS({
     "use strict";
     var { DiscordAPIError } = require_dist5();
     var { lazy: lazy2 } = require_dist();
-    var { RESTJSONErrorCodes, ChannelFlags, ChannelType, PermissionFlagsBits, Routes: Routes2 } = require_v106();
+    var { RESTJSONErrorCodes, ChannelFlags, ChannelType, PermissionFlagsBits: PermissionFlagsBits16, Routes: Routes2 } = require_v106();
     var { BaseChannel } = require_BaseChannel();
     var getThreadOnlyChannel = lazy2(() => require_ThreadOnlyChannel());
     var TextBasedChannel = require_TextBasedChannel();
@@ -57197,7 +57197,7 @@ var require_ThreadChannel = __commonJS({
        */
       get joinable() {
         return !this.archived && !this.joined && this.permissionsFor(this.client.user)?.has(
-          this.type === ChannelType.PrivateThread ? PermissionFlagsBits.ManageThreads : PermissionFlagsBits.ViewChannel,
+          this.type === ChannelType.PrivateThread ? PermissionFlagsBits16.ManageThreads : PermissionFlagsBits16.ViewChannel,
           false
         );
       }
@@ -57209,8 +57209,8 @@ var require_ThreadChannel = __commonJS({
       get manageable() {
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits.Administrator, false)) return true;
-        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits.ManageThreads, false);
+        if (permissions.has(PermissionFlagsBits16.Administrator, false)) return true;
+        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits16.ManageThreads, false);
       }
       /**
        * Whether the thread is viewable by the client user
@@ -57221,7 +57221,7 @@ var require_ThreadChannel = __commonJS({
         if (this.client.user.id === this.guild.ownerId) return true;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        return permissions.has(PermissionFlagsBits.ViewChannel, false);
+        return permissions.has(PermissionFlagsBits16.ViewChannel, false);
       }
       /**
        * Whether the client user can send messages in this thread
@@ -57231,8 +57231,8 @@ var require_ThreadChannel = __commonJS({
       get sendable() {
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits.Administrator, false)) return true;
-        return !(this.archived && this.locked && !this.manageable) && (this.type !== ChannelType.PrivateThread || this.joined || this.manageable) && permissions.has(PermissionFlagsBits.SendMessagesInThreads, false) && this.guild.members.me.communicationDisabledUntilTimestamp < Date.now();
+        if (permissions.has(PermissionFlagsBits16.Administrator, false)) return true;
+        return !(this.archived && this.locked && !this.manageable) && (this.type !== ChannelType.PrivateThread || this.joined || this.manageable) && permissions.has(PermissionFlagsBits16.SendMessagesInThreads, false) && this.guild.members.me.communicationDisabledUntilTimestamp < Date.now();
       }
       /**
        * Whether the thread is unarchivable by the client user
@@ -57738,7 +57738,7 @@ var require_BaseGuildVoiceChannel = __commonJS({
   "node_modules/discord.js/src/structures/BaseGuildVoiceChannel.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var { PermissionFlagsBits } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits16 } = require_v106();
     var GuildChannel = require_GuildChannel();
     var TextBasedChannel = require_TextBasedChannel();
     var GuildMessageManager = require_GuildMessageManager();
@@ -57812,8 +57812,8 @@ var require_BaseGuildVoiceChannel = __commonJS({
         if (!this.viewable) return false;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits.Administrator, false)) return true;
-        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits.Connect, false);
+        if (permissions.has(PermissionFlagsBits16.Administrator, false)) return true;
+        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits16.Connect, false);
       }
       /**
        * Creates an invite to this guild channel.
@@ -58003,7 +58003,7 @@ var require_TextChannel = __commonJS({
 var require_VoiceChannel = __commonJS({
   "node_modules/discord.js/src/structures/VoiceChannel.js"(exports2, module2) {
     "use strict";
-    var { PermissionFlagsBits, Routes: Routes2 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits16, Routes: Routes2 } = require_v106();
     var BaseGuildVoiceChannel = require_BaseGuildVoiceChannel();
     var VoiceChannel = class extends BaseGuildVoiceChannel {
       static {
@@ -58016,7 +58016,7 @@ var require_VoiceChannel = __commonJS({
        */
       get joinable() {
         if (!super.joinable) return false;
-        if (this.full && !this.permissionsFor(this.client.user).has(PermissionFlagsBits.MoveMembers, false)) return false;
+        if (this.full && !this.permissionsFor(this.client.user).has(PermissionFlagsBits16.MoveMembers, false)) return false;
         return true;
       }
       /**
@@ -58027,8 +58027,8 @@ var require_VoiceChannel = __commonJS({
       get speakable() {
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits.Administrator, false)) return true;
-        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits.Speak, false);
+        if (permissions.has(PermissionFlagsBits16.Administrator, false)) return true;
+        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits16.Speak, false);
       }
       /**
        * @typedef {Object} SendSoundboardSoundOptions
@@ -58386,7 +58386,7 @@ var require_EntitlementCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/EntitlementCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var EntitlementCreateAction = class extends Action {
       static {
         __name(this, "EntitlementCreateAction");
@@ -58394,7 +58394,7 @@ var require_EntitlementCreate = __commonJS({
       handle(data) {
         const client = this.client;
         const entitlement = client.application.entitlements._add(data);
-        client.emit(Events7.EntitlementCreate, entitlement);
+        client.emit(Events16.EntitlementCreate, entitlement);
         return {};
       }
     };
@@ -58407,7 +58407,7 @@ var require_EntitlementDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/EntitlementDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var EntitlementDeleteAction = class extends Action {
       static {
         __name(this, "EntitlementDeleteAction");
@@ -58416,7 +58416,7 @@ var require_EntitlementDelete = __commonJS({
         const client = this.client;
         const entitlement = client.application.entitlements._add(data, false);
         client.application.entitlements.cache.delete(entitlement.id);
-        client.emit(Events7.EntitlementDelete, entitlement);
+        client.emit(Events16.EntitlementDelete, entitlement);
         return {};
       }
     };
@@ -58429,7 +58429,7 @@ var require_EntitlementUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/EntitlementUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var EntitlementUpdateAction = class extends Action {
       static {
         __name(this, "EntitlementUpdateAction");
@@ -58438,7 +58438,7 @@ var require_EntitlementUpdate = __commonJS({
         const client = this.client;
         const oldEntitlement = client.application.entitlements.cache.get(data.id)?._clone() ?? null;
         const newEntitlement = client.application.entitlements._add(data);
-        client.emit(Events7.EntitlementUpdate, oldEntitlement, newEntitlement);
+        client.emit(Events16.EntitlementUpdate, oldEntitlement, newEntitlement);
         return {};
       }
     };
@@ -59312,7 +59312,7 @@ var require_GuildAuditLogEntryCreate = __commonJS({
     "use strict";
     var Action = require_Action();
     var GuildAuditLogsEntry = require_GuildAuditLogsEntry();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildAuditLogEntryCreateAction = class extends Action {
       static {
         __name(this, "GuildAuditLogEntryCreateAction");
@@ -59323,7 +59323,7 @@ var require_GuildAuditLogEntryCreate = __commonJS({
         let auditLogEntry;
         if (guild) {
           auditLogEntry = new GuildAuditLogsEntry(guild, data);
-          client.emit(Events7.GuildAuditLogEntryCreate, auditLogEntry, guild);
+          client.emit(Events16.GuildAuditLogEntryCreate, auditLogEntry, guild);
         }
         return { auditLogEntry };
       }
@@ -59337,7 +59337,7 @@ var require_GuildBanAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildBanAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildBanAdd = class extends Action {
       static {
         __name(this, "GuildBanAdd");
@@ -59345,7 +59345,7 @@ var require_GuildBanAdd = __commonJS({
       handle(data) {
         const client = this.client;
         const guild = client.guilds.cache.get(data.guild_id);
-        if (guild) client.emit(Events7.GuildBanAdd, guild.bans._add(data));
+        if (guild) client.emit(Events16.GuildBanAdd, guild.bans._add(data));
       }
     };
     module2.exports = GuildBanAdd;
@@ -59401,7 +59401,7 @@ var require_GuildBanRemove = __commonJS({
     "use strict";
     var Action = require_Action();
     var GuildBan = require_GuildBan();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildBanRemove = class extends Action {
       static {
         __name(this, "GuildBanRemove");
@@ -59412,7 +59412,7 @@ var require_GuildBanRemove = __commonJS({
         if (guild) {
           const ban = guild.bans.cache.get(data.user.id) ?? new GuildBan(client, data, guild);
           guild.bans.cache.delete(ban.user.id);
-          client.emit(Events7.GuildBanRemove, ban);
+          client.emit(Events16.GuildBanRemove, ban);
         }
       }
     };
@@ -59450,7 +59450,7 @@ var require_GuildDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildDeleteAction = class extends Action {
       static {
         __name(this, "GuildDeleteAction");
@@ -59461,13 +59461,13 @@ var require_GuildDelete = __commonJS({
         if (guild) {
           if (data.unavailable) {
             guild.available = false;
-            client.emit(Events7.GuildUnavailable, guild);
+            client.emit(Events16.GuildUnavailable, guild);
             return;
           }
           for (const channel of guild.channels.cache.values()) this.client.channels._remove(channel.id);
           client.voice.adapters.get(data.id)?.destroy();
           client.guilds.cache.delete(guild.id);
-          client.emit(Events7.GuildDelete, guild);
+          client.emit(Events16.GuildDelete, guild);
         }
       }
     };
@@ -59480,7 +59480,7 @@ var require_GuildEmojiCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildEmojiCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildEmojiCreateAction = class extends Action {
       static {
         __name(this, "GuildEmojiCreateAction");
@@ -59488,7 +59488,7 @@ var require_GuildEmojiCreate = __commonJS({
       handle(guild, createdEmoji) {
         const already = guild.emojis.cache.has(createdEmoji.id);
         const emoji3 = guild.emojis._add(createdEmoji);
-        if (!already) this.client.emit(Events7.GuildEmojiCreate, emoji3);
+        if (!already) this.client.emit(Events16.GuildEmojiCreate, emoji3);
         return { emoji: emoji3 };
       }
     };
@@ -59501,14 +59501,14 @@ var require_GuildEmojiDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildEmojiDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildEmojiDeleteAction = class extends Action {
       static {
         __name(this, "GuildEmojiDeleteAction");
       }
       handle(emoji3) {
         emoji3.guild.emojis.cache.delete(emoji3.id);
-        this.client.emit(Events7.GuildEmojiDelete, emoji3);
+        this.client.emit(Events16.GuildEmojiDelete, emoji3);
         return { emoji: emoji3 };
       }
     };
@@ -59521,14 +59521,14 @@ var require_GuildEmojiUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildEmojiUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildEmojiUpdateAction = class extends Action {
       static {
         __name(this, "GuildEmojiUpdateAction");
       }
       handle(current, data) {
         const old = current._update(data);
-        this.client.emit(Events7.GuildEmojiUpdate, old, current);
+        this.client.emit(Events16.GuildEmojiUpdate, old, current);
         return { emoji: current };
       }
     };
@@ -59574,7 +59574,7 @@ var require_GuildIntegrationsUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildIntegrationsUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildIntegrationsUpdate = class extends Action {
       static {
         __name(this, "GuildIntegrationsUpdate");
@@ -59582,7 +59582,7 @@ var require_GuildIntegrationsUpdate = __commonJS({
       handle(data) {
         const client = this.client;
         const guild = client.guilds.cache.get(data.guild_id);
-        if (guild) client.emit(Events7.GuildIntegrationsUpdate, guild);
+        if (guild) client.emit(Events16.GuildIntegrationsUpdate, guild);
       }
     };
     module2.exports = GuildIntegrationsUpdate;
@@ -59613,7 +59613,7 @@ var require_GuildMemberRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildMemberRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var Status2 = require_Status();
     var GuildMemberRemoveAction = class extends Action {
       static {
@@ -59628,7 +59628,7 @@ var require_GuildMemberRemove = __commonJS({
           guild.memberCount--;
           if (member) {
             guild.members.cache.delete(member.id);
-            if (shard.status === Status2.Ready) client.emit(Events7.GuildMemberRemove, member);
+            if (shard.status === Status2.Ready) client.emit(Events16.GuildMemberRemove, member);
           }
           guild.presences.cache.delete(data.user.id);
           guild.voiceStates.cache.delete(data.user.id);
@@ -59645,7 +59645,7 @@ var require_GuildMemberUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildMemberUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var Status2 = require_Status();
     var GuildMemberUpdateAction = class extends Action {
       static {
@@ -59666,10 +59666,10 @@ var require_GuildMemberUpdate = __commonJS({
           const member = this.getMember({ user: data.user }, guild);
           if (member) {
             const old = member._update(data);
-            if (shard.status === Status2.Ready && !member.equals(old)) client.emit(Events7.GuildMemberUpdate, old, member);
+            if (shard.status === Status2.Ready && !member.equals(old)) client.emit(Events16.GuildMemberUpdate, old, member);
           } else {
             const newMember = guild.members._add(data);
-            this.client.emit(Events7.GuildMemberAvailable, newMember);
+            this.client.emit(Events16.GuildMemberAvailable, newMember);
           }
         }
       }
@@ -59683,7 +59683,7 @@ var require_GuildRoleCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildRoleCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildRoleCreate = class extends Action {
       static {
         __name(this, "GuildRoleCreate");
@@ -59695,7 +59695,7 @@ var require_GuildRoleCreate = __commonJS({
         if (guild) {
           const already = guild.roles.cache.has(data.role.id);
           role = guild.roles._add(data.role);
-          if (!already) client.emit(Events7.GuildRoleCreate, role);
+          if (!already) client.emit(Events16.GuildRoleCreate, role);
         }
         return { role };
       }
@@ -59709,7 +59709,7 @@ var require_GuildRoleDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildRoleDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildRoleDeleteAction = class extends Action {
       static {
         __name(this, "GuildRoleDeleteAction");
@@ -59722,7 +59722,7 @@ var require_GuildRoleDelete = __commonJS({
           role = guild.roles.cache.get(data.role_id);
           if (role) {
             guild.roles.cache.delete(data.role_id);
-            client.emit(Events7.GuildRoleDelete, role);
+            client.emit(Events16.GuildRoleDelete, role);
           }
         }
         return { role };
@@ -59737,7 +59737,7 @@ var require_GuildRoleUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildRoleUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildRoleUpdateAction = class extends Action {
       static {
         __name(this, "GuildRoleUpdateAction");
@@ -59750,7 +59750,7 @@ var require_GuildRoleUpdate = __commonJS({
           const role = guild.roles.cache.get(data.role.id);
           if (role) {
             old = role._update(data.role);
-            client.emit(Events7.GuildRoleUpdate, old, role);
+            client.emit(Events16.GuildRoleUpdate, old, role);
           }
           return {
             old,
@@ -59797,7 +59797,7 @@ var require_GuildScheduledEventCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildScheduledEventCreateAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventCreateAction");
@@ -59807,7 +59807,7 @@ var require_GuildScheduledEventCreate = __commonJS({
         const guild = client.guilds.cache.get(data.guild_id);
         if (guild) {
           const guildScheduledEvent = guild.scheduledEvents._add(data);
-          client.emit(Events7.GuildScheduledEventCreate, guildScheduledEvent);
+          client.emit(Events16.GuildScheduledEventCreate, guildScheduledEvent);
           return { guildScheduledEvent };
         }
         return {};
@@ -59822,7 +59822,7 @@ var require_GuildScheduledEventDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildScheduledEventDeleteAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventDeleteAction");
@@ -59834,7 +59834,7 @@ var require_GuildScheduledEventDelete = __commonJS({
           const guildScheduledEvent = this.getScheduledEvent(data, guild);
           if (guildScheduledEvent) {
             guild.scheduledEvents.cache.delete(guildScheduledEvent.id);
-            client.emit(Events7.GuildScheduledEventDelete, guildScheduledEvent);
+            client.emit(Events16.GuildScheduledEventDelete, guildScheduledEvent);
             return { guildScheduledEvent };
           }
         }
@@ -59850,7 +59850,7 @@ var require_GuildScheduledEventUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildScheduledEventUpdateAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventUpdateAction");
@@ -59861,7 +59861,7 @@ var require_GuildScheduledEventUpdate = __commonJS({
         if (guild) {
           const oldGuildScheduledEvent = guild.scheduledEvents.cache.get(data.id)?._clone() ?? null;
           const newGuildScheduledEvent = guild.scheduledEvents._add(data);
-          client.emit(Events7.GuildScheduledEventUpdate, oldGuildScheduledEvent, newGuildScheduledEvent);
+          client.emit(Events16.GuildScheduledEventUpdate, oldGuildScheduledEvent, newGuildScheduledEvent);
           return { oldGuildScheduledEvent, newGuildScheduledEvent };
         }
         return {};
@@ -59876,7 +59876,7 @@ var require_GuildScheduledEventUserAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventUserAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildScheduledEventUserAddAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventUserAddAction");
@@ -59888,7 +59888,7 @@ var require_GuildScheduledEventUserAdd = __commonJS({
           const guildScheduledEvent = this.getScheduledEvent(data, guild);
           const user = this.getUser(data);
           if (guildScheduledEvent && user) {
-            client.emit(Events7.GuildScheduledEventUserAdd, guildScheduledEvent, user);
+            client.emit(Events16.GuildScheduledEventUserAdd, guildScheduledEvent, user);
             return { guildScheduledEvent, user };
           }
         }
@@ -59904,7 +59904,7 @@ var require_GuildScheduledEventUserRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventUserRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildScheduledEventUserRemoveAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventUserRemoveAction");
@@ -59916,7 +59916,7 @@ var require_GuildScheduledEventUserRemove = __commonJS({
           const guildScheduledEvent = this.getScheduledEvent(data, guild);
           const user = this.getUser(data);
           if (guildScheduledEvent && user) {
-            client.emit(Events7.GuildScheduledEventUserRemove, guildScheduledEvent, user);
+            client.emit(Events16.GuildScheduledEventUserRemove, guildScheduledEvent, user);
             return { guildScheduledEvent, user };
           }
         }
@@ -59932,7 +59932,7 @@ var require_GuildSoundboardSoundDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildSoundboardSoundDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildSoundboardSoundDeleteAction = class extends Action {
       static {
         __name(this, "GuildSoundboardSoundDeleteAction");
@@ -59943,7 +59943,7 @@ var require_GuildSoundboardSoundDelete = __commonJS({
         const soundboardSound = this.getSoundboardSound(data, guild);
         if (soundboardSound) {
           guild.soundboardSounds.cache.delete(soundboardSound.soundId);
-          this.client.emit(Events7.GuildSoundboardSoundDelete, soundboardSound);
+          this.client.emit(Events16.GuildSoundboardSoundDelete, soundboardSound);
         }
         return { soundboardSound };
       }
@@ -59957,7 +59957,7 @@ var require_GuildStickerCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildStickerCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildStickerCreateAction = class extends Action {
       static {
         __name(this, "GuildStickerCreateAction");
@@ -59965,7 +59965,7 @@ var require_GuildStickerCreate = __commonJS({
       handle(guild, createdSticker) {
         const already = guild.stickers.cache.has(createdSticker.id);
         const sticker = guild.stickers._add(createdSticker);
-        if (!already) this.client.emit(Events7.GuildStickerCreate, sticker);
+        if (!already) this.client.emit(Events16.GuildStickerCreate, sticker);
         return { sticker };
       }
     };
@@ -59978,14 +59978,14 @@ var require_GuildStickerDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildStickerDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildStickerDeleteAction = class extends Action {
       static {
         __name(this, "GuildStickerDeleteAction");
       }
       handle(sticker) {
         sticker.guild.stickers.cache.delete(sticker.id);
-        this.client.emit(Events7.GuildStickerDelete, sticker);
+        this.client.emit(Events16.GuildStickerDelete, sticker);
         return { sticker };
       }
     };
@@ -59998,14 +59998,14 @@ var require_GuildStickerUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildStickerUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildStickerUpdateAction = class extends Action {
       static {
         __name(this, "GuildStickerUpdateAction");
       }
       handle(current, data) {
         const old = current._update(data);
-        this.client.emit(Events7.GuildStickerUpdate, old, current);
+        this.client.emit(Events16.GuildStickerUpdate, old, current);
         return { sticker: current };
       }
     };
@@ -60051,7 +60051,7 @@ var require_GuildUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var GuildUpdateAction = class extends Action {
       static {
         __name(this, "GuildUpdateAction");
@@ -60061,7 +60061,7 @@ var require_GuildUpdate = __commonJS({
         const guild = client.guilds.cache.get(data.id);
         if (guild) {
           const old = guild._update(data);
-          client.emit(Events7.GuildUpdate, old, guild);
+          client.emit(Events16.GuildUpdate, old, guild);
           return {
             old,
             updated: guild
@@ -60574,7 +60574,7 @@ var require_InteractionResponses = __commonJS({
     var { deprecate } = require("node:util");
     var { makeURLSearchParams: makeURLSearchParams2 } = require_dist5();
     var { isJSONEncodable } = require_dist();
-    var { InteractionResponseType, MessageFlags: MessageFlags6, Routes: Routes2, InteractionType } = require_v106();
+    var { InteractionResponseType, MessageFlags: MessageFlags4, Routes: Routes2, InteractionType } = require_v106();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var MessageFlagsBitField = require_MessageFlagsBitField();
     var InteractionCallbackResponse = require_InteractionCallbackResponse();
@@ -60671,7 +60671,7 @@ var require_InteractionResponses = __commonJS({
         }
         const flags = new MessageFlagsBitField(options.flags);
         if (options.ephemeral) {
-          flags.add(MessageFlags6.Ephemeral);
+          flags.add(MessageFlags4.Ephemeral);
         }
         const response = await this.client.rest.post(Routes2.interactionCallback(this.id, this.token), {
           body: {
@@ -60684,7 +60684,7 @@ var require_InteractionResponses = __commonJS({
           query: makeURLSearchParams2({ with_response: options.withResponse ?? false })
         });
         this.deferred = true;
-        this.ephemeral = flags.has(MessageFlags6.Ephemeral);
+        this.ephemeral = flags.has(MessageFlags4.Ephemeral);
         return options.withResponse ? new InteractionCallbackResponse(this.client, response) : options.fetchReply ? this.fetchReply() : new InteractionResponse(this);
       }
       /**
@@ -60739,7 +60739,7 @@ var require_InteractionResponses = __commonJS({
           auth: false,
           query: makeURLSearchParams2({ with_response: options.withResponse ?? false })
         });
-        this.ephemeral = Boolean(data.flags & MessageFlags6.Ephemeral);
+        this.ephemeral = Boolean(data.flags & MessageFlags4.Ephemeral);
         this.replied = true;
         return options.withResponse ? new InteractionCallbackResponse(this.client, response) : options.fetchReply ? this.fetchReply() : new InteractionResponse(this);
       }
@@ -61267,7 +61267,7 @@ var require_MentionableSelectMenuInteraction = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var MessageComponentInteraction = require_MessageComponentInteraction();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var MentionableSelectMenuInteraction = class extends MessageComponentInteraction {
       static {
         __name(this, "MentionableSelectMenuInteraction");
@@ -61285,7 +61285,7 @@ var require_MentionableSelectMenuInteraction = __commonJS({
             const user = users2[id];
             if (!user) {
               this.client.emit(
-                Events7.Debug,
+                Events16.Debug,
                 `[MentionableSelectMenuInteraction] Received a member without a user, skipping ${id}`
               );
               continue;
@@ -61848,7 +61848,7 @@ var require_UserSelectMenuInteraction = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var MessageComponentInteraction = require_MessageComponentInteraction();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var UserSelectMenuInteraction = class extends MessageComponentInteraction {
       static {
         __name(this, "UserSelectMenuInteraction");
@@ -61865,7 +61865,7 @@ var require_UserSelectMenuInteraction = __commonJS({
         for (const [id, member] of Object.entries(resolved?.members ?? {})) {
           const user = resolved.users[id];
           if (!user) {
-            this.client.emit(Events7.Debug, `[UserSelectMenuInteraction] Received a member without a user, skipping ${id}`);
+            this.client.emit(Events16.Debug, `[UserSelectMenuInteraction] Received a member without a user, skipping ${id}`);
             continue;
           }
           this.members.set(id, this.guild?.members._add({ user, ...member }) ?? { user, ...member });
@@ -61894,7 +61894,7 @@ var require_InteractionCreate = __commonJS({
     var StringSelectMenuInteraction = require_StringSelectMenuInteraction();
     var UserContextMenuCommandInteraction = require_UserContextMenuCommandInteraction();
     var UserSelectMenuInteraction = require_UserSelectMenuInteraction();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var InteractionCreateAction = class extends Action {
       static {
         __name(this, "InteractionCreateAction");
@@ -61921,7 +61921,7 @@ var require_InteractionCreate = __commonJS({
                 break;
               default:
                 client.emit(
-                  Events7.Debug,
+                  Events16.Debug,
                   `[INTERACTION] Received application command interaction with unknown type: ${data.data.type}`
                 );
                 return;
@@ -61950,7 +61950,7 @@ var require_InteractionCreate = __commonJS({
                 break;
               default:
                 client.emit(
-                  Events7.Debug,
+                  Events16.Debug,
                   `[INTERACTION] Received component interaction with unknown type: ${data.data.component_type}`
                 );
                 return;
@@ -61963,11 +61963,11 @@ var require_InteractionCreate = __commonJS({
             InteractionClass = ModalSubmitInteraction;
             break;
           default:
-            client.emit(Events7.Debug, `[INTERACTION] Received interaction with unknown type: ${data.type}`);
+            client.emit(Events16.Debug, `[INTERACTION] Received interaction with unknown type: ${data.type}`);
             return;
         }
         const interaction = new InteractionClass(client, data);
-        client.emit(Events7.InteractionCreate, interaction);
+        client.emit(Events16.InteractionCreate, interaction);
       }
     };
     module2.exports = InteractionCreateAction;
@@ -61979,7 +61979,7 @@ var require_InviteCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/InviteCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var InviteCreateAction = class extends Action {
       static {
         __name(this, "InviteCreateAction");
@@ -61991,7 +61991,7 @@ var require_InviteCreate = __commonJS({
         if (!channel) return false;
         const inviteData = Object.assign(data, { channel, guild });
         const invite = guild.invites._add(inviteData);
-        client.emit(Events7.InviteCreate, invite);
+        client.emit(Events16.InviteCreate, invite);
         return { invite };
       }
     };
@@ -62005,7 +62005,7 @@ var require_InviteDelete = __commonJS({
     "use strict";
     var Action = require_Action();
     var Invite2 = require_Invite();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var InviteDeleteAction = class extends Action {
       static {
         __name(this, "InviteDeleteAction");
@@ -62018,7 +62018,7 @@ var require_InviteDelete = __commonJS({
         const inviteData = Object.assign(data, { channel, guild });
         const invite = new Invite2(client, inviteData);
         guild.invites.cache.delete(invite.code);
-        client.emit(Events7.InviteDelete, invite);
+        client.emit(Events16.InviteDelete, invite);
         return { invite };
       }
     };
@@ -62031,7 +62031,7 @@ var require_MessageCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var MessageCreateAction = class extends Action {
       static {
         __name(this, "MessageCreateAction");
@@ -62054,7 +62054,7 @@ var require_MessageCreate = __commonJS({
           if (existing && existing.author?.id !== this.client.user.id) return { message: existing };
           const message = existing ?? channel.messages._add(data);
           channel.lastMessageId = data.id;
-          client.emit(Events7.MessageCreate, message);
+          client.emit(Events16.MessageCreate, message);
           return { message };
         }
         return {};
@@ -62069,7 +62069,7 @@ var require_MessageDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var MessageDeleteAction = class extends Action {
       static {
         __name(this, "MessageDeleteAction");
@@ -62084,7 +62084,7 @@ var require_MessageDelete = __commonJS({
           message = this.getMessage(data, channel);
           if (message) {
             channel.messages.cache.delete(message.id);
-            client.emit(Events7.MessageDelete, message);
+            client.emit(Events16.MessageDelete, message);
           }
         }
         return { message };
@@ -62100,7 +62100,7 @@ var require_MessageDeleteBulk = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var MessageDeleteBulkAction = class extends Action {
       static {
         __name(this, "MessageDeleteBulkAction");
@@ -62127,7 +62127,7 @@ var require_MessageDeleteBulk = __commonJS({
               channel.messages.cache.delete(id);
             }
           }
-          if (messages2.size > 0) client.emit(Events7.MessageBulkDelete, messages2, channel);
+          if (messages2.size > 0) client.emit(Events16.MessageBulkDelete, messages2, channel);
           return { messages: messages2 };
         }
         return {};
@@ -62142,7 +62142,7 @@ var require_MessagePollVoteAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/MessagePollVoteAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var MessagePollVoteAddAction = class extends Action {
       static {
         __name(this, "MessagePollVoteAddAction");
@@ -62161,7 +62161,7 @@ var require_MessagePollVoteAdd = __commonJS({
           answer.voters._add(user);
         }
         answer.voteCount++;
-        this.client.emit(Events7.MessagePollVoteAdd, answer, data.user_id);
+        this.client.emit(Events16.MessagePollVoteAdd, answer, data.user_id);
         return { poll: poll2 };
       }
     };
@@ -62174,7 +62174,7 @@ var require_MessagePollVoteRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/MessagePollVoteRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var MessagePollVoteRemoveAction = class extends Action {
       static {
         __name(this, "MessagePollVoteRemoveAction");
@@ -62192,7 +62192,7 @@ var require_MessagePollVoteRemove = __commonJS({
         if (answer.voteCount > 0) {
           answer.voteCount--;
         }
-        this.client.emit(Events7.MessagePollVoteRemove, answer, data.user_id);
+        this.client.emit(Events16.MessagePollVoteRemove, answer, data.user_id);
         return { poll: poll2 };
       }
     };
@@ -62205,7 +62205,7 @@ var require_MessageReactionAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var Partials2 = require_Partials();
     var MessageReactionAdd = class extends Action {
       static {
@@ -62235,7 +62235,7 @@ var require_MessageReactionAdd = __commonJS({
         if (!reaction) return false;
         reaction._add(user, data.burst);
         if (fromStructure) return { message, reaction, user };
-        this.client.emit(Events7.MessageReactionAdd, reaction, user, { type: data.type, burst: data.burst });
+        this.client.emit(Events16.MessageReactionAdd, reaction, user, { type: data.type, burst: data.burst });
         return { message, reaction, user };
       }
     };
@@ -62248,7 +62248,7 @@ var require_MessageReactionRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var MessageReactionRemove = class extends Action {
       static {
         __name(this, "MessageReactionRemove");
@@ -62268,7 +62268,7 @@ var require_MessageReactionRemove = __commonJS({
         const reaction = this.getReaction(data, message, user);
         if (!reaction) return false;
         reaction._remove(user, data.burst);
-        this.client.emit(Events7.MessageReactionRemove, reaction, user, { type: data.type, burst: data.burst });
+        this.client.emit(Events16.MessageReactionRemove, reaction, user, { type: data.type, burst: data.burst });
         return { message, reaction, user };
       }
     };
@@ -62281,7 +62281,7 @@ var require_MessageReactionRemoveAll = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionRemoveAll.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var MessageReactionRemoveAll = class extends Action {
       static {
         __name(this, "MessageReactionRemoveAll");
@@ -62293,7 +62293,7 @@ var require_MessageReactionRemoveAll = __commonJS({
         if (!message) return false;
         const removed = message.reactions.cache.clone();
         message.reactions.cache.clear();
-        this.client.emit(Events7.MessageReactionRemoveAll, message, removed);
+        this.client.emit(Events16.MessageReactionRemoveAll, message, removed);
         return { message };
       }
     };
@@ -62306,7 +62306,7 @@ var require_MessageReactionRemoveEmoji = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionRemoveEmoji.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var MessageReactionRemoveEmoji = class extends Action {
       static {
         __name(this, "MessageReactionRemoveEmoji");
@@ -62319,7 +62319,7 @@ var require_MessageReactionRemoveEmoji = __commonJS({
         const reaction = this.getReaction(data, message);
         if (!reaction) return false;
         if (!message.partial) message.reactions.cache.delete(reaction.emoji.id ?? reaction.emoji.name);
-        this.client.emit(Events7.MessageReactionRemoveEmoji, reaction);
+        this.client.emit(Events16.MessageReactionRemoveEmoji, reaction);
         return { reaction };
       }
     };
@@ -62362,7 +62362,7 @@ var require_PresenceUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/PresenceUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var Partials2 = require_Partials();
     var PresenceUpdateAction = class extends Action {
       static {
@@ -62387,11 +62387,11 @@ var require_PresenceUpdate = __commonJS({
             deaf: false,
             mute: false
           });
-          this.client.emit(Events7.GuildMemberAvailable, member);
+          this.client.emit(Events16.GuildMemberAvailable, member);
         }
         const newPresence = guild.presences._add(Object.assign(data, { guild }));
-        if (this.client.listenerCount(Events7.PresenceUpdate) && !newPresence.equals(oldPresence)) {
-          this.client.emit(Events7.PresenceUpdate, oldPresence, newPresence);
+        if (this.client.listenerCount(Events16.PresenceUpdate) && !newPresence.equals(oldPresence)) {
+          this.client.emit(Events16.PresenceUpdate, oldPresence, newPresence);
         }
       }
     };
@@ -62404,7 +62404,7 @@ var require_StageInstanceCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/StageInstanceCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var StageInstanceCreateAction = class extends Action {
       static {
         __name(this, "StageInstanceCreateAction");
@@ -62414,7 +62414,7 @@ var require_StageInstanceCreate = __commonJS({
         const channel = this.getChannel({ id: data.channel_id, guild_id: data.guild_id });
         if (channel) {
           const stageInstance = channel.guild.stageInstances._add(data);
-          client.emit(Events7.StageInstanceCreate, stageInstance);
+          client.emit(Events16.StageInstanceCreate, stageInstance);
           return { stageInstance };
         }
         return {};
@@ -62429,7 +62429,7 @@ var require_StageInstanceDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/StageInstanceDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var StageInstanceDeleteAction = class extends Action {
       static {
         __name(this, "StageInstanceDeleteAction");
@@ -62441,7 +62441,7 @@ var require_StageInstanceDelete = __commonJS({
           const stageInstance = channel.guild.stageInstances._add(data);
           if (stageInstance) {
             channel.guild.stageInstances.cache.delete(stageInstance.id);
-            client.emit(Events7.StageInstanceDelete, stageInstance);
+            client.emit(Events16.StageInstanceDelete, stageInstance);
             return { stageInstance };
           }
         }
@@ -62457,7 +62457,7 @@ var require_StageInstanceUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/StageInstanceUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var StageInstanceUpdateAction = class extends Action {
       static {
         __name(this, "StageInstanceUpdateAction");
@@ -62468,7 +62468,7 @@ var require_StageInstanceUpdate = __commonJS({
         if (channel) {
           const oldStageInstance = channel.guild.stageInstances.cache.get(data.id)?._clone() ?? null;
           const newStageInstance = channel.guild.stageInstances._add(data);
-          client.emit(Events7.StageInstanceUpdate, oldStageInstance, newStageInstance);
+          client.emit(Events16.StageInstanceUpdate, oldStageInstance, newStageInstance);
           return { oldStageInstance, newStageInstance };
         }
         return {};
@@ -62483,7 +62483,7 @@ var require_ThreadCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/ThreadCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var ThreadCreateAction = class extends Action {
       static {
         __name(this, "ThreadCreateAction");
@@ -62493,7 +62493,7 @@ var require_ThreadCreate = __commonJS({
         const existing = client.channels.cache.has(data.id);
         const thread = client.channels._add(data);
         if (!existing && thread) {
-          client.emit(Events7.ThreadCreate, thread, data.newly_created ?? false);
+          client.emit(Events16.ThreadCreate, thread, data.newly_created ?? false);
         }
         return { thread };
       }
@@ -62507,7 +62507,7 @@ var require_ThreadDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/ThreadDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var ThreadDeleteAction = class extends Action {
       static {
         __name(this, "ThreadDeleteAction");
@@ -62517,7 +62517,7 @@ var require_ThreadDelete = __commonJS({
         const thread = client.channels.cache.get(data.id);
         if (thread) {
           client.channels._remove(thread.id);
-          client.emit(Events7.ThreadDelete, thread);
+          client.emit(Events16.ThreadDelete, thread);
         }
         return { thread };
       }
@@ -62532,7 +62532,7 @@ var require_ThreadListSync = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var ThreadListSyncAction = class extends Action {
       static {
         __name(this, "ThreadListSyncAction");
@@ -62561,7 +62561,7 @@ var require_ThreadListSync = __commonJS({
             thread.members._add(rawMember);
           }
         }
-        client.emit(Events7.ThreadListSync, syncedThreads, guild);
+        client.emit(Events16.ThreadListSync, syncedThreads, guild);
         return {
           syncedThreads
         };
@@ -62583,7 +62583,7 @@ var require_ThreadMemberUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/ThreadMemberUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var ThreadMemberUpdateAction = class extends Action {
       static {
         __name(this, "ThreadMemberUpdateAction");
@@ -62598,7 +62598,7 @@ var require_ThreadMemberUpdate = __commonJS({
             return { newMember };
           }
           const old = member._update(data);
-          client.emit(Events7.ThreadMemberUpdate, old, member);
+          client.emit(Events16.ThreadMemberUpdate, old, member);
         }
         return {};
       }
@@ -62613,7 +62613,7 @@ var require_ThreadMembersUpdate = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var ThreadMembersUpdateAction = class extends Action {
       static {
         __name(this, "ThreadMembersUpdateAction");
@@ -62638,7 +62638,7 @@ var require_ThreadMembersUpdate = __commonJS({
           if (addedMembers.size === 0 && removedMembers.size === 0) {
             return {};
           }
-          client.emit(Events7.ThreadMembersUpdate, addedMembers, removedMembers, thread);
+          client.emit(Events16.ThreadMembersUpdate, addedMembers, removedMembers, thread);
         }
         return {};
       }
@@ -62709,7 +62709,7 @@ var require_TypingStart = __commonJS({
     "use strict";
     var Action = require_Action();
     var Typing = require_Typing();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var TypingStart = class extends Action {
       static {
         __name(this, "TypingStart");
@@ -62718,12 +62718,12 @@ var require_TypingStart = __commonJS({
         const channel = this.getChannel({ id: data.channel_id, ..."guild_id" in data && { guild_id: data.guild_id } });
         if (!channel) return;
         if (!channel.isTextBased()) {
-          this.client.emit(Events7.Warn, `Discord sent a typing packet to a ${channel.type} channel ${channel.id}`);
+          this.client.emit(Events16.Warn, `Discord sent a typing packet to a ${channel.type} channel ${channel.id}`);
           return;
         }
         const user = this.getUserFromMember(data);
         if (user) {
-          this.client.emit(Events7.TypingStart, new Typing(channel, user, data));
+          this.client.emit(Events16.TypingStart, new Typing(channel, user, data));
         }
       }
     };
@@ -62736,7 +62736,7 @@ var require_UserUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/UserUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var UserUpdateAction = class extends Action {
       static {
         __name(this, "UserUpdateAction");
@@ -62746,7 +62746,7 @@ var require_UserUpdate = __commonJS({
         const newUser = data.id === client.user.id ? client.user : client.users.cache.get(data.id);
         const oldUser = newUser._update(data);
         if (!oldUser.equals(newUser)) {
-          client.emit(Events7.UserUpdate, oldUser, newUser);
+          client.emit(Events16.UserUpdate, oldUser, newUser);
           return {
             old: oldUser,
             updated: newUser
@@ -62768,7 +62768,7 @@ var require_VoiceStateUpdate = __commonJS({
     "use strict";
     var Action = require_Action();
     var VoiceState = require_VoiceState();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var VoiceStateUpdate = class extends Action {
       static {
         __name(this, "VoiceStateUpdate");
@@ -62786,10 +62786,10 @@ var require_VoiceStateUpdate = __commonJS({
             member = guild.members._add(data.member);
           }
           if (member?.user.id === client.user.id) {
-            client.emit(Events7.Debug, `[VOICE] received voice state update: ${JSON.stringify(data)}`);
+            client.emit(Events16.Debug, `[VOICE] received voice state update: ${JSON.stringify(data)}`);
             client.voice.onVoiceStateUpdate(data);
           }
-          client.emit(Events7.VoiceStateUpdate, oldState, newState);
+          client.emit(Events16.VoiceStateUpdate, oldState, newState);
         }
       }
     };
@@ -62916,7 +62916,7 @@ var require_ActionsManager = __commonJS({
 var require_ClientVoiceManager = __commonJS({
   "node_modules/discord.js/src/client/voice/ClientVoiceManager.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var ClientVoiceManager2 = class {
       static {
         __name(this, "ClientVoiceManager");
@@ -62924,7 +62924,7 @@ var require_ClientVoiceManager = __commonJS({
       constructor(client) {
         Object.defineProperty(this, "client", { value: client });
         this.adapters = /* @__PURE__ */ new Map();
-        client.on(Events7.ShardDisconnect, (_, shardId) => {
+        client.on(Events16.ShardDisconnect, (_, shardId) => {
           for (const [guildId, adapter] of this.adapters.entries()) {
             if (client.guilds.cache.get(guildId)?.shardId === shardId) {
               adapter.destroy();
@@ -69051,13 +69051,13 @@ var require_CHANNEL_DELETE = __commonJS({
 var require_CHANNEL_PINS_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/CHANNEL_PINS_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       const channel = client.channels.cache.get(data.channel_id);
       const time4 = data.last_pin_timestamp ? Date.parse(data.last_pin_timestamp) : null;
       if (channel) {
         channel.lastPinTimestamp = time4;
-        client.emit(Events7.ChannelPinsUpdate, channel, time4);
+        client.emit(Events16.ChannelPinsUpdate, channel, time4);
       }
     };
   }
@@ -69067,11 +69067,11 @@ var require_CHANNEL_PINS_UPDATE = __commonJS({
 var require_CHANNEL_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/CHANNEL_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, packet) => {
       const { old, updated } = client.actions.ChannelUpdate.handle(packet.d);
       if (old && updated) {
-        client.emit(Events7.ChannelUpdate, old, updated);
+        client.emit(Events16.ChannelUpdate, old, updated);
       }
     };
   }
@@ -69141,20 +69141,20 @@ var require_GUILD_BAN_REMOVE = __commonJS({
 var require_GUILD_CREATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_CREATE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var Status2 = require_Status();
     module2.exports = (client, { d: data }, shard) => {
       let guild = client.guilds.cache.get(data.id);
       if (guild) {
         if (!guild.available && !data.unavailable) {
           guild._patch(data);
-          client.emit(Events7.GuildAvailable, guild);
+          client.emit(Events16.GuildAvailable, guild);
         }
       } else {
         data.shardId = shard.id;
         guild = client.guilds._add(data);
         if (client.ws.status === Status2.Ready) {
-          client.emit(Events7.GuildCreate, guild);
+          client.emit(Events16.GuildCreate, guild);
         }
       }
     };
@@ -69196,7 +69196,7 @@ var require_GUILD_MEMBERS_CHUNK = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_MEMBERS_CHUNK.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
@@ -69205,7 +69205,7 @@ var require_GUILD_MEMBERS_CHUNK = __commonJS({
       if (data.presences) {
         for (const presence of data.presences) guild.presences._add(Object.assign(presence, { guild }));
       }
-      client.emit(Events7.GuildMembersChunk, members3, guild, {
+      client.emit(Events16.GuildMembersChunk, members3, guild, {
         index: data.chunk_index,
         count: data.chunk_count,
         notFound: data.not_found,
@@ -69219,7 +69219,7 @@ var require_GUILD_MEMBERS_CHUNK = __commonJS({
 var require_GUILD_MEMBER_ADD = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_MEMBER_ADD.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var Status2 = require_Status();
     module2.exports = (client, { d: data }, shard) => {
       const guild = client.guilds.cache.get(data.guild_id);
@@ -69227,7 +69227,7 @@ var require_GUILD_MEMBER_ADD = __commonJS({
         guild.memberCount++;
         const member = guild.members._add(data);
         if (shard.status === Status2.Ready) {
-          client.emit(Events7.GuildMemberAdd, member);
+          client.emit(Events16.GuildMemberAdd, member);
         }
       }
     };
@@ -69339,7 +69339,7 @@ var require_GUILD_SOUNDBOARD_SOUNDS_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_SOUNDBOARD_SOUNDS_UPDATE.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
@@ -69347,7 +69347,7 @@ var require_GUILD_SOUNDBOARD_SOUNDS_UPDATE = __commonJS({
       for (const soundboardSound of data.soundboard_sounds) {
         soundboardSounds.set(soundboardSound.sound_id, guild.soundboardSounds._add(soundboardSound));
       }
-      client.emit(Events7.GuildSoundboardSoundsUpdate, soundboardSounds, guild);
+      client.emit(Events16.GuildSoundboardSoundsUpdate, soundboardSounds, guild);
     };
   }
 });
@@ -69356,12 +69356,12 @@ var require_GUILD_SOUNDBOARD_SOUNDS_UPDATE = __commonJS({
 var require_GUILD_SOUNDBOARD_SOUND_CREATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_SOUNDBOARD_SOUND_CREATE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
       const soundboardSound = guild.soundboardSounds._add(data);
-      client.emit(Events7.GuildSoundboardSoundCreate, soundboardSound);
+      client.emit(Events16.GuildSoundboardSoundCreate, soundboardSound);
     };
   }
 });
@@ -69380,13 +69380,13 @@ var require_GUILD_SOUNDBOARD_SOUND_DELETE = __commonJS({
 var require_GUILD_SOUNDBOARD_SOUND_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_SOUNDBOARD_SOUND_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
       const oldGuildSoundboardSound = guild.soundboardSounds.cache.get(data.sound_id)?._clone() ?? null;
       const newGuildSoundboardSound = guild.soundboardSounds._add(data);
-      client.emit(Events7.GuildSoundboardSoundUpdate, oldGuildSoundboardSound, newGuildSoundboardSound);
+      client.emit(Events16.GuildSoundboardSoundUpdate, oldGuildSoundboardSound, newGuildSoundboardSound);
     };
   }
 });
@@ -69535,11 +69535,11 @@ var require_MESSAGE_REACTION_REMOVE_EMOJI = __commonJS({
 var require_MESSAGE_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/MESSAGE_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, packet) => {
       const { old, updated } = client.actions.MessageUpdate.handle(packet.d);
       if (old && updated) {
-        client.emit(Events7.MessageUpdate, old, updated);
+        client.emit(Events16.MessageUpdate, old, updated);
       }
     };
   }
@@ -69792,10 +69792,10 @@ var require_READY = __commonJS({
 var require_RESUMED = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/RESUMED.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, packet, shard) => {
       const replayed = shard.sessionInfo.sequence - shard.closeSequence;
-      client.emit(Events7.ShardResume, shard.id, replayed);
+      client.emit(Events16.ShardResume, shard.id, replayed);
     };
   }
 });
@@ -69805,7 +69805,7 @@ var require_SOUNDBOARD_SOUNDS = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SOUNDBOARD_SOUNDS.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
@@ -69813,7 +69813,7 @@ var require_SOUNDBOARD_SOUNDS = __commonJS({
       for (const soundboardSound of data.soundboard_sounds) {
         soundboardSounds.set(soundboardSound.sound_id, guild.soundboardSounds._add(soundboardSound));
       }
-      client.emit(Events7.SoundboardSounds, soundboardSounds, guild);
+      client.emit(Events16.SoundboardSounds, soundboardSounds, guild);
     };
   }
 });
@@ -69852,10 +69852,10 @@ var require_STAGE_INSTANCE_UPDATE = __commonJS({
 var require_SUBSCRIPTION_CREATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SUBSCRIPTION_CREATE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       const subscription = client.application.subscriptions._add(data);
-      client.emit(Events7.SubscriptionCreate, subscription);
+      client.emit(Events16.SubscriptionCreate, subscription);
     };
   }
 });
@@ -69864,11 +69864,11 @@ var require_SUBSCRIPTION_CREATE = __commonJS({
 var require_SUBSCRIPTION_DELETE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SUBSCRIPTION_DELETE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       const subscription = client.application.subscriptions._add(data, false);
       client.application.subscriptions.cache.delete(subscription.id);
-      client.emit(Events7.SubscriptionDelete, subscription);
+      client.emit(Events16.SubscriptionDelete, subscription);
     };
   }
 });
@@ -69877,11 +69877,11 @@ var require_SUBSCRIPTION_DELETE = __commonJS({
 var require_SUBSCRIPTION_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SUBSCRIPTION_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       const oldSubscription = client.application.subscriptions.cache.get(data.id)?._clone() ?? null;
       const newSubscription = client.application.subscriptions._add(data);
-      client.emit(Events7.SubscriptionUpdate, oldSubscription, newSubscription);
+      client.emit(Events16.SubscriptionUpdate, oldSubscription, newSubscription);
     };
   }
 });
@@ -69940,11 +69940,11 @@ var require_THREAD_MEMBER_UPDATE = __commonJS({
 var require_THREAD_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/THREAD_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, packet) => {
       const { old, updated } = client.actions.ChannelUpdate.handle(packet.d);
       if (old && updated) {
-        client.emit(Events7.ThreadUpdate, old, updated);
+        client.emit(Events16.ThreadUpdate, old, updated);
       }
     };
   }
@@ -70015,11 +70015,11 @@ var require_VOICE_CHANNEL_EFFECT_SEND = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/VOICE_CHANNEL_EFFECT_SEND.js"(exports2, module2) {
     "use strict";
     var VoiceChannelEffect = require_VoiceChannelEffect();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
-      client.emit(Events7.VoiceChannelEffectSend, new VoiceChannelEffect(data, guild));
+      client.emit(Events16.VoiceChannelEffectSend, new VoiceChannelEffect(data, guild));
     };
   }
 });
@@ -70028,14 +70028,14 @@ var require_VOICE_CHANNEL_EFFECT_SEND = __commonJS({
 var require_VOICE_SERVER_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/VOICE_SERVER_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     module2.exports = (client, { d: data }) => {
       client.emit(
-        Events7.Debug,
+        Events16.Debug,
         `[VOICE] received voice server: ${JSON.stringify({ ...data, token: "*".repeat(data.token.length) })}`
       );
       client.voice.onVoiceServer(data);
-      client.emit(Events7.VoiceServerUpdate, {
+      client.emit(Events16.VoiceServerUpdate, {
         guildId: data.guild_id,
         endpoint: data.endpoint,
         token: data.token
@@ -70165,7 +70165,7 @@ var require_WebSocketManager = __commonJS({
     var WebSocketShard = require_WebSocketShard();
     var PacketHandlers = require_handlers();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var Status2 = require_Status();
     var WebSocketShardEvents = require_WebSocketShardEvents();
     var zlib;
@@ -70226,7 +70226,7 @@ var require_WebSocketManager = __commonJS({
        */
       debug(messages2, shardId) {
         this.client.emit(
-          Events7.Debug,
+          Events16.Debug,
           `[WS => ${typeof shardId === "number" ? `Shard ${shardId}` : "Manager"}] ${messages2.join("\n	")}`
         );
       }
@@ -70281,7 +70281,7 @@ var require_WebSocketManager = __commonJS({
             const shard = new WebSocketShard(this, id);
             this.shards.set(id, shard);
             shard.on(WebSocketShardEvents.AllReady, (unavailableGuilds) => {
-              this.client.emit(Events7.ShardReady, shard.id, unavailableGuilds);
+              this.client.emit(Events16.ShardReady, shard.id, unavailableGuilds);
               this.checkShardsReady();
             });
             shard.status = Status2.Connecting;
@@ -70312,7 +70312,7 @@ var require_WebSocketManager = __commonJS({
       attachEvents() {
         this._ws.on(WSWebSocketShardEvents.Debug, ({ message, shardId }) => this.debug([message], shardId));
         this._ws.on(WSWebSocketShardEvents.Dispatch, ({ data, shardId }) => {
-          this.client.emit(Events7.Raw, data, shardId);
+          this.client.emit(Events16.Raw, data, shardId);
           this.emit(data.t, data.d, shardId);
           const shard = this.shards.get(shardId);
           this.handlePacket(data, shard);
@@ -70328,12 +70328,12 @@ var require_WebSocketManager = __commonJS({
           shard.emit(WebSocketShardEvents.Close, { code, reason: reasonIsDeprecated, wasClean: true });
           if (UNRECOVERABLE_CLOSE_CODES.includes(code)) {
             shard.status = Status2.Disconnected;
-            this.client.emit(Events7.ShardDisconnect, { code, reason: reasonIsDeprecated, wasClean: true }, shardId);
+            this.client.emit(Events16.ShardDisconnect, { code, reason: reasonIsDeprecated, wasClean: true }, shardId);
             this.debug([`Shard not recoverable: ${code} (${GatewayCloseCodes[code] ?? CloseCodes[code]})`], shardId);
             return;
           }
           this.shards.get(shardId).status = Status2.Connecting;
-          this.client.emit(Events7.ShardReconnecting, shardId);
+          this.client.emit(Events16.ShardReconnecting, shardId);
         });
         this._ws.on(WSWebSocketShardEvents.Hello, ({ shardId }) => {
           const shard = this.shards.get(shardId);
@@ -70356,7 +70356,7 @@ var require_WebSocketManager = __commonJS({
           shard.ping = latency;
         });
         this._ws.on(WSWebSocketShardEvents.Error, ({ error: error62, shardId }) => {
-          this.client.emit(Events7.ShardError, error62, shardId);
+          this.client.emit(Events16.ShardError, error62, shardId);
         });
       }
       /**
@@ -70428,7 +70428,7 @@ var require_WebSocketManager = __commonJS({
             "DeprecationWarning"
           );
         }
-        this.client.emit(Events7.ClientReady, this.client);
+        this.client.emit(Events16.ClientReady, this.client);
         this.handlePacket();
       }
     };
@@ -70527,7 +70527,7 @@ var require_ChannelManager = __commonJS({
     var { BaseChannel } = require_BaseChannel();
     var { createChannel } = require_Channels();
     var { ThreadChannelTypes } = require_Constants();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var cacheWarningEmitted = false;
     var ChannelManager2 = class extends CachedManager {
       static {
@@ -70561,7 +70561,7 @@ var require_ChannelManager = __commonJS({
         }
         const channel = createChannel(this.client, data, guild, { allowUnknownGuild });
         if (!channel) {
-          this.client.emit(Events7.Debug, `Failed to find guild, or unknown type for channel ${data.id} ${data.type}`);
+          this.client.emit(Events16.Debug, `Failed to find guild, or unknown type for channel ${data.id} ${data.type}`);
           return null;
         }
         if (cache && !allowUnknownGuild) this.cache.set(channel.id, channel);
@@ -70641,7 +70641,7 @@ var require_ShardClientUtil = __commonJS({
     var process2 = require("node:process");
     var { calculateShardId } = require_dist();
     var { DiscordjsError: DiscordjsError2, DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var { makeError, makePlainError } = require_Util();
     var ShardClientUtil2 = class {
       static {
@@ -70654,32 +70654,32 @@ var require_ShardClientUtil = __commonJS({
         switch (mode) {
           case "process":
             process2.on("message", this._handleMessage.bind(this));
-            client.on(Events7.ShardReady, () => {
+            client.on(Events16.ShardReady, () => {
               process2.send({ _ready: true });
             });
-            client.on(Events7.ShardDisconnect, () => {
+            client.on(Events16.ShardDisconnect, () => {
               process2.send({ _disconnect: true });
             });
-            client.on(Events7.ShardReconnecting, () => {
+            client.on(Events16.ShardReconnecting, () => {
               process2.send({ _reconnecting: true });
             });
-            client.on(Events7.ShardResume, () => {
+            client.on(Events16.ShardResume, () => {
               process2.send({ _resume: true });
             });
             break;
           case "worker":
             this.parentPort = require("node:worker_threads").parentPort;
             this.parentPort.on("message", this._handleMessage.bind(this));
-            client.on(Events7.ShardReady, () => {
+            client.on(Events16.ShardReady, () => {
               this.parentPort.postMessage({ _ready: true });
             });
-            client.on(Events7.ShardDisconnect, () => {
+            client.on(Events16.ShardDisconnect, () => {
               this.parentPort.postMessage({ _disconnect: true });
             });
-            client.on(Events7.ShardReconnecting, () => {
+            client.on(Events16.ShardReconnecting, () => {
               this.parentPort.postMessage({ _reconnecting: true });
             });
-            client.on(Events7.ShardResume, () => {
+            client.on(Events16.ShardResume, () => {
               this.parentPort.postMessage({ _resume: true });
             });
             break;
@@ -70831,7 +70831,7 @@ var require_ShardClientUtil = __commonJS({
         this.send(message).catch((err) => {
           const error62 = new Error(`Error when sending ${type} response to master process: ${err.message}`);
           error62.stack = err.stack;
-          this.client.emit(Events7.Error, error62);
+          this.client.emit(Events16.Error, error62);
         });
       }
       /**
@@ -70845,7 +70845,7 @@ var require_ShardClientUtil = __commonJS({
           this._singleton = new this(client, mode);
         } else {
           client.emit(
-            Events7.Warn,
+            Events16.Warn,
             "Multiple clients created in child process/worker; only the first will handle sharding helpers."
           );
         }
@@ -72118,7 +72118,7 @@ var require_GuildEmojiManager = __commonJS({
   "node_modules/discord.js/src/managers/GuildEmojiManager.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var { Routes: Routes2, PermissionFlagsBits } = require_v106();
+    var { Routes: Routes2, PermissionFlagsBits: PermissionFlagsBits16 } = require_v106();
     var BaseGuildEmojiManager2 = require_BaseGuildEmojiManager();
     var { DiscordjsError: DiscordjsError2, DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var { resolveImage } = require_DataResolver();
@@ -72260,7 +72260,7 @@ var require_GuildEmojiManager = __commonJS({
         }
         const { me } = this.guild.members;
         if (!me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        if (!me.permissions.any(PermissionFlagsBits.CreateGuildExpressions | PermissionFlagsBits.ManageGuildExpressions)) {
+        if (!me.permissions.any(PermissionFlagsBits16.CreateGuildExpressions | PermissionFlagsBits16.ManageGuildExpressions)) {
           throw new DiscordjsError2(ErrorCodes2.MissingManageGuildExpressionsPermission, this.guild);
         }
         const data = await this.client.rest.get(Routes2.guildEmoji(this.guild.id, emoji3.id));
@@ -72480,7 +72480,7 @@ var require_GuildMemberManager = __commonJS({
     var { GuildMember } = require_GuildMember();
     var { Role } = require_Role();
     var { resolveImage } = require_DataResolver();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var { GuildMemberFlagsBitField } = require_GuildMemberFlagsBitField();
     var Partials2 = require_Partials();
     var deprecatedEmittedForEditSoleNickname = false;
@@ -72677,9 +72677,9 @@ var require_GuildMemberManager = __commonJS({
           let i = 0;
           const cleanup = /* @__PURE__ */ __name(() => {
             clearTimeout2(timeout);
-            this.client.removeListener(Events7.Raw, rateLimitHandler);
+            this.client.removeListener(Events16.Raw, rateLimitHandler);
             this.client.decrementMaxListeners();
-            this.client.removeListener(Events7.GuildMembersChunk, handler);
+            this.client.removeListener(Events16.GuildMembersChunk, handler);
             this.client.decrementMaxListeners();
           }, "cleanup");
           const timeout = setTimeout2(() => {
@@ -72713,9 +72713,9 @@ var require_GuildMemberManager = __commonJS({
             }
           }, "rateLimitHandler");
           this.client.incrementMaxListeners();
-          this.client.on(Events7.Raw, rateLimitHandler);
+          this.client.on(Events16.Raw, rateLimitHandler);
           this.client.incrementMaxListeners();
-          this.client.on(Events7.GuildMembersChunk, handler);
+          this.client.on(Events16.GuildMembersChunk, handler);
           this.guild.shard.send({
             op: GatewayOpcodes.RequestGuildMembers,
             d: requestData
@@ -74038,7 +74038,7 @@ var require_RoleManager = __commonJS({
     var { DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var { Role } = require_Role();
     var { resolveImage } = require_DataResolver();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var { setPosition, resolveColor } = require_Util();
     var cacheWarningEmitted = false;
     var deprecationEmittedForCreate = false;
@@ -74210,7 +74210,7 @@ var require_RoleManager = __commonJS({
       async create(options = {}) {
         let { permissions, icon } = options;
         const { name, color, hoist, position, mentionable, reason, unicodeEmoji } = options;
-        if (permissions !== void 0) permissions = new PermissionsBitField2(permissions);
+        if (permissions !== void 0) permissions = new PermissionsBitField4(permissions);
         if (icon) {
           const guildEmojiURL = this.guild.emojis.resolve(icon)?.imageURL();
           icon = guildEmojiURL ? await resolveImage(guildEmojiURL) : await resolveImage(icon);
@@ -74300,7 +74300,7 @@ var require_RoleManager = __commonJS({
           name: options.name,
           colors,
           hoist: options.hoist,
-          permissions: options.permissions === void 0 ? void 0 : new PermissionsBitField2(options.permissions),
+          permissions: options.permissions === void 0 ? void 0 : new PermissionsBitField4(options.permissions),
           mentionable: options.mentionable,
           icon,
           unicode_emoji: options.unicodeEmoji
@@ -75817,7 +75817,7 @@ var require_OAuth2Guild = __commonJS({
   "node_modules/discord.js/src/structures/OAuth2Guild.js"(exports2, module2) {
     "use strict";
     var BaseGuild = require_BaseGuild();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var OAuth2Guild = class extends BaseGuild {
       static {
         __name(this, "OAuth2Guild");
@@ -75825,7 +75825,7 @@ var require_OAuth2Guild = __commonJS({
       constructor(client, data) {
         super(client, data);
         this.owner = data.owner;
-        this.permissions = new PermissionsBitField2(BigInt(data.permissions)).freeze();
+        this.permissions = new PermissionsBitField4(BigInt(data.permissions)).freeze();
       }
     };
     module2.exports = OAuth2Guild;
@@ -75852,8 +75852,8 @@ var require_GuildManager = __commonJS({
     var OAuth2Guild = require_OAuth2Guild();
     var { Role } = require_Role();
     var { resolveImage } = require_DataResolver();
-    var Events7 = require_Events();
-    var PermissionsBitField2 = require_PermissionsBitField();
+    var Events16 = require_Events();
+    var PermissionsBitField4 = require_PermissionsBitField();
     var SystemChannelFlagsBitField = require_SystemChannelFlagsBitField();
     var { _transformAPIIncidentsData } = require_Transformers();
     var { resolveColor } = require_Util();
@@ -76001,7 +76001,7 @@ var require_GuildManager = __commonJS({
             roles: roles.map(({ color, permissions, ...options }) => ({
               ...options,
               color: color && resolveColor(color),
-              permissions: permissions === void 0 ? void 0 : PermissionsBitField2.resolve(permissions).toString()
+              permissions: permissions === void 0 ? void 0 : PermissionsBitField4.resolve(permissions).toString()
             })),
             channels: channels.map(
               ({
@@ -76020,8 +76020,8 @@ var require_GuildManager = __commonJS({
                 video_quality_mode: videoQualityMode,
                 permission_overwrites: permissionOverwrites?.map(({ allow, deny, ...permissionOverwriteOptions }) => ({
                   ...permissionOverwriteOptions,
-                  allow: allow === void 0 ? void 0 : PermissionsBitField2.resolve(allow).toString(),
-                  deny: deny === void 0 ? void 0 : PermissionsBitField2.resolve(deny).toString()
+                  allow: allow === void 0 ? void 0 : PermissionsBitField4.resolve(allow).toString(),
+                  deny: deny === void 0 ? void 0 : PermissionsBitField4.resolve(deny).toString()
                 })),
                 rate_limit_per_user: rateLimitPerUser
               })
@@ -76041,9 +76041,9 @@ var require_GuildManager = __commonJS({
             }
           }, "handleGuild");
           this.client.incrementMaxListeners();
-          this.client.once(Events7.GuildCreate, handleGuild);
+          this.client.once(Events16.GuildCreate, handleGuild);
           const timeout = setTimeout2(() => {
-            this.client.removeListener(Events7.GuildCreate, handleGuild);
+            this.client.removeListener(Events16.GuildCreate, handleGuild);
             this.client.decrementMaxListeners();
             resolve3(this.client.guilds._add(data));
           }, 1e4).unref();
@@ -76127,18 +76127,18 @@ var require_GuildManager = __commonJS({
             remainingGuildIds.delete(guild.id);
             if (remainingGuildIds.size === 0) {
               clearTimeout2(timeout);
-              this.client.removeListener(Events7.SoundboardSounds, handler);
+              this.client.removeListener(Events16.SoundboardSounds, handler);
               this.client.decrementMaxListeners();
               resolve3(fetchedSoundboardSounds);
             }
           }, "handler");
           const timeout = setTimeout2(() => {
-            this.client.removeListener(Events7.SoundboardSounds, handler);
+            this.client.removeListener(Events16.SoundboardSounds, handler);
             this.client.decrementMaxListeners();
             reject(new DiscordjsError2(ErrorCodes2.GuildSoundboardSoundsTimeout));
           }, time4).unref();
           this.client.incrementMaxListeners();
-          this.client.on(Events7.SoundboardSounds, handler);
+          this.client.on(Events16.SoundboardSounds, handler);
         });
       }
       /**
@@ -76608,7 +76608,7 @@ var require_Sweepers = __commonJS({
     "use strict";
     var { setInterval: setInterval2, clearInterval: clearInterval2 } = require("node:timers");
     var { ThreadChannelTypes, SweeperKeys } = require_Constants();
-    var Events7 = require_Events();
+    var Events16 = require_Events();
     var { DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var Sweepers2 = class {
       static {
@@ -76646,7 +76646,7 @@ var require_Sweepers = __commonJS({
         const { guilds, items: guildCommands } = this._sweepGuildDirectProp("commands", filter, { emit: false });
         const globalCommands = this.client.application?.commands.cache.sweep(filter) ?? 0;
         this.client.emit(
-          Events7.CacheSweep,
+          Events16.CacheSweep,
           `Swept ${globalCommands} global application commands and ${guildCommands} guild commands in ${guilds} guilds.`
         );
         return guildCommands + globalCommands;
@@ -76686,7 +76686,7 @@ var require_Sweepers = __commonJS({
           throw new DiscordjsTypeError2(ErrorCodes2.InvalidType, "filter", "function");
         }
         const entitlements = this.client.application.entitlements.cache.sweep(filter);
-        this.client.emit(Events7.CacheSweep, `Swept ${entitlements} entitlements.`);
+        this.client.emit(Events16.CacheSweep, `Swept ${entitlements} entitlements.`);
         return entitlements;
       }
       /**
@@ -76731,7 +76731,7 @@ var require_Sweepers = __commonJS({
           channels++;
           messages2 += channel.messages.cache.sweep(filter);
         }
-        this.client.emit(Events7.CacheSweep, `Swept ${messages2} messages in ${channels} text-based channels.`);
+        this.client.emit(Events16.CacheSweep, `Swept ${messages2} messages in ${channels} text-based channels.`);
         return messages2;
       }
       /**
@@ -76763,7 +76763,7 @@ var require_Sweepers = __commonJS({
           }
         }
         this.client.emit(
-          Events7.CacheSweep,
+          Events16.CacheSweep,
           `Swept ${reactions} reactions on ${messages2} messages in ${channels} text-based channels.`
         );
         return reactions;
@@ -76801,7 +76801,7 @@ var require_Sweepers = __commonJS({
           threads++;
           members3 += channel.members.cache.sweep(filter);
         }
-        this.client.emit(Events7.CacheSweep, `Swept ${members3} thread members in ${threads} threads.`);
+        this.client.emit(Events16.CacheSweep, `Swept ${members3} thread members in ${threads} threads.`);
         return members3;
       }
       /**
@@ -76830,7 +76830,7 @@ var require_Sweepers = __commonJS({
             this.client.channels._remove(key);
           }
         }
-        this.client.emit(Events7.CacheSweep, `Swept ${threads} threads.`);
+        this.client.emit(Events16.CacheSweep, `Swept ${threads} threads.`);
         return threads;
       }
       /**
@@ -76843,7 +76843,7 @@ var require_Sweepers = __commonJS({
           throw new DiscordjsTypeError2(ErrorCodes2.InvalidType, "filter", "function");
         }
         const users2 = this.client.users.cache.sweep(filter);
-        this.client.emit(Events7.CacheSweep, `Swept ${users2} users.`);
+        this.client.emit(Events16.CacheSweep, `Swept ${users2} users.`);
         return users2;
       }
       /**
@@ -76968,7 +76968,7 @@ var require_Sweepers = __commonJS({
           items += cache.sweep(filter);
         }
         if (emit) {
-          this.client.emit(Events7.CacheSweep, `Swept ${items} ${outputName ?? key} in ${guilds} guilds.`);
+          this.client.emit(Events16.CacheSweep, `Swept ${items} ${outputName ?? key} in ${guilds} guilds.`);
         }
         return { guilds, items };
       }
@@ -78318,7 +78318,7 @@ var require_EmbedBuilder = __commonJS({
     var { isJSONEncodable } = require_dist();
     var { toSnakeCase: toSnakeCase2 } = require_Transformers();
     var { resolveColor } = require_Util();
-    var EmbedBuilder5 = class extends BuildersEmbed {
+    var EmbedBuilder11 = class extends BuildersEmbed {
       static {
         __name(this, "EmbedBuilder");
       }
@@ -78350,7 +78350,7 @@ var require_EmbedBuilder = __commonJS({
         return embedLength(this.data);
       }
     };
-    module2.exports = EmbedBuilder5;
+    module2.exports = EmbedBuilder11;
   }
 });
 
@@ -82157,9 +82157,9 @@ var require_levels = __commonJS({
       const formatter = instance[formattersSym].level;
       const { labels } = instance.levels;
       const cache = {};
-      for (const label in labels) {
-        const level = formatter(labels[label], Number(label));
-        cache[label] = JSON.stringify(level).slice(0, -1);
+      for (const label2 in labels) {
+        const level = formatter(labels[label2], Number(label2));
+        cache[label2] = JSON.stringify(level).slice(0, -1);
       }
       instance[lsCacheSym] = cache;
       return instance;
@@ -83426,7 +83426,7 @@ var require_pino = __commonJS({
         bindings(bindings) {
           return bindings;
         },
-        level(label, number4) {
+        level(label2, number4) {
           return { level: number4 };
         }
       }),
@@ -93543,10 +93543,16 @@ var cases = pgTable(
     moderatorId: text("moderator_id").notNull(),
     reason: text("reason").notNull(),
     durationMs: bigint("duration_ms", { mode: "number" }),
+    /** Set for temporary bans; the moderation scheduler lifts them. */
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
     active: boolean("active").default(true).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
   },
-  (t) => [index("cases_target_idx").on(t.targetId), index("cases_created_idx").on(t.createdAt)]
+  (t) => [
+    index("cases_target_idx").on(t.targetId),
+    index("cases_created_idx").on(t.createdAt),
+    index("cases_expiry_idx").on(t.active, t.expiresAt)
+  ]
 );
 var warnings = pgTable("warnings", {
   caseId: bigint("case_id", { mode: "number" }).primaryKey().references(() => cases.id, { onDelete: "cascade" }),
@@ -93640,10 +93646,7 @@ var commandUsage = pgTable(
     command: text("command").notNull(),
     count: integer("count").default(0).notNull()
   },
-  (t) => [
-    primaryKey({ columns: [t.date, t.command] }),
-    index("command_usage_date_idx").on(t.date)
-  ]
+  (t) => [primaryKey({ columns: [t.date, t.command] }), index("command_usage_date_idx").on(t.date)]
 );
 var configAudit = pgTable(
   "config_audit",
@@ -93687,55 +93690,21 @@ var reminders = pgTable(
 
 // packages/db/src/client.ts
 function createDatabase(url2, options = {}) {
+  const hasSslMode = /[?&]sslmode=/.test(url2);
+  const isLocal = /@(?:localhost|127\.0\.0\.1|\[::1\])(?::|\/)/.test(url2);
   const sql2 = src_default(url2, {
     max: options.max ?? 3,
     prepare: false,
     idle_timeout: 20,
     connect_timeout: 10,
     onnotice: /* @__PURE__ */ __name(() => {
-    }, "onnotice")
+    }, "onnotice"),
+    ...!hasSslMode && !isLocal ? { ssl: "require" } : {}
   });
   const db = drizzle(sql2, { schema: schema_exports });
   return { db, sql: sql2 };
 }
 __name(createDatabase, "createDatabase");
-
-// packages/db/src/migrate.ts
-var import_promises = require("node:fs/promises");
-var import_node_path = require("node:path");
-var BREAKPOINT = "--> statement-breakpoint";
-async function runMigrations(sql2, directory, logger) {
-  const files = (await (0, import_promises.readdir)(directory)).filter((file2) => file2.endsWith(".sql")).sort();
-  if (files.length === 0) {
-    logger?.info({ directory }, "no migrations found");
-    return 0;
-  }
-  let applied = 0;
-  await sql2.begin(async (tx) => {
-    await tx`SELECT pg_advisory_xact_lock(hashtext('nervana_migrations'))`;
-    await tx`
-      CREATE TABLE IF NOT EXISTS schema_migrations (
-        name text PRIMARY KEY,
-        applied_at timestamptz NOT NULL DEFAULT now()
-      )
-    `;
-    const rows = await tx`SELECT name FROM schema_migrations`;
-    const done = new Set(rows.map((row) => row.name));
-    for (const file2 of files) {
-      if (done.has(file2)) continue;
-      const contents = await (0, import_promises.readFile)((0, import_node_path.join)(directory, file2), "utf8");
-      const statements = contents.split(BREAKPOINT).map((statement) => statement.trim()).filter((statement) => statement.length > 0);
-      for (const statement of statements) {
-        await tx.unsafe(statement);
-      }
-      await tx`INSERT INTO schema_migrations (name) VALUES (${file2})`;
-      applied++;
-      logger?.info({ migration: file2, statements: statements.length }, "applied migration");
-    }
-  });
-  return applied;
-}
-__name(runMigrations, "runMigrations");
 
 // packages/shared/src/brand.ts
 var BRAND = {
@@ -107323,9 +107292,9 @@ function codePointLengthVar(doc, ctx, accessor, inDoubt) {
   return v;
 }
 __name(codePointLengthVar, "codePointLengthVar");
-function numericOperand(value, label) {
+function numericOperand(value, label2) {
   if (typeof value !== "number" || !Number.isFinite(value)) {
-    throw new ZodCompileUnsupportedError(`${label} bound of type ${typeof value}`);
+    throw new ZodCompileUnsupportedError(`${label2} bound of type ${typeof value}`);
   }
   return `${value}`;
 }
@@ -114448,6 +114417,11 @@ function parseConfig(raw) {
   return AppConfigSchema.parse(merged);
 }
 __name(parseConfig, "parseConfig");
+function parseModule(key, raw) {
+  const schema = AppConfigSchema.shape[key];
+  return schema.parse(raw);
+}
+__name(parseModule, "parseModule");
 
 // packages/shared/src/time.ts
 var SECOND = 1e3;
@@ -114455,14 +114429,57 @@ var MINUTE = 60 * SECOND;
 var HOUR = 60 * MINUTE;
 var DAY = 24 * HOUR;
 var WEEK = 7 * DAY;
+var UNIT_MS = {
+  s: SECOND,
+  m: MINUTE,
+  h: HOUR,
+  d: DAY,
+  w: WEEK
+};
 var MAX_DURATION_MS = 365 * DAY;
+var PART = /(\d+(?:\.\d+)?)\s*(weeks?|days?|hours?|hrs?|minutes?|mins?|seconds?|secs?|w|d|h|m|s)/gi;
+function normalizeUnit(raw) {
+  const unit = raw.toLowerCase();
+  if (unit.startsWith("w")) return "w";
+  if (unit.startsWith("d")) return "d";
+  if (unit.startsWith("h")) return "h";
+  if (unit.startsWith("m")) return "m";
+  if (unit.startsWith("s")) return "s";
+  return null;
+}
+__name(normalizeUnit, "normalizeUnit");
+function parseDuration(input2) {
+  if (typeof input2 !== "string") return null;
+  const text2 = input2.trim().toLowerCase();
+  if (!text2) return null;
+  let total = 0;
+  let matched = false;
+  let rest = text2;
+  for (const match of text2.matchAll(PART)) {
+    matched = true;
+    const amountRaw = match[1];
+    const unitRaw = match[2];
+    if (!amountRaw || !unitRaw) return null;
+    const unit = normalizeUnit(unitRaw);
+    if (!unit) return null;
+    const amount = Number(amountRaw);
+    if (!Number.isFinite(amount)) return null;
+    total += amount * UNIT_MS[unit];
+    rest = rest.replace(match[0], " ");
+  }
+  if (!matched) return null;
+  if (rest.replace(/[\s,]/g, "") !== "") return null;
+  if (total <= 0 || total > MAX_DURATION_MS) return null;
+  return Math.floor(total);
+}
+__name(parseDuration, "parseDuration");
 function formatDuration(ms) {
   if (!Number.isFinite(ms) || ms < 0) return "0s";
   if (ms === 0) return "0s";
   if (ms < SECOND) return `${Math.floor(ms)}ms`;
   let remaining = Math.floor(ms);
   const parts = [];
-  for (const [label, size2] of [
+  for (const [label2, size2] of [
     ["d", DAY],
     ["h", HOUR],
     ["m", MINUTE],
@@ -114470,7 +114487,7 @@ function formatDuration(ms) {
   ]) {
     const value = Math.floor(remaining / size2);
     if (value > 0) {
-      parts.push(`${value}${label}`);
+      parts.push(`${value}${label2}`);
       remaining -= value * size2;
     }
   }
@@ -114513,6 +114530,79 @@ function progressBar(current, needed, size2 = 12) {
   return "\u2588".repeat(filled) + "\u2591".repeat(width - filled);
 }
 __name(progressBar, "progressBar");
+
+// packages/db/src/settings.ts
+async function readLockedConfig(tx) {
+  const rows = await tx.select({ modules: settings.modules }).from(settings).where(eq(settings.id, 1)).limit(1).for("update");
+  const stored = rows[0]?.modules;
+  try {
+    return parseConfig(stored ?? DEFAULT_CONFIG);
+  } catch {
+    return parseConfig(DEFAULT_CONFIG);
+  }
+}
+__name(readLockedConfig, "readLockedConfig");
+async function updateModule(db, actorId, module2, raw) {
+  return db.transaction(async (tx) => {
+    const before = await readLockedConfig(tx);
+    const after = parseModule(module2, raw);
+    const config2 = { ...before, [module2]: after };
+    const updatedAt = /* @__PURE__ */ new Date();
+    await tx.insert(settings).values({ id: 1, modules: config2, updatedAt }).onConflictDoUpdate({
+      target: settings.id,
+      set: { modules: config2, updatedAt }
+    });
+    await tx.insert(configAudit).values({
+      actorId,
+      module: module2,
+      before: before[module2],
+      after
+    });
+    return { config: config2, before: before[module2], after, updatedAt };
+  });
+}
+__name(updateModule, "updateModule");
+async function resetModule(db, actorId, module2) {
+  return updateModule(db, actorId, module2, DEFAULT_CONFIG[module2]);
+}
+__name(resetModule, "resetModule");
+
+// packages/db/src/migrate.ts
+var import_promises = require("node:fs/promises");
+var import_node_path = require("node:path");
+var BREAKPOINT = "--> statement-breakpoint";
+async function runMigrations(sql2, directory, logger) {
+  const files = (await (0, import_promises.readdir)(directory)).filter((file2) => file2.endsWith(".sql")).sort();
+  if (files.length === 0) {
+    logger?.info({ directory }, "no migrations found");
+    return 0;
+  }
+  let applied = 0;
+  await sql2.begin(async (tx) => {
+    await tx`SELECT pg_advisory_xact_lock(hashtext('nervana_migrations'))`;
+    await tx`
+      CREATE TABLE IF NOT EXISTS schema_migrations (
+        name text PRIMARY KEY,
+        applied_at timestamptz NOT NULL DEFAULT now()
+      )
+    `;
+    const rows = await tx`SELECT name FROM schema_migrations`;
+    const done = new Set(rows.map((row) => row.name));
+    for (const file2 of files) {
+      if (done.has(file2)) continue;
+      const contents = await (0, import_promises.readFile)((0, import_node_path.join)(directory, file2), "utf8");
+      const statements = contents.split(BREAKPOINT).map((statement) => statement.trim()).filter((statement) => statement.length > 0);
+      for (const statement of statements) {
+        await tx.unsafe(statement);
+      }
+      await tx`INSERT INTO schema_migrations (name) VALUES (${file2})`;
+      applied++;
+      logger?.info({ migration: file2, statements: statements.length }, "applied migration");
+    }
+  });
+  return applied;
+}
+__name(runMigrations, "runMigrations");
 
 // apps/bot/src/commands/core/help.ts
 var import_discord = __toESM(require_src(), 1);
@@ -114569,52 +114659,539 @@ var pingCommand = {
   }
 };
 
-// apps/bot/src/commands/leveling/leaderboard.ts
+// apps/bot/src/commands/core/setup.ts
+var import_discord4 = __toESM(require_src(), 1);
+
+// apps/bot/src/core/errors.ts
+var import_node_crypto = require("node:crypto");
+var UserFacingError = class extends Error {
+  static {
+    __name(this, "UserFacingError");
+  }
+  errorId;
+  constructor(message, options = {}) {
+    super(message);
+    this.name = "UserFacingError";
+    this.errorId = options.errorId;
+  }
+};
+function newErrorId() {
+  return (0, import_node_crypto.randomUUID)().slice(0, 8);
+}
+__name(newErrorId, "newErrorId");
+
+// apps/bot/src/config/settings.ts
+async function readSettings(db, onInvalid) {
+  const rows = await db.select({ modules: settings.modules, updatedAt: settings.updatedAt }).from(settings).where(eq(settings.id, 1)).limit(1);
+  const row = rows[0];
+  if (!row) {
+    await db.insert(settings).values({ id: 1, modules: DEFAULT_CONFIG }).onConflictDoNothing();
+    return { config: parseConfig(DEFAULT_CONFIG), updatedAt: Date.now() };
+  }
+  try {
+    return { config: parseConfig(row.modules), updatedAt: row.updatedAt.getTime() };
+  } catch (error62) {
+    onInvalid?.(error62);
+    return { config: parseConfig(DEFAULT_CONFIG), updatedAt: row.updatedAt.getTime() };
+  }
+}
+__name(readSettings, "readSettings");
+function applyOverrides(config2, musicEnabled) {
+  if (musicEnabled) return config2;
+  return { ...config2, music: { ...config2.music, enabled: false } };
+}
+__name(applyOverrides, "applyOverrides");
+function startSettingsPoller(client) {
+  if (!client.db) return;
+  if (client.settingsPollTimer) return;
+  client.settingsPollTimer = setInterval(() => {
+    void poll(client);
+  }, 15e3);
+  client.settingsPollTimer.unref();
+}
+__name(startSettingsPoller, "startSettingsPoller");
+async function poll(client) {
+  if (!client.db) return;
+  try {
+    const rows = await client.db.select({ modules: settings.modules, updatedAt: settings.updatedAt }).from(settings).where(eq(settings.id, 1)).limit(1);
+    const row = rows[0];
+    if (!row) return;
+    const updatedAt = row.updatedAt.getTime();
+    if (updatedAt === client.settingsUpdatedAt) return;
+    const config2 = parseConfig(row.modules);
+    client.settings = applyOverrides(config2, client.env.MUSIC_ENABLED);
+    client.settingsUpdatedAt = updatedAt;
+    client.logger.info({ updatedAt }, "settings reloaded");
+  } catch (error62) {
+    client.logger.warn({ err: error62 }, "settings poll failed");
+  }
+}
+__name(poll, "poll");
+function stopSettingsPoller(client) {
+  if (client.settingsPollTimer) {
+    clearInterval(client.settingsPollTimer);
+    client.settingsPollTimer = null;
+  }
+}
+__name(stopSettingsPoller, "stopSettingsPoller");
+
+// apps/bot/src/config/service.ts
+function invalidConfig(error62) {
+  if (error62 instanceof ZodError) {
+    const issue2 = error62.issues[0];
+    throw new UserFacingError(issue2?.message ?? "That configuration value is invalid.");
+  }
+  throw error62;
+}
+__name(invalidConfig, "invalidConfig");
+function adopt(client, result) {
+  client.settings = applyOverrides(result.config, client.env.MUSIC_ENABLED);
+  client.settingsUpdatedAt = result.updatedAt.getTime();
+  return result;
+}
+__name(adopt, "adopt");
+async function updateModule2(client, actorId, module2, value) {
+  if (!client.db) throw new UserFacingError("The database is not configured.");
+  const result = await updateModule(client.db, actorId, module2, value).catch(invalidConfig);
+  return adopt(client, result);
+}
+__name(updateModule2, "updateModule");
+async function resetModule2(client, actorId, module2) {
+  if (!client.db) throw new UserFacingError("The database is not configured.");
+  const result = await resetModule(client.db, actorId, module2).catch(invalidConfig);
+  return adopt(client, result);
+}
+__name(resetModule2, "resetModule");
+
+// apps/bot/src/core/respond.ts
 var import_discord3 = __toESM(require_src(), 1);
+async function deferEphemeral(interaction) {
+  if (interaction.deferred || interaction.replied) return;
+  await interaction.deferReply({ flags: import_discord3.MessageFlags.Ephemeral });
+}
+__name(deferEphemeral, "deferEphemeral");
+async function deferPublic(interaction) {
+  if (interaction.deferred || interaction.replied) return;
+  await interaction.deferReply();
+}
+__name(deferPublic, "deferPublic");
+async function replyError(interaction, message, errorId) {
+  const content = errorId ? `${message}
+-# Error ID: \`${errorId}\`` : message;
+  try {
+    if (interaction.deferred && !interaction.replied) {
+      await interaction.editReply({ content });
+    } else if (interaction.replied) {
+      await interaction.followUp({ content, flags: import_discord3.MessageFlags.Ephemeral });
+    } else {
+      await interaction.reply({ content, flags: import_discord3.MessageFlags.Ephemeral });
+    }
+  } catch {
+  }
+}
+__name(replyError, "replyError");
+
+// apps/bot/src/commands/core/setup.ts
+var AUTOMOD_RULES = ["invites", "links", "spam", "mentions", "caps", "words", "raid"];
+var MODULES = [
+  "moderation",
+  "logging",
+  "leveling",
+  "economy",
+  "welcome",
+  "tickets",
+  "music",
+  "community",
+  "stats"
+];
+function label(value) {
+  return value.replace(/([A-Z])/g, " $1").replace(/^./, (character) => character.toUpperCase()).trim();
+}
+__name(label, "label");
+function textChannel(channel) {
+  if (!channel) return null;
+  if (!channel.isTextBased()) {
+    throw new UserFacingError("Pick a text channel, not a category or voice channel.");
+  }
+  return channel;
+}
+__name(textChannel, "textChannel");
+var setupCommand = {
+  data: new import_discord4.SlashCommandBuilder().setName("setup").setDescription("Configure logging, moderation, leveling, and welcome messages.").setDefaultMemberPermissions(import_discord4.PermissionFlagsBits.ManageGuild).addSubcommand((sub) => sub.setName("status").setDescription("Show the current configuration.")).addSubcommand(
+    (sub) => sub.setName("logging").setDescription("Route one log event to a channel, or clear it.").addStringOption(
+      (option) => option.setName("event").setDescription("Which event to route").setRequired(true).addChoices(...LOG_EVENTS.map((event) => ({ name: label(event), value: event })))
+    ).addChannelOption(
+      (option) => option.setName("channel").setDescription("Text channel; omit to disable this event")
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("modlog").setDescription("Set the moderation case log channel.").addChannelOption(
+      (option) => option.setName("channel").setDescription("Text channel; omit to clear")
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("automod").setDescription("Enable or disable one automod rule.").addStringOption(
+      (option) => option.setName("rule").setDescription("Rule to change").setRequired(true).addChoices(...AUTOMOD_RULES.map((rule) => ({ name: label(rule), value: rule })))
+    ).addBooleanOption(
+      (option) => option.setName("enabled").setDescription("Turn the rule on or off").setRequired(true)
+    ).addStringOption(
+      (option) => option.setName("action").setDescription("What to do when the rule matches").addChoices(
+        { name: "Delete", value: "delete" },
+        { name: "Warn", value: "warn" },
+        { name: "Timeout", value: "timeout" },
+        { name: "Kick", value: "kick" }
+      )
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("link-allow").setDescription("Allow a hostname through the links automod rule.").addStringOption(
+      (option) => option.setName("host").setDescription("Hostname, e.g. youtube.com or example.com").setRequired(true).setMaxLength(253)
+    ).addBooleanOption(
+      (option) => option.setName("remove").setDescription("Remove the allowlist entry instead")
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("filtered-word").setDescription("Add or remove a word blocked by automod.").addStringOption(
+      (option) => option.setName("word").setDescription("Word or phrase to filter").setRequired(true).setMaxLength(100)
+    ).addBooleanOption(
+      (option) => option.setName("remove").setDescription("Remove the filtered word instead")
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("leveling").setDescription("Toggle leveling and tune XP rates.").addBooleanOption(
+      (option) => option.setName("enabled").setDescription("Enable leveling").setRequired(true)
+    ).addChannelOption(
+      (option) => option.setName("announce").setDescription("Level-up announcement channel")
+    ).addBooleanOption(
+      (option) => option.setName("clear-announce").setDescription("Use the channel where the member leveled up instead")
+    ).addIntegerOption(
+      (option) => option.setName("xp-min").setDescription("Minimum base XP per message").setMinValue(1).setMaxValue(500)
+    ).addIntegerOption(
+      (option) => option.setName("xp-max").setDescription("Maximum base XP per message").setMinValue(1).setMaxValue(500)
+    ).addIntegerOption(
+      (option) => option.setName("cooldown").setDescription("Seconds between XP gains per member").setMinValue(10).setMaxValue(3600)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("welcome").setDescription("Configure join or leave messages.").addStringOption(
+      (option) => option.setName("kind").setDescription("Join or leave").setRequired(true).addChoices({ name: "Join", value: "join" }, { name: "Leave", value: "leave" })
+    ).addChannelOption(
+      (option) => option.setName("channel").setDescription("Text channel. Omit (with no message) to disable")
+    ).addStringOption(
+      (option) => option.setName("message").setDescription("Template: {user}, {username}, {server}, {memberCount}").setMaxLength(2e3)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("exempt-role").setDescription("Exempt a role from automod.").addRoleOption(
+      (option) => option.setName("role").setDescription("Role to exempt").setRequired(true)
+    ).addBooleanOption(
+      (option) => option.setName("remove").setDescription("Remove the exemption instead")
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("exempt-channel").setDescription("Exempt a channel from automod.").addChannelOption(
+      (option) => option.setName("channel").setDescription("Channel to exempt").setRequired(true)
+    ).addBooleanOption(
+      (option) => option.setName("remove").setDescription("Remove the exemption instead")
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("autorole").setDescription("Add or remove a role granted when a member joins.").addRoleOption(
+      (option) => option.setName("role").setDescription("Role to grant").setRequired(true)
+    ).addBooleanOption(
+      (option) => option.setName("remove").setDescription("Remove the auto role instead")
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("reset").setDescription("Restore one module to its defaults.").addStringOption(
+      (option) => option.setName("module").setDescription("Module to reset").setRequired(true).addChoices(...MODULES.map((module2) => ({ name: label(module2), value: module2 })))
+    )
+  ),
+  category: "core",
+  userPermissions: [import_discord4.PermissionFlagsBits.ManageGuild],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, settings: settings2 }) {
+    await deferEphemeral(interaction);
+    const sub = interaction.options.getSubcommand(true);
+    if (sub === "status") {
+      await showStatus(interaction, settings2);
+      return;
+    }
+    if (sub === "logging") {
+      const event = interaction.options.getString("event", true);
+      const channel = textChannel(interaction.options.getChannel("channel"));
+      const logging = structuredClone(settings2.logging);
+      logging.channels[event] = channel?.id ?? null;
+      if (channel) logging.enabled = true;
+      await updateModule2(client, interaction.user.id, "logging", logging);
+      await interaction.editReply({
+        content: channel ? `**${label(event)}** logs now go to <#${channel.id}>.` : `Disabled **${label(event)}** logs.`
+      });
+      return;
+    }
+    if (sub === "modlog") {
+      const channel = textChannel(interaction.options.getChannel("channel"));
+      const moderation = structuredClone(settings2.moderation);
+      moderation.modLogChannelId = channel?.id ?? null;
+      await updateModule2(client, interaction.user.id, "moderation", moderation);
+      await interaction.editReply({
+        content: channel ? `Moderation cases now log to <#${channel.id}>.` : "Cleared the moderation case log channel."
+      });
+      return;
+    }
+    if (sub === "automod") {
+      const rule = interaction.options.getString("rule", true);
+      const enabled = interaction.options.getBoolean("enabled", true);
+      const action = interaction.options.getString("action");
+      if (action && rule === "raid" && action === "delete") {
+        throw new UserFacingError("The raid rule cannot use the delete action.");
+      }
+      const moderation = structuredClone(settings2.moderation);
+      const target = moderation.automod[rule];
+      target.enabled = enabled;
+      if (action) target.action = action;
+      await updateModule2(client, interaction.user.id, "moderation", moderation);
+      await interaction.editReply({
+        content: `**${label(rule)}** automod is now **${enabled ? "on" : "off"}**${action ? ` (action: ${action})` : ""}.`
+      });
+      return;
+    }
+    if (sub === "link-allow") {
+      const remove = interaction.options.getBoolean("remove") ?? false;
+      const raw = interaction.options.getString("host", true).trim().toLowerCase();
+      const host = raw.replace(/^https?:\/\//, "").replace(/\/.*$/, "").replace(/^\*\./, "").replace(/^www\./, "");
+      if (!/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(host)) {
+        throw new UserFacingError("Enter a hostname such as `youtube.com` (no path or scheme).");
+      }
+      const moderation = structuredClone(settings2.moderation);
+      const set2 = new Set(moderation.automod.links.allowlist);
+      if (remove) set2.delete(host);
+      else set2.add(host);
+      moderation.automod.links.allowlist = [...set2];
+      await updateModule2(client, interaction.user.id, "moderation", moderation);
+      await interaction.editReply({
+        content: `${remove ? "Removed" : "Added"} **${host}** ${remove ? "from" : "to"} the link allowlist.`
+      });
+      return;
+    }
+    if (sub === "filtered-word") {
+      const remove = interaction.options.getBoolean("remove") ?? false;
+      const word = interaction.options.getString("word", true).trim().toLowerCase();
+      if (!word) throw new UserFacingError("Enter a word or phrase to filter.");
+      const moderation = structuredClone(settings2.moderation);
+      const set2 = new Set(moderation.automod.words.words.map((entry) => entry.toLowerCase()));
+      if (remove) set2.delete(word);
+      else set2.add(word);
+      moderation.automod.words.words = [...set2];
+      await updateModule2(client, interaction.user.id, "moderation", moderation);
+      await interaction.editReply({
+        content: `${remove ? "Removed" : "Added"} **${word}** ${remove ? "from" : "to"} the filtered words.`
+      });
+      return;
+    }
+    if (sub === "leveling") {
+      const enabled = interaction.options.getBoolean("enabled", true);
+      const announce = textChannel(interaction.options.getChannel("announce"));
+      const clearAnnounce = interaction.options.getBoolean("clear-announce") ?? false;
+      const xpMin = interaction.options.getInteger("xp-min");
+      const xpMax = interaction.options.getInteger("xp-max");
+      const cooldown = interaction.options.getInteger("cooldown");
+      const leveling = structuredClone(settings2.leveling);
+      leveling.enabled = enabled;
+      if (clearAnnounce) leveling.announceChannelId = null;
+      else if (announce) leveling.announceChannelId = announce.id;
+      if (xpMin !== null) leveling.xpMin = xpMin;
+      if (xpMax !== null) leveling.xpMax = xpMax;
+      if (leveling.xpMax < leveling.xpMin) {
+        throw new UserFacingError(
+          `XP max (${leveling.xpMax}) must be at least XP min (${leveling.xpMin}). Set both together.`
+        );
+      }
+      if (cooldown !== null) leveling.cooldownSeconds = cooldown;
+      await updateModule2(client, interaction.user.id, "leveling", leveling);
+      await interaction.editReply({
+        content: `Leveling is **${enabled ? "on" : "off"}** \xB7 ${leveling.xpMin}\u2013${leveling.xpMax} XP every ${leveling.cooldownSeconds}s.`
+      });
+      return;
+    }
+    if (sub === "welcome") {
+      const kind = interaction.options.getString("kind", true);
+      const channel = textChannel(interaction.options.getChannel("channel"));
+      const message = interaction.options.getString("message")?.trim() || null;
+      const welcome = structuredClone(settings2.welcome);
+      if (kind === "join") {
+        if (channel) {
+          welcome.joinEnabled = true;
+          welcome.joinChannelId = channel.id;
+        } else if (!message) {
+          welcome.joinEnabled = false;
+          welcome.joinChannelId = null;
+        }
+        if (message) welcome.joinMessage = message;
+      } else {
+        if (channel) {
+          welcome.leaveEnabled = true;
+          welcome.leaveChannelId = channel.id;
+        } else if (!message) {
+          welcome.leaveEnabled = false;
+          welcome.leaveChannelId = null;
+        }
+        if (message) welcome.leaveMessage = message;
+      }
+      await updateModule2(client, interaction.user.id, "welcome", welcome);
+      await interaction.editReply({
+        content: channel ? `${label(kind)} messages will be sent to <#${channel.id}>.` : message ? `Updated the ${kind} message template.` : `Disabled ${kind} messages.`
+      });
+      return;
+    }
+    if (sub === "exempt-role" || sub === "exempt-channel") {
+      const remove = interaction.options.getBoolean("remove") ?? false;
+      const moderation = structuredClone(settings2.moderation);
+      if (sub === "exempt-role") {
+        const role = interaction.options.getRole("role", true);
+        const set3 = new Set(moderation.exemptRoleIds);
+        if (remove) set3.delete(role.id);
+        else set3.add(role.id);
+        moderation.exemptRoleIds = [...set3];
+        await updateModule2(client, interaction.user.id, "moderation", moderation);
+        await interaction.editReply({
+          content: `${remove ? "Removed" : "Added"} role exemption for ${role}.`
+        });
+        return;
+      }
+      const channel = textChannel(interaction.options.getChannel("channel", true));
+      if (!channel) throw new UserFacingError("Pick a text channel to exempt.");
+      const set2 = new Set(moderation.exemptChannelIds);
+      if (remove) set2.delete(channel.id);
+      else set2.add(channel.id);
+      moderation.exemptChannelIds = [...set2];
+      await updateModule2(client, interaction.user.id, "moderation", moderation);
+      await interaction.editReply({
+        content: `${remove ? "Removed" : "Added"} automod exemption for <#${channel.id}>.`
+      });
+      return;
+    }
+    if (sub === "autorole") {
+      const role = interaction.options.getRole("role", true);
+      const remove = interaction.options.getBoolean("remove") ?? false;
+      if (!remove) {
+        if (role.id === interaction.guildId) {
+          throw new UserFacingError("The @everyone role is implicit; pick a real role.");
+        }
+        if (role.managed) {
+          throw new UserFacingError(
+            "That role is managed by an integration and cannot be granted."
+          );
+        }
+        const me = interaction.guild?.members.me;
+        if (me && role.position >= me.roles.highest.position) {
+          throw new UserFacingError(
+            "That role is at or above my highest role. Move my role higher first."
+          );
+        }
+      }
+      const welcome = structuredClone(settings2.welcome);
+      const set2 = new Set(welcome.autoRoleIds);
+      if (remove) set2.delete(role.id);
+      else set2.add(role.id);
+      welcome.autoRoleIds = [...set2];
+      await updateModule2(client, interaction.user.id, "welcome", welcome);
+      await interaction.editReply({
+        content: `${remove ? "Removed" : "Added"} ${role} as an auto role.`
+      });
+      return;
+    }
+    if (sub === "reset") {
+      const module2 = interaction.options.getString("module", true);
+      await resetModule2(client, interaction.user.id, module2);
+      await interaction.editReply({
+        content: `Reset the **${label(module2)}** module to defaults.`
+      });
+    }
+  }
+};
+async function showStatus(interaction, settings2) {
+  const configuredLogs = LOG_EVENTS.filter((event) => settings2.logging.channels[event] !== null);
+  const enabledRules = AUTOMOD_RULES.filter((rule) => settings2.moderation.automod[rule].enabled);
+  const rewards = settings2.leveling.rewards.length;
+  const embed = new import_discord4.EmbedBuilder().setColor(BRAND.color).setTitle("Nervana setup").addFields(
+    {
+      name: "Moderation",
+      value: [
+        `Automod: **${settings2.moderation.automod.enabled ? "on" : "off"}**`,
+        `Rules on: ${enabledRules.length > 0 ? enabledRules.join(", ") : "none"}`,
+        `Case log: ${settings2.moderation.modLogChannelId ? `<#${settings2.moderation.modLogChannelId}>` : "**not set**"}`,
+        `Exemptions: ${settings2.moderation.exemptRoleIds.length} role(s), ${settings2.moderation.exemptChannelIds.length} channel(s)`
+      ].join("\n")
+    },
+    {
+      name: "Logging",
+      value: [
+        `Enabled: **${settings2.logging.enabled ? "on" : "off"}**`,
+        `Events routed: ${configuredLogs.length}/${LOG_EVENTS.length}`,
+        `Ignored: ${settings2.logging.ignoreChannelIds.length} channel(s), ${settings2.logging.ignoreUserIds.length} user(s)`
+      ].join("\n")
+    },
+    {
+      name: "Leveling",
+      value: [
+        `Enabled: **${settings2.leveling.enabled ? "on" : "off"}**`,
+        `${settings2.leveling.xpMin}\u2013${settings2.leveling.xpMax} XP every ${settings2.leveling.cooldownSeconds}s`,
+        `Rewards: ${rewards}`,
+        `Announcements: ${settings2.leveling.announceLevelUp ? settings2.leveling.announceChannelId ? `<#${settings2.leveling.announceChannelId}>` : "same channel" : "off"}`
+      ].join("\n")
+    },
+    {
+      name: "Welcome",
+      value: [
+        `Join: ${settings2.welcome.joinEnabled && settings2.welcome.joinChannelId ? `<#${settings2.welcome.joinChannelId}>` : "off"}`,
+        `Leave: ${settings2.welcome.leaveEnabled && settings2.welcome.leaveChannelId ? `<#${settings2.welcome.leaveChannelId}>` : "off"}`,
+        `Auto roles: ${settings2.welcome.autoRoleIds.length}`
+      ].join("\n")
+    },
+    {
+      name: "Other modules",
+      value: [
+        `Economy: **${settings2.economy.enabled ? "on" : "off"}**`,
+        `Tickets: **${settings2.tickets.enabled ? "on" : "off"}**`,
+        `Music: **${settings2.music.enabled ? "on" : "off"}**`,
+        `Stats: **${settings2.stats.enabled ? "on" : "off"}**`
+      ].join("\n")
+    }
+  ).setFooter({ text: "Use /setup <module> to change a setting" });
+  await interaction.editReply({ embeds: [embed] });
+}
+__name(showStatus, "showStatus");
+
+// apps/bot/src/commands/leveling/leaderboard.ts
+var import_discord5 = __toESM(require_src(), 1);
 var leaderboardCommand = {
-  data: new import_discord3.SlashCommandBuilder().setName("leaderboard").setDescription("Show the top 10 members by XP."),
+  data: new import_discord5.SlashCommandBuilder().setName("leaderboard").setDescription("Show the top 10 members by XP."),
   category: "leveling",
   cooldownSeconds: 5,
   async execute({ client, interaction }) {
+    await deferPublic(interaction);
     const db = client.db;
     if (!db) {
-      await interaction.reply({
-        content: "The database is not configured.",
-        flags: import_discord3.MessageFlags.Ephemeral
-      });
+      await interaction.editReply({ content: "The database is not configured." });
       return;
     }
     const rows = await db.select({ userId: members.userId, xp: members.xp }).from(members).orderBy(desc(members.xp)).limit(10);
     if (rows.length === 0) {
-      await interaction.reply({
-        content: "Nobody has earned XP yet.",
-        flags: import_discord3.MessageFlags.Ephemeral
-      });
+      await interaction.editReply({ content: "Nobody has earned XP yet." });
       return;
     }
     const lines = rows.map((row, index2) => {
       const level = levelFromXp(row.xp).level;
       return `**#${index2 + 1}** <@${row.userId}> \u2014 level ${level} \xB7 ${row.xp.toLocaleString()} XP`;
     });
-    const embed = new import_discord3.EmbedBuilder().setColor(BRAND.color).setTitle("XP leaderboard").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: BRAND.footer });
-    await interaction.reply({ embeds: [embed] });
+    const embed = new import_discord5.EmbedBuilder().setColor(BRAND.color).setTitle("XP leaderboard").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: BRAND.footer });
+    await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
   }
 };
 
 // apps/bot/src/commands/leveling/rank.ts
-var import_discord4 = __toESM(require_src(), 1);
+var import_discord6 = __toESM(require_src(), 1);
 var rankCommand = {
-  data: new import_discord4.SlashCommandBuilder().setName("rank").setDescription("Show a member\u2019s level and XP progress.").addUserOption(
+  data: new import_discord6.SlashCommandBuilder().setName("rank").setDescription("Show a member\u2019s level and XP progress.").addUserOption(
     (option) => option.setName("user").setDescription("Member to look up (defaults to you)")
   ),
   category: "leveling",
   async execute({ client, interaction }) {
+    await deferPublic(interaction);
     const db = client.db;
     if (!db) {
-      await interaction.reply({
-        content: "The database is not configured.",
-        flags: import_discord4.MessageFlags.Ephemeral
-      });
+      await interaction.editReply({ content: "The database is not configured." });
       return;
     }
     const target = interaction.options.getUser("user") ?? interaction.user;
@@ -114624,7 +115201,7 @@ var rankCommand = {
     const progress = levelFromXp(xp);
     const rankRows = await db.select({ value: count() }).from(members).where(gt(members.xp, xp));
     const rank = (rankRows[0]?.value ?? 0) + 1;
-    const embed = new import_discord4.EmbedBuilder().setColor(BRAND.color).setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ size: 128 }) }).setTitle(`Level ${progress.level}`).setDescription(
+    const embed = new import_discord6.EmbedBuilder().setColor(BRAND.color).setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ size: 128 }) }).setTitle(`Level ${progress.level}`).setDescription(
       `${progressBar(progress.current, progress.needed, 14)}
 ${progress.current.toLocaleString()} / ${progress.needed.toLocaleString()} XP to level ${progress.level + 1}`
     ).addFields(
@@ -114632,7 +115209,685 @@ ${progress.current.toLocaleString()} / ${progress.needed.toLocaleString()} XP to
       { name: "Total XP", value: xp.toLocaleString(), inline: true },
       { name: "Messages", value: messageCount.toLocaleString(), inline: true }
     ).setFooter({ text: BRAND.footer });
-    await interaction.reply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed] });
+  }
+};
+
+// apps/bot/src/commands/moderation/ban.ts
+var import_discord8 = __toESM(require_src(), 1);
+
+// apps/bot/src/modules/moderation/guards.ts
+function assertModeratable(guild, actor, target) {
+  if (target.id === actor.id) {
+    throw new UserFacingError("You cannot moderate yourself.");
+  }
+  if (target.id === guild.client.user?.id) {
+    throw new UserFacingError("You cannot moderate me.");
+  }
+  if (target.id === guild.ownerId) {
+    throw new UserFacingError("The server owner cannot be moderated.");
+  }
+  const bot = guild.members.me;
+  if (!bot) throw new UserFacingError("I am not cached in this server yet. Try again in a moment.");
+  if (actor.id !== guild.ownerId && actor.roles.highest.comparePositionTo(target.roles.highest) <= 0) {
+    throw new UserFacingError("That member has an equal or higher role than you.");
+  }
+  if (bot.roles.highest.comparePositionTo(target.roles.highest) <= 0) {
+    throw new UserFacingError("My role is not high enough to moderate that member.");
+  }
+}
+__name(assertModeratable, "assertModeratable");
+function assertBannableId(guild, actor, userId) {
+  if (userId === actor.id) throw new UserFacingError("You cannot ban yourself.");
+  if (userId === guild.client.user?.id) throw new UserFacingError("You cannot ban me.");
+  if (userId === guild.ownerId) throw new UserFacingError("The server owner cannot be banned.");
+}
+__name(assertBannableId, "assertBannableId");
+async function fetchMember(guild, userId) {
+  return guild.members.fetch(userId).catch(() => null);
+}
+__name(fetchMember, "fetchMember");
+
+// apps/bot/src/modules/moderation/service.ts
+var import_discord7 = __toESM(require_src(), 1);
+var ACTIVE_CASE_TYPES = /* @__PURE__ */ new Set(["warn", "timeout", "ban", "slowmode"]);
+var CASE_LABELS = {
+  warn: "Warning",
+  "warn-clear": "Warnings cleared",
+  timeout: "Timeout",
+  "timeout-clear": "Timeout removed",
+  kick: "Kick",
+  ban: "Ban",
+  unban: "Unban",
+  softban: "Softban",
+  purge: "Purge",
+  slowmode: "Slowmode"
+};
+var CASE_COLORS = {
+  warn: BRAND.warning,
+  "warn-clear": BRAND.success,
+  timeout: BRAND.warning,
+  "timeout-clear": BRAND.success,
+  kick: BRAND.danger,
+  ban: BRAND.danger,
+  unban: BRAND.success,
+  softban: BRAND.danger,
+  purge: BRAND.info,
+  slowmode: BRAND.info
+};
+function requireDb(client) {
+  if (!client.db) throw new UserFacingError("The database is not configured.");
+  return client.db;
+}
+__name(requireDb, "requireDb");
+function caseLabel(type) {
+  return CASE_LABELS[type] ?? type;
+}
+__name(caseLabel, "caseLabel");
+function auditReason(reason) {
+  return reason.slice(0, 512);
+}
+__name(auditReason, "auditReason");
+function targetMention(type, targetId) {
+  return type === "slowmode" || type === "purge" ? `<#${targetId}>` : `<@${targetId}>`;
+}
+__name(targetMention, "targetMention");
+async function createCase(db, input2) {
+  const durationMs = input2.durationMs ?? null;
+  const expiresAt = durationMs ? new Date(Date.now() + durationMs) : null;
+  return db.transaction(async (tx) => {
+    const rows = await tx.insert(cases).values({
+      type: input2.type,
+      targetId: input2.targetId,
+      moderatorId: input2.moderatorId,
+      reason: input2.reason,
+      durationMs,
+      expiresAt,
+      active: input2.active ?? ACTIVE_CASE_TYPES.has(input2.type)
+    }).returning();
+    const row = rows[0];
+    if (!row) throw new UserFacingError("Could not record that case.");
+    if (input2.type === "warn" && input2.warning !== false) {
+      await tx.insert(warnings).values({ caseId: row.id, userId: input2.targetId, active: true });
+    }
+    return row;
+  });
+}
+__name(createCase, "createCase");
+async function finishModAction(client, input2) {
+  const row = await createCase(requireDb(client), input2);
+  await Promise.allSettled([sendModLog(client, row), dmTarget(client, row)]);
+  return row;
+}
+__name(finishModAction, "finishModAction");
+async function sendModLogEmbed(client, embed) {
+  const config2 = client.settings.moderation;
+  const channelId = config2.modLogChannelId ?? (client.settings.logging.enabled ? client.settings.logging.channels.modAction : null);
+  if (!channelId) return;
+  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const channel = guild?.channels.cache.get(channelId);
+  if (!channel?.isTextBased()) return;
+  if (!embed.data.footer) embed.setFooter({ text: BRAND.footer });
+  if (!embed.data.timestamp) embed.setTimestamp();
+  await channel.send({ embeds: [embed], allowedMentions: { parse: [] } }).catch((error62) => {
+    client.logger.warn({ err: error62, channelId }, "failed to send moderation log");
+  });
+}
+__name(sendModLogEmbed, "sendModLogEmbed");
+async function sendModLog(client, row) {
+  const type = row.type;
+  const embed = new import_discord7.EmbedBuilder().setColor(CASE_COLORS[type] ?? BRAND.muted).setTitle(`Case #${row.id} \xB7 ${caseLabel(row.type)}`).addFields(
+    {
+      name: "Target",
+      value: `${targetMention(row.type, row.targetId)}
+\`${row.targetId}\``,
+      inline: true
+    },
+    { name: "Moderator", value: `<@${row.moderatorId}>
+\`${row.moderatorId}\``, inline: true },
+    { name: "Reason", value: row.reason.slice(0, 1024), inline: false }
+  ).setTimestamp(row.createdAt).setFooter({ text: BRAND.footer });
+  if (row.durationMs) {
+    embed.addFields({ name: "Duration", value: formatDuration(row.durationMs), inline: true });
+  }
+  if (row.expiresAt) {
+    embed.addFields({
+      name: "Expires",
+      value: `<t:${Math.floor(row.expiresAt.getTime() / 1e3)}:F>`,
+      inline: true
+    });
+  }
+  await sendModLogEmbed(client, embed);
+}
+__name(sendModLog, "sendModLog");
+async function dmTarget(client, row) {
+  if (!client.settings.moderation.dmOnPunish) return;
+  const type = row.type;
+  if (!["warn", "timeout", "kick", "ban", "softban", "unban"].includes(type)) return;
+  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const server = guild?.name ?? "the server";
+  const duration3 = row.durationMs ? ` for ${formatDuration(row.durationMs)}` : "";
+  const bodies = {
+    warn: `You received a warning in **${server}**.`,
+    timeout: `You were timed out in **${server}**${duration3}.`,
+    kick: `You were kicked from **${server}**.`,
+    ban: `You were banned from **${server}**${duration3}.`,
+    softban: `You were removed from **${server}**.`,
+    unban: `You were unbanned from **${server}**.`
+  };
+  const body = bodies[type];
+  if (!body) return;
+  try {
+    const user = await client.users.fetch(row.targetId);
+    await user.send(
+      `${body}
+
+**Reason:** ${row.reason}
+**Case:** #${row.id}
+
+If you believe this was a mistake, contact the server staff.`
+    );
+  } catch {
+  }
+}
+__name(dmTarget, "dmTarget");
+function caseEmbed(row) {
+  const type = row.type;
+  const embed = new import_discord7.EmbedBuilder().setColor(CASE_COLORS[type] ?? BRAND.muted).setTitle(`Case #${row.id} \xB7 ${caseLabel(row.type)}`).addFields(
+    {
+      name: "Target",
+      value: `${targetMention(row.type, row.targetId)} \`${row.targetId}\``,
+      inline: true
+    },
+    { name: "Moderator", value: `<@${row.moderatorId}>`, inline: true },
+    { name: "Reason", value: row.reason.slice(0, 1024) },
+    { name: "Active", value: row.active ? "Yes" : "No", inline: true }
+  ).setTimestamp(row.createdAt).setFooter({ text: BRAND.footer });
+  if (row.durationMs) {
+    embed.addFields({ name: "Duration", value: formatDuration(row.durationMs), inline: true });
+  }
+  if (row.expiresAt) {
+    embed.addFields({
+      name: "Expires",
+      value: `<t:${Math.floor(row.expiresAt.getTime() / 1e3)}:F>`,
+      inline: true
+    });
+  }
+  return embed;
+}
+__name(caseEmbed, "caseEmbed");
+
+// apps/bot/src/commands/moderation/shared.ts
+function readReason(interaction) {
+  return interaction.options.getString("reason")?.trim() || "No reason provided";
+}
+__name(readReason, "readReason");
+function readDuration(interaction) {
+  return interaction.options.getString("duration")?.trim() || null;
+}
+__name(readDuration, "readDuration");
+
+// apps/bot/src/commands/moderation/ban.ts
+var banCommand = {
+  data: new import_discord8.SlashCommandBuilder().setName("ban").setDescription("Ban a user, optionally for a limited time.").addUserOption(
+    (option) => option.setName("user").setDescription("User to ban").setRequired(true)
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).addStringOption(
+    (option) => option.setName("duration").setDescription("Optional: 7d, 12h, 30m (max 365d)")
+  ).addIntegerOption(
+    (option) => option.setName("delete-days").setDescription("Delete this many days of their recent messages (0\u20137)").setMinValue(0).setMaxValue(7)
+  ).setDefaultMemberPermissions(import_discord8.PermissionFlagsBits.BanMembers),
+  category: "moderation",
+  userPermissions: [import_discord8.PermissionFlagsBits.BanMembers],
+  botPermissions: [import_discord8.PermissionFlagsBits.BanMembers],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild, member }) {
+    await deferEphemeral(interaction);
+    const user = interaction.options.getUser("user", true);
+    const reason = readReason(interaction);
+    const rawDuration = readDuration(interaction);
+    const deleteDays = interaction.options.getInteger("delete-days") ?? 0;
+    assertBannableId(guild, member, user.id);
+    const target = await fetchMember(guild, user.id);
+    if (target) assertModeratable(guild, member, target);
+    const duration3 = rawDuration ? parseDuration(rawDuration) : null;
+    if (rawDuration && (duration3 === null || duration3 <= 0)) {
+      throw new UserFacingError("Invalid duration. Try `1d`, `12h`, or `30m`.");
+    }
+    await guild.bans.create(user.id, {
+      reason: auditReason(reason),
+      deleteMessageSeconds: deleteDays * 86400
+    });
+    const row = await finishModAction(client, {
+      type: "ban",
+      targetId: user.id,
+      moderatorId: interaction.user.id,
+      reason,
+      durationMs: duration3
+    });
+    await interaction.editReply({
+      content: duration3 ? `Banned ${user} for **${formatDuration(duration3)}** \u2014 case **#${row.id}**.` : `Banned ${user} \u2014 case **#${row.id}**.`
+    });
+  }
+};
+
+// apps/bot/src/commands/moderation/case.ts
+var import_discord9 = __toESM(require_src(), 1);
+var caseCommand = {
+  data: new import_discord9.SlashCommandBuilder().setName("case").setDescription("Show a moderation case by number.").addIntegerOption(
+    (option) => option.setName("id").setDescription("Case number").setRequired(true).setMinValue(1)
+  ).setDefaultMemberPermissions(import_discord9.PermissionFlagsBits.ModerateMembers),
+  category: "moderation",
+  userPermissions: [import_discord9.PermissionFlagsBits.ModerateMembers],
+  cooldownSeconds: 2,
+  async execute({ client, interaction }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const id = interaction.options.getInteger("id", true);
+    const rows = await db.select().from(cases).where(eq(cases.id, id)).limit(1);
+    const row = rows[0];
+    if (!row) throw new UserFacingError(`Case **#${id}** does not exist.`);
+    await interaction.editReply({
+      embeds: [caseEmbed(row)],
+      allowedMentions: { parse: [] }
+    });
+  }
+};
+
+// apps/bot/src/commands/moderation/cases.ts
+var import_discord10 = __toESM(require_src(), 1);
+var TYPES = [
+  "warn",
+  "warn-clear",
+  "timeout",
+  "timeout-clear",
+  "kick",
+  "ban",
+  "unban",
+  "softban",
+  "purge",
+  "slowmode"
+];
+var casesCommand = {
+  data: new import_discord10.SlashCommandBuilder().setName("cases").setDescription("List recent moderation cases.").addUserOption((option) => option.setName("user").setDescription("Filter by member")).addStringOption(
+    (option) => option.setName("type").setDescription("Filter by case type").addChoices(...TYPES.map((type) => ({ name: caseLabel(type), value: type })))
+  ).setDefaultMemberPermissions(import_discord10.PermissionFlagsBits.ModerateMembers),
+  category: "moderation",
+  userPermissions: [import_discord10.PermissionFlagsBits.ModerateMembers],
+  cooldownSeconds: 3,
+  async execute({ client, interaction }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const user = interaction.options.getUser("user");
+    const type = interaction.options.getString("type");
+    const filters = [];
+    if (user) filters.push(eq(cases.targetId, user.id));
+    if (type) filters.push(eq(cases.type, type));
+    const rows = await db.select().from(cases).where(filters.length > 0 ? and(...filters) : void 0).orderBy(desc(cases.createdAt)).limit(10);
+    if (rows.length === 0) {
+      await interaction.editReply({ content: "No cases matched those filters." });
+      return;
+    }
+    const lines = rows.map((row) => {
+      const at = `<t:${Math.floor(row.createdAt.getTime() / 1e3)}:R>`;
+      return `**#${row.id}** \xB7 ${caseLabel(row.type)} \xB7 ${targetMention(row.type, row.targetId)} \xB7 ${at}`;
+    });
+    const embed = new import_discord10.EmbedBuilder().setColor(BRAND.info).setTitle("Recent cases").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: `${rows.length} result${rows.length === 1 ? "" : "s"}` });
+    await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
+  }
+};
+
+// apps/bot/src/commands/moderation/clearwarnings.ts
+var import_discord11 = __toESM(require_src(), 1);
+var clearWarningsCommand = {
+  data: new import_discord11.SlashCommandBuilder().setName("clearwarnings").setDescription("Clear all active warnings for a member.").addUserOption(
+    (option) => option.setName("user").setDescription("Member to clear").setRequired(true)
+  ).setDefaultMemberPermissions(import_discord11.PermissionFlagsBits.ModerateMembers),
+  category: "moderation",
+  userPermissions: [import_discord11.PermissionFlagsBits.ModerateMembers],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const user = interaction.options.getUser("user", true);
+    const target = await fetchMember(guild, user.id);
+    if (!target) throw new UserFacingError("That member is not in this server.");
+    const cleared = await db.update(warnings).set({ active: false }).where(and(eq(warnings.userId, user.id), eq(warnings.active, true))).returning({ caseId: warnings.caseId });
+    if (cleared.length === 0) {
+      await interaction.editReply({ content: `${user} has no active warnings.` });
+      return;
+    }
+    await db.update(cases).set({ active: false }).where(
+      inArray(
+        cases.id,
+        cleared.map((entry) => entry.caseId)
+      )
+    );
+    const row = await finishModAction(client, {
+      type: "warn-clear",
+      targetId: user.id,
+      moderatorId: interaction.user.id,
+      reason: `Cleared ${cleared.length} active warning${cleared.length === 1 ? "" : "s"} (${cleared.map((entry) => `#${entry.caseId}`).join(", ")})`
+    });
+    await interaction.editReply({
+      content: `Cleared **${cleared.length}** warning${cleared.length === 1 ? "" : "s"} for ${user} \u2014 case **#${row.id}**.`
+    });
+  }
+};
+
+// apps/bot/src/commands/moderation/kick.ts
+var import_discord12 = __toESM(require_src(), 1);
+var kickCommand = {
+  data: new import_discord12.SlashCommandBuilder().setName("kick").setDescription("Kick a member.").addUserOption(
+    (option) => option.setName("user").setDescription("Member to kick").setRequired(true)
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord12.PermissionFlagsBits.KickMembers),
+  category: "moderation",
+  userPermissions: [import_discord12.PermissionFlagsBits.KickMembers],
+  botPermissions: [import_discord12.PermissionFlagsBits.KickMembers],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild, member }) {
+    await deferEphemeral(interaction);
+    const user = interaction.options.getUser("user", true);
+    const reason = readReason(interaction);
+    const target = await fetchMember(guild, user.id);
+    if (!target) throw new UserFacingError("That member is not in this server.");
+    assertModeratable(guild, member, target);
+    await target.kick(auditReason(reason));
+    const row = await finishModAction(client, {
+      type: "kick",
+      targetId: target.id,
+      moderatorId: interaction.user.id,
+      reason
+    });
+    await interaction.editReply({ content: `Kicked ${user} \u2014 case **#${row.id}**.` });
+  }
+};
+
+// apps/bot/src/commands/moderation/purge.ts
+var import_discord13 = __toESM(require_src(), 1);
+var purgeCommand = {
+  data: new import_discord13.SlashCommandBuilder().setName("purge").setDescription("Bulk-delete recent messages in this channel.").addIntegerOption(
+    (option) => option.setName("count").setDescription("How many messages (1\u2013100)").setRequired(true).setMinValue(1).setMaxValue(100)
+  ).addUserOption(
+    (option) => option.setName("user").setDescription("Only delete messages from this member")
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord13.PermissionFlagsBits.ManageMessages),
+  category: "moderation",
+  userPermissions: [import_discord13.PermissionFlagsBits.ManageMessages],
+  botPermissions: [import_discord13.PermissionFlagsBits.ManageMessages, import_discord13.PermissionFlagsBits.ReadMessageHistory],
+  cooldownSeconds: 5,
+  async execute({ client, interaction }) {
+    await deferEphemeral(interaction);
+    const count2 = interaction.options.getInteger("count", true);
+    const user = interaction.options.getUser("user");
+    const reason = readReason(interaction);
+    const channel = interaction.channel;
+    if (!channel || !channel.isTextBased() || !("bulkDelete" in channel)) {
+      throw new UserFacingError("This channel does not support bulk deletion.");
+    }
+    const fetched = await channel.messages.fetch({ limit: user ? 100 : count2 });
+    let messages2 = [...fetched.values()];
+    if (user) messages2 = messages2.filter((message) => message.author.id === user.id);
+    messages2 = messages2.slice(0, count2);
+    if (messages2.length === 0) {
+      throw new UserFacingError("No matching messages were found in the recent history.");
+    }
+    const deleted = await channel.bulkDelete(messages2, true);
+    const row = await finishModAction(client, {
+      type: "purge",
+      targetId: channel.id,
+      moderatorId: interaction.user.id,
+      reason: `Deleted ${deleted.size} message(s) in <#${channel.id}>${user ? ` from ${user.username}` : ""}. ${reason}`
+    });
+    await interaction.editReply({
+      content: `Deleted **${deleted.size}** message${deleted.size === 1 ? "" : "s"} \u2014 case **#${row.id}**.`
+    });
+  }
+};
+
+// apps/bot/src/commands/moderation/slowmode.ts
+var import_discord14 = __toESM(require_src(), 1);
+var slowmodeCommand = {
+  data: new import_discord14.SlashCommandBuilder().setName("slowmode").setDescription("Set a channel\u2019s slowmode (0 disables it).").addIntegerOption(
+    (option) => option.setName("seconds").setDescription("Seconds between messages (0\u201321600)").setRequired(true).setMinValue(0).setMaxValue(21600)
+  ).addChannelOption(
+    (option) => option.setName("channel").setDescription("Defaults to the current channel")
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord14.PermissionFlagsBits.ManageChannels),
+  category: "moderation",
+  userPermissions: [import_discord14.PermissionFlagsBits.ManageChannels],
+  botPermissions: [import_discord14.PermissionFlagsBits.ManageChannels],
+  cooldownSeconds: 3,
+  async execute({ client, interaction }) {
+    await deferEphemeral(interaction);
+    const seconds = interaction.options.getInteger("seconds", true);
+    const selected = interaction.options.getChannel("channel");
+    const reason = readReason(interaction);
+    const channel = selected ?? interaction.channel;
+    if (!channel || !("setRateLimitPerUser" in channel)) {
+      throw new UserFacingError("That channel does not support slowmode.");
+    }
+    await channel.setRateLimitPerUser(seconds, auditReason(reason));
+    const row = await finishModAction(client, {
+      type: "slowmode",
+      targetId: channel.id,
+      moderatorId: interaction.user.id,
+      reason: `Set slowmode to ${seconds}s in <#${channel.id}>. ${reason}`,
+      active: seconds > 0
+    });
+    await interaction.editReply({
+      content: seconds === 0 ? `Slowmode disabled in <#${channel.id}> \u2014 case **#${row.id}**.` : `Slowmode set to **${seconds}s** in <#${channel.id}> \u2014 case **#${row.id}**.`
+    });
+  }
+};
+
+// apps/bot/src/commands/moderation/softban.ts
+var import_discord15 = __toESM(require_src(), 1);
+var softbanCommand = {
+  data: new import_discord15.SlashCommandBuilder().setName("softban").setDescription("Ban and immediately unban a user to delete recent messages.").addUserOption(
+    (option) => option.setName("user").setDescription("User to softban").setRequired(true)
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).addIntegerOption(
+    (option) => option.setName("delete-days").setDescription("Delete this many days of recent messages (default 7)").setMinValue(0).setMaxValue(7)
+  ).setDefaultMemberPermissions(import_discord15.PermissionFlagsBits.BanMembers),
+  category: "moderation",
+  userPermissions: [import_discord15.PermissionFlagsBits.BanMembers],
+  botPermissions: [import_discord15.PermissionFlagsBits.BanMembers],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild, member }) {
+    await deferEphemeral(interaction);
+    const user = interaction.options.getUser("user", true);
+    const reason = readReason(interaction);
+    const deleteDays = interaction.options.getInteger("delete-days") ?? 7;
+    assertBannableId(guild, member, user.id);
+    const target = await fetchMember(guild, user.id);
+    if (target) assertModeratable(guild, member, target);
+    await guild.bans.create(user.id, {
+      reason: auditReason(`Softban: ${reason}`),
+      deleteMessageSeconds: deleteDays * 86400
+    });
+    await guild.bans.remove(user.id, "Softban completed");
+    const row = await finishModAction(client, {
+      type: "softban",
+      targetId: user.id,
+      moderatorId: interaction.user.id,
+      reason
+    });
+    await interaction.editReply({
+      content: `Softbanned ${user} and removed ${deleteDays} day(s) of messages \u2014 case **#${row.id}**.`
+    });
+  }
+};
+
+// apps/bot/src/commands/moderation/timeout.ts
+var import_discord16 = __toESM(require_src(), 1);
+var MAX_TIMEOUT_MS = 28 * 864e5;
+var timeoutCommand = {
+  data: new import_discord16.SlashCommandBuilder().setName("timeout").setDescription("Time out a member for a duration.").addUserOption(
+    (option) => option.setName("user").setDescription("Member to time out").setRequired(true)
+  ).addStringOption(
+    (option) => option.setName("duration").setDescription("Examples: 10m, 2h, 7d (max 28d)").setRequired(true)
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord16.PermissionFlagsBits.ModerateMembers),
+  category: "moderation",
+  userPermissions: [import_discord16.PermissionFlagsBits.ModerateMembers],
+  botPermissions: [import_discord16.PermissionFlagsBits.ModerateMembers],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild, member }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const user = interaction.options.getUser("user", true);
+    const raw = readDuration(interaction);
+    const reason = readReason(interaction);
+    const duration3 = raw ? parseDuration(raw) : null;
+    if (duration3 === null || duration3 <= 0) {
+      throw new UserFacingError("Invalid duration. Try `10m`, `2h`, or `7d`.");
+    }
+    if (duration3 > MAX_TIMEOUT_MS) {
+      throw new UserFacingError("Timeouts cannot exceed 28 days.");
+    }
+    const target = await fetchMember(guild, user.id);
+    if (!target) throw new UserFacingError("That member is not in this server.");
+    assertModeratable(guild, member, target);
+    await target.timeout(duration3, auditReason(reason));
+    await db.update(cases).set({ active: false }).where(and(eq(cases.targetId, target.id), eq(cases.type, "timeout"), eq(cases.active, true)));
+    const row = await finishModAction(client, {
+      type: "timeout",
+      targetId: target.id,
+      moderatorId: interaction.user.id,
+      reason,
+      durationMs: duration3
+    });
+    const until = Math.floor((Date.now() + duration3) / 1e3);
+    await interaction.editReply({
+      content: `Timed out ${target} for **${formatDuration(duration3)}**, until <t:${until}:f> \u2014 case **#${row.id}**.`
+    });
+  }
+};
+
+// apps/bot/src/commands/moderation/unban.ts
+var import_discord17 = __toESM(require_src(), 1);
+var unbanCommand = {
+  data: new import_discord17.SlashCommandBuilder().setName("unban").setDescription("Unban a user by ID.").addStringOption(
+    (option) => option.setName("user-id").setDescription("The banned user\u2019s ID (17\u201320 digits)").setRequired(true).setMinLength(17).setMaxLength(20)
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord17.PermissionFlagsBits.BanMembers),
+  category: "moderation",
+  userPermissions: [import_discord17.PermissionFlagsBits.BanMembers],
+  botPermissions: [import_discord17.PermissionFlagsBits.BanMembers],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const userId = interaction.options.getString("user-id", true).trim();
+    const reason = readReason(interaction);
+    if (!/^\d{17,20}$/.test(userId)) {
+      throw new UserFacingError("That is not a valid Discord user ID.");
+    }
+    if (userId === guild.ownerId) {
+      throw new UserFacingError("The server owner cannot be banned or unbanned.");
+    }
+    const ban = await guild.bans.fetch(userId).catch(() => null);
+    if (!ban) throw new UserFacingError("That user is not banned.");
+    await guild.bans.remove(userId, auditReason(reason));
+    await db.update(cases).set({ active: false }).where(and(eq(cases.targetId, userId), eq(cases.type, "ban"), eq(cases.active, true)));
+    const row = await finishModAction(client, {
+      type: "unban",
+      targetId: userId,
+      moderatorId: interaction.user.id,
+      reason
+    });
+    await interaction.editReply({ content: `Unbanned <@${userId}> \u2014 case **#${row.id}**.` });
+  }
+};
+
+// apps/bot/src/commands/moderation/untimeout.ts
+var import_discord18 = __toESM(require_src(), 1);
+var untimeoutCommand = {
+  data: new import_discord18.SlashCommandBuilder().setName("untimeout").setDescription("Remove a member\u2019s timeout.").addUserOption(
+    (option) => option.setName("user").setDescription("Member to un-timeout").setRequired(true)
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord18.PermissionFlagsBits.ModerateMembers),
+  category: "moderation",
+  userPermissions: [import_discord18.PermissionFlagsBits.ModerateMembers],
+  botPermissions: [import_discord18.PermissionFlagsBits.ModerateMembers],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild, member }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const user = interaction.options.getUser("user", true);
+    const reason = readReason(interaction);
+    const target = await fetchMember(guild, user.id);
+    if (!target) throw new UserFacingError("That member is not in this server.");
+    assertModeratable(guild, member, target);
+    if (!target.isCommunicationDisabled()) {
+      throw new UserFacingError("That member is not currently timed out.");
+    }
+    await target.timeout(null, auditReason(reason));
+    await db.update(cases).set({ active: false }).where(and(eq(cases.targetId, target.id), eq(cases.type, "timeout"), eq(cases.active, true)));
+    const row = await finishModAction(client, {
+      type: "timeout-clear",
+      targetId: target.id,
+      moderatorId: interaction.user.id,
+      reason
+    });
+    await interaction.editReply({
+      content: `Removed the timeout from ${target} \u2014 case **#${row.id}**.`
+    });
+  }
+};
+
+// apps/bot/src/commands/moderation/warn.ts
+var import_discord19 = __toESM(require_src(), 1);
+var warnCommand = {
+  data: new import_discord19.SlashCommandBuilder().setName("warn").setDescription("Warn a member and record a case.").addUserOption(
+    (option) => option.setName("user").setDescription("Member to warn").setRequired(true)
+  ).addStringOption(
+    (option) => option.setName("reason").setDescription("Why").setRequired(true).setMaxLength(1e3)
+  ).setDefaultMemberPermissions(import_discord19.PermissionFlagsBits.ModerateMembers),
+  category: "moderation",
+  userPermissions: [import_discord19.PermissionFlagsBits.ModerateMembers],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild, member }) {
+    await deferEphemeral(interaction);
+    const user = interaction.options.getUser("user", true);
+    const reason = readReason(interaction);
+    const target = await fetchMember(guild, user.id);
+    if (!target) throw new UserFacingError("That member is not in this server.");
+    assertModeratable(guild, member, target);
+    const row = await finishModAction(client, {
+      type: "warn",
+      targetId: target.id,
+      moderatorId: interaction.user.id,
+      reason
+    });
+    await interaction.editReply({ content: `Warned ${target} \u2014 case **#${row.id}**.` });
+  }
+};
+
+// apps/bot/src/commands/moderation/warnings.ts
+var import_discord20 = __toESM(require_src(), 1);
+var warningsCommand = {
+  data: new import_discord20.SlashCommandBuilder().setName("warnings").setDescription("List a member\u2019s active warnings.").addUserOption(
+    (option) => option.setName("user").setDescription("Member to inspect").setRequired(true)
+  ).setDefaultMemberPermissions(import_discord20.PermissionFlagsBits.ModerateMembers),
+  category: "moderation",
+  userPermissions: [import_discord20.PermissionFlagsBits.ModerateMembers],
+  cooldownSeconds: 2,
+  async execute({ client, interaction }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const user = interaction.options.getUser("user", true);
+    const rows = await db.select({
+      caseId: warnings.caseId,
+      reason: cases.reason,
+      createdAt: cases.createdAt,
+      moderatorId: cases.moderatorId
+    }).from(warnings).innerJoin(cases, eq(warnings.caseId, cases.id)).where(and(eq(warnings.userId, user.id), eq(warnings.active, true))).orderBy(desc(cases.createdAt)).limit(20);
+    if (rows.length === 0) {
+      await interaction.editReply({ content: `${user} has no active warnings.` });
+      return;
+    }
+    const lines = rows.map((row) => {
+      const at = `<t:${Math.floor(row.createdAt.getTime() / 1e3)}:d>`;
+      return `**#${row.caseId}** ${at} \xB7 <@${row.moderatorId}>
+${truncate(row.reason, 180)}`;
+    });
+    const embed = new import_discord20.EmbedBuilder().setColor(BRAND.warning).setTitle(`Active warnings \xB7 ${user.username}`).setDescription(truncate(lines.join("\n\n"), 4e3)).setFooter({ text: `${rows.length} active warning${rows.length === 1 ? "" : "s"}` });
+    await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
   }
 };
 
@@ -114640,8 +115895,22 @@ ${progress.current.toLocaleString()} / ${progress.needed.toLocaleString()} XP to
 var commands = [
   pingCommand,
   helpCommand,
+  setupCommand,
   rankCommand,
-  leaderboardCommand
+  leaderboardCommand,
+  warnCommand,
+  warningsCommand,
+  clearWarningsCommand,
+  timeoutCommand,
+  untimeoutCommand,
+  kickCommand,
+  banCommand,
+  unbanCommand,
+  softbanCommand,
+  caseCommand,
+  casesCommand,
+  purgeCommand,
+  slowmodeCommand
 ];
 
 // apps/bot/src/config/env.ts
@@ -114700,68 +115969,13 @@ ${details}`);
 }
 __name(loadEnv, "loadEnv");
 
-// apps/bot/src/config/settings.ts
-async function readSettings(db, onInvalid) {
-  const rows = await db.select({ modules: settings.modules, updatedAt: settings.updatedAt }).from(settings).where(eq(settings.id, 1)).limit(1);
-  const row = rows[0];
-  if (!row) {
-    await db.insert(settings).values({ id: 1, modules: DEFAULT_CONFIG }).onConflictDoNothing();
-    return { config: parseConfig(DEFAULT_CONFIG), updatedAt: Date.now() };
-  }
-  try {
-    return { config: parseConfig(row.modules), updatedAt: row.updatedAt.getTime() };
-  } catch (error62) {
-    onInvalid?.(error62);
-    return { config: parseConfig(DEFAULT_CONFIG), updatedAt: row.updatedAt.getTime() };
-  }
-}
-__name(readSettings, "readSettings");
-function applyOverrides(config2, musicEnabled) {
-  if (musicEnabled) return config2;
-  return { ...config2, music: { ...config2.music, enabled: false } };
-}
-__name(applyOverrides, "applyOverrides");
-function startSettingsPoller(client) {
-  if (!client.db) return;
-  if (client.settingsPollTimer) return;
-  client.settingsPollTimer = setInterval(() => {
-    void poll(client);
-  }, 15e3);
-  client.settingsPollTimer.unref();
-}
-__name(startSettingsPoller, "startSettingsPoller");
-async function poll(client) {
-  if (!client.db) return;
-  try {
-    const rows = await client.db.select({ modules: settings.modules, updatedAt: settings.updatedAt }).from(settings).where(eq(settings.id, 1)).limit(1);
-    const row = rows[0];
-    if (!row) return;
-    const updatedAt = row.updatedAt.getTime();
-    if (updatedAt === client.settingsUpdatedAt) return;
-    const config2 = parseConfig(row.modules);
-    client.settings = applyOverrides(config2, client.env.MUSIC_ENABLED);
-    client.settingsUpdatedAt = updatedAt;
-    client.logger.info({ updatedAt }, "settings reloaded");
-  } catch (error62) {
-    client.logger.warn({ err: error62 }, "settings poll failed");
-  }
-}
-__name(poll, "poll");
-function stopSettingsPoller(client) {
-  if (client.settingsPollTimer) {
-    clearInterval(client.settingsPollTimer);
-    client.settingsPollTimer = null;
-  }
-}
-__name(stopSettingsPoller, "stopSettingsPoller");
-
 // apps/bot/src/core/client.ts
-var import_discord5 = __toESM(require_src(), 1);
-var NervanaClient = class extends import_discord5.Client {
+var import_discord21 = __toESM(require_src(), 1);
+var NervanaClient = class extends import_discord21.Client {
   static {
     __name(this, "NervanaClient");
   }
-  commands = new import_discord5.Collection();
+  commands = new import_discord21.Collection();
   startedAt = Date.now();
   env;
   logger;
@@ -114770,20 +115984,23 @@ var NervanaClient = class extends import_discord5.Client {
   settingsUpdatedAt = 0;
   settingsPollTimer = null;
   leveling = null;
+  moderation = null;
+  automod = null;
+  heartbeat = null;
   constructor() {
     super({
       intents: [
-        import_discord5.GatewayIntentBits.Guilds,
-        import_discord5.GatewayIntentBits.GuildMembers,
-        import_discord5.GatewayIntentBits.GuildMessages,
-        import_discord5.GatewayIntentBits.MessageContent,
-        import_discord5.GatewayIntentBits.DirectMessages,
-        import_discord5.GatewayIntentBits.GuildVoiceStates
+        import_discord21.GatewayIntentBits.Guilds,
+        import_discord21.GatewayIntentBits.GuildMembers,
+        import_discord21.GatewayIntentBits.GuildMessages,
+        import_discord21.GatewayIntentBits.MessageContent,
+        import_discord21.GatewayIntentBits.DirectMessages,
+        import_discord21.GatewayIntentBits.GuildVoiceStates
       ],
-      partials: [import_discord5.Partials.Message, import_discord5.Partials.Channel, import_discord5.Partials.GuildMember],
+      partials: [import_discord21.Partials.Message, import_discord21.Partials.Channel, import_discord21.Partials.GuildMember],
       allowedMentions: { parse: ["users"], repliedUser: false },
-      makeCache: import_discord5.Options.cacheWithLimits({
-        ...import_discord5.Options.DefaultMakeCacheSettings,
+      makeCache: import_discord21.Options.cacheWithLimits({
+        ...import_discord21.Options.DefaultMakeCacheSettings,
         // Bound the caches that grow with traffic, keep the ones needed for a
         // single guild's member lookups.
         MessageManager: 100,
@@ -114838,6 +116055,21 @@ function registerCommands(client, commands2) {
   }
 }
 __name(registerCommands, "registerCommands");
+async function registerGuildCommands(client) {
+  if (!client.env.REGISTER_COMMANDS || !client.application) return;
+  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  if (!guild) {
+    client.logger.warn(
+      { guildId: client.env.GUILD_ID },
+      "cannot register commands before joining the target guild"
+    );
+    return;
+  }
+  const payload = [...client.commands.values()].map((command) => command.data.toJSON());
+  await client.application.commands.set(payload, guild.id);
+  client.logger.info({ count: payload.length, guildId: guild.id }, "registered guild commands");
+}
+__name(registerGuildCommands, "registerGuildCommands");
 
 // apps/bot/src/core/events.ts
 function registerEvents(client, events2) {
@@ -114866,7 +116098,7 @@ function createLogger(level) {
     base: { service: "nervana" },
     timestamp: import_pino.default.stdTimeFunctions.isoTime,
     formatters: {
-      level: /* @__PURE__ */ __name((label) => ({ level: label }), "level")
+      level: /* @__PURE__ */ __name((label2) => ({ level: label2 }), "level")
     }
   });
 }
@@ -114876,10 +116108,7 @@ __name(createLogger, "createLogger");
 var import_node_fs2 = require("node:fs");
 var import_node_path3 = require("node:path");
 function resolveMigrationsDir() {
-  const candidates = [
-    (0, import_node_path3.resolve)(process.cwd(), "drizzle"),
-    (0, import_node_path3.resolve)(process.cwd(), "../../drizzle")
-  ];
+  const candidates = [(0, import_node_path3.resolve)(process.cwd(), "drizzle"), (0, import_node_path3.resolve)(process.cwd(), "../../drizzle")];
   for (const candidate of candidates) {
     if ((0, import_node_fs2.existsSync)(candidate)) return candidate;
   }
@@ -114890,28 +116119,114 @@ ${candidates.map((candidate) => `  - ${candidate}`).join("\n")}`
 }
 __name(resolveMigrationsDir, "resolveMigrationsDir");
 
+// apps/bot/src/events/channel-update.ts
+var import_discord23 = __toESM(require_src(), 1);
+
+// apps/bot/src/modules/logging/service.ts
+var import_discord22 = __toESM(require_src(), 1);
+function isLogIgnored(client, channelId, userId) {
+  const config2 = client.settings.logging;
+  if (channelId && config2.ignoreChannelIds.includes(channelId)) return true;
+  if (userId && config2.ignoreUserIds.includes(userId)) return true;
+  return false;
+}
+__name(isLogIgnored, "isLogIgnored");
+function logEmbed(title, color = BRAND.muted) {
+  return new import_discord22.EmbedBuilder().setColor(color).setTitle(title);
+}
+__name(logEmbed, "logEmbed");
+async function sendLog(client, event, embed) {
+  const config2 = client.settings.logging;
+  if (!config2.enabled) return;
+  const channelId = config2.channels[event];
+  if (!channelId) return;
+  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const channel = guild?.channels.cache.get(channelId);
+  if (!channel?.isTextBased()) return;
+  embed.setFooter({ text: `${BRAND.footer} \xB7 ${event}` }).setTimestamp();
+  await channel.send({ embeds: [embed], allowedMentions: { parse: [] } }).catch((error62) => {
+    client.logger.warn({ err: error62, event, channelId }, "failed to send log");
+  });
+}
+__name(sendLog, "sendLog");
+
+// apps/bot/src/events/channel-update.ts
+var channelUpdateEvent = {
+  name: import_discord23.Events.ChannelUpdate,
+  async execute(client, oldChannel, newChannel) {
+    if (newChannel.isDMBased()) return;
+    if (newChannel.guild.id !== client.env.GUILD_ID) return;
+    if (isLogIgnored(client, newChannel.id)) return;
+    if (!("guild" in oldChannel)) return;
+    const changes = [];
+    if (oldChannel.name !== newChannel.name) {
+      changes.push(`**Name:** ${oldChannel.name} \u2192 ${newChannel.name}`);
+    }
+    if (oldChannel.parentId !== newChannel.parentId) {
+      changes.push(
+        `**Category:** ${oldChannel.parentId ? `<#${oldChannel.parentId}>` : "none"} \u2192 ${newChannel.parentId ? `<#${newChannel.parentId}>` : "none"}`
+      );
+    }
+    if (oldChannel.position !== newChannel.position) {
+      changes.push(`**Position:** ${oldChannel.position} \u2192 ${newChannel.position}`);
+    }
+    if (oldChannel.type !== newChannel.type) {
+      changes.push(`**Type:** ${oldChannel.type} \u2192 ${newChannel.type}`);
+    }
+    if ("topic" in oldChannel && "topic" in newChannel && oldChannel.topic !== newChannel.topic) {
+      changes.push(
+        `**Topic:** ${truncate(oldChannel.topic ?? "*none*", 300)} \u2192 ${truncate(
+          newChannel.topic ?? "*none*",
+          300
+        )}`
+      );
+    }
+    if ("nsfw" in oldChannel && "nsfw" in newChannel && oldChannel.nsfw !== newChannel.nsfw) {
+      changes.push(
+        `**NSFW:** ${oldChannel.nsfw ? "on" : "off"} \u2192 ${newChannel.nsfw ? "on" : "off"}`
+      );
+    }
+    if ("rateLimitPerUser" in oldChannel && "rateLimitPerUser" in newChannel && oldChannel.rateLimitPerUser !== newChannel.rateLimitPerUser) {
+      changes.push(
+        `**Slowmode:** ${oldChannel.rateLimitPerUser ?? 0}s \u2192 ${newChannel.rateLimitPerUser ?? 0}s`
+      );
+    }
+    if (changes.length === 0) return;
+    const embed = logEmbed("Channel updated", BRAND.info).addFields(
+      { name: "Channel", value: `<#${newChannel.id}>`, inline: true },
+      { name: "Changes", value: truncate(changes.join("\n"), 1024) }
+    );
+    await sendLog(client, "channelUpdate", embed);
+  }
+};
+
 // apps/bot/src/events/client-error.ts
-var import_discord6 = __toESM(require_src(), 1);
+var import_discord24 = __toESM(require_src(), 1);
 var errorEvent = {
-  name: import_discord6.Events.Error,
+  name: import_discord24.Events.Error,
   execute(client, error62) {
     client.logger.error({ err: error62 }, "discord client error");
   }
 };
 var warnEvent = {
-  name: import_discord6.Events.Warn,
+  name: import_discord24.Events.Warn,
   execute(client, message) {
     client.logger.warn({ message }, "discord client warning");
   }
 };
 
 // apps/bot/src/events/guild-create.ts
-var import_discord7 = __toESM(require_src(), 1);
+var import_discord25 = __toESM(require_src(), 1);
 var guildCreateEvent = {
-  name: import_discord7.Events.GuildCreate,
+  name: import_discord25.Events.GuildCreate,
   async execute(client, guild) {
     if (guild.id === client.env.GUILD_ID) {
       client.logger.info({ guildId: guild.id, name: guild.name }, "joined the target guild");
+      try {
+        await registerGuildCommands(client);
+      } catch (error62) {
+        client.logger.error({ err: error62 }, "failed to register guild commands");
+      }
       return;
     }
     client.logger.warn(
@@ -114925,10 +116240,10 @@ var guildCreateEvent = {
 };
 
 // apps/bot/src/events/interaction-create.ts
-var import_discord10 = __toESM(require_src(), 1);
+var import_discord27 = __toESM(require_src(), 1);
 
 // apps/bot/src/core/interaction-handler.ts
-var import_discord9 = __toESM(require_src(), 1);
+var import_discord26 = __toESM(require_src(), 1);
 
 // apps/bot/src/core/cooldowns.ts
 var cooldowns = /* @__PURE__ */ new Map();
@@ -114948,46 +116263,12 @@ function takeCooldown(userId, commandName, seconds) {
 }
 __name(takeCooldown, "takeCooldown");
 
-// apps/bot/src/core/errors.ts
-var import_node_crypto = require("node:crypto");
-var UserFacingError = class extends Error {
-  static {
-    __name(this, "UserFacingError");
-  }
-  errorId;
-  constructor(message, options = {}) {
-    super(message);
-    this.name = "UserFacingError";
-    this.errorId = options.errorId;
-  }
-};
-function newErrorId() {
-  return (0, import_node_crypto.randomUUID)().slice(0, 8);
-}
-__name(newErrorId, "newErrorId");
-
-// apps/bot/src/core/respond.ts
-var import_discord8 = __toESM(require_src(), 1);
-async function replyError(interaction, message, errorId) {
-  const content = errorId ? `${message}
--# Error ID: \`${errorId}\`` : message;
-  try {
-    if (interaction.deferred || interaction.replied) {
-      await interaction.followUp({ content, flags: import_discord8.MessageFlags.Ephemeral });
-    } else {
-      await interaction.reply({ content, flags: import_discord8.MessageFlags.Ephemeral });
-    }
-  } catch {
-  }
-}
-__name(replyError, "replyError");
-
 // apps/bot/src/core/interaction-handler.ts
 async function handleChatInputCommand(client, interaction) {
   if (!interaction.inCachedGuild()) {
     await interaction.reply({
       content: "Nervana only works inside its configured server.",
-      flags: import_discord9.MessageFlags.Ephemeral
+      flags: import_discord26.MessageFlags.Ephemeral
     }).catch(() => {
     });
     return;
@@ -115009,7 +116290,7 @@ async function handleChatInputCommand(client, interaction) {
       if (missing.length > 0) {
         await replyError(
           interaction,
-          `You need the following permissions: ${missing.map((p) => `\`${p}\``).join(", ")}.`
+          `You need the following permissions: ${new import_discord26.PermissionsBitField(missing).toArray().join(", ")}.`
         );
         return;
       }
@@ -115019,7 +116300,7 @@ async function handleChatInputCommand(client, interaction) {
       if (missing.length > 0) {
         await replyError(
           interaction,
-          `I am missing permissions: ${missing.map((p) => `\`${p}\``).join(", ")}.`
+          `I am missing permissions: ${new import_discord26.PermissionsBitField(missing).toArray().join(", ")}.`
         );
         return;
       }
@@ -115059,7 +116340,7 @@ __name(handleChatInputCommand, "handleChatInputCommand");
 
 // apps/bot/src/events/interaction-create.ts
 var interactionCreateEvent = {
-  name: import_discord10.Events.InteractionCreate,
+  name: import_discord27.Events.InteractionCreate,
   async execute(client, interaction) {
     if (interaction.isChatInputCommand()) {
       await handleChatInputCommand(client, interaction);
@@ -115067,20 +116348,241 @@ var interactionCreateEvent = {
   }
 };
 
+// apps/bot/src/events/member-add.ts
+var import_discord28 = __toESM(require_src(), 1);
+
+// apps/bot/src/modules/welcome/service.ts
+function render(template, member, serverName) {
+  return template.replaceAll("{user}", `<@${member.id}>`).replaceAll("{username}", member.user?.username ?? "Unknown").replaceAll("{server}", serverName).replaceAll("{memberCount}", String(member.guild.memberCount));
+}
+__name(render, "render");
+async function deliver(client, channelId, content, userId) {
+  if (!channelId) return;
+  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const channel = guild?.channels.cache.get(channelId);
+  if (!channel?.isTextBased()) return;
+  await channel.send({ content, allowedMentions: { users: [userId] } }).catch((error62) => {
+    client.logger.warn({ err: error62, channelId }, "failed to send welcome message");
+  });
+}
+__name(deliver, "deliver");
+async function onMemberJoin(client, member) {
+  const config2 = client.settings.welcome;
+  for (const roleId of config2.autoRoleIds) {
+    if (member.roles.cache.has(roleId)) continue;
+    await member.roles.add(roleId, "Automatic join role").catch(
+      (error62) => client.logger.warn({ err: error62, roleId, userId: member.id }, "failed to add auto role")
+    );
+  }
+  if (!config2.joinEnabled || !config2.joinChannelId) return;
+  await deliver(
+    client,
+    config2.joinChannelId,
+    render(config2.joinMessage, member, member.guild.name),
+    member.id
+  );
+}
+__name(onMemberJoin, "onMemberJoin");
+async function onMemberLeave(client, member) {
+  const config2 = client.settings.welcome;
+  if (!config2.leaveEnabled || !config2.leaveChannelId) return;
+  await deliver(
+    client,
+    config2.leaveChannelId,
+    render(config2.leaveMessage, member, member.guild.name),
+    member.id
+  );
+}
+__name(onMemberLeave, "onMemberLeave");
+
+// apps/bot/src/events/member-add.ts
+var guildMemberAddEvent = {
+  name: import_discord28.Events.GuildMemberAdd,
+  async execute(client, member) {
+    if (member.guild.id !== client.env.GUILD_ID) return;
+    if (!isLogIgnored(client, null, member.id)) {
+      const embed = logEmbed("Member joined", BRAND.success).setThumbnail(member.displayAvatarURL({ size: 128 })).addFields(
+        { name: "Member", value: `${member} \`${member.id}\``, inline: true },
+        {
+          name: "Account created",
+          value: `<t:${Math.floor(member.user.createdAt.getTime() / 1e3)}:R>`,
+          inline: true
+        },
+        { name: "Member count", value: String(member.guild.memberCount), inline: true }
+      );
+      await sendLog(client, "memberJoin", embed);
+    }
+    const handled = await client.automod?.handleJoin(member) ?? false;
+    if (handled) return;
+    await onMemberJoin(client, member);
+  }
+};
+
+// apps/bot/src/events/member-remove.ts
+var import_discord29 = __toESM(require_src(), 1);
+var guildMemberRemoveEvent = {
+  name: import_discord29.Events.GuildMemberRemove,
+  async execute(client, member) {
+    if (member.guild.id !== client.env.GUILD_ID) return;
+    if (!isLogIgnored(client, null, member.id)) {
+      const avatar = member.user?.displayAvatarURL({ size: 128 });
+      const embed = logEmbed("Member left", BRAND.danger).addFields(
+        {
+          name: "Member",
+          value: `${member.user?.username ?? "Unknown"} \`${member.id}\``,
+          inline: true
+        },
+        {
+          name: "Joined",
+          value: member.joinedAt ? `<t:${Math.floor(member.joinedAt.getTime() / 1e3)}:R>` : "Unknown",
+          inline: true
+        },
+        { name: "Roles", value: String(member.roles?.cache.size ?? 0), inline: true }
+      );
+      if (avatar) embed.setThumbnail(avatar);
+      await sendLog(client, "memberLeave", embed);
+    }
+    await onMemberLeave(client, member);
+  }
+};
+
+// apps/bot/src/events/member-update.ts
+var import_discord30 = __toESM(require_src(), 1);
+var guildMemberUpdateEvent = {
+  name: import_discord30.Events.GuildMemberUpdate,
+  async execute(client, oldMember, newMember) {
+    if (newMember.guild.id !== client.env.GUILD_ID) return;
+    if (newMember.user.bot) return;
+    if (isLogIgnored(client, null, newMember.id)) return;
+    if (oldMember.partial) return;
+    const changes = [];
+    if (oldMember.nickname !== newMember.nickname) {
+      changes.push(
+        `**Nickname:** ${oldMember.nickname ?? "*none*"} \u2192 ${newMember.nickname ?? "*none*"}`
+      );
+    }
+    const beforeRoles = new Set(oldMember.roles.cache.keys());
+    const afterRoles = new Set(newMember.roles.cache.keys());
+    const added = [...afterRoles].filter((id) => !beforeRoles.has(id));
+    const removed = [...beforeRoles].filter((id) => !afterRoles.has(id));
+    if (added.length > 0) {
+      changes.push(`**Roles added:** ${added.map((id) => `<@&${id}>`).join(", ")}`);
+    }
+    if (removed.length > 0) {
+      changes.push(`**Roles removed:** ${removed.map((id) => `<@&${id}>`).join(", ")}`);
+    }
+    const beforeTimeout = oldMember.communicationDisabledUntilTimestamp;
+    const afterTimeout = newMember.communicationDisabledUntilTimestamp;
+    if (beforeTimeout !== afterTimeout) {
+      changes.push(
+        afterTimeout ? `**Timed out until:** <t:${Math.floor(afterTimeout / 1e3)}:F>` : "**Timeout removed**"
+      );
+    }
+    if (changes.length === 0) return;
+    const embed = logEmbed("Member updated", BRAND.info).addFields(
+      { name: "Member", value: `${newMember} \`${newMember.id}\``, inline: true },
+      { name: "Changes", value: truncate(changes.join("\n"), 1024) }
+    );
+    await sendLog(client, "memberUpdate", embed);
+  }
+};
+
+// apps/bot/src/events/message-bulk-delete.ts
+var import_discord31 = __toESM(require_src(), 1);
+var messageBulkDeleteEvent = {
+  name: import_discord31.Events.MessageBulkDelete,
+  async execute(client, messages2, channel) {
+    if (!channel.guildId || channel.guildId !== client.env.GUILD_ID) return;
+    if (isLogIgnored(client, channel.id)) return;
+    const sample = [...messages2.values()].slice(0, 10).map((message) => {
+      const author = message.author?.username ?? "Unknown";
+      return `\u2022 **${author}**: ${truncate(message.content?.trim() || "*Not cached*", 90)}`;
+    }).join("\n");
+    const embed = logEmbed("Messages bulk deleted", BRAND.danger).addFields(
+      { name: "Channel", value: `<#${channel.id}>`, inline: true },
+      { name: "Count", value: String(messages2.size), inline: true },
+      { name: "Sample", value: truncate(sample || "*No cached content*", 1024) }
+    );
+    await sendLog(client, "messageBulkDelete", embed);
+  }
+};
+
 // apps/bot/src/events/message-create.ts
-var import_discord11 = __toESM(require_src(), 1);
+var import_discord32 = __toESM(require_src(), 1);
 var messageCreateEvent = {
-  name: import_discord11.Events.MessageCreate,
+  name: import_discord32.Events.MessageCreate,
   async execute(client, message) {
     if (message.author.bot) return;
+    const handled = await client.automod?.handleMessage(message) ?? false;
+    if (handled) return;
     await client.leveling?.record(message);
   }
 };
 
+// apps/bot/src/events/message-delete.ts
+var import_discord33 = __toESM(require_src(), 1);
+var messageDeleteEvent = {
+  name: import_discord33.Events.MessageDelete,
+  async execute(client, message) {
+    if (!message.inGuild() || message.guildId !== client.env.GUILD_ID) return;
+    if (message.author?.bot) return;
+    if (isLogIgnored(client, message.channelId, message.author?.id)) return;
+    const embed = logEmbed("Message deleted", BRAND.danger).addFields(
+      {
+        name: "Author",
+        value: message.author ? `<@${message.author.id}> \`${message.author.id}\`` : "Unknown (not cached)",
+        inline: true
+      },
+      { name: "Channel", value: `<#${message.channelId}>`, inline: true },
+      {
+        name: "Content",
+        value: truncate(message.content?.trim() || "*Not cached*", 1024)
+      }
+    );
+    if (message.attachments && message.attachments.size > 0) {
+      embed.addFields({
+        name: "Attachments",
+        value: truncate(
+          [...message.attachments.values()].slice(0, 5).map((attachment) => attachment.name).join("\n"),
+          1024
+        )
+      });
+    }
+    await sendLog(client, "messageDelete", embed);
+  }
+};
+
+// apps/bot/src/events/message-update.ts
+var import_discord34 = __toESM(require_src(), 1);
+var messageUpdateEvent = {
+  name: import_discord34.Events.MessageUpdate,
+  async execute(client, oldMessage, newMessage) {
+    if (!newMessage.inGuild() || newMessage.guildId !== client.env.GUILD_ID) return;
+    if (newMessage.author?.bot) return;
+    if (isLogIgnored(client, newMessage.channelId, newMessage.author?.id)) return;
+    const before = oldMessage.content ?? "";
+    const after = newMessage.content ?? "";
+    if (before === after) return;
+    const jump = `https://discord.com/channels/${newMessage.guildId}/${newMessage.channelId}/${newMessage.id}`;
+    const embed = logEmbed("Message edited", BRAND.warning).addFields(
+      {
+        name: "Author",
+        value: newMessage.author ? `<@${newMessage.author.id}> \`${newMessage.author.id}\`` : "Unknown",
+        inline: true
+      },
+      { name: "Channel", value: `<#${newMessage.channelId}>`, inline: true },
+      { name: "Before", value: truncate(before.trim() || "*Not cached*", 1024) },
+      { name: "After", value: truncate(after.trim() || "*Empty*", 1024) },
+      { name: "Jump", value: `[Go to message](${jump})` }
+    );
+    await sendLog(client, "messageEdit", embed);
+  }
+};
+
 // apps/bot/src/events/ready.ts
-var import_discord12 = __toESM(require_src(), 1);
+var import_discord35 = __toESM(require_src(), 1);
 var readyEvent = {
-  name: import_discord12.Events.ClientReady,
+  name: import_discord35.Events.ClientReady,
   once: true,
   async execute(client) {
     if (!client.user) return;
@@ -115116,14 +116618,10 @@ var readyEvent = {
         "target guild resolved"
       );
     }
-    if (client.env.REGISTER_COMMANDS && client.application) {
-      try {
-        const payload = [...client.commands.values()].map((command) => command.data.toJSON());
-        await client.application.commands.set(payload, client.env.GUILD_ID);
-        client.logger.info({ count: payload.length }, "registered guild commands");
-      } catch (error62) {
-        client.logger.error({ err: error62 }, "failed to register guild commands");
-      }
+    try {
+      await registerGuildCommands(client);
+    } catch (error62) {
+      client.logger.error({ err: error62 }, "failed to register guild commands");
     }
     if (client.db) startSettingsPoller(client);
     if (client.env.SMOKE_TEST) {
@@ -115145,15 +116643,450 @@ var readyEvent = {
   }
 };
 
+// apps/bot/src/events/role-update.ts
+var import_discord36 = __toESM(require_src(), 1);
+var roleUpdateEvent = {
+  name: import_discord36.Events.GuildRoleUpdate,
+  async execute(client, oldRole, newRole) {
+    if (newRole.guild.id !== client.env.GUILD_ID) return;
+    const changes = [];
+    if (oldRole.name !== newRole.name) {
+      changes.push(`**Name:** ${oldRole.name} \u2192 ${newRole.name}`);
+    }
+    if (oldRole.hexColor !== newRole.hexColor) {
+      changes.push(`**Color:** ${oldRole.hexColor} \u2192 ${newRole.hexColor}`);
+    }
+    if (oldRole.hoist !== newRole.hoist) {
+      changes.push(
+        `**Hoisted:** ${oldRole.hoist ? "yes" : "no"} \u2192 ${newRole.hoist ? "yes" : "no"}`
+      );
+    }
+    if (oldRole.mentionable !== newRole.mentionable) {
+      changes.push(
+        `**Mentionable:** ${oldRole.mentionable ? "yes" : "no"} \u2192 ${newRole.mentionable ? "yes" : "no"}`
+      );
+    }
+    const before = BigInt(oldRole.permissions.bitfield);
+    const after = BigInt(newRole.permissions.bitfield);
+    if (before !== after) {
+      const added = after & ~before;
+      const removed = before & ~after;
+      if (added !== 0n) {
+        changes.push(
+          `**Permissions added:** ${new import_discord36.PermissionsBitField(added).toArray().join(", ")}`
+        );
+      }
+      if (removed !== 0n) {
+        changes.push(
+          `**Permissions removed:** ${new import_discord36.PermissionsBitField(removed).toArray().join(", ")}`
+        );
+      }
+    }
+    if (changes.length === 0) return;
+    const embed = logEmbed("Role updated", BRAND.info).addFields(
+      { name: "Role", value: `<@&${newRole.id}> \`${newRole.id}\``, inline: true },
+      { name: "Changes", value: truncate(changes.join("\n"), 1024) }
+    );
+    await sendLog(client, "roleUpdate", embed);
+  }
+};
+
+// apps/bot/src/events/voice-update.ts
+var import_discord37 = __toESM(require_src(), 1);
+var voiceUpdateEvent = {
+  name: import_discord37.Events.VoiceStateUpdate,
+  async execute(client, oldState, newState) {
+    if (newState.guild.id !== client.env.GUILD_ID) return;
+    const member = newState.member;
+    if (!member || member.user.bot) return;
+    if (isLogIgnored(client, newState.channelId ?? oldState.channelId, member.id)) return;
+    const changes = [];
+    let title = "Voice state updated";
+    if (oldState.channelId !== newState.channelId) {
+      if (!oldState.channelId && newState.channelId) title = "Joined voice";
+      else if (oldState.channelId && !newState.channelId) title = "Left voice";
+      else title = "Moved voice";
+      changes.push(
+        `**Channel:** ${oldState.channelId ? `<#${oldState.channelId}>` : "none"} \u2192 ${newState.channelId ? `<#${newState.channelId}>` : "none"}`
+      );
+    }
+    const flags = [
+      ["selfMute", "Self mute"],
+      ["selfDeaf", "Self deafen"],
+      ["serverMute", "Server mute"],
+      ["serverDeaf", "Server deafen"]
+    ];
+    for (const [key, name] of flags) {
+      if (oldState[key] !== newState[key]) {
+        changes.push(
+          `**${name}:** ${oldState[key] ? "on" : "off"} \u2192 ${newState[key] ? "on" : "off"}`
+        );
+      }
+    }
+    if (changes.length === 0) return;
+    const embed = logEmbed(title, BRAND.info).addFields(
+      { name: "Member", value: `${member} \`${member.id}\``, inline: true },
+      { name: "Changes", value: truncate(changes.join("\n"), 1024) }
+    );
+    await sendLog(client, "voiceUpdate", embed);
+  }
+};
+
 // apps/bot/src/events/index.ts
 var events = [
   readyEvent,
   guildCreateEvent,
   interactionCreateEvent,
   messageCreateEvent,
+  messageDeleteEvent,
+  messageUpdateEvent,
+  messageBulkDeleteEvent,
+  guildMemberAddEvent,
+  guildMemberRemoveEvent,
+  guildMemberUpdateEvent,
+  channelUpdateEvent,
+  roleUpdateEvent,
+  voiceUpdateEvent,
   errorEvent,
   warnEvent
 ];
+
+// apps/bot/src/modules/automod/service.ts
+var import_discord38 = __toESM(require_src(), 1);
+
+// apps/bot/src/modules/automod/rules.ts
+var INVITE_PATTERN = /(?:discord\.gg|discord(?:app)?\.com\/invite)\/[a-z0-9-]+/i;
+var URL_PATTERN = /https?:\/\/([^\s/?#]+)/gi;
+function containsInvite(content) {
+  return INVITE_PATTERN.test(content);
+}
+__name(containsInvite, "containsInvite");
+function extractHosts(content) {
+  const hosts = [];
+  for (const match of content.matchAll(URL_PATTERN)) {
+    const raw = match[1];
+    if (!raw) continue;
+    const host = raw.toLowerCase().replace(/^www\./, "").replace(/[),.;:!?]+$/, "").replace(/:\d+$/, "");
+    if (host) hosts.push(host);
+  }
+  return hosts;
+}
+__name(extractHosts, "extractHosts");
+function isAllowlistedHost(host, allowlist) {
+  const normalized = host.toLowerCase().replace(/^www\./, "");
+  return allowlist.some((entry) => {
+    const candidate = entry.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/.*$/, "").replace(/^\*\./, "").replace(/^www\./, "");
+    if (!candidate) return false;
+    return normalized === candidate || normalized.endsWith(`.${candidate}`);
+  });
+}
+__name(isAllowlistedHost, "isAllowlistedHost");
+function capsStats(content) {
+  const letters = content.replace(/[^\p{L}]/gu, "");
+  if (letters.length === 0) return { letters: 0, uppercase: 0, percent: 0 };
+  const uppercase2 = letters.replace(/[^\p{Lu}]/gu, "").length;
+  return {
+    letters: letters.length,
+    uppercase: uppercase2,
+    percent: Math.round(uppercase2 / letters.length * 100)
+  };
+}
+__name(capsStats, "capsStats");
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+__name(escapeRegExp, "escapeRegExp");
+function findBannedWord(content, words) {
+  for (const word of words) {
+    const candidate = word.trim();
+    if (!candidate) continue;
+    const pattern = new RegExp(
+      `(^|[^\\p{L}\\p{N}_])${escapeRegExp(candidate)}($|[^\\p{L}\\p{N}_])`,
+      "iu"
+    );
+    if (pattern.test(content)) return candidate;
+  }
+  return null;
+}
+__name(findBannedWord, "findBannedWord");
+
+// apps/bot/src/modules/automod/service.ts
+var AUTOMOD_TIMEOUT_MS = 10 * 6e4;
+var ACTION_COOLDOWN_MS = 3e4;
+var MAX_TRACKED_USERS = 5e3;
+var AutomodService = class {
+  constructor(client) {
+    this.client = client;
+  }
+  client;
+  static {
+    __name(this, "AutomodService");
+  }
+  spam = /* @__PURE__ */ new Map();
+  actionCooldown = /* @__PURE__ */ new Map();
+  joinTimes = [];
+  raidUntil = 0;
+  /** Returns true when the message was handled by automod (and should not earn XP). */
+  async handleMessage(message) {
+    if (!message.inGuild() || message.guildId !== this.client.env.GUILD_ID) return false;
+    if (message.author.bot || message.system) return false;
+    const config2 = this.client.settings.moderation;
+    const automod = config2.automod;
+    if (!automod.enabled) return false;
+    if (this.isExempt(message)) return false;
+    const content = message.content ?? "";
+    if (!content) return false;
+    if (automod.invites.enabled && containsInvite(content)) {
+      return this.trigger(message, "invites", automod.invites.action, "Discord invite link");
+    }
+    if (automod.links.enabled) {
+      const blocked = extractHosts(content).filter(
+        (host) => !isAllowlistedHost(host, automod.links.allowlist)
+      );
+      if (blocked.length > 0) {
+        return this.trigger(
+          message,
+          "links",
+          automod.links.action,
+          `Blocked link(s): ${blocked.slice(0, 5).join(", ")}`
+        );
+      }
+    }
+    if (automod.spam.enabled && this.isSpam(message.author.id, automod.spam.messageThreshold, automod.spam.windowSeconds)) {
+      return this.trigger(
+        message,
+        "spam",
+        automod.spam.action,
+        `${automod.spam.messageThreshold}+ messages in ${automod.spam.windowSeconds}s`
+      );
+    }
+    if (automod.mentions.enabled) {
+      const mentions = message.mentions.users.size + message.mentions.roles.size;
+      if (message.mentions.everyone || mentions > automod.mentions.maxMentions) {
+        return this.trigger(
+          message,
+          "mentions",
+          automod.mentions.action,
+          message.mentions.everyone ? "Mass mention (@everyone/@here)" : `${mentions} mentions`
+        );
+      }
+    }
+    if (automod.caps.enabled) {
+      const stats = capsStats(content);
+      if (stats.letters >= automod.caps.minLength && stats.percent >= automod.caps.percent) {
+        return this.trigger(
+          message,
+          "caps",
+          automod.caps.action,
+          `${stats.percent}% uppercase across ${stats.letters} letters`
+        );
+      }
+    }
+    if (automod.words.enabled) {
+      const match = findBannedWord(content, automod.words.words);
+      if (match) {
+        return this.trigger(message, "words", automod.words.action, "Matched a filtered word");
+      }
+    }
+    return false;
+  }
+  /** Returns true when raid protection handled this join. */
+  async handleJoin(member) {
+    if (member.guild.id !== this.client.env.GUILD_ID) return false;
+    const automod = this.client.settings.moderation.automod;
+    if (!automod.enabled || !automod.raid.enabled) return false;
+    const now = Date.now();
+    const windowMs = automod.raid.windowSeconds * 1e3;
+    this.joinTimes.push(now);
+    while (this.joinTimes.length > 0 && now - (this.joinTimes[0] ?? now) >= windowMs) {
+      this.joinTimes.shift();
+    }
+    const active = this.raidUntil > now;
+    const count2 = this.joinTimes.length;
+    if (!active && count2 < automod.raid.joinThreshold) return false;
+    if (!active) {
+      this.raidUntil = now + windowMs;
+      this.joinTimes.length = 0;
+      const alert = new import_discord38.EmbedBuilder().setColor(BRAND.danger).setTitle("Possible raid detected").setDescription(
+        `**${count2}** joins within **${automod.raid.windowSeconds}s**.
+Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.raid.action}**.`
+      ).setTimestamp();
+      await sendModLogEmbed(this.client, alert);
+    }
+    return this.applyRaidAction(
+      member,
+      automod.raid.action,
+      `Raid protection: ${count2} joins in ${automod.raid.windowSeconds}s`
+    );
+  }
+  isExempt(message) {
+    const config2 = this.client.settings.moderation;
+    if (config2.exemptChannelIds.includes(message.channelId)) return true;
+    const member = message.member;
+    if (!member) return true;
+    if (member.id === message.guild?.ownerId) return true;
+    if (config2.exemptRoleIds.some((roleId) => member.roles.cache.has(roleId))) return true;
+    return member.permissions.has(import_discord38.PermissionFlagsBits.ManageMessages);
+  }
+  isSpam(userId, threshold, windowSeconds) {
+    const now = Date.now();
+    const windowMs = windowSeconds * 1e3;
+    const recent = (this.spam.get(userId) ?? []).filter((at) => now - at < windowMs);
+    recent.push(now);
+    this.spam.set(userId, recent);
+    this.prune(this.spam, now - windowMs);
+    if (recent.length >= threshold) {
+      this.spam.delete(userId);
+      return true;
+    }
+    return false;
+  }
+  onCooldown(userId, rule) {
+    const key = `${userId}:${rule}`;
+    const now = Date.now();
+    const at = this.actionCooldown.get(key);
+    if (at !== void 0 && now - at < ACTION_COOLDOWN_MS) return true;
+    this.actionCooldown.set(key, now);
+    if (this.actionCooldown.size > MAX_TRACKED_USERS) {
+      const oldest = this.actionCooldown.keys().next().value;
+      if (oldest) this.actionCooldown.delete(oldest);
+    }
+    return false;
+  }
+  prune(map2, cutoff) {
+    if (map2.size <= MAX_TRACKED_USERS) return;
+    for (const [key, times] of map2) {
+      const last = times[times.length - 1];
+      if (last === void 0 || last < cutoff) map2.delete(key);
+    }
+  }
+  async trigger(message, rule, action, detail) {
+    await message.delete().catch(() => {
+    });
+    if (action === "delete") return true;
+    if (this.onCooldown(message.author.id, rule)) return true;
+    const member = message.member;
+    if (!member) return true;
+    const reason = `Automod (${rule}): ${detail}`;
+    const moderatorId = this.client.user?.id ?? "automod";
+    try {
+      if (action === "warn") {
+        await finishModAction(this.client, {
+          type: "warn",
+          targetId: member.id,
+          moderatorId,
+          reason
+        });
+      } else if (action === "timeout") {
+        if (!member.moderatable) throw new Error("Member is not moderatable");
+        await member.timeout(AUTOMOD_TIMEOUT_MS, auditReason(reason));
+        await finishModAction(this.client, {
+          type: "timeout",
+          targetId: member.id,
+          moderatorId,
+          reason,
+          durationMs: AUTOMOD_TIMEOUT_MS
+        });
+      } else if (action === "kick") {
+        if (!member.kickable) throw new Error("Member is not kickable");
+        await member.kick(auditReason(reason));
+        await finishModAction(this.client, {
+          type: "kick",
+          targetId: member.id,
+          moderatorId,
+          reason
+        });
+      }
+    } catch (error62) {
+      this.client.logger.warn(
+        { err: error62, userId: member.id, rule, action },
+        "automod action failed"
+      );
+    }
+    return true;
+  }
+  async applyRaidAction(member, action, reason) {
+    if (action === "delete") return false;
+    const moderatorId = this.client.user?.id ?? "automod";
+    try {
+      if (action === "warn") {
+        await finishModAction(this.client, {
+          type: "warn",
+          targetId: member.id,
+          moderatorId,
+          reason
+        });
+      } else if (action === "timeout") {
+        if (!member.moderatable) return false;
+        await member.timeout(AUTOMOD_TIMEOUT_MS, auditReason(reason));
+        await finishModAction(this.client, {
+          type: "timeout",
+          targetId: member.id,
+          moderatorId,
+          reason,
+          durationMs: AUTOMOD_TIMEOUT_MS
+        });
+      } else if (action === "kick") {
+        if (!member.kickable) return false;
+        await member.kick(auditReason(reason));
+        await finishModAction(this.client, {
+          type: "kick",
+          targetId: member.id,
+          moderatorId,
+          reason
+        });
+        return true;
+      }
+    } catch (error62) {
+      this.client.logger.warn(
+        { err: error62, userId: member.id, action },
+        "raid protection action failed"
+      );
+    }
+    return false;
+  }
+};
+
+// apps/bot/src/modules/heartbeat.ts
+var INTERVAL_MS = 6 * 60 * 60 * 1e3;
+var HeartbeatService = class {
+  constructor(client) {
+    this.client = client;
+  }
+  client;
+  static {
+    __name(this, "HeartbeatService");
+  }
+  timer = null;
+  running = false;
+  start() {
+    if (this.timer || !this.client.db) return;
+    void this.beat();
+    this.timer = setInterval(() => {
+      void this.beat();
+    }, INTERVAL_MS);
+    this.timer.unref();
+  }
+  stop() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+  async beat() {
+    const db = this.client.db;
+    if (!db || this.running) return;
+    this.running = true;
+    try {
+      const now = /* @__PURE__ */ new Date();
+      await db.insert(heartbeat).values({ id: 1, at: now }).onConflictDoUpdate({ target: heartbeat.id, set: { at: now } });
+    } catch (error62) {
+      this.client.logger.warn({ err: error62 }, "heartbeat write failed");
+    } finally {
+      this.running = false;
+    }
+  }
+};
 
 // apps/bot/src/modules/leveling/xp.ts
 function effectiveMultiplier(channelId, roleIds, config2) {
@@ -115227,6 +117160,7 @@ var LevelingService = class {
     if (!this.client.db) return;
     if (!message.inGuild()) return;
     if (message.guildId !== this.client.env.GUILD_ID) return;
+    if (message.system) return;
     const config2 = this.client.settings.leveling;
     if (!config2.enabled) return;
     const now = Date.now();
@@ -115297,29 +117231,40 @@ var LevelingService = class {
     }
   }
   async apply(db, userId, delta) {
-    const rows = await db.insert(members).values({
-      userId,
-      xp: delta.xp,
-      messages: delta.messages,
-      // Start at 0 so the level-up path below announces/rewards correctly
-      // even when a single large gain crosses a threshold.
-      level: 0,
-      lastXpAt: /* @__PURE__ */ new Date()
-    }).onConflictDoUpdate({
-      target: members.userId,
-      set: {
-        xp: sql`${members.xp} + ${delta.xp}`,
-        messages: sql`${members.messages} + ${delta.messages}`,
-        lastXpAt: /* @__PURE__ */ new Date(),
-        updatedAt: /* @__PURE__ */ new Date()
-      }
-    }).returning({ xp: members.xp, level: members.level });
-    const row = rows[0];
-    if (!row) return;
-    const newLevel = levelFromXp(row.xp).level;
-    if (newLevel <= row.level) return;
-    await db.update(members).set({ level: newLevel, updatedAt: /* @__PURE__ */ new Date() }).where(eq(members.userId, userId));
-    await this.onLevelUp(userId, newLevel, delta.channelId);
+    const newLevel = await db.transaction(async (tx) => {
+      const rows = await tx.insert(members).values({
+        userId,
+        xp: delta.xp,
+        messages: delta.messages,
+        // Start at 0 so the level-up path below announces/rewards correctly
+        // even when a single large gain crosses a threshold.
+        level: 0,
+        lastXpAt: /* @__PURE__ */ new Date()
+      }).onConflictDoUpdate({
+        target: members.userId,
+        set: {
+          xp: sql`${members.xp} + ${delta.xp}`,
+          messages: sql`${members.messages} + ${delta.messages}`,
+          lastXpAt: /* @__PURE__ */ new Date(),
+          updatedAt: /* @__PURE__ */ new Date()
+        }
+      }).returning({ xp: members.xp, level: members.level });
+      const row = rows[0];
+      if (!row) return null;
+      const next = levelFromXp(row.xp).level;
+      if (next <= row.level) return null;
+      await tx.update(members).set({ level: next, updatedAt: /* @__PURE__ */ new Date() }).where(eq(members.userId, userId));
+      return next;
+    });
+    if (newLevel === null) return;
+    try {
+      await this.onLevelUp(userId, newLevel, delta.channelId);
+    } catch (error62) {
+      this.client.logger.error(
+        { err: error62, userId, level: newLevel },
+        "level-up side effects failed"
+      );
+    }
   }
   async onLevelUp(userId, level, fallbackChannelId) {
     const guild = this.client.guilds.cache.get(this.client.env.GUILD_ID);
@@ -115359,22 +117304,130 @@ var LevelingService = class {
   }
 };
 
+// apps/bot/src/modules/moderation/scheduler.ts
+var TICK_MS = 6e4;
+var UNKNOWN_BAN = 10026;
+var ModerationScheduler = class {
+  constructor(client) {
+    this.client = client;
+  }
+  client;
+  static {
+    __name(this, "ModerationScheduler");
+  }
+  timer = null;
+  running = false;
+  start() {
+    if (this.timer) return;
+    this.timer = setInterval(() => {
+      void this.tick();
+    }, TICK_MS);
+    this.timer.unref();
+    void this.tick();
+  }
+  stop() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+  async tick() {
+    if (this.running) return;
+    const db = this.client.db;
+    if (!db) return;
+    const guild = this.client.guilds.cache.get(this.client.env.GUILD_ID);
+    if (!guild) return;
+    this.running = true;
+    try {
+      await this.sweep(db, guild);
+    } finally {
+      this.running = false;
+    }
+  }
+  async sweep(db, guild) {
+    await db.update(cases).set({ active: false }).where(
+      and(eq(cases.type, "timeout"), eq(cases.active, true), lte(cases.expiresAt, /* @__PURE__ */ new Date()))
+    ).catch((error62) => {
+      this.client.logger.warn({ err: error62 }, "failed to expire timeout cases");
+    });
+    const due = await db.select().from(cases).where(and(eq(cases.type, "ban"), eq(cases.active, true), lte(cases.expiresAt, /* @__PURE__ */ new Date()))).limit(50).catch((error62) => {
+      this.client.logger.warn({ err: error62 }, "temporary ban sweep failed");
+      return [];
+    });
+    if (due.length === 0) return;
+    const byTarget = /* @__PURE__ */ new Map();
+    for (const row of due) {
+      const bucket = byTarget.get(row.targetId) ?? [];
+      bucket.push(row);
+      byTarget.set(row.targetId, bucket);
+    }
+    for (const [targetId, rows] of byTarget) {
+      const ids = rows.map((row) => row.id);
+      const now = Date.now();
+      const active = await db.select().from(cases).where(and(eq(cases.targetId, targetId), eq(cases.type, "ban"), eq(cases.active, true)));
+      const dueIds = active.filter((row) => row.expiresAt !== null && row.expiresAt.getTime() <= now).map((row) => row.id);
+      if (dueIds.length === 0) continue;
+      const stillBanned = active.some(
+        (row) => row.expiresAt === null || row.expiresAt.getTime() > now
+      );
+      if (stillBanned) {
+        await db.update(cases).set({ active: false }).where(
+          and(
+            eq(cases.targetId, targetId),
+            eq(cases.type, "ban"),
+            eq(cases.active, true),
+            lte(cases.expiresAt, new Date(now))
+          )
+        );
+        continue;
+      }
+      try {
+        await guild.bans.remove(targetId, `Temporary ban expired (case #${ids[0]})`);
+      } catch (error62) {
+        const code = error62.code;
+        if (code !== UNKNOWN_BAN) {
+          this.client.logger.warn(
+            { err: error62, targetId, caseIds: ids },
+            "failed to lift temporary ban \u2014 will retry"
+          );
+          continue;
+        }
+      }
+      await db.update(cases).set({ active: false }).where(
+        and(
+          eq(cases.targetId, targetId),
+          eq(cases.type, "ban"),
+          eq(cases.active, true),
+          lte(cases.expiresAt, new Date(now))
+        )
+      );
+      await finishModAction(this.client, {
+        type: "unban",
+        targetId,
+        moderatorId: this.client.user?.id ?? "system",
+        reason: `Temporary ban expired (case #${ids[0]})`
+      }).catch((error62) => {
+        this.client.logger.warn({ err: error62, targetId, caseIds: ids }, "failed to record unban");
+      });
+    }
+  }
+};
+
 // apps/bot/src/index.ts
 async function main() {
   const env = loadEnv();
   const logger = createLogger(env.LOG_LEVEL);
-  logger.info(
-    { node: process.version, env: env.NODE_ENV, pid: process.pid },
-    "starting nervana"
-  );
+  logger.info({ node: process.version, env: env.NODE_ENV, pid: process.pid }, "starting nervana");
   let client = null;
   let sql2 = null;
   let shuttingDown = false;
-  async function shutdown(reason) {
+  async function shutdown(reason, exitCode = 0) {
     if (shuttingDown) return;
     shuttingDown = true;
-    logger.info({ reason }, "shutting down");
+    logger.info({ reason, exitCode }, "shutting down");
     if (client) {
+      client.heartbeat?.stop();
+      client.moderation?.stop();
       await client.leveling?.stop();
       stopSettingsPoller(client);
       await client.destroy().catch((error62) => {
@@ -115386,8 +117439,8 @@ async function main() {
         logger.warn({ err: error62 }, "database shutdown failed");
       });
     }
-    process.exitCode = 0;
-    setTimeout(() => process.exit(0), 5e3).unref();
+    process.exitCode = exitCode;
+    setTimeout(() => process.exit(exitCode), 5e3).unref();
   }
   __name(shutdown, "shutdown");
   process.once("SIGINT", () => void shutdown("SIGINT"));
@@ -115397,7 +117450,7 @@ async function main() {
   });
   process.on("uncaughtException", (error62) => {
     logger.fatal({ err: error62 }, "uncaught exception");
-    void shutdown("uncaughtException");
+    void shutdown("uncaughtException", 1);
   });
   try {
     let settingsState = { config: parseConfig(DEFAULT_CONFIG), updatedAt: 0 };
@@ -115408,8 +117461,14 @@ async function main() {
       sql2 = database.sql;
       if (!env.SKIP_MIGRATIONS) {
         const directory = resolveMigrationsDir();
-        const applied = await runMigrations(sql2, directory, logger);
-        logger.info({ applied, directory }, "database migrations up to date");
+        const migrationUrl = env.MIGRATE_DATABASE_URL ?? env.DATABASE_URL;
+        const migrationClient = migrationUrl === env.DATABASE_URL ? null : createDatabase(migrationUrl, { max: 1 });
+        try {
+          const applied = await runMigrations(migrationClient?.sql ?? sql2, directory, logger);
+          logger.info({ applied, directory }, "database migrations up to date");
+        } finally {
+          if (migrationClient) await migrationClient.sql.end({ timeout: 5 });
+        }
       }
       settingsState = await readSettings(db, (error62) => {
         logger.error({ err: error62 }, "stored settings are invalid \u2014 using defaults");
@@ -115434,10 +117493,17 @@ async function main() {
     registerEvents(client, events);
     client.leveling = new LevelingService(client);
     client.leveling.start();
+    client.moderation = new ModerationScheduler(client);
+    client.moderation.start();
+    client.automod = new AutomodService(client);
+    client.heartbeat = new HeartbeatService(client);
+    client.heartbeat.start();
     await client.login(env.DISCORD_TOKEN);
   } catch (error62) {
     logger.fatal({ err: error62 }, "fatal startup error");
     if (client) {
+      client.heartbeat?.stop();
+      client.moderation?.stop();
       await client.leveling?.stop();
       stopSettingsPoller(client);
       await client.destroy().catch(() => {

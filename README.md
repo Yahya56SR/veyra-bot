@@ -3,7 +3,9 @@
 An all-in-one Discord bot for a **single server**: moderation, logging, utility, tickets,
 leveling, economy, community features, music, usage stats, and a Next.js dashboard.
 
-> **Status:** Phase 0 — foundation. Command surface and dashboard are in progress.
+> **Status:** Phase 1 — moderation, cases, automod, logging, welcome, and leveling are
+> implemented. Utility, tickets, economy, community, music, stats, and the dashboard are in
+> progress. See `DEPLOY.md` for the free-tier runbook.
 
 ## Why this repository is unusual
 
@@ -23,16 +25,16 @@ No install, no build. **Do not add `index.js` or `drizzle/` to `.gitignore`.**
 
 ## Layout
 
-| Path | Purpose |
-|---|---|
-| `apps/bot` | discord.js v14 bot source |
-| `apps/web` | Next.js dashboard (Phase 6) |
-| `packages/db` | Drizzle schema, client, migration runner |
+| Path              | Purpose                                                    |
+| ----------------- | ---------------------------------------------------------- |
+| `apps/bot`        | discord.js v14 bot source                                  |
+| `apps/web`        | Next.js dashboard (Phase 6)                                |
+| `packages/db`     | Drizzle schema, client, migration runner                   |
 | `packages/shared` | Zod config schemas, XP math, time helpers, brand constants |
-| `scripts/` | bundle, bundle verification, local dev bootstrap |
-| `drizzle/` | **committed** SQL migrations |
-| `index.js` | **committed** bot bundle |
-| `DEPLOY.md` | free-tier deployment runbook |
+| `scripts/`        | bundle, bundle verification, local dev bootstrap           |
+| `drizzle/`        | **committed** SQL migrations                               |
+| `index.js`        | **committed** bot bundle                                   |
+| `DEPLOY.md`       | free-tier deployment runbook                               |
 
 ## Local development
 
@@ -48,25 +50,49 @@ npm run dev
 ```
 
 `/ping` and `/help` work without a database; leave `DATABASE_URL` empty and the bot logs a
-warning and uses built-in defaults. For production, always configure the database.
+warning and uses built-in defaults. `/setup`, moderation, logging, welcome, and leveling need
+the database. For production, always configure the database.
 
 ### Scripts
 
-| Command | Action |
-|---|---|
-| `npm run dev` | Run the bot from TypeScript with watch mode |
-| `npm run typecheck` | Typecheck every workspace |
-| `npm test` | Run unit tests |
-| `npm run bundle:bot` | Rebuild the committed `index.js` |
-| `npm run verify:bundle` | Run the bundle in a clean directory and assert RSS |
-| `npm run db:generate` | Generate SQL from the Drizzle schema |
-| `npm run db:migrate` | Apply pending migrations |
+| Command                                        | Action                                             |
+| ---------------------------------------------- | -------------------------------------------------- |
+| `npm run dev`                                  | Run the bot from TypeScript with watch mode        |
+| `npm run typecheck`                            | Typecheck every workspace                          |
+| `npm test`                                     | Run unit tests                                     |
+| `npm run bundle:bot`                           | Rebuild the committed `index.js`                   |
+| `npm run verify:bundle`                        | Run the bundle in a clean directory and assert RSS |
+| `npm run db:generate`                          | Generate SQL from the Drizzle schema               |
+| `npm run db:migrate`                           | Apply pending migrations                           |
+| `npm run check:lavalink -- host:port password` | Validate a Lavalink v4 node                        |
+
+## Commands
+
+| Command                                       | What it does                                               |
+| --------------------------------------------- | ---------------------------------------------------------- |
+| `/ping`, `/help`                              | Health check and permission-aware command list             |
+| `/setup status`                               | Overview of logging, moderation, leveling, and welcome     |
+| `/setup logging`, `/setup modlog`             | Route log events and moderation cases                      |
+| `/setup automod`                              | Toggle a rule and choose its action                        |
+| `/setup link-allow`, `/setup filtered-word`   | Manage the links allowlist and filtered words              |
+| `/setup leveling`                             | Enable leveling and tune XP range, cooldown, announcements |
+| `/setup welcome`, `/setup autorole`           | Join/leave messages and automatic roles                    |
+| `/setup exempt-role`, `/setup exempt-channel` | Automod exemptions                                         |
+| `/setup reset`                                | Restore one module to defaults                             |
+| `/warn`, `/warnings`, `/clearwarnings`        | Warning cases with active-warning tracking                 |
+| `/timeout`, `/untimeout`                      | Discord timeouts up to 28 days                             |
+| `/kick`, `/ban`, `/unban`, `/softban`         | Punitive actions, optional temporary bans                  |
+| `/case`, `/cases`                             | Inspect the case log                                       |
+| `/purge`, `/slowmode`                         | Channel cleanup                                            |
+| `/rank`, `/leaderboard`                       | XP progress and top members                                |
+
+Every configuration write is recorded in `config_audit`.
 
 ## Free-tier warnings
 
 - **bot-hosting.net free** requires manual renewal **every 4 days**. State lives in
   Supabase, so a restart is lossless.
-- **Supabase free** pauses after 7 days of low activity. The bot writes a daily heartbeat.
+- **Supabase free** pauses after 7 days of low activity. The bot writes a heartbeat every 6 hours.
 - **Music uses a public Lavalink node.** That operator proxies the guild's voice audio and
   can observe it. Set `MUSIC_ENABLED=false` if you do not trust the node, or self-host.
 - **Vercel Hobby** is for non-commercial use. A private community server qualifies.

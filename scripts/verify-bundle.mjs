@@ -93,9 +93,7 @@ child.on('exit', (code) => {
   settled = true;
   clearTimeout(timer);
 
-  const readyLine = stdout
-    .split(/\r?\n/)
-    .find((line) => line.includes('SMOKE_TEST_READY'));
+  const readyLine = stdout.split(/\r?\n/).find((line) => line.includes('SMOKE_TEST_READY'));
 
   if (!readyLine) {
     console.error('Bundle did not reach SMOKE_TEST_READY.');

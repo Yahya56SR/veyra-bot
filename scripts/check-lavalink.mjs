@@ -47,9 +47,7 @@ try {
   console.log(`sources: ${sources.length > 0 ? sources.join(', ') : '(none advertised)'}`);
   console.log(`plugins: ${plugins.length > 0 ? plugins.join(', ') : '(none)'}`);
 
-  const preferred = ['soundcloud', 'spotify', 'youtube'].find((source) =>
-    sources.includes(source),
-  );
+  const preferred = ['soundcloud', 'spotify', 'youtube'].find((source) => sources.includes(source));
 
   if (preferred) {
     console.log(`recommended search prefix: ${preferred}`);

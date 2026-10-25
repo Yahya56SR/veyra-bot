@@ -1,8 +1,9 @@
 import { members } from '@nervana/db';
 import { BRAND, levelFromXp, truncate } from '@nervana/shared';
 import { desc } from 'drizzle-orm';
-import { EmbedBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
+import { deferPublic } from '../../core/respond.js';
 
 export const leaderboardCommand: Command = {
   data: new SlashCommandBuilder()
@@ -11,12 +12,11 @@ export const leaderboardCommand: Command = {
   category: 'leveling',
   cooldownSeconds: 5,
   async execute({ client, interaction }) {
+    await deferPublic(interaction);
+
     const db = client.db;
     if (!db) {
-      await interaction.reply({
-        content: 'The database is not configured.',
-        flags: MessageFlags.Ephemeral,
-      });
+      await interaction.editReply({ content: 'The database is not configured.' });
       return;
     }
 
@@ -27,10 +27,7 @@ export const leaderboardCommand: Command = {
       .limit(10);
 
     if (rows.length === 0) {
-      await interaction.reply({
-        content: 'Nobody has earned XP yet.',
-        flags: MessageFlags.Ephemeral,
-      });
+      await interaction.editReply({ content: 'Nobody has earned XP yet.' });
       return;
     }
 
@@ -45,6 +42,6 @@ export const leaderboardCommand: Command = {
       .setDescription(truncate(lines.join('\n'), 4000))
       .setFooter({ text: BRAND.footer });
 
-    await interaction.reply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
   },
 };

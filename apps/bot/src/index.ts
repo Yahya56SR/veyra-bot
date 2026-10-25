@@ -10,27 +10,29 @@ import { registerEvents } from './core/events.js';
 import { createLogger } from './core/logger.js';
 import { resolveMigrationsDir } from './db/migrations-dir.js';
 import { events } from './events/index.js';
+import { AutomodService } from './modules/automod/service.js';
+import { HeartbeatService } from './modules/heartbeat.js';
 import { LevelingService } from './modules/leveling/service.js';
+import { ModerationScheduler } from './modules/moderation/scheduler.js';
 
 async function main(): Promise<void> {
   const env = loadEnv();
   const logger = createLogger(env.LOG_LEVEL);
-  logger.info(
-    { node: process.version, env: env.NODE_ENV, pid: process.pid },
-    'starting nervana',
-  );
+  logger.info({ node: process.version, env: env.NODE_ENV, pid: process.pid }, 'starting nervana');
 
   let client: NervanaClient | null = null;
   let sql: Sql | null = null;
   let shuttingDown = false;
 
-  async function shutdown(reason: string): Promise<void> {
+  async function shutdown(reason: string, exitCode = 0): Promise<void> {
     if (shuttingDown) return;
     shuttingDown = true;
 
-    logger.info({ reason }, 'shutting down');
+    logger.info({ reason, exitCode }, 'shutting down');
 
     if (client) {
+      client.heartbeat?.stop();
+      client.moderation?.stop();
       await client.leveling?.stop();
       stopSettingsPoller(client);
       await client.destroy().catch((error: unknown) => {
@@ -47,8 +49,8 @@ async function main(): Promise<void> {
     // Prefer a natural drain over process.exit(): exiting while websocket
     // handles are closing can trip libuv on Windows. The unref'd timer is a
     // last-resort guarantee that we still terminate.
-    process.exitCode = 0;
-    setTimeout(() => process.exit(0), 5000).unref();
+    process.exitCode = exitCode;
+    setTimeout(() => process.exit(exitCode), 5000).unref();
   }
 
   process.once('SIGINT', () => void shutdown('SIGINT'));
@@ -60,7 +62,7 @@ async function main(): Promise<void> {
 
   process.on('uncaughtException', (error) => {
     logger.fatal({ err: error }, 'uncaught exception');
-    void shutdown('uncaughtException');
+    void shutdown('uncaughtException', 1);
   });
 
   try {
@@ -74,8 +76,19 @@ async function main(): Promise<void> {
 
       if (!env.SKIP_MIGRATIONS) {
         const directory = resolveMigrationsDir();
-        const applied = await runMigrations(sql, directory, logger);
-        logger.info({ applied, directory }, 'database migrations up to date');
+        const migrationUrl = env.MIGRATE_DATABASE_URL ?? env.DATABASE_URL;
+
+        // DDL + the advisory lock should use the session pooler. Reuse the
+        // runtime client only when both URLs are the same.
+        const migrationClient =
+          migrationUrl === env.DATABASE_URL ? null : createDatabase(migrationUrl, { max: 1 });
+
+        try {
+          const applied = await runMigrations(migrationClient?.sql ?? sql, directory, logger);
+          logger.info({ applied, directory }, 'database migrations up to date');
+        } finally {
+          if (migrationClient) await migrationClient.sql.end({ timeout: 5 });
+        }
       }
 
       settingsState = await readSettings(db, (error) => {
@@ -89,11 +102,7 @@ async function main(): Promise<void> {
       );
     }
 
-    if (
-      !env.SMOKE_TEST &&
-      env.MUSIC_ENABLED &&
-      (!env.LAVALINK_URL || !env.LAVALINK_AUTH)
-    ) {
+    if (!env.SMOKE_TEST && env.MUSIC_ENABLED && (!env.LAVALINK_URL || !env.LAVALINK_AUTH)) {
       logger.warn('MUSIC_ENABLED is true but LAVALINK_URL/LAVALINK_AUTH are incomplete');
     }
 
@@ -110,11 +119,21 @@ async function main(): Promise<void> {
     client.leveling = new LevelingService(client);
     client.leveling.start();
 
+    client.moderation = new ModerationScheduler(client);
+    client.moderation.start();
+
+    client.automod = new AutomodService(client);
+
+    client.heartbeat = new HeartbeatService(client);
+    client.heartbeat.start();
+
     await client.login(env.DISCORD_TOKEN);
   } catch (error) {
     logger.fatal({ err: error }, 'fatal startup error');
 
     if (client) {
+      client.heartbeat?.stop();
+      client.moderation?.stop();
       await client.leveling?.stop();
       stopSettingsPoller(client);
       await client.destroy().catch(() => {});

@@ -4,7 +4,10 @@ import type { Database } from '@nervana/db';
 import type { Env } from '../config/env.js';
 import type { Command } from './commands.js';
 import type { Logger } from './logger.js';
+import type { AutomodService } from '../modules/automod/service.js';
+import type { HeartbeatService } from '../modules/heartbeat.js';
 import type { LevelingService } from '../modules/leveling/service.js';
+import type { ModerationScheduler } from '../modules/moderation/scheduler.js';
 
 /**
  * The single process-wide client. Memory is deliberately bounded because the
@@ -21,6 +24,9 @@ export class NervanaClient extends Client {
   settingsUpdatedAt = 0;
   settingsPollTimer: NodeJS.Timeout | null = null;
   leveling: LevelingService | null = null;
+  moderation: ModerationScheduler | null = null;
+  automod: AutomodService | null = null;
+  heartbeat: HeartbeatService | null = null;
 
   constructor() {
     super({

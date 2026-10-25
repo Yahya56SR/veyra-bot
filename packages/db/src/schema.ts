@@ -69,10 +69,16 @@ export const cases = pgTable(
     moderatorId: text('moderator_id').notNull(),
     reason: text('reason').notNull(),
     durationMs: bigint('duration_ms', { mode: 'number' }),
+    /** Set for temporary bans; the moderation scheduler lifts them. */
+    expiresAt: timestamp('expires_at', { withTimezone: true }),
     active: boolean('active').default(true).notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
-  (t) => [index('cases_target_idx').on(t.targetId), index('cases_created_idx').on(t.createdAt)],
+  (t) => [
+    index('cases_target_idx').on(t.targetId),
+    index('cases_created_idx').on(t.createdAt),
+    index('cases_expiry_idx').on(t.active, t.expiresAt),
+  ],
 );
 
 export const warnings = pgTable('warnings', {
@@ -180,10 +186,7 @@ export const commandUsage = pgTable(
     command: text('command').notNull(),
     count: integer('count').default(0).notNull(),
   },
-  (t) => [
-    primaryKey({ columns: [t.date, t.command] }),
-    index('command_usage_date_idx').on(t.date),
-  ],
+  (t) => [primaryKey({ columns: [t.date, t.command] }), index('command_usage_date_idx').on(t.date)],
 );
 
 export const configAudit = pgTable(

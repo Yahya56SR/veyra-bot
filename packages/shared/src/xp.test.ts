@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  levelFromXp,
-  progressBar,
-  totalXpForLevel,
-  xpToNextLevel,
-} from './xp.js';
+import { levelFromXp, progressBar, totalXpForLevel, xpToNextLevel } from './xp.js';
 
 describe('xp curve', () => {
   it('matches the documented formula', () => {

@@ -11,9 +11,7 @@ import type {
 import type { NervanaClient } from './client.js';
 
 export type CommandData =
-  | SlashCommandBuilder
-  | SlashCommandOptionsOnlyBuilder
-  | SlashCommandSubcommandsOnlyBuilder;
+  SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
 
 export interface CommandContext {
   client: NervanaClient;
@@ -48,6 +46,19 @@ export function registerCommands(client: NervanaClient, commands: readonly Comma
   }
 }
 
-export function commandPayload(commands: readonly Command[]): unknown[] {
-  return commands.map((command) => command.data.toJSON());
+export async function registerGuildCommands(client: NervanaClient): Promise<void> {
+  if (!client.env.REGISTER_COMMANDS || !client.application) return;
+
+  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  if (!guild) {
+    client.logger.warn(
+      { guildId: client.env.GUILD_ID },
+      'cannot register commands before joining the target guild',
+    );
+    return;
+  }
+
+  const payload = [...client.commands.values()].map((command) => command.data.toJSON());
+  await client.application.commands.set(payload, guild.id);
+  client.logger.info({ count: payload.length, guildId: guild.id }, 'registered guild commands');
 }

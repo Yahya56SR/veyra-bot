@@ -1,0 +1,158 @@
+import { cases } from '@nervana/db';
+import { and, eq, lte } from 'drizzle-orm';
+import type { NervanaClient } from '../../core/client.js';
+import { finishModAction, type CaseRow } from './service.js';
+
+const TICK_MS = 60_000;
+const UNKNOWN_BAN = 10026;
+
+/**
+ * Lifts temporary bans. Timeouts are enforced by Discord, so they need no
+ * scheduler; only bans with `expires_at` are tracked here.
+ */
+export class ModerationScheduler {
+  private timer: NodeJS.Timeout | null = null;
+  private running = false;
+
+  constructor(private readonly client: NervanaClient) {}
+
+  start(): void {
+    if (this.timer) return;
+    this.timer = setInterval(() => {
+      void this.tick();
+    }, TICK_MS);
+    this.timer.unref();
+    void this.tick();
+  }
+
+  stop(): void {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+
+  async tick(): Promise<void> {
+    if (this.running) return;
+
+    const db = this.client.db;
+    if (!db) return;
+
+    const guild = this.client.guilds.cache.get(this.client.env.GUILD_ID);
+    if (!guild) return;
+
+    this.running = true;
+
+    try {
+      await this.sweep(db, guild);
+    } finally {
+      this.running = false;
+    }
+  }
+
+  private async sweep(
+    db: NonNullable<NervanaClient['db']>,
+    guild: import('discord.js').Guild,
+  ): Promise<void> {
+    // Discord enforces timeouts itself; this only keeps the stored case state
+    // accurate once the timeout has elapsed.
+    await db
+      .update(cases)
+      .set({ active: false })
+      .where(
+        and(eq(cases.type, 'timeout'), eq(cases.active, true), lte(cases.expiresAt, new Date())),
+      )
+      .catch((error: unknown) => {
+        this.client.logger.warn({ err: error }, 'failed to expire timeout cases');
+      });
+
+    const due = await db
+      .select()
+      .from(cases)
+      .where(and(eq(cases.type, 'ban'), eq(cases.active, true), lte(cases.expiresAt, new Date())))
+      .limit(50)
+      .catch((error: unknown) => {
+        this.client.logger.warn({ err: error }, 'temporary ban sweep failed');
+        return [] as CaseRow[];
+      });
+
+    if (due.length === 0) return;
+
+    const byTarget = new Map<string, CaseRow[]>();
+    for (const row of due) {
+      const bucket = byTarget.get(row.targetId) ?? [];
+      bucket.push(row);
+      byTarget.set(row.targetId, bucket);
+    }
+
+    for (const [targetId, rows] of byTarget) {
+      const ids = rows.map((row) => row.id);
+      const now = Date.now();
+
+      // A newer permanent (or longer) ban must keep the member banned even if
+      // an older temporary ban has expired.
+      const active = await db
+        .select()
+        .from(cases)
+        .where(and(eq(cases.targetId, targetId), eq(cases.type, 'ban'), eq(cases.active, true)));
+
+      const dueIds = active
+        .filter((row) => row.expiresAt !== null && row.expiresAt.getTime() <= now)
+        .map((row) => row.id);
+      if (dueIds.length === 0) continue;
+
+      const stillBanned = active.some(
+        (row) => row.expiresAt === null || row.expiresAt.getTime() > now,
+      );
+
+      if (stillBanned) {
+        await db
+          .update(cases)
+          .set({ active: false })
+          .where(
+            and(
+              eq(cases.targetId, targetId),
+              eq(cases.type, 'ban'),
+              eq(cases.active, true),
+              lte(cases.expiresAt, new Date(now)),
+            ),
+          );
+        continue;
+      }
+
+      try {
+        await guild.bans.remove(targetId, `Temporary ban expired (case #${ids[0]})`);
+      } catch (error) {
+        const code = (error as { code?: number }).code;
+        if (code !== UNKNOWN_BAN) {
+          this.client.logger.warn(
+            { err: error, targetId, caseIds: ids },
+            'failed to lift temporary ban — will retry',
+          );
+          continue;
+        }
+      }
+
+      await db
+        .update(cases)
+        .set({ active: false })
+        .where(
+          and(
+            eq(cases.targetId, targetId),
+            eq(cases.type, 'ban'),
+            eq(cases.active, true),
+            lte(cases.expiresAt, new Date(now)),
+          ),
+        );
+
+      await finishModAction(this.client, {
+        type: 'unban',
+        targetId,
+        moderatorId: this.client.user?.id ?? 'system',
+        reason: `Temporary ban expired (case #${ids[0]})`,
+      }).catch((error: unknown) => {
+        this.client.logger.warn({ err: error, targetId, caseIds: ids }, 'failed to record unban');
+      });
+    }
+  }
+}

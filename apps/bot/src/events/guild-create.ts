@@ -1,4 +1,5 @@
 import { Events } from 'discord.js';
+import { registerGuildCommands } from '../core/commands.js';
 import type { BotEvent } from '../core/events.js';
 
 export const guildCreateEvent: BotEvent = {
@@ -6,6 +7,12 @@ export const guildCreateEvent: BotEvent = {
   async execute(client, guild) {
     if (guild.id === client.env.GUILD_ID) {
       client.logger.info({ guildId: guild.id, name: guild.name }, 'joined the target guild');
+
+      try {
+        await registerGuildCommands(client);
+      } catch (error) {
+        client.logger.error({ err: error }, 'failed to register guild commands');
+      }
       return;
     }
 

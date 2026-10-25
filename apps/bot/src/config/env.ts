@@ -27,9 +27,7 @@ export const EnvSchema = z.object({
   DATABASE_URL: optionalString,
   MIGRATE_DATABASE_URL: optionalString,
 
-  LOG_LEVEL: z
-    .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])
-    .default('info'),
+  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
   REGISTER_COMMANDS: booleanish(true),
   SKIP_MIGRATIONS: booleanish(false),
 

@@ -46,6 +46,7 @@ export class LevelingService {
     if (!this.client.db) return;
     if (!message.inGuild()) return;
     if (message.guildId !== this.client.env.GUILD_ID) return;
+    if (message.system) return;
 
     const config = this.client.settings.leveling;
     if (!config.enabled) return;
@@ -55,7 +56,9 @@ export class LevelingService {
 
     // Cheap bail-out before the cooldown lookup: bots and ignored channels/roles
     // must not cause a database read per message.
-    if (checkXpContext({ isBot: message.author.bot, channelId: message.channelId, roleIds, config })) {
+    if (
+      checkXpContext({ isBot: message.author.bot, channelId: message.channelId, roleIds, config })
+    ) {
       return;
     }
 
@@ -143,40 +146,58 @@ export class LevelingService {
     userId: string,
     delta: PendingXp,
   ): Promise<void> {
-    const rows = await db
-      .insert(members)
-      .values({
-        userId,
-        xp: delta.xp,
-        messages: delta.messages,
-        // Start at 0 so the level-up path below announces/rewards correctly
-        // even when a single large gain crosses a threshold.
-        level: 0,
-        lastXpAt: new Date(),
-      })
-      .onConflictDoUpdate({
-        target: members.userId,
-        set: {
-          xp: sql`${members.xp} + ${delta.xp}`,
-          messages: sql`${members.messages} + ${delta.messages}`,
+    // The XP increment and the level update commit together. If either query
+    // fails the whole batch is requeued, so XP can never be counted twice by a
+    // partial write.
+    const newLevel = await db.transaction(async (tx) => {
+      const rows = await tx
+        .insert(members)
+        .values({
+          userId,
+          xp: delta.xp,
+          messages: delta.messages,
+          // Start at 0 so the level-up path below announces/rewards correctly
+          // even when a single large gain crosses a threshold.
+          level: 0,
           lastXpAt: new Date(),
-          updatedAt: new Date(),
-        },
-      })
-      .returning({ xp: members.xp, level: members.level });
+        })
+        .onConflictDoUpdate({
+          target: members.userId,
+          set: {
+            xp: sql`${members.xp} + ${delta.xp}`,
+            messages: sql`${members.messages} + ${delta.messages}`,
+            lastXpAt: new Date(),
+            updatedAt: new Date(),
+          },
+        })
+        .returning({ xp: members.xp, level: members.level });
 
-    const row = rows[0];
-    if (!row) return;
+      const row = rows[0];
+      if (!row) return null;
 
-    const newLevel = levelFromXp(row.xp).level;
-    if (newLevel <= row.level) return;
+      const next = levelFromXp(row.xp).level;
+      if (next <= row.level) return null;
 
-    await db
-      .update(members)
-      .set({ level: newLevel, updatedAt: new Date() })
-      .where(eq(members.userId, userId));
+      await tx
+        .update(members)
+        .set({ level: next, updatedAt: new Date() })
+        .where(eq(members.userId, userId));
 
-    await this.onLevelUp(userId, newLevel, delta.channelId);
+      return next;
+    });
+
+    if (newLevel === null) return;
+
+    // Announcements and role rewards are best-effort and must not cause the
+    // already-committed XP to be requeued.
+    try {
+      await this.onLevelUp(userId, newLevel, delta.channelId);
+    } catch (error) {
+      this.client.logger.error(
+        { err: error, userId, level: newLevel },
+        'level-up side effects failed',
+      );
+    }
   }
 
   private async onLevelUp(userId: string, level: number, fallbackChannelId: string): Promise<void> {

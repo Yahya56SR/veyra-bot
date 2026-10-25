@@ -13,12 +13,18 @@ export type Database = ReturnType<typeof createDatabase>['db'];
  * Vercel functions are concurrent.
  */
 export function createDatabase(url: string, options: { max?: number } = {}) {
+  // Supabase (and most managed Postgres) requires TLS. postgres.js parses an
+  // explicit `sslmode` from the URL; otherwise enable it for non-local hosts.
+  const hasSslMode = /[?&]sslmode=/.test(url);
+  const isLocal = /@(?:localhost|127\.0\.0\.1|\[::1\])(?::|\/)/.test(url);
+
   const sql = postgres(url, {
     max: options.max ?? 3,
     prepare: false,
     idle_timeout: 20,
     connect_timeout: 10,
     onnotice: () => {},
+    ...(!hasSslMode && !isLocal ? { ssl: 'require' as const } : {}),
   });
 
   const db = drizzle(sql, { schema });

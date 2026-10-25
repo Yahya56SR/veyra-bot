@@ -7,10 +7,7 @@ import { resolve } from 'node:path';
  * - `apps/bot` (npm workspace dev)
  */
 export function resolveMigrationsDir(): string {
-  const candidates = [
-    resolve(process.cwd(), 'drizzle'),
-    resolve(process.cwd(), '../../drizzle'),
-  ];
+  const candidates = [resolve(process.cwd(), 'drizzle'), resolve(process.cwd(), '../../drizzle')];
 
   for (const candidate of candidates) {
     if (existsSync(candidate)) return candidate;

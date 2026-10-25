@@ -9,9 +9,7 @@ import {
 import type { Command } from '../../core/commands.js';
 
 export const helpCommand: Command = {
-  data: new SlashCommandBuilder()
-    .setName('help')
-    .setDescription('List the commands you can use.'),
+  data: new SlashCommandBuilder().setName('help').setDescription('List the commands you can use.'),
   category: 'core',
   cooldownSeconds: 3,
   async execute({ client, interaction, member, settings }) {

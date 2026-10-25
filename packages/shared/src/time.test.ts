@@ -21,12 +21,9 @@ describe('parseDuration', () => {
     expect(parseDuration(input)).toBe(expected);
   });
 
-  it.each(['', '   ', 'abc', '10', '10x', 'm10', '0s', '-5m', '400d'])(
-    'rejects %j',
-    (input) => {
-      expect(parseDuration(input)).toBeNull();
-    },
-  );
+  it.each(['', '   ', 'abc', '10', '10x', 'm10', '0s', '-5m', '400d'])('rejects %j', (input) => {
+    expect(parseDuration(input)).toBeNull();
+  });
 });
 
 describe('formatDuration', () => {

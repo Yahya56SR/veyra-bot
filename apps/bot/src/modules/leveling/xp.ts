@@ -72,10 +72,7 @@ export function evaluateMessageXp(input: XpEvaluationInput): XpEvaluation {
     return { eligible: false, reason: contextReason, amount: 0, multiplier };
   }
 
-  if (
-    input.lastGainAt !== undefined &&
-    now - input.lastGainAt < config.cooldownSeconds * 1000
-  ) {
+  if (input.lastGainAt !== undefined && now - input.lastGainAt < config.cooldownSeconds * 1000) {
     return { eligible: false, reason: 'cooldown', amount: 0, multiplier };
   }
 
