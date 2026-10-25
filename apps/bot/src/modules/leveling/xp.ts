@@ -43,6 +43,21 @@ export function effectiveMultiplier(
   return Math.min(5, Math.max(0.1, channelMultiplier * roleMultiplier));
 }
 
+/** Context-only checks, usable before touching the database. */
+export function checkXpContext(input: {
+  isBot: boolean;
+  channelId: string;
+  roleIds: readonly string[];
+  config: LevelingConfig;
+}): XpIneligibleReason | null {
+  if (input.isBot) return 'bot';
+  if (input.config.ignoredChannelIds.includes(input.channelId)) return 'ignored-channel';
+  if (input.config.ignoredRoleIds.some((roleId) => input.roleIds.includes(roleId))) {
+    return 'ignored-role';
+  }
+  return null;
+}
+
 /**
  * Decides whether a message earns XP and how much. Pure so the rules can be
  * unit-tested without a gateway connection.
@@ -52,16 +67,9 @@ export function evaluateMessageXp(input: XpEvaluationInput): XpEvaluation {
   const now = input.now ?? Date.now();
   const multiplier = effectiveMultiplier(input.channelId, input.roleIds, config);
 
-  if (input.isBot) {
-    return { eligible: false, reason: 'bot', amount: 0, multiplier };
-  }
-
-  if (config.ignoredChannelIds.includes(input.channelId)) {
-    return { eligible: false, reason: 'ignored-channel', amount: 0, multiplier };
-  }
-
-  if (config.ignoredRoleIds.some((roleId) => input.roleIds.includes(roleId))) {
-    return { eligible: false, reason: 'ignored-role', amount: 0, multiplier };
+  const contextReason = checkXpContext(input);
+  if (contextReason) {
+    return { eligible: false, reason: contextReason, amount: 0, multiplier };
   }
 
   if (

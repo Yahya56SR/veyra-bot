@@ -115167,18 +115167,22 @@ function effectiveMultiplier(channelId, roleIds, config2) {
   return Math.min(5, Math.max(0.1, channelMultiplier * roleMultiplier));
 }
 __name(effectiveMultiplier, "effectiveMultiplier");
+function checkXpContext(input2) {
+  if (input2.isBot) return "bot";
+  if (input2.config.ignoredChannelIds.includes(input2.channelId)) return "ignored-channel";
+  if (input2.config.ignoredRoleIds.some((roleId) => input2.roleIds.includes(roleId))) {
+    return "ignored-role";
+  }
+  return null;
+}
+__name(checkXpContext, "checkXpContext");
 function evaluateMessageXp(input2) {
   const { config: config2 } = input2;
   const now = input2.now ?? Date.now();
   const multiplier = effectiveMultiplier(input2.channelId, input2.roleIds, config2);
-  if (input2.isBot) {
-    return { eligible: false, reason: "bot", amount: 0, multiplier };
-  }
-  if (config2.ignoredChannelIds.includes(input2.channelId)) {
-    return { eligible: false, reason: "ignored-channel", amount: 0, multiplier };
-  }
-  if (config2.ignoredRoleIds.some((roleId) => input2.roleIds.includes(roleId))) {
-    return { eligible: false, reason: "ignored-role", amount: 0, multiplier };
+  const contextReason = checkXpContext(input2);
+  if (contextReason) {
+    return { eligible: false, reason: contextReason, amount: 0, multiplier };
   }
   if (input2.lastGainAt !== void 0 && now - input2.lastGainAt < config2.cooldownSeconds * 1e3) {
     return { eligible: false, reason: "cooldown", amount: 0, multiplier };
@@ -115227,12 +115231,24 @@ var LevelingService = class {
     if (!config2.enabled) return;
     const now = Date.now();
     const roleIds = message.member ? [...message.member.roles.cache.keys()] : [];
+    if (checkXpContext({ isBot: message.author.bot, channelId: message.channelId, roleIds, config: config2 })) {
+      return;
+    }
+    let lastGainAt = this.lastGainAt.get(message.author.id);
+    if (lastGainAt === void 0) {
+      const rows = await this.client.db.select({ lastXpAt: members.lastXpAt }).from(members).where(eq(members.userId, message.author.id)).limit(1);
+      const persisted = rows[0]?.lastXpAt?.getTime();
+      if (persisted !== void 0) {
+        lastGainAt = persisted;
+        this.lastGainAt.set(message.author.id, persisted);
+      }
+    }
     const evaluation = evaluateMessageXp({
       isBot: message.author.bot,
       channelId: message.channelId,
       roleIds,
       config: config2,
-      lastGainAt: this.lastGainAt.get(message.author.id),
+      lastGainAt,
       now
     });
     if (!evaluation.eligible) return;
@@ -115285,7 +115301,9 @@ var LevelingService = class {
       userId,
       xp: delta.xp,
       messages: delta.messages,
-      level: levelFromXp(delta.xp).level,
+      // Start at 0 so the level-up path below announces/rewards correctly
+      // even when a single large gain crosses a threshold.
+      level: 0,
       lastXpAt: /* @__PURE__ */ new Date()
     }).onConflictDoUpdate({
       target: members.userId,

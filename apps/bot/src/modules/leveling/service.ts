@@ -3,7 +3,7 @@ import { levelFromXp } from '@nervana/shared';
 import { eq, sql } from 'drizzle-orm';
 import type { Message } from 'discord.js';
 import type { NervanaClient } from '../../core/client.js';
-import { evaluateMessageXp } from './xp.js';
+import { checkXpContext, evaluateMessageXp } from './xp.js';
 
 interface PendingXp {
   xp: number;
@@ -53,12 +53,35 @@ export class LevelingService {
     const now = Date.now();
     const roleIds = message.member ? [...message.member.roles.cache.keys()] : [];
 
+    // Cheap bail-out before the cooldown lookup: bots and ignored channels/roles
+    // must not cause a database read per message.
+    if (checkXpContext({ isBot: message.author.bot, channelId: message.channelId, roleIds, config })) {
+      return;
+    }
+
+    // Seed the in-memory cooldown from the database after a restart so a
+    // restart cannot be used to bypass the per-member cooldown.
+    let lastGainAt = this.lastGainAt.get(message.author.id);
+    if (lastGainAt === undefined) {
+      const rows = await this.client.db
+        .select({ lastXpAt: members.lastXpAt })
+        .from(members)
+        .where(eq(members.userId, message.author.id))
+        .limit(1);
+
+      const persisted = rows[0]?.lastXpAt?.getTime();
+      if (persisted !== undefined) {
+        lastGainAt = persisted;
+        this.lastGainAt.set(message.author.id, persisted);
+      }
+    }
+
     const evaluation = evaluateMessageXp({
       isBot: message.author.bot,
       channelId: message.channelId,
       roleIds,
       config,
-      lastGainAt: this.lastGainAt.get(message.author.id),
+      lastGainAt,
       now,
     });
 
@@ -126,7 +149,9 @@ export class LevelingService {
         userId,
         xp: delta.xp,
         messages: delta.messages,
-        level: levelFromXp(delta.xp).level,
+        // Start at 0 so the level-up path below announces/rewards correctly
+        // even when a single large gain crosses a threshold.
+        level: 0,
         lastXpAt: new Date(),
       })
       .onConflictDoUpdate({

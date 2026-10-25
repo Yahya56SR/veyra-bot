@@ -19,6 +19,7 @@
     "test:watch": "vitest",
     "bundle:bot": "node scripts/bundle-bot.mjs",
     "verify:bundle": "node scripts/verify-bundle.mjs",
+    "check:lavalink": "node scripts/check-lavalink.mjs",
     "db:generate": "drizzle-kit generate --config packages/db/drizzle.config.ts",
     "db:migrate": "tsx apps/bot/src/db/migrate-cli.ts",
     "build:web": "npm run build -w @nervana/web"
