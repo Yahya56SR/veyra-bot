@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+
+# builds
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# local tooling
+verify-bundle-tmp/
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# NOTE: index.js (the committed bot bundle) and drizzle/ (committed migrations)
+# are intentionally NOT ignored. The bot host runs `node index.js` with no install.

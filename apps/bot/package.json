@@ -1,0 +1,21 @@
+{
+  "name": "@nervana/bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false src/index.ts",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@nervana/db": "*",
+    "@nervana/shared": "*",
+    "discord.js": "^14.27.0",
+    "drizzle-orm": "^0.45.4",
+    "lavalink-client": "^2.11.0",
+    "pino": "^10.4.0",
+    "postgres": "^3.4.9",
+    "zod": "^4.6.7"
+  }
+}

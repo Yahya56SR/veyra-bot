@@ -1,0 +1,35 @@
+{
+  "name": "nervana",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Nervana — an all-in-one Discord bot for a single server",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @nervana/bot",
+    "start": "npm run start -w @nervana/bot",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "bundle:bot": "node scripts/bundle-bot.mjs",
+    "verify:bundle": "node scripts/verify-bundle.mjs",
+    "db:generate": "drizzle-kit generate --config packages/db/drizzle.config.ts",
+    "db:migrate": "tsx apps/bot/src/db/migrate-cli.ts",
+    "build:web": "npm run build -w @nervana/web"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "drizzle-kit": "^0.31.11",
+    "esbuild": "^0.28.2",
+    "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "vitest": "^5.0.5"
+  }
+}

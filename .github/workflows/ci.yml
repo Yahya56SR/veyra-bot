@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Typecheck, test, bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build bot bundle
+        run: npm run bundle:bot
+
+      - name: Committed bundle and migrations must be current
+        run: |
+          if [ -n "$(git status --porcelain -- index.js drizzle)" ]; then
+            echo "::error::index.js or drizzle/ is stale. Run 'npm run bundle:bot' and 'npm run db:generate', then commit."
+            git status --porcelain -- index.js drizzle
+            git diff -- index.js
+            exit 1
+          fi
