@@ -8,11 +8,11 @@ export const shopCommand: Command = {
   data: new SlashCommandBuilder().setName('shop').setDescription('Browse the coin shop.'),
   category: 'economy',
   cooldownSeconds: 3,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings }) {
     await deferPublic(interaction);
 
-    const items = await listShop(requireDb(client));
-    const config = client.settings.economy;
+    const items = await listShop(requireDb(client), interaction.guildId);
+    const config = settings.economy;
 
     if (items.length === 0) {
       await interaction.editReply({

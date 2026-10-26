@@ -1,4 +1,4 @@
-import type { AppConfig } from '@nervana/shared';
+import type { AppConfig } from '@veyra/shared';
 
 export type ModuleKey = keyof AppConfig;
 
@@ -24,6 +24,7 @@ export const MODULE_LABELS: Record<ModuleKey, string> = {
   music: 'Music',
   community: 'Community',
   stats: 'Stats',
+  personalizer: 'Personalizer',
 };
 
 export const MODULE_DESCRIPTIONS: Record<ModuleKey, string> = {
@@ -36,6 +37,7 @@ export const MODULE_DESCRIPTIONS: Record<ModuleKey, string> = {
   music: 'DJ role, default volume, queue limit, and 24/7 mode.',
   community: 'Starboard threshold and channel plus giveaway defaults.',
   stats: 'Enable or disable usage tracking.',
+  personalizer: 'Premium nickname, embed colour, footer, and template copy.',
 };
 
 export function isModuleKey(value: string): value is ModuleKey {

@@ -1,4 +1,4 @@
-import { parseDuration } from '@nervana/shared';
+import { parseDuration } from '@veyra/shared';
 import type { SearchPlatform } from 'lavalink-client';
 
 const DEFAULT_LAVALINK_PORT = 2333;

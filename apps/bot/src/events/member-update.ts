@@ -1,4 +1,4 @@
-import { BRAND, truncate } from '@nervana/shared';
+import { BRAND, truncate } from '@veyra/shared';
 import { Events } from 'discord.js';
 import type { BotEvent } from '../core/events.js';
 import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
@@ -6,10 +6,10 @@ import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
 export const guildMemberUpdateEvent: BotEvent = {
   name: Events.GuildMemberUpdate,
   async execute(client, oldMember, newMember) {
-    if (newMember.guild.id !== client.env.GUILD_ID) return;
-    if (newMember.user.bot) return;
-    if (isLogIgnored(client, null, newMember.id)) return;
-    if (oldMember.partial) return;
+    if (newMember.user.bot || oldMember.partial) return;
+    const guildId = newMember.guild.id;
+    const config = await client.getConfig(guildId);
+    if (isLogIgnored(config.logging, null, newMember.id)) return;
 
     const changes: string[] = [];
 
@@ -48,6 +48,6 @@ export const guildMemberUpdateEvent: BotEvent = {
       { name: 'Changes', value: truncate(changes.join('\n'), 1024) },
     );
 
-    await sendLog(client, 'memberUpdate', embed);
+    await sendLog(client, guildId, 'memberUpdate', embed, config);
   },
 };

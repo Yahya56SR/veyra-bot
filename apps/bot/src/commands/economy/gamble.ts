@@ -18,12 +18,17 @@ export const gambleCommand: Command = {
     ),
   category: 'economy',
   cooldownSeconds: 5,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings }) {
     await deferEphemeral(interaction);
 
     const amount = interaction.options.getInteger('amount', true);
-    const config = client.settings.economy;
-    const result = await gamble(requireDb(client), interaction.user.id, amount);
+    const config = settings.economy;
+    const result = await gamble(
+      requireDb(client),
+      interaction.guildId,
+      interaction.user.id,
+      amount,
+    );
 
     await interaction.editReply({
       content: result.won

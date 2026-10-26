@@ -1,6 +1,7 @@
-import { cases } from '@nervana/db';
+import { cases } from '@veyra/db';
 import { and, eq, lte } from 'drizzle-orm';
-import type { NervanaClient } from '../../core/client.js';
+import type { Guild } from 'discord.js';
+import type { VeyraClient } from '../../core/client.js';
 import { finishModAction, type CaseRow } from './service.js';
 
 const TICK_MS = 60_000;
@@ -8,13 +9,14 @@ const UNKNOWN_BAN = 10026;
 
 /**
  * Lifts temporary bans. Timeouts are enforced by Discord, so they need no
- * scheduler; only bans with `expires_at` are tracked here.
+ * scheduler; only bans with `expires_at` are tracked here. The sweep is global
+ * so the cost does not grow with a query per guild.
  */
 export class ModerationScheduler {
   private timer: NodeJS.Timeout | null = null;
   private running = false;
 
-  constructor(private readonly client: NervanaClient) {}
+  constructor(private readonly client: VeyraClient) {}
 
   start(): void {
     if (this.timer) return;
@@ -38,22 +40,15 @@ export class ModerationScheduler {
     const db = this.client.db;
     if (!db) return;
 
-    const guild = this.client.guilds.cache.get(this.client.env.GUILD_ID);
-    if (!guild) return;
-
     this.running = true;
-
     try {
-      await this.sweep(db, guild);
+      await this.sweep(db);
     } finally {
       this.running = false;
     }
   }
 
-  private async sweep(
-    db: NonNullable<NervanaClient['db']>,
-    guild: import('discord.js').Guild,
-  ): Promise<void> {
+  private async sweep(db: NonNullable<VeyraClient['db']>): Promise<void> {
     // Discord enforces timeouts itself; this only keeps the stored case state
     // accurate once the timeout has elapsed.
     await db
@@ -70,7 +65,7 @@ export class ModerationScheduler {
       .select()
       .from(cases)
       .where(and(eq(cases.type, 'ban'), eq(cases.active, true), lte(cases.expiresAt, new Date())))
-      .limit(50)
+      .limit(100)
       .catch((error: unknown) => {
         this.client.logger.warn({ err: error }, 'temporary ban sweep failed');
         return [] as CaseRow[];
@@ -78,6 +73,25 @@ export class ModerationScheduler {
 
     if (due.length === 0) return;
 
+    const byGuild = new Map<string, CaseRow[]>();
+    for (const row of due) {
+      const bucket = byGuild.get(row.guildId) ?? [];
+      bucket.push(row);
+      byGuild.set(row.guildId, bucket);
+    }
+
+    for (const [guildId, rows] of byGuild) {
+      const guild = this.client.guilds.cache.get(guildId);
+      if (!guild) continue;
+      await this.sweepGuild(db, guild, rows);
+    }
+  }
+
+  private async sweepGuild(
+    db: NonNullable<VeyraClient['db']>,
+    guild: Guild,
+    due: CaseRow[],
+  ): Promise<void> {
     const byTarget = new Map<string, CaseRow[]>();
     for (const row of due) {
       const bucket = byTarget.get(row.targetId) ?? [];
@@ -94,7 +108,14 @@ export class ModerationScheduler {
       const active = await db
         .select()
         .from(cases)
-        .where(and(eq(cases.targetId, targetId), eq(cases.type, 'ban'), eq(cases.active, true)));
+        .where(
+          and(
+            eq(cases.guildId, guild.id),
+            eq(cases.targetId, targetId),
+            eq(cases.type, 'ban'),
+            eq(cases.active, true),
+          ),
+        );
 
       const dueIds = active
         .filter((row) => row.expiresAt !== null && row.expiresAt.getTime() <= now)
@@ -111,6 +132,7 @@ export class ModerationScheduler {
           .set({ active: false })
           .where(
             and(
+              eq(cases.guildId, guild.id),
               eq(cases.targetId, targetId),
               eq(cases.type, 'ban'),
               eq(cases.active, true),
@@ -126,8 +148,8 @@ export class ModerationScheduler {
         const code = (error as { code?: number }).code;
         if (code !== UNKNOWN_BAN) {
           this.client.logger.warn(
-            { err: error, targetId, caseIds: ids },
-            'failed to lift temporary ban — will retry',
+            { err: error, guildId: guild.id, targetId, caseIds: ids },
+            'failed to lift temporary ban - will retry',
           );
           continue;
         }
@@ -138,6 +160,7 @@ export class ModerationScheduler {
         .set({ active: false })
         .where(
           and(
+            eq(cases.guildId, guild.id),
             eq(cases.targetId, targetId),
             eq(cases.type, 'ban'),
             eq(cases.active, true),
@@ -146,12 +169,16 @@ export class ModerationScheduler {
         );
 
       await finishModAction(this.client, {
+        guildId: guild.id,
         type: 'unban',
         targetId,
         moderatorId: this.client.user?.id ?? 'system',
         reason: `Temporary ban expired (case #${ids[0]})`,
       }).catch((error: unknown) => {
-        this.client.logger.warn({ err: error, targetId, caseIds: ids }, 'failed to record unban');
+        this.client.logger.warn(
+          { err: error, guildId: guild.id, targetId },
+          'failed to record unban',
+        );
       });
     }
   }

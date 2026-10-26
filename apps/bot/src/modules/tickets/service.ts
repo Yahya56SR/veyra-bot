@@ -1,5 +1,10 @@
-import { tickets } from '@nervana/db';
-import { BRAND, type TicketCategory, type TicketsConfig } from '@nervana/shared';
+import { tickets } from '@veyra/db';
+import {
+  BRAND,
+  type PersonalizerConfig,
+  type TicketCategory,
+  type TicketsConfig,
+} from '@veyra/shared';
 import { and, count, eq } from 'drizzle-orm';
 import {
   ActionRowBuilder,
@@ -16,7 +21,7 @@ import {
   type User,
 } from 'discord.js';
 import { gzipSync } from 'node:zlib';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 import { requireDb } from '../../core/database.js';
 import { UserFacingError } from '../../core/errors.js';
 import { updateModule } from '../../config/service.js';
@@ -27,37 +32,48 @@ export type TicketRow = typeof tickets.$inferSelect;
 const MAX_TRANSCRIPT_MESSAGES = 1_000;
 const TRANSCRIPT_PAGE = 100;
 
-export function isTicketStaff(client: NervanaClient, member: GuildMember): boolean {
-  const staffRoleId = client.settings.tickets.staffRoleId;
+export function isTicketStaff(
+  client: VeyraClient,
+  member: GuildMember,
+  config?: TicketsConfig,
+): boolean {
+  const staffRoleId = (config ?? client.settingsCache.get(member.guild.id)?.config.tickets)
+    ?.staffRoleId;
   return (
     member.permissions.has(PermissionFlagsBits.ManageChannels) ||
-    (staffRoleId !== null && member.roles.cache.has(staffRoleId))
+    (staffRoleId != null && member.roles.cache.has(staffRoleId))
   );
 }
 
-export function requiredTicketStaff(client: NervanaClient, member: GuildMember): void {
-  if (!isTicketStaff(client, member)) {
+export function requiredTicketStaff(
+  client: VeyraClient,
+  member: GuildMember,
+  config?: TicketsConfig,
+): void {
+  if (!isTicketStaff(client, member, config)) {
     throw new UserFacingError('Only ticket staff can do that.');
   }
 }
 
 export async function findTicketByChannel(
-  client: NervanaClient,
+  client: VeyraClient,
+  guildId: string,
   channelId: string,
 ): Promise<TicketRow | null> {
   const rows = await requireDb(client)
     .select()
     .from(tickets)
-    .where(eq(tickets.channelId, channelId))
+    .where(and(eq(tickets.guildId, guildId), eq(tickets.channelId, channelId)))
     .limit(1);
   return rows[0] ?? null;
 }
 
 export async function requireOpenTicket(
-  client: NervanaClient,
+  client: VeyraClient,
+  guildId: string,
   channelId: string,
 ): Promise<TicketRow> {
-  const ticket = await findTicketByChannel(client, channelId);
+  const ticket = await findTicketByChannel(client, guildId, channelId);
   if (!ticket) throw new UserFacingError('This channel is not a ticket.');
   if (ticket.status !== 'open') throw new UserFacingError('This ticket is already closed.');
   return ticket;
@@ -78,12 +94,14 @@ function botMember(guild: Guild): GuildMember | null {
 }
 
 export async function openTicket(
-  client: NervanaClient,
+  client: VeyraClient,
   guild: Guild,
   member: GuildMember,
   categoryId: string,
 ): Promise<{ channel: TextChannel; ticket: TicketRow; label: string }> {
-  const config = client.settings.tickets;
+  const appConfig = await client.getConfig(guild.id);
+  const config = appConfig.tickets;
+  const premium = await client.isPremium(guild.id);
   if (!config.enabled) throw new UserFacingError('Tickets are disabled.');
   if (!config.categoryId || !config.staffRoleId) {
     throw new UserFacingError('Tickets are not configured yet. Ask staff to run `/setup tickets`.');
@@ -101,7 +119,9 @@ export async function openTicket(
   const openRows = await db
     .select({ value: count() })
     .from(tickets)
-    .where(and(eq(tickets.userId, member.id), eq(tickets.status, 'open')));
+    .where(
+      and(eq(tickets.guildId, guild.id), eq(tickets.userId, member.id), eq(tickets.status, 'open')),
+    );
   const openCount = openRows[0]?.value ?? 0;
   if (openCount >= config.maxOpenPerUser) {
     throw new UserFacingError(
@@ -186,6 +206,7 @@ export async function openTicket(
     const inserted = await db
       .insert(tickets)
       .values({
+        guildId: guild.id,
         channelId: channel.id,
         userId: member.id,
         category: category.id,
@@ -207,7 +228,11 @@ export async function openTicket(
     .catch(() => {});
 
   const embed = new EmbedBuilder()
-    .setColor(BRAND.color)
+    .setColor(
+      (appConfig.personalizer.enabled && premium
+        ? appConfig.personalizer.embedColor
+        : BRAND.color) as import('discord.js').ColorResolvable,
+    )
     .setTitle(`Ticket #${paddedId}`)
     .setDescription(
       `Thanks for opening a ticket, ${member}.\n\n**Category:** ${category.label}\nPlease describe your issue and a staff member will help you.`,
@@ -249,19 +274,18 @@ export interface CloseTicketResult {
 }
 
 export async function closeTicket(
-  client: NervanaClient,
+  client: VeyraClient,
   guild: Guild,
   channel: TextChannel,
   actor: GuildMember,
   reason: string,
 ): Promise<CloseTicketResult> {
-  const ticket = await requireOpenTicket(client, channel.id);
-  const staff = isTicketStaff(client, actor);
+  const ticket = await requireOpenTicket(client, guild.id, channel.id);
+  const config = (await client.getConfig(guild.id)).tickets;
+  const staff = isTicketStaff(client, actor, config);
   if (!staff && actor.id !== ticket.userId) {
     throw new UserFacingError('Only the ticket opener or ticket staff can close this ticket.');
   }
-
-  const config = client.settings.tickets;
   const label = ticketCategoryLabel(config, ticket);
   const safeReason = reason.trim().slice(0, 500) || 'No reason provided';
   const closedAt = new Date();
@@ -379,13 +403,14 @@ export async function closeTicket(
 }
 
 export async function claimTicket(
-  client: NervanaClient,
+  client: VeyraClient,
   guild: Guild,
   channel: TextChannel,
   actor: GuildMember,
 ): Promise<TicketRow> {
-  requiredTicketStaff(client, actor);
-  const ticket = await requireOpenTicket(client, channel.id);
+  const config = (await client.getConfig(guild.id)).tickets;
+  requiredTicketStaff(client, actor, config);
+  const ticket = await requireOpenTicket(client, guild.id, channel.id);
 
   if (ticket.claimedBy && ticket.claimedBy !== actor.id) {
     throw new UserFacingError(`This ticket is already claimed by <@${ticket.claimedBy}>.`);
@@ -415,14 +440,14 @@ export async function claimTicket(
 }
 
 export async function addTicketMember(
-  client: NervanaClient,
+  client: VeyraClient,
   guild: Guild,
   channel: TextChannel,
   actor: GuildMember,
   target: User,
 ): Promise<void> {
   requiredTicketStaff(client, actor);
-  await requireOpenTicket(client, channel.id);
+  await requireOpenTicket(client, guild.id, channel.id);
 
   if (target.bot) throw new UserFacingError('Bots cannot be added to tickets.');
   const targetMember = await guild.members.fetch(target.id).catch(() => null);
@@ -454,14 +479,14 @@ export async function addTicketMember(
 }
 
 export async function removeTicketMember(
-  client: NervanaClient,
+  client: VeyraClient,
   guild: Guild,
   channel: TextChannel,
   actor: GuildMember,
   target: User,
 ): Promise<void> {
   requiredTicketStaff(client, actor);
-  const ticket = await requireOpenTicket(client, channel.id);
+  const ticket = await requireOpenTicket(client, guild.id, channel.id);
 
   if (target.id === ticket.userId) {
     throw new UserFacingError('The ticket opener cannot be removed. Close the ticket instead.');
@@ -490,14 +515,19 @@ export interface TicketPanel {
   components: ActionRowBuilder<ButtonBuilder>[];
 }
 
-export function buildTicketPanel(config: TicketsConfig): TicketPanel {
+export function buildTicketPanel(
+  config: TicketsConfig,
+  personalizer?: PersonalizerConfig,
+): TicketPanel {
   const categories: TicketCategory[] = config.categories;
+  const branded = personalizer?.enabled ? personalizer : null;
 
   const embed = new EmbedBuilder()
-    .setColor(BRAND.color)
-    .setTitle('Support tickets')
+    .setColor((branded?.embedColor ?? BRAND.color) as import('discord.js').ColorResolvable)
+    .setTitle(branded?.ticketPanelTitle ?? 'Support tickets')
     .setDescription(
-      'Choose a category below to open a private channel with staff.\n\nPlease do not open a ticket for something you can ask in a public channel.',
+      branded?.ticketPanelDescription ??
+        'Choose a category below to open a private channel with staff.\n\nPlease do not open a ticket for something you can ask in a public channel.',
     )
     .addFields(
       categories.map((category) => ({
@@ -506,7 +536,10 @@ export function buildTicketPanel(config: TicketsConfig): TicketPanel {
         inline: false,
       })),
     )
-    .setFooter({ text: `Up to ${config.maxOpenPerUser} open ticket(s) per member` });
+    .setFooter({
+      text: branded?.footerText ?? `Up to ${config.maxOpenPerUser} open ticket(s) per member`,
+      iconURL: branded?.footerIconUrl ?? undefined,
+    });
 
   const components: ActionRowBuilder<ButtonBuilder>[] = [];
   for (let index = 0; index < categories.length; index += 5) {
@@ -534,11 +567,13 @@ export function buildTicketPanel(config: TicketsConfig): TicketPanel {
 }
 
 export async function postTicketPanel(
-  client: NervanaClient,
+  client: VeyraClient,
   guild: Guild,
   actorId: string,
 ): Promise<Message> {
-  const config = client.settings.tickets;
+  const appConfig = await client.getConfig(guild.id);
+  const config = appConfig.tickets;
+  const premium = await client.isPremium(guild.id);
   if (!config.enabled) throw new UserFacingError('Enable tickets with `/setup tickets` first.');
   if (!config.categoryId || !config.staffRoleId || !config.panelChannelId) {
     throw new UserFacingError(
@@ -556,13 +591,13 @@ export async function postTicketPanel(
     if (old) await old.delete().catch(() => {});
   }
 
-  const panel = buildTicketPanel(config);
+  const panel = buildTicketPanel(config, premium ? appConfig.personalizer : undefined);
   const message = await channel.send({
     embeds: panel.embeds,
     components: panel.components,
   });
 
-  await updateModule(client, actorId, 'tickets', {
+  await updateModule(client, guild.id, actorId, 'tickets', {
     ...config,
     panelMessageId: message.id,
   });

@@ -8,11 +8,16 @@ export const dailyCommand: Command = {
   data: new SlashCommandBuilder().setName('daily').setDescription('Claim your daily coins.'),
   category: 'economy',
   cooldownSeconds: 3,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings }) {
     await deferEphemeral(interaction);
 
-    const config = client.settings.economy;
-    const result = await claimDaily(requireDb(client), interaction.user.id, config);
+    const config = settings.economy;
+    const result = await claimDaily(
+      requireDb(client),
+      interaction.guildId,
+      interaction.user.id,
+      config,
+    );
 
     const embed = new EmbedBuilder()
       .setColor(0x57f287)

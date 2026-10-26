@@ -1,8 +1,8 @@
-import { eq } from 'drizzle-orm';
-import { settings as settingsTable } from '@nervana/db';
-import type { Database } from '@nervana/db';
-import { DEFAULT_CONFIG, parseConfig, type AppConfig } from '@nervana/shared';
-import type { NervanaClient } from '../core/client.js';
+import { asc, eq, gt } from 'drizzle-orm';
+import { settings as settingsTable, type Database } from '@veyra/db';
+import { DEFAULT_CONFIG, parseConfig, type AppConfig } from '@veyra/shared';
+import type { VeyraClient } from '../core/client.js';
+import { applyPersonalizer } from '../modules/personalizer/service.js';
 
 export interface SettingsState {
   config: AppConfig;
@@ -11,22 +11,30 @@ export interface SettingsState {
 }
 
 /**
- * Reads the singleton settings row, creating it from defaults on first boot.
- * Invalid stored JSON falls back to defaults instead of taking the bot down.
+ * Reads one guild's settings row, creating defaults when the guild has no row
+ * yet. Invalid stored JSON falls back to defaults instead of taking the bot
+ * down.
  */
 export async function readSettings(
   db: Database,
+  guildId: string,
   onInvalid?: (error: unknown) => void,
 ): Promise<SettingsState> {
   const rows = await db
     .select({ modules: settingsTable.modules, updatedAt: settingsTable.updatedAt })
     .from(settingsTable)
-    .where(eq(settingsTable.id, 1))
+    .where(eq(settingsTable.guildId, guildId))
     .limit(1);
 
   const row = rows[0];
   if (!row) {
-    await db.insert(settingsTable).values({ id: 1, modules: DEFAULT_CONFIG }).onConflictDoNothing();
+    await db
+      .insert(settingsTable)
+      .values({ guildId, modules: DEFAULT_CONFIG })
+      .onConflictDoNothing()
+      .catch(() => {
+        // The guild may not be persisted yet. Defaults still keep commands up.
+      });
     return { config: parseConfig(DEFAULT_CONFIG), updatedAt: Date.now() };
   }
 
@@ -48,10 +56,10 @@ export function applyOverrides(config: AppConfig, musicEnabled: boolean): AppCon
 }
 
 /**
- * Single-guild design: no LISTEN/NOTIFY, no direct-connection requirement.
- * A 15 s poll works through Supabase's transaction pooler.
+ * Refreshes changed guild settings every 15 seconds. This works through
+ * Supabase's transaction pooler and avoids a direct-connection requirement.
  */
-export function startSettingsPoller(client: NervanaClient): void {
+export function startSettingsPoller(client: VeyraClient): void {
   if (!client.db) return;
   if (client.settingsPollTimer) return;
 
@@ -61,32 +69,42 @@ export function startSettingsPoller(client: NervanaClient): void {
   client.settingsPollTimer.unref();
 }
 
-async function poll(client: NervanaClient): Promise<void> {
+async function poll(client: VeyraClient): Promise<void> {
   if (!client.db) return;
 
+  const since = new Date(client.settingsPollSince);
   try {
     const rows = await client.db
-      .select({ modules: settingsTable.modules, updatedAt: settingsTable.updatedAt })
+      .select({
+        guildId: settingsTable.guildId,
+        modules: settingsTable.modules,
+        updatedAt: settingsTable.updatedAt,
+      })
       .from(settingsTable)
-      .where(eq(settingsTable.id, 1))
-      .limit(1);
+      .where(gt(settingsTable.updatedAt, since))
+      .orderBy(asc(settingsTable.updatedAt))
+      .limit(500);
 
-    const row = rows[0];
-    if (!row) return;
+    for (const row of rows) {
+      try {
+        const config = parseConfig(row.modules);
+        client.cacheSettings(row.guildId, config, row.updatedAt.getTime());
+        client.invalidatePremium(row.guildId);
+        const guild = client.guilds.cache.get(row.guildId);
+        if (guild) void applyPersonalizer(client, guild, config);
+      } catch (error) {
+        client.logger.warn({ err: error, guildId: row.guildId }, 'invalid guild settings skipped');
+      }
+    }
 
-    const updatedAt = row.updatedAt.getTime();
-    if (updatedAt === client.settingsUpdatedAt) return;
-
-    const config = parseConfig(row.modules);
-    client.settings = applyOverrides(config, client.env.MUSIC_ENABLED);
-    client.settingsUpdatedAt = updatedAt;
-    client.logger.info({ updatedAt }, 'settings reloaded');
+    const last = rows[rows.length - 1];
+    client.settingsPollSince = last ? last.updatedAt.getTime() : Date.now();
   } catch (error) {
     client.logger.warn({ err: error }, 'settings poll failed');
   }
 }
 
-export function stopSettingsPoller(client: NervanaClient): void {
+export function stopSettingsPoller(client: VeyraClient): void {
   if (client.settingsPollTimer) {
     clearInterval(client.settingsPollTimer);
     client.settingsPollTimer = null;

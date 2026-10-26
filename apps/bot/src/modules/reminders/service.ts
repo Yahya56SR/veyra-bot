@@ -1,6 +1,6 @@
-import { reminders } from '@nervana/db';
+import { reminders } from '@veyra/db';
 import { and, asc, eq, lte } from 'drizzle-orm';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 
 const TICK_MS = 30_000;
 const BATCH_SIZE = 20;
@@ -13,7 +13,7 @@ export class ReminderService {
   private timer: NodeJS.Timeout | null = null;
   private running = false;
 
-  constructor(private readonly client: NervanaClient) {}
+  constructor(private readonly client: VeyraClient) {}
 
   start(): void {
     if (this.timer || !this.client.isReady()) return;
@@ -75,7 +75,7 @@ export class ReminderService {
       }
     }
 
-    const guild = this.client.guilds.cache.get(this.client.env.GUILD_ID);
+    const guild = this.client.guilds.cache.get(row.guildId);
     const channel = guild ? await guild.channels.fetch(row.channelId).catch(() => null) : null;
     if (!channel?.isTextBased()) {
       this.client.logger.warn(

@@ -22,7 +22,7 @@ export const payCommand: Command = {
     ),
   category: 'economy',
   cooldownSeconds: 3,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings }) {
     await deferEphemeral(interaction);
 
     const target = interaction.options.getUser('user', true);
@@ -30,8 +30,14 @@ export const payCommand: Command = {
     if (target.bot) throw new UserFacingError('Bots do not have wallets.');
     if (target.id === interaction.user.id) throw new UserFacingError('You cannot pay yourself.');
 
-    const config = client.settings.economy;
-    const result = await transferBalance(requireDb(client), interaction.user.id, target.id, amount);
+    const config = settings.economy;
+    const result = await transferBalance(
+      requireDb(client),
+      interaction.guildId,
+      interaction.user.id,
+      target.id,
+      amount,
+    );
 
     await interaction.editReply({
       content: `Sent ${formatCurrency(result.amount, config)} to ${target}.\nYour balance: ${formatCurrency(

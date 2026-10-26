@@ -2,6 +2,7 @@ import type { BotEvent } from '../core/events.js';
 import { channelUpdateEvent } from './channel-update.js';
 import { errorEvent, warnEvent } from './client-error.js';
 import { guildCreateEvent } from './guild-create.js';
+import { guildDeleteEvent } from './guild-delete.js';
 import { interactionCreateEvent } from './interaction-create.js';
 import { guildMemberAddEvent } from './member-add.js';
 import { guildMemberRemoveEvent } from './member-remove.js';
@@ -19,6 +20,7 @@ import { voiceUpdateEvent } from './voice-update.js';
 export const events: readonly BotEvent[] = [
   readyEvent,
   guildCreateEvent,
+  guildDeleteEvent,
   interactionCreateEvent,
   messageCreateEvent,
   messageDeleteEvent,

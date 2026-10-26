@@ -1,4 +1,4 @@
-import { formatDuration } from '@nervana/shared';
+import { formatDuration } from '@veyra/shared';
 import { SlashCommandBuilder } from 'discord.js';
 import type { Command, CommandContext } from '../../core/commands.js';
 import { UserFacingError } from '../../core/errors.js';

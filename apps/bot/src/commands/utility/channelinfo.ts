@@ -1,4 +1,4 @@
-import { BRAND, truncate } from '@nervana/shared';
+import { BRAND, truncate } from '@veyra/shared';
 import { ChannelType, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
 import { UserFacingError } from '../../core/errors.js';

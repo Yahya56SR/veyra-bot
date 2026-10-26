@@ -1,4 +1,4 @@
-import { formatDuration, truncate } from '@nervana/shared';
+import { formatDuration, truncate } from '@veyra/shared';
 import { Events } from 'discord.js';
 import {
   LavalinkManager,
@@ -8,7 +8,7 @@ import {
   type Track,
   type UnresolvedTrack,
 } from 'lavalink-client';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 import { UserFacingError } from '../../core/errors.js';
 import { buildSearchSources, isUrlQuery, parseLavalinkUrl } from './helpers.js';
 
@@ -53,7 +53,7 @@ export class MusicService {
   private rawListener: ((data: unknown) => void) | null = null;
   private readonly emptyTimers = new Map<string, NodeJS.Timeout>();
 
-  constructor(private readonly client: NervanaClient) {}
+  constructor(private readonly client: VeyraClient) {}
 
   get available(): boolean {
     return this.manager?.useable ?? false;
@@ -281,11 +281,12 @@ export class MusicService {
       return existing;
     }
 
+    const appConfig = await this.client.getConfig(input.guildId);
     const player = manager.createPlayer({
       guildId: input.guildId,
       voiceChannelId: input.voiceChannelId,
       textChannelId: input.textChannelId,
-      volume: this.client.settings.music.defaultVolume,
+      volume: appConfig.music.defaultVolume,
       selfDeaf: true,
       selfMute: false,
     });
@@ -350,10 +351,34 @@ export class MusicService {
     );
   }
 
+  private async handleQueueEnd(player: Player): Promise<void> {
+    this.clearEmptyTimer(player.guildId);
+
+    const [config, premium] = await Promise.all([
+      this.client.getConfig(player.guildId),
+      this.client.isPremium(player.guildId),
+    ]);
+    if (config.music.stay247 && premium) return;
+
+    const timer = setTimeout(() => {
+      this.emptyTimers.delete(player.guildId);
+      const current = this.manager?.getPlayer(player.guildId);
+      if (!current) return;
+      if (current.queue.current || current.queue.tracks.length > 0) return;
+
+      void current.destroy('Queue empty', true).catch((error: unknown) => {
+        this.client.logger.warn({ err: error, guildId: player.guildId }, 'music cleanup failed');
+      });
+    }, EMPTY_QUEUE_DESTROY_MS);
+
+    timer.unref();
+    this.emptyTimers.set(player.guildId, timer);
+  }
+
   private registerEvents(manager: LavalinkManager): void {
     manager.on('trackStart', (player, track) => {
       this.clearEmptyTimer(player.guildId);
-      this.client.stats?.recordMusicPlay();
+      this.client.stats?.recordMusicPlay(player.guildId);
 
       if (track) {
         this.client.logger.debug(
@@ -379,23 +404,7 @@ export class MusicService {
     });
 
     manager.on('queueEnd', (player) => {
-      this.clearEmptyTimer(player.guildId);
-
-      if (this.client.settings.music.stay247) return;
-
-      const timer = setTimeout(() => {
-        this.emptyTimers.delete(player.guildId);
-        const current = this.manager?.getPlayer(player.guildId);
-        if (!current) return;
-        if (current.queue.current || current.queue.tracks.length > 0) return;
-
-        void current.destroy('Queue empty', true).catch((error: unknown) => {
-          this.client.logger.warn({ err: error, guildId: player.guildId }, 'music cleanup failed');
-        });
-      }, EMPTY_QUEUE_DESTROY_MS);
-
-      timer.unref();
-      this.emptyTimers.set(player.guildId, timer);
+      void this.handleQueueEnd(player);
     });
 
     manager.on('playerDestroy', (player) => {

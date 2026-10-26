@@ -35761,7 +35761,7 @@ var require_InteractionCollector = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Collector = require_Collector();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var InteractionCollector = class extends Collector {
       static {
         __name(this, "InteractionCollector");
@@ -35786,27 +35786,27 @@ var require_InteractionCollector = __commonJS({
         }, "bulkDeleteListener");
         if (this.messageId || this.messageInteractionId) {
           this._handleMessageDeletion = this._handleMessageDeletion.bind(this);
-          this.client.on(Events19.MessageDelete, this._handleMessageDeletion);
-          this.client.on(Events19.MessageBulkDelete, bulkDeleteListener);
+          this.client.on(Events20.MessageDelete, this._handleMessageDeletion);
+          this.client.on(Events20.MessageBulkDelete, bulkDeleteListener);
         }
         if (this.channelId) {
           this._handleChannelDeletion = this._handleChannelDeletion.bind(this);
           this._handleThreadDeletion = this._handleThreadDeletion.bind(this);
-          this.client.on(Events19.ChannelDelete, this._handleChannelDeletion);
-          this.client.on(Events19.ThreadDelete, this._handleThreadDeletion);
+          this.client.on(Events20.ChannelDelete, this._handleChannelDeletion);
+          this.client.on(Events20.ThreadDelete, this._handleThreadDeletion);
         }
         if (this.guildId) {
           this._handleGuildDeletion = this._handleGuildDeletion.bind(this);
-          this.client.on(Events19.GuildDelete, this._handleGuildDeletion);
+          this.client.on(Events20.GuildDelete, this._handleGuildDeletion);
         }
-        this.client.on(Events19.InteractionCreate, this.handleCollect);
+        this.client.on(Events20.InteractionCreate, this.handleCollect);
         this.once("end", () => {
-          this.client.removeListener(Events19.InteractionCreate, this.handleCollect);
-          this.client.removeListener(Events19.MessageDelete, this._handleMessageDeletion);
-          this.client.removeListener(Events19.MessageBulkDelete, bulkDeleteListener);
-          this.client.removeListener(Events19.ChannelDelete, this._handleChannelDeletion);
-          this.client.removeListener(Events19.ThreadDelete, this._handleThreadDeletion);
-          this.client.removeListener(Events19.GuildDelete, this._handleGuildDeletion);
+          this.client.removeListener(Events20.InteractionCreate, this.handleCollect);
+          this.client.removeListener(Events20.MessageDelete, this._handleMessageDeletion);
+          this.client.removeListener(Events20.MessageBulkDelete, bulkDeleteListener);
+          this.client.removeListener(Events20.ChannelDelete, this._handleChannelDeletion);
+          this.client.removeListener(Events20.ThreadDelete, this._handleThreadDeletion);
+          this.client.removeListener(Events20.GuildDelete, this._handleGuildDeletion);
           this.client.decrementMaxListeners();
         });
         this.on("collect", (interaction) => {
@@ -35924,7 +35924,7 @@ var require_MessageCollector = __commonJS({
   "node_modules/discord.js/src/structures/MessageCollector.js"(exports2, module2) {
     "use strict";
     var Collector = require_Collector();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var MessageCollector = class extends Collector {
       static {
         __name(this, "MessageCollector");
@@ -35945,19 +35945,19 @@ var require_MessageCollector = __commonJS({
         this._handleThreadDeletion = this._handleThreadDeletion.bind(this);
         this._handleGuildDeletion = this._handleGuildDeletion.bind(this);
         this.client.incrementMaxListeners();
-        this.client.on(Events19.MessageCreate, this.handleCollect);
-        this.client.on(Events19.MessageDelete, this.handleDispose);
-        this.client.on(Events19.MessageBulkDelete, bulkDeleteListener);
-        this.client.on(Events19.ChannelDelete, this._handleChannelDeletion);
-        this.client.on(Events19.ThreadDelete, this._handleThreadDeletion);
-        this.client.on(Events19.GuildDelete, this._handleGuildDeletion);
+        this.client.on(Events20.MessageCreate, this.handleCollect);
+        this.client.on(Events20.MessageDelete, this.handleDispose);
+        this.client.on(Events20.MessageBulkDelete, bulkDeleteListener);
+        this.client.on(Events20.ChannelDelete, this._handleChannelDeletion);
+        this.client.on(Events20.ThreadDelete, this._handleThreadDeletion);
+        this.client.on(Events20.GuildDelete, this._handleGuildDeletion);
         this.once("end", () => {
-          this.client.removeListener(Events19.MessageCreate, this.handleCollect);
-          this.client.removeListener(Events19.MessageDelete, this.handleDispose);
-          this.client.removeListener(Events19.MessageBulkDelete, bulkDeleteListener);
-          this.client.removeListener(Events19.ChannelDelete, this._handleChannelDeletion);
-          this.client.removeListener(Events19.ThreadDelete, this._handleThreadDeletion);
-          this.client.removeListener(Events19.GuildDelete, this._handleGuildDeletion);
+          this.client.removeListener(Events20.MessageCreate, this.handleCollect);
+          this.client.removeListener(Events20.MessageDelete, this.handleDispose);
+          this.client.removeListener(Events20.MessageBulkDelete, bulkDeleteListener);
+          this.client.removeListener(Events20.ChannelDelete, this._handleChannelDeletion);
+          this.client.removeListener(Events20.ThreadDelete, this._handleThreadDeletion);
+          this.client.removeListener(Events20.GuildDelete, this._handleGuildDeletion);
           this.client.decrementMaxListeners();
         });
       }
@@ -37114,7 +37114,7 @@ var require_GuildTemplate = __commonJS({
     var { RouteBases, Routes: Routes2 } = require_v106();
     var Base = require_Base();
     var { resolveImage } = require_DataResolver();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildTemplate2 = class extends Base {
       static {
         __name(this, "GuildTemplate");
@@ -37183,7 +37183,7 @@ var require_GuildTemplate = __commonJS({
         if (client.guilds.cache.has(data.id)) return client.guilds.cache.get(data.id);
         return new Promise((resolve3) => {
           const resolveGuild = /* @__PURE__ */ __name((guild) => {
-            client.off(Events19.GuildCreate, handleGuild);
+            client.off(Events20.GuildCreate, handleGuild);
             client.decrementMaxListeners();
             resolve3(guild);
           }, "resolveGuild");
@@ -37194,7 +37194,7 @@ var require_GuildTemplate = __commonJS({
             }
           }, "handleGuild");
           client.incrementMaxListeners();
-          client.on(Events19.GuildCreate, handleGuild);
+          client.on(Events20.GuildCreate, handleGuild);
           const timeout = setTimeout2(() => resolveGuild(client.guilds._add(data)), 1e4).unref();
         });
       }
@@ -44803,7 +44803,7 @@ var require_dist8 = __commonJS({
       ContextMenuCommandAssertions: /* @__PURE__ */ __name(() => Assertions_exports11, "ContextMenuCommandAssertions"),
       ContextMenuCommandBuilder: /* @__PURE__ */ __name(() => ContextMenuCommandBuilder, "ContextMenuCommandBuilder"),
       EmbedAssertions: /* @__PURE__ */ __name(() => Assertions_exports, "EmbedAssertions"),
-      EmbedBuilder: /* @__PURE__ */ __name(() => EmbedBuilder34, "EmbedBuilder"),
+      EmbedBuilder: /* @__PURE__ */ __name(() => EmbedBuilder36, "EmbedBuilder"),
       FileBuilder: /* @__PURE__ */ __name(() => FileBuilder, "FileBuilder"),
       FileUploadAssertions: /* @__PURE__ */ __name(() => Assertions_exports4, "FileUploadAssertions"),
       FileUploadBuilder: /* @__PURE__ */ __name(() => FileUploadBuilder, "FileUploadBuilder"),
@@ -44829,7 +44829,7 @@ var require_dist8 = __commonJS({
       SlashCommandAssertions: /* @__PURE__ */ __name(() => Assertions_exports10, "SlashCommandAssertions"),
       SlashCommandAttachmentOption: /* @__PURE__ */ __name(() => SlashCommandAttachmentOption, "SlashCommandAttachmentOption"),
       SlashCommandBooleanOption: /* @__PURE__ */ __name(() => SlashCommandBooleanOption, "SlashCommandBooleanOption"),
-      SlashCommandBuilder: /* @__PURE__ */ __name(() => SlashCommandBuilder48, "SlashCommandBuilder"),
+      SlashCommandBuilder: /* @__PURE__ */ __name(() => SlashCommandBuilder49, "SlashCommandBuilder"),
       SlashCommandChannelOption: /* @__PURE__ */ __name(() => SlashCommandChannelOption, "SlashCommandChannelOption"),
       SlashCommandIntegerOption: /* @__PURE__ */ __name(() => SlashCommandIntegerOption, "SlashCommandIntegerOption"),
       SlashCommandMentionableOption: /* @__PURE__ */ __name(() => SlashCommandMentionableOption, "SlashCommandMentionableOption"),
@@ -44937,7 +44937,7 @@ var require_dist8 = __commonJS({
     }
     __name(normalizeArray, "normalizeArray");
     __name2(normalizeArray, "normalizeArray");
-    var EmbedBuilder34 = class {
+    var EmbedBuilder36 = class {
       static {
         __name(this, "EmbedBuilder");
       }
@@ -49217,7 +49217,7 @@ var require_dist8 = __commonJS({
         return this;
       }
     };
-    var SlashCommandBuilder48 = class {
+    var SlashCommandBuilder49 = class {
       static {
         __name(this, "SlashCommandBuilder");
       }
@@ -49273,10 +49273,10 @@ var require_dist8 = __commonJS({
        */
       nsfw = void 0;
     };
-    __name2(SlashCommandBuilder48, "SlashCommandBuilder");
-    SlashCommandBuilder48 = __decorateClass([
+    __name2(SlashCommandBuilder49, "SlashCommandBuilder");
+    SlashCommandBuilder49 = __decorateClass([
       (0, import_ts_mixer6.mix)(SharedSlashCommandOptions, SharedNameAndDescription, SharedSlashCommandSubcommands, SharedSlashCommand)
-    ], SlashCommandBuilder48);
+    ], SlashCommandBuilder49);
     var Assertions_exports11 = {};
     __export2(Assertions_exports11, {
       contextsPredicate: /* @__PURE__ */ __name(() => contextsPredicate2, "contextsPredicate"),
@@ -49925,7 +49925,7 @@ var require_ReactionCollector = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Collector = require_Collector();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var ReactionCollector = class _ReactionCollector extends Collector {
       static {
         __name(this, "ReactionCollector");
@@ -49948,23 +49948,23 @@ var require_ReactionCollector = __commonJS({
           if (messages2.has(this.message.id)) this.stop("messageDelete");
         }, "bulkDeleteListener");
         this.client.incrementMaxListeners();
-        this.client.on(Events19.MessageReactionAdd, this.handleCollect);
-        this.client.on(Events19.MessageReactionRemove, this.handleDispose);
-        this.client.on(Events19.MessageReactionRemoveAll, this.empty);
-        this.client.on(Events19.MessageDelete, this._handleMessageDeletion);
-        this.client.on(Events19.MessageBulkDelete, bulkDeleteListener);
-        this.client.on(Events19.ChannelDelete, this._handleChannelDeletion);
-        this.client.on(Events19.ThreadDelete, this._handleThreadDeletion);
-        this.client.on(Events19.GuildDelete, this._handleGuildDeletion);
+        this.client.on(Events20.MessageReactionAdd, this.handleCollect);
+        this.client.on(Events20.MessageReactionRemove, this.handleDispose);
+        this.client.on(Events20.MessageReactionRemoveAll, this.empty);
+        this.client.on(Events20.MessageDelete, this._handleMessageDeletion);
+        this.client.on(Events20.MessageBulkDelete, bulkDeleteListener);
+        this.client.on(Events20.ChannelDelete, this._handleChannelDeletion);
+        this.client.on(Events20.ThreadDelete, this._handleThreadDeletion);
+        this.client.on(Events20.GuildDelete, this._handleGuildDeletion);
         this.once("end", () => {
-          this.client.removeListener(Events19.MessageReactionAdd, this.handleCollect);
-          this.client.removeListener(Events19.MessageReactionRemove, this.handleDispose);
-          this.client.removeListener(Events19.MessageReactionRemoveAll, this.empty);
-          this.client.removeListener(Events19.MessageDelete, this._handleMessageDeletion);
-          this.client.removeListener(Events19.MessageBulkDelete, bulkDeleteListener);
-          this.client.removeListener(Events19.ChannelDelete, this._handleChannelDeletion);
-          this.client.removeListener(Events19.ThreadDelete, this._handleThreadDeletion);
-          this.client.removeListener(Events19.GuildDelete, this._handleGuildDeletion);
+          this.client.removeListener(Events20.MessageReactionAdd, this.handleCollect);
+          this.client.removeListener(Events20.MessageReactionRemove, this.handleDispose);
+          this.client.removeListener(Events20.MessageReactionRemoveAll, this.empty);
+          this.client.removeListener(Events20.MessageDelete, this._handleMessageDeletion);
+          this.client.removeListener(Events20.MessageBulkDelete, bulkDeleteListener);
+          this.client.removeListener(Events20.ChannelDelete, this._handleChannelDeletion);
+          this.client.removeListener(Events20.ThreadDelete, this._handleThreadDeletion);
+          this.client.removeListener(Events20.GuildDelete, this._handleGuildDeletion);
           this.client.decrementMaxListeners();
         });
         this.on("collect", (reaction, user) => {
@@ -55820,14 +55820,14 @@ var require_ApplicationCommandPermissionsUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/ApplicationCommandPermissionsUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var ApplicationCommandPermissionsUpdateAction = class extends Action {
       static {
         __name(this, "ApplicationCommandPermissionsUpdateAction");
       }
       handle(data) {
         const client = this.client;
-        client.emit(Events19.ApplicationCommandPermissionsUpdate, {
+        client.emit(Events20.ApplicationCommandPermissionsUpdate, {
           permissions: data.permissions,
           id: data.id,
           guildId: data.guild_id,
@@ -55904,7 +55904,7 @@ var require_AutoModerationActionExecution2 = __commonJS({
     "use strict";
     var Action = require_Action();
     var AutoModerationActionExecution = require_AutoModerationActionExecution();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var AutoModerationActionExecutionAction = class extends Action {
       static {
         __name(this, "AutoModerationActionExecutionAction");
@@ -55913,7 +55913,7 @@ var require_AutoModerationActionExecution2 = __commonJS({
         const { client } = this;
         const guild = client.guilds.cache.get(data.guild_id);
         if (guild) {
-          client.emit(Events19.AutoModerationActionExecution, new AutoModerationActionExecution(data, guild));
+          client.emit(Events20.AutoModerationActionExecution, new AutoModerationActionExecution(data, guild));
         }
         return {};
       }
@@ -55927,7 +55927,7 @@ var require_AutoModerationRuleCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/AutoModerationRuleCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var AutoModerationRuleCreateAction = class extends Action {
       static {
         __name(this, "AutoModerationRuleCreateAction");
@@ -55937,7 +55937,7 @@ var require_AutoModerationRuleCreate = __commonJS({
         const guild = client.guilds.cache.get(data.guild_id);
         if (guild) {
           const autoModerationRule = guild.autoModerationRules._add(data);
-          client.emit(Events19.AutoModerationRuleCreate, autoModerationRule);
+          client.emit(Events20.AutoModerationRuleCreate, autoModerationRule);
         }
         return {};
       }
@@ -55951,7 +55951,7 @@ var require_AutoModerationRuleDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/AutoModerationRuleDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var AutoModerationRuleDeleteAction = class extends Action {
       static {
         __name(this, "AutoModerationRuleDeleteAction");
@@ -55963,7 +55963,7 @@ var require_AutoModerationRuleDelete = __commonJS({
           const autoModerationRule = guild.autoModerationRules.cache.get(data.id);
           if (autoModerationRule) {
             guild.autoModerationRules.cache.delete(autoModerationRule.id);
-            client.emit(Events19.AutoModerationRuleDelete, autoModerationRule);
+            client.emit(Events20.AutoModerationRuleDelete, autoModerationRule);
           }
         }
         return {};
@@ -55978,7 +55978,7 @@ var require_AutoModerationRuleUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/AutoModerationRuleUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var AutoModerationRuleUpdateAction = class extends Action {
       static {
         __name(this, "AutoModerationRuleUpdateAction");
@@ -55989,7 +55989,7 @@ var require_AutoModerationRuleUpdate = __commonJS({
         if (guild) {
           const oldAutoModerationRule = guild.autoModerationRules.cache.get(data.id)?._clone() ?? null;
           const newAutoModerationRule = guild.autoModerationRules._add(data);
-          client.emit(Events19.AutoModerationRuleUpdate, oldAutoModerationRule, newAutoModerationRule);
+          client.emit(Events20.AutoModerationRuleUpdate, oldAutoModerationRule, newAutoModerationRule);
         }
         return {};
       }
@@ -56003,7 +56003,7 @@ var require_ChannelCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/ChannelCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var ChannelCreateAction = class extends Action {
       static {
         __name(this, "ChannelCreateAction");
@@ -56013,7 +56013,7 @@ var require_ChannelCreate = __commonJS({
         const existing = client.channels.cache.has(data.id);
         const channel = client.channels._add(data);
         if (!existing && channel) {
-          client.emit(Events19.ChannelCreate, channel);
+          client.emit(Events20.ChannelCreate, channel);
         }
         return { channel };
       }
@@ -56027,7 +56027,7 @@ var require_ChannelDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/ChannelDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var ChannelDeleteAction = class extends Action {
       static {
         __name(this, "ChannelDeleteAction");
@@ -56037,7 +56037,7 @@ var require_ChannelDelete = __commonJS({
         const channel = client.channels.cache.get(data.id);
         if (channel) {
           client.channels._remove(channel.id);
-          client.emit(Events19.ChannelDelete, channel);
+          client.emit(Events20.ChannelDelete, channel);
         }
       }
     };
@@ -58386,7 +58386,7 @@ var require_EntitlementCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/EntitlementCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var EntitlementCreateAction = class extends Action {
       static {
         __name(this, "EntitlementCreateAction");
@@ -58394,7 +58394,7 @@ var require_EntitlementCreate = __commonJS({
       handle(data) {
         const client = this.client;
         const entitlement = client.application.entitlements._add(data);
-        client.emit(Events19.EntitlementCreate, entitlement);
+        client.emit(Events20.EntitlementCreate, entitlement);
         return {};
       }
     };
@@ -58407,7 +58407,7 @@ var require_EntitlementDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/EntitlementDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var EntitlementDeleteAction = class extends Action {
       static {
         __name(this, "EntitlementDeleteAction");
@@ -58416,7 +58416,7 @@ var require_EntitlementDelete = __commonJS({
         const client = this.client;
         const entitlement = client.application.entitlements._add(data, false);
         client.application.entitlements.cache.delete(entitlement.id);
-        client.emit(Events19.EntitlementDelete, entitlement);
+        client.emit(Events20.EntitlementDelete, entitlement);
         return {};
       }
     };
@@ -58429,7 +58429,7 @@ var require_EntitlementUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/EntitlementUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var EntitlementUpdateAction = class extends Action {
       static {
         __name(this, "EntitlementUpdateAction");
@@ -58438,7 +58438,7 @@ var require_EntitlementUpdate = __commonJS({
         const client = this.client;
         const oldEntitlement = client.application.entitlements.cache.get(data.id)?._clone() ?? null;
         const newEntitlement = client.application.entitlements._add(data);
-        client.emit(Events19.EntitlementUpdate, oldEntitlement, newEntitlement);
+        client.emit(Events20.EntitlementUpdate, oldEntitlement, newEntitlement);
         return {};
       }
     };
@@ -59312,7 +59312,7 @@ var require_GuildAuditLogEntryCreate = __commonJS({
     "use strict";
     var Action = require_Action();
     var GuildAuditLogsEntry = require_GuildAuditLogsEntry();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildAuditLogEntryCreateAction = class extends Action {
       static {
         __name(this, "GuildAuditLogEntryCreateAction");
@@ -59323,7 +59323,7 @@ var require_GuildAuditLogEntryCreate = __commonJS({
         let auditLogEntry;
         if (guild) {
           auditLogEntry = new GuildAuditLogsEntry(guild, data);
-          client.emit(Events19.GuildAuditLogEntryCreate, auditLogEntry, guild);
+          client.emit(Events20.GuildAuditLogEntryCreate, auditLogEntry, guild);
         }
         return { auditLogEntry };
       }
@@ -59337,7 +59337,7 @@ var require_GuildBanAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildBanAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildBanAdd = class extends Action {
       static {
         __name(this, "GuildBanAdd");
@@ -59345,7 +59345,7 @@ var require_GuildBanAdd = __commonJS({
       handle(data) {
         const client = this.client;
         const guild = client.guilds.cache.get(data.guild_id);
-        if (guild) client.emit(Events19.GuildBanAdd, guild.bans._add(data));
+        if (guild) client.emit(Events20.GuildBanAdd, guild.bans._add(data));
       }
     };
     module2.exports = GuildBanAdd;
@@ -59401,7 +59401,7 @@ var require_GuildBanRemove = __commonJS({
     "use strict";
     var Action = require_Action();
     var GuildBan = require_GuildBan();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildBanRemove = class extends Action {
       static {
         __name(this, "GuildBanRemove");
@@ -59412,7 +59412,7 @@ var require_GuildBanRemove = __commonJS({
         if (guild) {
           const ban = guild.bans.cache.get(data.user.id) ?? new GuildBan(client, data, guild);
           guild.bans.cache.delete(ban.user.id);
-          client.emit(Events19.GuildBanRemove, ban);
+          client.emit(Events20.GuildBanRemove, ban);
         }
       }
     };
@@ -59450,7 +59450,7 @@ var require_GuildDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildDeleteAction = class extends Action {
       static {
         __name(this, "GuildDeleteAction");
@@ -59461,13 +59461,13 @@ var require_GuildDelete = __commonJS({
         if (guild) {
           if (data.unavailable) {
             guild.available = false;
-            client.emit(Events19.GuildUnavailable, guild);
+            client.emit(Events20.GuildUnavailable, guild);
             return;
           }
           for (const channel of guild.channels.cache.values()) this.client.channels._remove(channel.id);
           client.voice.adapters.get(data.id)?.destroy();
           client.guilds.cache.delete(guild.id);
-          client.emit(Events19.GuildDelete, guild);
+          client.emit(Events20.GuildDelete, guild);
         }
       }
     };
@@ -59480,7 +59480,7 @@ var require_GuildEmojiCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildEmojiCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildEmojiCreateAction = class extends Action {
       static {
         __name(this, "GuildEmojiCreateAction");
@@ -59488,7 +59488,7 @@ var require_GuildEmojiCreate = __commonJS({
       handle(guild, createdEmoji) {
         const already = guild.emojis.cache.has(createdEmoji.id);
         const emoji3 = guild.emojis._add(createdEmoji);
-        if (!already) this.client.emit(Events19.GuildEmojiCreate, emoji3);
+        if (!already) this.client.emit(Events20.GuildEmojiCreate, emoji3);
         return { emoji: emoji3 };
       }
     };
@@ -59501,14 +59501,14 @@ var require_GuildEmojiDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildEmojiDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildEmojiDeleteAction = class extends Action {
       static {
         __name(this, "GuildEmojiDeleteAction");
       }
       handle(emoji3) {
         emoji3.guild.emojis.cache.delete(emoji3.id);
-        this.client.emit(Events19.GuildEmojiDelete, emoji3);
+        this.client.emit(Events20.GuildEmojiDelete, emoji3);
         return { emoji: emoji3 };
       }
     };
@@ -59521,14 +59521,14 @@ var require_GuildEmojiUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildEmojiUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildEmojiUpdateAction = class extends Action {
       static {
         __name(this, "GuildEmojiUpdateAction");
       }
       handle(current, data) {
         const old = current._update(data);
-        this.client.emit(Events19.GuildEmojiUpdate, old, current);
+        this.client.emit(Events20.GuildEmojiUpdate, old, current);
         return { emoji: current };
       }
     };
@@ -59574,7 +59574,7 @@ var require_GuildIntegrationsUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildIntegrationsUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildIntegrationsUpdate = class extends Action {
       static {
         __name(this, "GuildIntegrationsUpdate");
@@ -59582,7 +59582,7 @@ var require_GuildIntegrationsUpdate = __commonJS({
       handle(data) {
         const client = this.client;
         const guild = client.guilds.cache.get(data.guild_id);
-        if (guild) client.emit(Events19.GuildIntegrationsUpdate, guild);
+        if (guild) client.emit(Events20.GuildIntegrationsUpdate, guild);
       }
     };
     module2.exports = GuildIntegrationsUpdate;
@@ -59613,7 +59613,7 @@ var require_GuildMemberRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildMemberRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var Status2 = require_Status();
     var GuildMemberRemoveAction = class extends Action {
       static {
@@ -59628,7 +59628,7 @@ var require_GuildMemberRemove = __commonJS({
           guild.memberCount--;
           if (member) {
             guild.members.cache.delete(member.id);
-            if (shard.status === Status2.Ready) client.emit(Events19.GuildMemberRemove, member);
+            if (shard.status === Status2.Ready) client.emit(Events20.GuildMemberRemove, member);
           }
           guild.presences.cache.delete(data.user.id);
           guild.voiceStates.cache.delete(data.user.id);
@@ -59645,7 +59645,7 @@ var require_GuildMemberUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildMemberUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var Status2 = require_Status();
     var GuildMemberUpdateAction = class extends Action {
       static {
@@ -59666,10 +59666,10 @@ var require_GuildMemberUpdate = __commonJS({
           const member = this.getMember({ user: data.user }, guild);
           if (member) {
             const old = member._update(data);
-            if (shard.status === Status2.Ready && !member.equals(old)) client.emit(Events19.GuildMemberUpdate, old, member);
+            if (shard.status === Status2.Ready && !member.equals(old)) client.emit(Events20.GuildMemberUpdate, old, member);
           } else {
             const newMember = guild.members._add(data);
-            this.client.emit(Events19.GuildMemberAvailable, newMember);
+            this.client.emit(Events20.GuildMemberAvailable, newMember);
           }
         }
       }
@@ -59683,7 +59683,7 @@ var require_GuildRoleCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildRoleCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildRoleCreate = class extends Action {
       static {
         __name(this, "GuildRoleCreate");
@@ -59695,7 +59695,7 @@ var require_GuildRoleCreate = __commonJS({
         if (guild) {
           const already = guild.roles.cache.has(data.role.id);
           role = guild.roles._add(data.role);
-          if (!already) client.emit(Events19.GuildRoleCreate, role);
+          if (!already) client.emit(Events20.GuildRoleCreate, role);
         }
         return { role };
       }
@@ -59709,7 +59709,7 @@ var require_GuildRoleDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildRoleDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildRoleDeleteAction = class extends Action {
       static {
         __name(this, "GuildRoleDeleteAction");
@@ -59722,7 +59722,7 @@ var require_GuildRoleDelete = __commonJS({
           role = guild.roles.cache.get(data.role_id);
           if (role) {
             guild.roles.cache.delete(data.role_id);
-            client.emit(Events19.GuildRoleDelete, role);
+            client.emit(Events20.GuildRoleDelete, role);
           }
         }
         return { role };
@@ -59737,7 +59737,7 @@ var require_GuildRoleUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildRoleUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildRoleUpdateAction = class extends Action {
       static {
         __name(this, "GuildRoleUpdateAction");
@@ -59750,7 +59750,7 @@ var require_GuildRoleUpdate = __commonJS({
           const role = guild.roles.cache.get(data.role.id);
           if (role) {
             old = role._update(data.role);
-            client.emit(Events19.GuildRoleUpdate, old, role);
+            client.emit(Events20.GuildRoleUpdate, old, role);
           }
           return {
             old,
@@ -59797,7 +59797,7 @@ var require_GuildScheduledEventCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildScheduledEventCreateAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventCreateAction");
@@ -59807,7 +59807,7 @@ var require_GuildScheduledEventCreate = __commonJS({
         const guild = client.guilds.cache.get(data.guild_id);
         if (guild) {
           const guildScheduledEvent = guild.scheduledEvents._add(data);
-          client.emit(Events19.GuildScheduledEventCreate, guildScheduledEvent);
+          client.emit(Events20.GuildScheduledEventCreate, guildScheduledEvent);
           return { guildScheduledEvent };
         }
         return {};
@@ -59822,7 +59822,7 @@ var require_GuildScheduledEventDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildScheduledEventDeleteAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventDeleteAction");
@@ -59834,7 +59834,7 @@ var require_GuildScheduledEventDelete = __commonJS({
           const guildScheduledEvent = this.getScheduledEvent(data, guild);
           if (guildScheduledEvent) {
             guild.scheduledEvents.cache.delete(guildScheduledEvent.id);
-            client.emit(Events19.GuildScheduledEventDelete, guildScheduledEvent);
+            client.emit(Events20.GuildScheduledEventDelete, guildScheduledEvent);
             return { guildScheduledEvent };
           }
         }
@@ -59850,7 +59850,7 @@ var require_GuildScheduledEventUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildScheduledEventUpdateAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventUpdateAction");
@@ -59861,7 +59861,7 @@ var require_GuildScheduledEventUpdate = __commonJS({
         if (guild) {
           const oldGuildScheduledEvent = guild.scheduledEvents.cache.get(data.id)?._clone() ?? null;
           const newGuildScheduledEvent = guild.scheduledEvents._add(data);
-          client.emit(Events19.GuildScheduledEventUpdate, oldGuildScheduledEvent, newGuildScheduledEvent);
+          client.emit(Events20.GuildScheduledEventUpdate, oldGuildScheduledEvent, newGuildScheduledEvent);
           return { oldGuildScheduledEvent, newGuildScheduledEvent };
         }
         return {};
@@ -59876,7 +59876,7 @@ var require_GuildScheduledEventUserAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventUserAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildScheduledEventUserAddAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventUserAddAction");
@@ -59888,7 +59888,7 @@ var require_GuildScheduledEventUserAdd = __commonJS({
           const guildScheduledEvent = this.getScheduledEvent(data, guild);
           const user = this.getUser(data);
           if (guildScheduledEvent && user) {
-            client.emit(Events19.GuildScheduledEventUserAdd, guildScheduledEvent, user);
+            client.emit(Events20.GuildScheduledEventUserAdd, guildScheduledEvent, user);
             return { guildScheduledEvent, user };
           }
         }
@@ -59904,7 +59904,7 @@ var require_GuildScheduledEventUserRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventUserRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildScheduledEventUserRemoveAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventUserRemoveAction");
@@ -59916,7 +59916,7 @@ var require_GuildScheduledEventUserRemove = __commonJS({
           const guildScheduledEvent = this.getScheduledEvent(data, guild);
           const user = this.getUser(data);
           if (guildScheduledEvent && user) {
-            client.emit(Events19.GuildScheduledEventUserRemove, guildScheduledEvent, user);
+            client.emit(Events20.GuildScheduledEventUserRemove, guildScheduledEvent, user);
             return { guildScheduledEvent, user };
           }
         }
@@ -59932,7 +59932,7 @@ var require_GuildSoundboardSoundDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildSoundboardSoundDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildSoundboardSoundDeleteAction = class extends Action {
       static {
         __name(this, "GuildSoundboardSoundDeleteAction");
@@ -59943,7 +59943,7 @@ var require_GuildSoundboardSoundDelete = __commonJS({
         const soundboardSound = this.getSoundboardSound(data, guild);
         if (soundboardSound) {
           guild.soundboardSounds.cache.delete(soundboardSound.soundId);
-          this.client.emit(Events19.GuildSoundboardSoundDelete, soundboardSound);
+          this.client.emit(Events20.GuildSoundboardSoundDelete, soundboardSound);
         }
         return { soundboardSound };
       }
@@ -59957,7 +59957,7 @@ var require_GuildStickerCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildStickerCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildStickerCreateAction = class extends Action {
       static {
         __name(this, "GuildStickerCreateAction");
@@ -59965,7 +59965,7 @@ var require_GuildStickerCreate = __commonJS({
       handle(guild, createdSticker) {
         const already = guild.stickers.cache.has(createdSticker.id);
         const sticker = guild.stickers._add(createdSticker);
-        if (!already) this.client.emit(Events19.GuildStickerCreate, sticker);
+        if (!already) this.client.emit(Events20.GuildStickerCreate, sticker);
         return { sticker };
       }
     };
@@ -59978,14 +59978,14 @@ var require_GuildStickerDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildStickerDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildStickerDeleteAction = class extends Action {
       static {
         __name(this, "GuildStickerDeleteAction");
       }
       handle(sticker) {
         sticker.guild.stickers.cache.delete(sticker.id);
-        this.client.emit(Events19.GuildStickerDelete, sticker);
+        this.client.emit(Events20.GuildStickerDelete, sticker);
         return { sticker };
       }
     };
@@ -59998,14 +59998,14 @@ var require_GuildStickerUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildStickerUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildStickerUpdateAction = class extends Action {
       static {
         __name(this, "GuildStickerUpdateAction");
       }
       handle(current, data) {
         const old = current._update(data);
-        this.client.emit(Events19.GuildStickerUpdate, old, current);
+        this.client.emit(Events20.GuildStickerUpdate, old, current);
         return { sticker: current };
       }
     };
@@ -60051,7 +60051,7 @@ var require_GuildUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var GuildUpdateAction = class extends Action {
       static {
         __name(this, "GuildUpdateAction");
@@ -60061,7 +60061,7 @@ var require_GuildUpdate = __commonJS({
         const guild = client.guilds.cache.get(data.id);
         if (guild) {
           const old = guild._update(data);
-          client.emit(Events19.GuildUpdate, old, guild);
+          client.emit(Events20.GuildUpdate, old, guild);
           return {
             old,
             updated: guild
@@ -61267,7 +61267,7 @@ var require_MentionableSelectMenuInteraction = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var MessageComponentInteraction = require_MessageComponentInteraction();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var MentionableSelectMenuInteraction = class extends MessageComponentInteraction {
       static {
         __name(this, "MentionableSelectMenuInteraction");
@@ -61285,7 +61285,7 @@ var require_MentionableSelectMenuInteraction = __commonJS({
             const user = users2[id];
             if (!user) {
               this.client.emit(
-                Events19.Debug,
+                Events20.Debug,
                 `[MentionableSelectMenuInteraction] Received a member without a user, skipping ${id}`
               );
               continue;
@@ -61848,7 +61848,7 @@ var require_UserSelectMenuInteraction = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var MessageComponentInteraction = require_MessageComponentInteraction();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var UserSelectMenuInteraction = class extends MessageComponentInteraction {
       static {
         __name(this, "UserSelectMenuInteraction");
@@ -61865,7 +61865,7 @@ var require_UserSelectMenuInteraction = __commonJS({
         for (const [id, member] of Object.entries(resolved?.members ?? {})) {
           const user = resolved.users[id];
           if (!user) {
-            this.client.emit(Events19.Debug, `[UserSelectMenuInteraction] Received a member without a user, skipping ${id}`);
+            this.client.emit(Events20.Debug, `[UserSelectMenuInteraction] Received a member without a user, skipping ${id}`);
             continue;
           }
           this.members.set(id, this.guild?.members._add({ user, ...member }) ?? { user, ...member });
@@ -61894,7 +61894,7 @@ var require_InteractionCreate = __commonJS({
     var StringSelectMenuInteraction = require_StringSelectMenuInteraction();
     var UserContextMenuCommandInteraction = require_UserContextMenuCommandInteraction();
     var UserSelectMenuInteraction = require_UserSelectMenuInteraction();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var InteractionCreateAction = class extends Action {
       static {
         __name(this, "InteractionCreateAction");
@@ -61921,7 +61921,7 @@ var require_InteractionCreate = __commonJS({
                 break;
               default:
                 client.emit(
-                  Events19.Debug,
+                  Events20.Debug,
                   `[INTERACTION] Received application command interaction with unknown type: ${data.data.type}`
                 );
                 return;
@@ -61950,7 +61950,7 @@ var require_InteractionCreate = __commonJS({
                 break;
               default:
                 client.emit(
-                  Events19.Debug,
+                  Events20.Debug,
                   `[INTERACTION] Received component interaction with unknown type: ${data.data.component_type}`
                 );
                 return;
@@ -61963,11 +61963,11 @@ var require_InteractionCreate = __commonJS({
             InteractionClass = ModalSubmitInteraction;
             break;
           default:
-            client.emit(Events19.Debug, `[INTERACTION] Received interaction with unknown type: ${data.type}`);
+            client.emit(Events20.Debug, `[INTERACTION] Received interaction with unknown type: ${data.type}`);
             return;
         }
         const interaction = new InteractionClass(client, data);
-        client.emit(Events19.InteractionCreate, interaction);
+        client.emit(Events20.InteractionCreate, interaction);
       }
     };
     module2.exports = InteractionCreateAction;
@@ -61979,7 +61979,7 @@ var require_InviteCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/InviteCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var InviteCreateAction = class extends Action {
       static {
         __name(this, "InviteCreateAction");
@@ -61991,7 +61991,7 @@ var require_InviteCreate = __commonJS({
         if (!channel) return false;
         const inviteData = Object.assign(data, { channel, guild });
         const invite = guild.invites._add(inviteData);
-        client.emit(Events19.InviteCreate, invite);
+        client.emit(Events20.InviteCreate, invite);
         return { invite };
       }
     };
@@ -62005,7 +62005,7 @@ var require_InviteDelete = __commonJS({
     "use strict";
     var Action = require_Action();
     var Invite2 = require_Invite();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var InviteDeleteAction = class extends Action {
       static {
         __name(this, "InviteDeleteAction");
@@ -62018,7 +62018,7 @@ var require_InviteDelete = __commonJS({
         const inviteData = Object.assign(data, { channel, guild });
         const invite = new Invite2(client, inviteData);
         guild.invites.cache.delete(invite.code);
-        client.emit(Events19.InviteDelete, invite);
+        client.emit(Events20.InviteDelete, invite);
         return { invite };
       }
     };
@@ -62031,7 +62031,7 @@ var require_MessageCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var MessageCreateAction = class extends Action {
       static {
         __name(this, "MessageCreateAction");
@@ -62054,7 +62054,7 @@ var require_MessageCreate = __commonJS({
           if (existing && existing.author?.id !== this.client.user.id) return { message: existing };
           const message = existing ?? channel.messages._add(data);
           channel.lastMessageId = data.id;
-          client.emit(Events19.MessageCreate, message);
+          client.emit(Events20.MessageCreate, message);
           return { message };
         }
         return {};
@@ -62069,7 +62069,7 @@ var require_MessageDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var MessageDeleteAction = class extends Action {
       static {
         __name(this, "MessageDeleteAction");
@@ -62084,7 +62084,7 @@ var require_MessageDelete = __commonJS({
           message = this.getMessage(data, channel);
           if (message) {
             channel.messages.cache.delete(message.id);
-            client.emit(Events19.MessageDelete, message);
+            client.emit(Events20.MessageDelete, message);
           }
         }
         return { message };
@@ -62100,7 +62100,7 @@ var require_MessageDeleteBulk = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var MessageDeleteBulkAction = class extends Action {
       static {
         __name(this, "MessageDeleteBulkAction");
@@ -62127,7 +62127,7 @@ var require_MessageDeleteBulk = __commonJS({
               channel.messages.cache.delete(id);
             }
           }
-          if (messages2.size > 0) client.emit(Events19.MessageBulkDelete, messages2, channel);
+          if (messages2.size > 0) client.emit(Events20.MessageBulkDelete, messages2, channel);
           return { messages: messages2 };
         }
         return {};
@@ -62142,7 +62142,7 @@ var require_MessagePollVoteAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/MessagePollVoteAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var MessagePollVoteAddAction = class extends Action {
       static {
         __name(this, "MessagePollVoteAddAction");
@@ -62161,7 +62161,7 @@ var require_MessagePollVoteAdd = __commonJS({
           answer.voters._add(user);
         }
         answer.voteCount++;
-        this.client.emit(Events19.MessagePollVoteAdd, answer, data.user_id);
+        this.client.emit(Events20.MessagePollVoteAdd, answer, data.user_id);
         return { poll: poll2 };
       }
     };
@@ -62174,7 +62174,7 @@ var require_MessagePollVoteRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/MessagePollVoteRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var MessagePollVoteRemoveAction = class extends Action {
       static {
         __name(this, "MessagePollVoteRemoveAction");
@@ -62192,7 +62192,7 @@ var require_MessagePollVoteRemove = __commonJS({
         if (answer.voteCount > 0) {
           answer.voteCount--;
         }
-        this.client.emit(Events19.MessagePollVoteRemove, answer, data.user_id);
+        this.client.emit(Events20.MessagePollVoteRemove, answer, data.user_id);
         return { poll: poll2 };
       }
     };
@@ -62205,7 +62205,7 @@ var require_MessageReactionAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var Partials2 = require_Partials();
     var MessageReactionAdd = class extends Action {
       static {
@@ -62235,7 +62235,7 @@ var require_MessageReactionAdd = __commonJS({
         if (!reaction) return false;
         reaction._add(user, data.burst);
         if (fromStructure) return { message, reaction, user };
-        this.client.emit(Events19.MessageReactionAdd, reaction, user, { type: data.type, burst: data.burst });
+        this.client.emit(Events20.MessageReactionAdd, reaction, user, { type: data.type, burst: data.burst });
         return { message, reaction, user };
       }
     };
@@ -62248,7 +62248,7 @@ var require_MessageReactionRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var MessageReactionRemove = class extends Action {
       static {
         __name(this, "MessageReactionRemove");
@@ -62268,7 +62268,7 @@ var require_MessageReactionRemove = __commonJS({
         const reaction = this.getReaction(data, message, user);
         if (!reaction) return false;
         reaction._remove(user, data.burst);
-        this.client.emit(Events19.MessageReactionRemove, reaction, user, { type: data.type, burst: data.burst });
+        this.client.emit(Events20.MessageReactionRemove, reaction, user, { type: data.type, burst: data.burst });
         return { message, reaction, user };
       }
     };
@@ -62281,7 +62281,7 @@ var require_MessageReactionRemoveAll = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionRemoveAll.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var MessageReactionRemoveAll = class extends Action {
       static {
         __name(this, "MessageReactionRemoveAll");
@@ -62293,7 +62293,7 @@ var require_MessageReactionRemoveAll = __commonJS({
         if (!message) return false;
         const removed = message.reactions.cache.clone();
         message.reactions.cache.clear();
-        this.client.emit(Events19.MessageReactionRemoveAll, message, removed);
+        this.client.emit(Events20.MessageReactionRemoveAll, message, removed);
         return { message };
       }
     };
@@ -62306,7 +62306,7 @@ var require_MessageReactionRemoveEmoji = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionRemoveEmoji.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var MessageReactionRemoveEmoji = class extends Action {
       static {
         __name(this, "MessageReactionRemoveEmoji");
@@ -62319,7 +62319,7 @@ var require_MessageReactionRemoveEmoji = __commonJS({
         const reaction = this.getReaction(data, message);
         if (!reaction) return false;
         if (!message.partial) message.reactions.cache.delete(reaction.emoji.id ?? reaction.emoji.name);
-        this.client.emit(Events19.MessageReactionRemoveEmoji, reaction);
+        this.client.emit(Events20.MessageReactionRemoveEmoji, reaction);
         return { reaction };
       }
     };
@@ -62362,7 +62362,7 @@ var require_PresenceUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/PresenceUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var Partials2 = require_Partials();
     var PresenceUpdateAction = class extends Action {
       static {
@@ -62387,11 +62387,11 @@ var require_PresenceUpdate = __commonJS({
             deaf: false,
             mute: false
           });
-          this.client.emit(Events19.GuildMemberAvailable, member);
+          this.client.emit(Events20.GuildMemberAvailable, member);
         }
         const newPresence = guild.presences._add(Object.assign(data, { guild }));
-        if (this.client.listenerCount(Events19.PresenceUpdate) && !newPresence.equals(oldPresence)) {
-          this.client.emit(Events19.PresenceUpdate, oldPresence, newPresence);
+        if (this.client.listenerCount(Events20.PresenceUpdate) && !newPresence.equals(oldPresence)) {
+          this.client.emit(Events20.PresenceUpdate, oldPresence, newPresence);
         }
       }
     };
@@ -62404,7 +62404,7 @@ var require_StageInstanceCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/StageInstanceCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var StageInstanceCreateAction = class extends Action {
       static {
         __name(this, "StageInstanceCreateAction");
@@ -62414,7 +62414,7 @@ var require_StageInstanceCreate = __commonJS({
         const channel = this.getChannel({ id: data.channel_id, guild_id: data.guild_id });
         if (channel) {
           const stageInstance = channel.guild.stageInstances._add(data);
-          client.emit(Events19.StageInstanceCreate, stageInstance);
+          client.emit(Events20.StageInstanceCreate, stageInstance);
           return { stageInstance };
         }
         return {};
@@ -62429,7 +62429,7 @@ var require_StageInstanceDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/StageInstanceDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var StageInstanceDeleteAction = class extends Action {
       static {
         __name(this, "StageInstanceDeleteAction");
@@ -62441,7 +62441,7 @@ var require_StageInstanceDelete = __commonJS({
           const stageInstance = channel.guild.stageInstances._add(data);
           if (stageInstance) {
             channel.guild.stageInstances.cache.delete(stageInstance.id);
-            client.emit(Events19.StageInstanceDelete, stageInstance);
+            client.emit(Events20.StageInstanceDelete, stageInstance);
             return { stageInstance };
           }
         }
@@ -62457,7 +62457,7 @@ var require_StageInstanceUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/StageInstanceUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var StageInstanceUpdateAction = class extends Action {
       static {
         __name(this, "StageInstanceUpdateAction");
@@ -62468,7 +62468,7 @@ var require_StageInstanceUpdate = __commonJS({
         if (channel) {
           const oldStageInstance = channel.guild.stageInstances.cache.get(data.id)?._clone() ?? null;
           const newStageInstance = channel.guild.stageInstances._add(data);
-          client.emit(Events19.StageInstanceUpdate, oldStageInstance, newStageInstance);
+          client.emit(Events20.StageInstanceUpdate, oldStageInstance, newStageInstance);
           return { oldStageInstance, newStageInstance };
         }
         return {};
@@ -62483,7 +62483,7 @@ var require_ThreadCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/ThreadCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var ThreadCreateAction = class extends Action {
       static {
         __name(this, "ThreadCreateAction");
@@ -62493,7 +62493,7 @@ var require_ThreadCreate = __commonJS({
         const existing = client.channels.cache.has(data.id);
         const thread = client.channels._add(data);
         if (!existing && thread) {
-          client.emit(Events19.ThreadCreate, thread, data.newly_created ?? false);
+          client.emit(Events20.ThreadCreate, thread, data.newly_created ?? false);
         }
         return { thread };
       }
@@ -62507,7 +62507,7 @@ var require_ThreadDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/ThreadDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var ThreadDeleteAction = class extends Action {
       static {
         __name(this, "ThreadDeleteAction");
@@ -62517,7 +62517,7 @@ var require_ThreadDelete = __commonJS({
         const thread = client.channels.cache.get(data.id);
         if (thread) {
           client.channels._remove(thread.id);
-          client.emit(Events19.ThreadDelete, thread);
+          client.emit(Events20.ThreadDelete, thread);
         }
         return { thread };
       }
@@ -62532,7 +62532,7 @@ var require_ThreadListSync = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var ThreadListSyncAction = class extends Action {
       static {
         __name(this, "ThreadListSyncAction");
@@ -62561,7 +62561,7 @@ var require_ThreadListSync = __commonJS({
             thread.members._add(rawMember);
           }
         }
-        client.emit(Events19.ThreadListSync, syncedThreads, guild);
+        client.emit(Events20.ThreadListSync, syncedThreads, guild);
         return {
           syncedThreads
         };
@@ -62583,7 +62583,7 @@ var require_ThreadMemberUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/ThreadMemberUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var ThreadMemberUpdateAction = class extends Action {
       static {
         __name(this, "ThreadMemberUpdateAction");
@@ -62598,7 +62598,7 @@ var require_ThreadMemberUpdate = __commonJS({
             return { newMember };
           }
           const old = member._update(data);
-          client.emit(Events19.ThreadMemberUpdate, old, member);
+          client.emit(Events20.ThreadMemberUpdate, old, member);
         }
         return {};
       }
@@ -62613,7 +62613,7 @@ var require_ThreadMembersUpdate = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var ThreadMembersUpdateAction = class extends Action {
       static {
         __name(this, "ThreadMembersUpdateAction");
@@ -62638,7 +62638,7 @@ var require_ThreadMembersUpdate = __commonJS({
           if (addedMembers.size === 0 && removedMembers.size === 0) {
             return {};
           }
-          client.emit(Events19.ThreadMembersUpdate, addedMembers, removedMembers, thread);
+          client.emit(Events20.ThreadMembersUpdate, addedMembers, removedMembers, thread);
         }
         return {};
       }
@@ -62709,7 +62709,7 @@ var require_TypingStart = __commonJS({
     "use strict";
     var Action = require_Action();
     var Typing = require_Typing();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var TypingStart = class extends Action {
       static {
         __name(this, "TypingStart");
@@ -62718,12 +62718,12 @@ var require_TypingStart = __commonJS({
         const channel = this.getChannel({ id: data.channel_id, ..."guild_id" in data && { guild_id: data.guild_id } });
         if (!channel) return;
         if (!channel.isTextBased()) {
-          this.client.emit(Events19.Warn, `Discord sent a typing packet to a ${channel.type} channel ${channel.id}`);
+          this.client.emit(Events20.Warn, `Discord sent a typing packet to a ${channel.type} channel ${channel.id}`);
           return;
         }
         const user = this.getUserFromMember(data);
         if (user) {
-          this.client.emit(Events19.TypingStart, new Typing(channel, user, data));
+          this.client.emit(Events20.TypingStart, new Typing(channel, user, data));
         }
       }
     };
@@ -62736,7 +62736,7 @@ var require_UserUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/UserUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var UserUpdateAction = class extends Action {
       static {
         __name(this, "UserUpdateAction");
@@ -62746,7 +62746,7 @@ var require_UserUpdate = __commonJS({
         const newUser = data.id === client.user.id ? client.user : client.users.cache.get(data.id);
         const oldUser = newUser._update(data);
         if (!oldUser.equals(newUser)) {
-          client.emit(Events19.UserUpdate, oldUser, newUser);
+          client.emit(Events20.UserUpdate, oldUser, newUser);
           return {
             old: oldUser,
             updated: newUser
@@ -62768,7 +62768,7 @@ var require_VoiceStateUpdate = __commonJS({
     "use strict";
     var Action = require_Action();
     var VoiceState = require_VoiceState();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var VoiceStateUpdate = class extends Action {
       static {
         __name(this, "VoiceStateUpdate");
@@ -62786,10 +62786,10 @@ var require_VoiceStateUpdate = __commonJS({
             member = guild.members._add(data.member);
           }
           if (member?.user.id === client.user.id) {
-            client.emit(Events19.Debug, `[VOICE] received voice state update: ${JSON.stringify(data)}`);
+            client.emit(Events20.Debug, `[VOICE] received voice state update: ${JSON.stringify(data)}`);
             client.voice.onVoiceStateUpdate(data);
           }
-          client.emit(Events19.VoiceStateUpdate, oldState, newState);
+          client.emit(Events20.VoiceStateUpdate, oldState, newState);
         }
       }
     };
@@ -62916,7 +62916,7 @@ var require_ActionsManager = __commonJS({
 var require_ClientVoiceManager = __commonJS({
   "node_modules/discord.js/src/client/voice/ClientVoiceManager.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var ClientVoiceManager2 = class {
       static {
         __name(this, "ClientVoiceManager");
@@ -62924,7 +62924,7 @@ var require_ClientVoiceManager = __commonJS({
       constructor(client) {
         Object.defineProperty(this, "client", { value: client });
         this.adapters = /* @__PURE__ */ new Map();
-        client.on(Events19.ShardDisconnect, (_, shardId) => {
+        client.on(Events20.ShardDisconnect, (_, shardId) => {
           for (const [guildId, adapter] of this.adapters.entries()) {
             if (client.guilds.cache.get(guildId)?.shardId === shardId) {
               adapter.destroy();
@@ -69051,13 +69051,13 @@ var require_CHANNEL_DELETE = __commonJS({
 var require_CHANNEL_PINS_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/CHANNEL_PINS_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       const channel = client.channels.cache.get(data.channel_id);
       const time4 = data.last_pin_timestamp ? Date.parse(data.last_pin_timestamp) : null;
       if (channel) {
         channel.lastPinTimestamp = time4;
-        client.emit(Events19.ChannelPinsUpdate, channel, time4);
+        client.emit(Events20.ChannelPinsUpdate, channel, time4);
       }
     };
   }
@@ -69067,11 +69067,11 @@ var require_CHANNEL_PINS_UPDATE = __commonJS({
 var require_CHANNEL_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/CHANNEL_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, packet) => {
       const { old, updated } = client.actions.ChannelUpdate.handle(packet.d);
       if (old && updated) {
-        client.emit(Events19.ChannelUpdate, old, updated);
+        client.emit(Events20.ChannelUpdate, old, updated);
       }
     };
   }
@@ -69141,20 +69141,20 @@ var require_GUILD_BAN_REMOVE = __commonJS({
 var require_GUILD_CREATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_CREATE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var Status2 = require_Status();
     module2.exports = (client, { d: data }, shard) => {
       let guild = client.guilds.cache.get(data.id);
       if (guild) {
         if (!guild.available && !data.unavailable) {
           guild._patch(data);
-          client.emit(Events19.GuildAvailable, guild);
+          client.emit(Events20.GuildAvailable, guild);
         }
       } else {
         data.shardId = shard.id;
         guild = client.guilds._add(data);
         if (client.ws.status === Status2.Ready) {
-          client.emit(Events19.GuildCreate, guild);
+          client.emit(Events20.GuildCreate, guild);
         }
       }
     };
@@ -69196,7 +69196,7 @@ var require_GUILD_MEMBERS_CHUNK = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_MEMBERS_CHUNK.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
@@ -69205,7 +69205,7 @@ var require_GUILD_MEMBERS_CHUNK = __commonJS({
       if (data.presences) {
         for (const presence of data.presences) guild.presences._add(Object.assign(presence, { guild }));
       }
-      client.emit(Events19.GuildMembersChunk, members3, guild, {
+      client.emit(Events20.GuildMembersChunk, members3, guild, {
         index: data.chunk_index,
         count: data.chunk_count,
         notFound: data.not_found,
@@ -69219,7 +69219,7 @@ var require_GUILD_MEMBERS_CHUNK = __commonJS({
 var require_GUILD_MEMBER_ADD = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_MEMBER_ADD.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var Status2 = require_Status();
     module2.exports = (client, { d: data }, shard) => {
       const guild = client.guilds.cache.get(data.guild_id);
@@ -69227,7 +69227,7 @@ var require_GUILD_MEMBER_ADD = __commonJS({
         guild.memberCount++;
         const member = guild.members._add(data);
         if (shard.status === Status2.Ready) {
-          client.emit(Events19.GuildMemberAdd, member);
+          client.emit(Events20.GuildMemberAdd, member);
         }
       }
     };
@@ -69339,7 +69339,7 @@ var require_GUILD_SOUNDBOARD_SOUNDS_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_SOUNDBOARD_SOUNDS_UPDATE.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
@@ -69347,7 +69347,7 @@ var require_GUILD_SOUNDBOARD_SOUNDS_UPDATE = __commonJS({
       for (const soundboardSound of data.soundboard_sounds) {
         soundboardSounds.set(soundboardSound.sound_id, guild.soundboardSounds._add(soundboardSound));
       }
-      client.emit(Events19.GuildSoundboardSoundsUpdate, soundboardSounds, guild);
+      client.emit(Events20.GuildSoundboardSoundsUpdate, soundboardSounds, guild);
     };
   }
 });
@@ -69356,12 +69356,12 @@ var require_GUILD_SOUNDBOARD_SOUNDS_UPDATE = __commonJS({
 var require_GUILD_SOUNDBOARD_SOUND_CREATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_SOUNDBOARD_SOUND_CREATE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
       const soundboardSound = guild.soundboardSounds._add(data);
-      client.emit(Events19.GuildSoundboardSoundCreate, soundboardSound);
+      client.emit(Events20.GuildSoundboardSoundCreate, soundboardSound);
     };
   }
 });
@@ -69380,13 +69380,13 @@ var require_GUILD_SOUNDBOARD_SOUND_DELETE = __commonJS({
 var require_GUILD_SOUNDBOARD_SOUND_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_SOUNDBOARD_SOUND_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
       const oldGuildSoundboardSound = guild.soundboardSounds.cache.get(data.sound_id)?._clone() ?? null;
       const newGuildSoundboardSound = guild.soundboardSounds._add(data);
-      client.emit(Events19.GuildSoundboardSoundUpdate, oldGuildSoundboardSound, newGuildSoundboardSound);
+      client.emit(Events20.GuildSoundboardSoundUpdate, oldGuildSoundboardSound, newGuildSoundboardSound);
     };
   }
 });
@@ -69535,11 +69535,11 @@ var require_MESSAGE_REACTION_REMOVE_EMOJI = __commonJS({
 var require_MESSAGE_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/MESSAGE_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, packet) => {
       const { old, updated } = client.actions.MessageUpdate.handle(packet.d);
       if (old && updated) {
-        client.emit(Events19.MessageUpdate, old, updated);
+        client.emit(Events20.MessageUpdate, old, updated);
       }
     };
   }
@@ -69792,10 +69792,10 @@ var require_READY = __commonJS({
 var require_RESUMED = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/RESUMED.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, packet, shard) => {
       const replayed = shard.sessionInfo.sequence - shard.closeSequence;
-      client.emit(Events19.ShardResume, shard.id, replayed);
+      client.emit(Events20.ShardResume, shard.id, replayed);
     };
   }
 });
@@ -69805,7 +69805,7 @@ var require_SOUNDBOARD_SOUNDS = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SOUNDBOARD_SOUNDS.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
@@ -69813,7 +69813,7 @@ var require_SOUNDBOARD_SOUNDS = __commonJS({
       for (const soundboardSound of data.soundboard_sounds) {
         soundboardSounds.set(soundboardSound.sound_id, guild.soundboardSounds._add(soundboardSound));
       }
-      client.emit(Events19.SoundboardSounds, soundboardSounds, guild);
+      client.emit(Events20.SoundboardSounds, soundboardSounds, guild);
     };
   }
 });
@@ -69852,10 +69852,10 @@ var require_STAGE_INSTANCE_UPDATE = __commonJS({
 var require_SUBSCRIPTION_CREATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SUBSCRIPTION_CREATE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       const subscription = client.application.subscriptions._add(data);
-      client.emit(Events19.SubscriptionCreate, subscription);
+      client.emit(Events20.SubscriptionCreate, subscription);
     };
   }
 });
@@ -69864,11 +69864,11 @@ var require_SUBSCRIPTION_CREATE = __commonJS({
 var require_SUBSCRIPTION_DELETE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SUBSCRIPTION_DELETE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       const subscription = client.application.subscriptions._add(data, false);
       client.application.subscriptions.cache.delete(subscription.id);
-      client.emit(Events19.SubscriptionDelete, subscription);
+      client.emit(Events20.SubscriptionDelete, subscription);
     };
   }
 });
@@ -69877,11 +69877,11 @@ var require_SUBSCRIPTION_DELETE = __commonJS({
 var require_SUBSCRIPTION_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SUBSCRIPTION_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       const oldSubscription = client.application.subscriptions.cache.get(data.id)?._clone() ?? null;
       const newSubscription = client.application.subscriptions._add(data);
-      client.emit(Events19.SubscriptionUpdate, oldSubscription, newSubscription);
+      client.emit(Events20.SubscriptionUpdate, oldSubscription, newSubscription);
     };
   }
 });
@@ -69940,11 +69940,11 @@ var require_THREAD_MEMBER_UPDATE = __commonJS({
 var require_THREAD_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/THREAD_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, packet) => {
       const { old, updated } = client.actions.ChannelUpdate.handle(packet.d);
       if (old && updated) {
-        client.emit(Events19.ThreadUpdate, old, updated);
+        client.emit(Events20.ThreadUpdate, old, updated);
       }
     };
   }
@@ -70015,11 +70015,11 @@ var require_VOICE_CHANNEL_EFFECT_SEND = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/VOICE_CHANNEL_EFFECT_SEND.js"(exports2, module2) {
     "use strict";
     var VoiceChannelEffect = require_VoiceChannelEffect();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
-      client.emit(Events19.VoiceChannelEffectSend, new VoiceChannelEffect(data, guild));
+      client.emit(Events20.VoiceChannelEffectSend, new VoiceChannelEffect(data, guild));
     };
   }
 });
@@ -70028,14 +70028,14 @@ var require_VOICE_CHANNEL_EFFECT_SEND = __commonJS({
 var require_VOICE_SERVER_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/VOICE_SERVER_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     module2.exports = (client, { d: data }) => {
       client.emit(
-        Events19.Debug,
+        Events20.Debug,
         `[VOICE] received voice server: ${JSON.stringify({ ...data, token: "*".repeat(data.token.length) })}`
       );
       client.voice.onVoiceServer(data);
-      client.emit(Events19.VoiceServerUpdate, {
+      client.emit(Events20.VoiceServerUpdate, {
         guildId: data.guild_id,
         endpoint: data.endpoint,
         token: data.token
@@ -70165,7 +70165,7 @@ var require_WebSocketManager = __commonJS({
     var WebSocketShard = require_WebSocketShard();
     var PacketHandlers = require_handlers();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var Status2 = require_Status();
     var WebSocketShardEvents = require_WebSocketShardEvents();
     var zlib;
@@ -70226,7 +70226,7 @@ var require_WebSocketManager = __commonJS({
        */
       debug(messages2, shardId) {
         this.client.emit(
-          Events19.Debug,
+          Events20.Debug,
           `[WS => ${typeof shardId === "number" ? `Shard ${shardId}` : "Manager"}] ${messages2.join("\n	")}`
         );
       }
@@ -70281,7 +70281,7 @@ var require_WebSocketManager = __commonJS({
             const shard = new WebSocketShard(this, id);
             this.shards.set(id, shard);
             shard.on(WebSocketShardEvents.AllReady, (unavailableGuilds) => {
-              this.client.emit(Events19.ShardReady, shard.id, unavailableGuilds);
+              this.client.emit(Events20.ShardReady, shard.id, unavailableGuilds);
               this.checkShardsReady();
             });
             shard.status = Status2.Connecting;
@@ -70312,7 +70312,7 @@ var require_WebSocketManager = __commonJS({
       attachEvents() {
         this._ws.on(WSWebSocketShardEvents.Debug, ({ message, shardId }) => this.debug([message], shardId));
         this._ws.on(WSWebSocketShardEvents.Dispatch, ({ data, shardId }) => {
-          this.client.emit(Events19.Raw, data, shardId);
+          this.client.emit(Events20.Raw, data, shardId);
           this.emit(data.t, data.d, shardId);
           const shard = this.shards.get(shardId);
           this.handlePacket(data, shard);
@@ -70328,12 +70328,12 @@ var require_WebSocketManager = __commonJS({
           shard.emit(WebSocketShardEvents.Close, { code, reason: reasonIsDeprecated, wasClean: true });
           if (UNRECOVERABLE_CLOSE_CODES.includes(code)) {
             shard.status = Status2.Disconnected;
-            this.client.emit(Events19.ShardDisconnect, { code, reason: reasonIsDeprecated, wasClean: true }, shardId);
+            this.client.emit(Events20.ShardDisconnect, { code, reason: reasonIsDeprecated, wasClean: true }, shardId);
             this.debug([`Shard not recoverable: ${code} (${GatewayCloseCodes[code] ?? CloseCodes[code]})`], shardId);
             return;
           }
           this.shards.get(shardId).status = Status2.Connecting;
-          this.client.emit(Events19.ShardReconnecting, shardId);
+          this.client.emit(Events20.ShardReconnecting, shardId);
         });
         this._ws.on(WSWebSocketShardEvents.Hello, ({ shardId }) => {
           const shard = this.shards.get(shardId);
@@ -70356,7 +70356,7 @@ var require_WebSocketManager = __commonJS({
           shard.ping = latency;
         });
         this._ws.on(WSWebSocketShardEvents.Error, ({ error: error62, shardId }) => {
-          this.client.emit(Events19.ShardError, error62, shardId);
+          this.client.emit(Events20.ShardError, error62, shardId);
         });
       }
       /**
@@ -70428,7 +70428,7 @@ var require_WebSocketManager = __commonJS({
             "DeprecationWarning"
           );
         }
-        this.client.emit(Events19.ClientReady, this.client);
+        this.client.emit(Events20.ClientReady, this.client);
         this.handlePacket();
       }
     };
@@ -70527,7 +70527,7 @@ var require_ChannelManager = __commonJS({
     var { BaseChannel } = require_BaseChannel();
     var { createChannel } = require_Channels();
     var { ThreadChannelTypes } = require_Constants();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var cacheWarningEmitted = false;
     var ChannelManager2 = class extends CachedManager {
       static {
@@ -70561,7 +70561,7 @@ var require_ChannelManager = __commonJS({
         }
         const channel = createChannel(this.client, data, guild, { allowUnknownGuild });
         if (!channel) {
-          this.client.emit(Events19.Debug, `Failed to find guild, or unknown type for channel ${data.id} ${data.type}`);
+          this.client.emit(Events20.Debug, `Failed to find guild, or unknown type for channel ${data.id} ${data.type}`);
           return null;
         }
         if (cache && !allowUnknownGuild) this.cache.set(channel.id, channel);
@@ -70641,7 +70641,7 @@ var require_ShardClientUtil = __commonJS({
     var process2 = require("node:process");
     var { calculateShardId } = require_dist();
     var { DiscordjsError: DiscordjsError2, DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var { makeError, makePlainError } = require_Util();
     var ShardClientUtil2 = class {
       static {
@@ -70654,32 +70654,32 @@ var require_ShardClientUtil = __commonJS({
         switch (mode) {
           case "process":
             process2.on("message", this._handleMessage.bind(this));
-            client.on(Events19.ShardReady, () => {
+            client.on(Events20.ShardReady, () => {
               process2.send({ _ready: true });
             });
-            client.on(Events19.ShardDisconnect, () => {
+            client.on(Events20.ShardDisconnect, () => {
               process2.send({ _disconnect: true });
             });
-            client.on(Events19.ShardReconnecting, () => {
+            client.on(Events20.ShardReconnecting, () => {
               process2.send({ _reconnecting: true });
             });
-            client.on(Events19.ShardResume, () => {
+            client.on(Events20.ShardResume, () => {
               process2.send({ _resume: true });
             });
             break;
           case "worker":
             this.parentPort = require("node:worker_threads").parentPort;
             this.parentPort.on("message", this._handleMessage.bind(this));
-            client.on(Events19.ShardReady, () => {
+            client.on(Events20.ShardReady, () => {
               this.parentPort.postMessage({ _ready: true });
             });
-            client.on(Events19.ShardDisconnect, () => {
+            client.on(Events20.ShardDisconnect, () => {
               this.parentPort.postMessage({ _disconnect: true });
             });
-            client.on(Events19.ShardReconnecting, () => {
+            client.on(Events20.ShardReconnecting, () => {
               this.parentPort.postMessage({ _reconnecting: true });
             });
-            client.on(Events19.ShardResume, () => {
+            client.on(Events20.ShardResume, () => {
               this.parentPort.postMessage({ _resume: true });
             });
             break;
@@ -70831,7 +70831,7 @@ var require_ShardClientUtil = __commonJS({
         this.send(message).catch((err) => {
           const error62 = new Error(`Error when sending ${type} response to master process: ${err.message}`);
           error62.stack = err.stack;
-          this.client.emit(Events19.Error, error62);
+          this.client.emit(Events20.Error, error62);
         });
       }
       /**
@@ -70845,7 +70845,7 @@ var require_ShardClientUtil = __commonJS({
           this._singleton = new this(client, mode);
         } else {
           client.emit(
-            Events19.Warn,
+            Events20.Warn,
             "Multiple clients created in child process/worker; only the first will handle sharding helpers."
           );
         }
@@ -72480,7 +72480,7 @@ var require_GuildMemberManager = __commonJS({
     var { GuildMember } = require_GuildMember();
     var { Role } = require_Role();
     var { resolveImage } = require_DataResolver();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var { GuildMemberFlagsBitField } = require_GuildMemberFlagsBitField();
     var Partials2 = require_Partials();
     var deprecatedEmittedForEditSoleNickname = false;
@@ -72677,9 +72677,9 @@ var require_GuildMemberManager = __commonJS({
           let i = 0;
           const cleanup = /* @__PURE__ */ __name(() => {
             clearTimeout2(timeout);
-            this.client.removeListener(Events19.Raw, rateLimitHandler);
+            this.client.removeListener(Events20.Raw, rateLimitHandler);
             this.client.decrementMaxListeners();
-            this.client.removeListener(Events19.GuildMembersChunk, handler);
+            this.client.removeListener(Events20.GuildMembersChunk, handler);
             this.client.decrementMaxListeners();
           }, "cleanup");
           const timeout = setTimeout2(() => {
@@ -72713,9 +72713,9 @@ var require_GuildMemberManager = __commonJS({
             }
           }, "rateLimitHandler");
           this.client.incrementMaxListeners();
-          this.client.on(Events19.Raw, rateLimitHandler);
+          this.client.on(Events20.Raw, rateLimitHandler);
           this.client.incrementMaxListeners();
-          this.client.on(Events19.GuildMembersChunk, handler);
+          this.client.on(Events20.GuildMembersChunk, handler);
           this.guild.shard.send({
             op: GatewayOpcodes.RequestGuildMembers,
             d: requestData
@@ -75852,7 +75852,7 @@ var require_GuildManager = __commonJS({
     var OAuth2Guild = require_OAuth2Guild();
     var { Role } = require_Role();
     var { resolveImage } = require_DataResolver();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var PermissionsBitField4 = require_PermissionsBitField();
     var SystemChannelFlagsBitField = require_SystemChannelFlagsBitField();
     var { _transformAPIIncidentsData } = require_Transformers();
@@ -76041,9 +76041,9 @@ var require_GuildManager = __commonJS({
             }
           }, "handleGuild");
           this.client.incrementMaxListeners();
-          this.client.once(Events19.GuildCreate, handleGuild);
+          this.client.once(Events20.GuildCreate, handleGuild);
           const timeout = setTimeout2(() => {
-            this.client.removeListener(Events19.GuildCreate, handleGuild);
+            this.client.removeListener(Events20.GuildCreate, handleGuild);
             this.client.decrementMaxListeners();
             resolve3(this.client.guilds._add(data));
           }, 1e4).unref();
@@ -76127,18 +76127,18 @@ var require_GuildManager = __commonJS({
             remainingGuildIds.delete(guild.id);
             if (remainingGuildIds.size === 0) {
               clearTimeout2(timeout);
-              this.client.removeListener(Events19.SoundboardSounds, handler);
+              this.client.removeListener(Events20.SoundboardSounds, handler);
               this.client.decrementMaxListeners();
               resolve3(fetchedSoundboardSounds);
             }
           }, "handler");
           const timeout = setTimeout2(() => {
-            this.client.removeListener(Events19.SoundboardSounds, handler);
+            this.client.removeListener(Events20.SoundboardSounds, handler);
             this.client.decrementMaxListeners();
             reject(new DiscordjsError2(ErrorCodes2.GuildSoundboardSoundsTimeout));
           }, time4).unref();
           this.client.incrementMaxListeners();
-          this.client.on(Events19.SoundboardSounds, handler);
+          this.client.on(Events20.SoundboardSounds, handler);
         });
       }
       /**
@@ -76608,7 +76608,7 @@ var require_Sweepers = __commonJS({
     "use strict";
     var { setInterval: setInterval2, clearInterval: clearInterval2 } = require("node:timers");
     var { ThreadChannelTypes, SweeperKeys } = require_Constants();
-    var Events19 = require_Events();
+    var Events20 = require_Events();
     var { DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var Sweepers2 = class {
       static {
@@ -76643,11 +76643,11 @@ var require_Sweepers = __commonJS({
        * @returns {number} Amount of commands that were removed from the caches
        */
       sweepApplicationCommands(filter) {
-        const { guilds, items: guildCommands } = this._sweepGuildDirectProp("commands", filter, { emit: false });
+        const { guilds: guilds2, items: guildCommands } = this._sweepGuildDirectProp("commands", filter, { emit: false });
         const globalCommands = this.client.application?.commands.cache.sweep(filter) ?? 0;
         this.client.emit(
-          Events19.CacheSweep,
-          `Swept ${globalCommands} global application commands and ${guildCommands} guild commands in ${guilds} guilds.`
+          Events20.CacheSweep,
+          `Swept ${globalCommands} global application commands and ${guildCommands} guild commands in ${guilds2} guilds.`
         );
         return guildCommands + globalCommands;
       }
@@ -76686,7 +76686,7 @@ var require_Sweepers = __commonJS({
           throw new DiscordjsTypeError2(ErrorCodes2.InvalidType, "filter", "function");
         }
         const entitlements = this.client.application.entitlements.cache.sweep(filter);
-        this.client.emit(Events19.CacheSweep, `Swept ${entitlements} entitlements.`);
+        this.client.emit(Events20.CacheSweep, `Swept ${entitlements} entitlements.`);
         return entitlements;
       }
       /**
@@ -76731,7 +76731,7 @@ var require_Sweepers = __commonJS({
           channels++;
           messages2 += channel.messages.cache.sweep(filter);
         }
-        this.client.emit(Events19.CacheSweep, `Swept ${messages2} messages in ${channels} text-based channels.`);
+        this.client.emit(Events20.CacheSweep, `Swept ${messages2} messages in ${channels} text-based channels.`);
         return messages2;
       }
       /**
@@ -76763,7 +76763,7 @@ var require_Sweepers = __commonJS({
           }
         }
         this.client.emit(
-          Events19.CacheSweep,
+          Events20.CacheSweep,
           `Swept ${reactions} reactions on ${messages2} messages in ${channels} text-based channels.`
         );
         return reactions;
@@ -76801,7 +76801,7 @@ var require_Sweepers = __commonJS({
           threads++;
           members3 += channel.members.cache.sweep(filter);
         }
-        this.client.emit(Events19.CacheSweep, `Swept ${members3} thread members in ${threads} threads.`);
+        this.client.emit(Events20.CacheSweep, `Swept ${members3} thread members in ${threads} threads.`);
         return members3;
       }
       /**
@@ -76830,7 +76830,7 @@ var require_Sweepers = __commonJS({
             this.client.channels._remove(key);
           }
         }
-        this.client.emit(Events19.CacheSweep, `Swept ${threads} threads.`);
+        this.client.emit(Events20.CacheSweep, `Swept ${threads} threads.`);
         return threads;
       }
       /**
@@ -76843,7 +76843,7 @@ var require_Sweepers = __commonJS({
           throw new DiscordjsTypeError2(ErrorCodes2.InvalidType, "filter", "function");
         }
         const users2 = this.client.users.cache.sweep(filter);
-        this.client.emit(Events19.CacheSweep, `Swept ${users2} users.`);
+        this.client.emit(Events20.CacheSweep, `Swept ${users2} users.`);
         return users2;
       }
       /**
@@ -76959,18 +76959,18 @@ var require_Sweepers = __commonJS({
         if (typeof filter !== "function") {
           throw new DiscordjsTypeError2(ErrorCodes2.InvalidType, "filter", "function");
         }
-        let guilds = 0;
+        let guilds2 = 0;
         let items = 0;
         for (const guild of this.client.guilds.cache.values()) {
           if (!guild.available) continue;
           const { cache } = guild[key];
-          guilds++;
+          guilds2++;
           items += cache.sweep(filter);
         }
         if (emit) {
-          this.client.emit(Events19.CacheSweep, `Swept ${items} ${outputName ?? key} in ${guilds} guilds.`);
+          this.client.emit(Events20.CacheSweep, `Swept ${items} ${outputName ?? key} in ${guilds2} guilds.`);
         }
-        return { guilds, items };
+        return { guilds: guilds2, items };
       }
       /**
        * Validates a set of properties
@@ -78318,7 +78318,7 @@ var require_EmbedBuilder = __commonJS({
     var { isJSONEncodable } = require_dist();
     var { toSnakeCase: toSnakeCase2 } = require_Transformers();
     var { resolveColor } = require_Util();
-    var EmbedBuilder34 = class extends BuildersEmbed {
+    var EmbedBuilder36 = class extends BuildersEmbed {
       static {
         __name(this, "EmbedBuilder");
       }
@@ -78350,7 +78350,7 @@ var require_EmbedBuilder = __commonJS({
         return embedLength(this.data);
       }
     };
-    module2.exports = EmbedBuilder34;
+    module2.exports = EmbedBuilder36;
   }
 });
 
@@ -93488,9 +93488,12 @@ __export(schema_exports, {
   configAudit: () => configAudit,
   giveawayEntries: () => giveawayEntries,
   giveaways: () => giveaways,
+  guildMemberships: () => guildMemberships,
+  guilds: () => guilds,
   heartbeat: () => heartbeat,
   levelRewards: () => levelRewards,
   members: () => members,
+  premiumSubscriptions: () => premiumSubscriptions,
   reactionRoles: () => reactionRoles,
   reminders: () => reminders,
   sessions: () => sessions,
@@ -93498,6 +93501,7 @@ __export(schema_exports, {
   shopItems: () => shopItems,
   starboardPosts: () => starboardPosts,
   statsDaily: () => statsDaily,
+  stripeEvents: () => stripeEvents,
   tickets: () => tickets,
   users: () => users,
   warnings: () => warnings
@@ -93507,8 +93511,24 @@ var bytea = customType({
     return "bytea";
   }
 });
+var guilds = pgTable(
+  "guilds",
+  {
+    id: text("id").primaryKey(),
+    name: text("name").notNull(),
+    icon: text("icon"),
+    ownerId: text("owner_id"),
+    memberCount: integer("member_count").default(0).notNull(),
+    premiumTier: text("premium_tier").$type().default("free").notNull(),
+    premiumUntil: timestamp("premium_until", { withTimezone: true }),
+    joinedAt: timestamp("joined_at", { withTimezone: true }).defaultNow().notNull(),
+    leftAt: timestamp("left_at", { withTimezone: true }),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()
+  },
+  (t) => [index("guilds_premium_idx").on(t.premiumTier, t.premiumUntil)]
+);
 var settings = pgTable("settings", {
-  id: integer("id").primaryKey().default(1),
+  guildId: text("guild_id").primaryKey().references(() => guilds.id, { onDelete: "cascade" }),
   modules: jsonb("modules").$type().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()
 });
@@ -93518,10 +93538,25 @@ var users = pgTable("users", {
   avatar: text("avatar"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
 });
+var guildMemberships = pgTable(
+  "guild_memberships",
+  {
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
+    userId: text("user_id").notNull().references(() => users.discordId, { onDelete: "cascade" }),
+    permissions: text("permissions").default("0").notNull(),
+    owner: boolean("owner").default(false).notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()
+  },
+  (t) => [
+    primaryKey({ columns: [t.guildId, t.userId] }),
+    index("guild_memberships_user_idx").on(t.userId)
+  ]
+);
 var members = pgTable(
   "members",
   {
-    userId: text("user_id").primaryKey(),
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
+    userId: text("user_id").notNull(),
     xp: integer("xp").default(0).notNull(),
     level: integer("level").default(0).notNull(),
     balance: bigint("balance", { mode: "number" }).default(0).notNull(),
@@ -93534,14 +93569,16 @@ var members = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()
   },
   (t) => [
-    index("members_xp_idx").on(t.xp.desc()),
-    index("members_balance_idx").on(t.balance.desc())
+    primaryKey({ columns: [t.guildId, t.userId] }),
+    index("members_guild_xp_idx").on(t.guildId, t.xp.desc()),
+    index("members_guild_balance_idx").on(t.guildId, t.balance.desc())
   ]
 );
 var cases = pgTable(
   "cases",
   {
     id: bigserial("id", { mode: "number" }).primaryKey(),
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
     type: text("type").notNull(),
     targetId: text("target_id").notNull(),
     moderatorId: text("moderator_id").notNull(),
@@ -93553,20 +93590,26 @@ var cases = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
   },
   (t) => [
-    index("cases_target_idx").on(t.targetId),
-    index("cases_created_idx").on(t.createdAt),
-    index("cases_expiry_idx").on(t.active, t.expiresAt)
+    index("cases_guild_target_idx").on(t.guildId, t.targetId),
+    index("cases_guild_created_idx").on(t.guildId, t.createdAt),
+    index("cases_guild_expiry_idx").on(t.guildId, t.active, t.expiresAt)
   ]
 );
-var warnings = pgTable("warnings", {
-  caseId: bigint("case_id", { mode: "number" }).primaryKey().references(() => cases.id, { onDelete: "cascade" }),
-  userId: text("user_id").notNull(),
-  active: boolean("active").default(true).notNull()
-});
+var warnings = pgTable(
+  "warnings",
+  {
+    caseId: bigint("case_id", { mode: "number" }).primaryKey().references(() => cases.id, { onDelete: "cascade" }),
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
+    userId: text("user_id").notNull(),
+    active: boolean("active").default(true).notNull()
+  },
+  (t) => [index("warnings_guild_user_idx").on(t.guildId, t.userId, t.active)]
+);
 var tickets = pgTable(
   "tickets",
   {
     id: serial("id").primaryKey(),
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
     channelId: text("channel_id").notNull().unique(),
     userId: text("user_id").notNull(),
     category: text("category").notNull(),
@@ -93577,19 +93620,27 @@ var tickets = pgTable(
     transcript: bytea("transcript"),
     transcriptBytes: integer("transcript_bytes")
   },
-  (t) => [index("tickets_status_idx").on(t.status), index("tickets_user_idx").on(t.userId)]
+  (t) => [
+    index("tickets_guild_status_idx").on(t.guildId, t.status),
+    index("tickets_guild_user_idx").on(t.guildId, t.userId)
+  ]
 );
-var giveaways = pgTable("giveaways", {
-  id: serial("id").primaryKey(),
-  channelId: text("channel_id").notNull(),
-  messageId: text("message_id").notNull().unique(),
-  prize: text("prize").notNull(),
-  winnerCount: integer("winner_count").default(1).notNull(),
-  requirements: jsonb("requirements").$type(),
-  endsAt: timestamp("ends_at", { withTimezone: true }).notNull(),
-  ended: boolean("ended").default(false).notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
-});
+var giveaways = pgTable(
+  "giveaways",
+  {
+    id: serial("id").primaryKey(),
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
+    channelId: text("channel_id").notNull(),
+    messageId: text("message_id").notNull().unique(),
+    prize: text("prize").notNull(),
+    winnerCount: integer("winner_count").default(1).notNull(),
+    requirements: jsonb("requirements").$type(),
+    endsAt: timestamp("ends_at", { withTimezone: true }).notNull(),
+    ended: boolean("ended").default(false).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
+  },
+  (t) => [index("giveaways_guild_due_idx").on(t.guildId, t.ended, t.endsAt)]
+);
 var giveawayEntries = pgTable(
   "giveaway_entries",
   {
@@ -93605,6 +93656,7 @@ var reactionRoles = pgTable(
   "reaction_roles",
   {
     id: serial("id").primaryKey(),
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
     messageId: text("message_id").notNull(),
     emoji: text("emoji").notNull(),
     roleId: text("role_id").notNull(),
@@ -93612,57 +93664,82 @@ var reactionRoles = pgTable(
     groupKey: text("group_key")
   },
   (t) => [
-    uniqueIndex("reaction_roles_message_emoji_idx").on(t.messageId, t.emoji),
-    index("reaction_roles_message_idx").on(t.messageId)
+    uniqueIndex("reaction_roles_guild_message_emoji_idx").on(t.guildId, t.messageId, t.emoji),
+    index("reaction_roles_guild_message_idx").on(t.guildId, t.messageId)
   ]
 );
-var levelRewards = pgTable("level_rewards", {
-  level: integer("level").primaryKey(),
-  roleId: text("role_id").notNull()
-});
-var shopItems = pgTable("shop_items", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  price: bigint("price", { mode: "number" }).notNull(),
-  roleId: text("role_id"),
-  stock: integer("stock"),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
-});
-var starboardPosts = pgTable("starboard_posts", {
-  originalMessageId: text("original_message_id").primaryKey(),
-  starboardMessageId: text("starboard_message_id").notNull(),
-  count: integer("count").default(0).notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()
-});
-var statsDaily = pgTable("stats_daily", {
-  date: date("date").primaryKey(),
-  messages: integer("messages").default(0).notNull(),
-  joins: integer("joins").default(0).notNull(),
-  leaves: integer("leaves").default(0).notNull(),
-  commands: integer("commands").default(0).notNull(),
-  voiceSeconds: integer("voice_seconds").default(0).notNull(),
-  musicPlays: integer("music_plays").default(0).notNull()
-});
+var levelRewards = pgTable(
+  "level_rewards",
+  {
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
+    level: integer("level").notNull(),
+    roleId: text("role_id").notNull()
+  },
+  (t) => [primaryKey({ columns: [t.guildId, t.level] })]
+);
+var shopItems = pgTable(
+  "shop_items",
+  {
+    id: serial("id").primaryKey(),
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    price: bigint("price", { mode: "number" }).notNull(),
+    roleId: text("role_id"),
+    stock: integer("stock"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
+  },
+  (t) => [index("shop_items_guild_idx").on(t.guildId, t.price)]
+);
+var starboardPosts = pgTable(
+  "starboard_posts",
+  {
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
+    originalMessageId: text("original_message_id").notNull(),
+    starboardMessageId: text("starboard_message_id").notNull(),
+    count: integer("count").default(0).notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()
+  },
+  (t) => [primaryKey({ columns: [t.guildId, t.originalMessageId] })]
+);
+var statsDaily = pgTable(
+  "stats_daily",
+  {
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
+    date: date("date").notNull(),
+    messages: integer("messages").default(0).notNull(),
+    joins: integer("joins").default(0).notNull(),
+    leaves: integer("leaves").default(0).notNull(),
+    commands: integer("commands").default(0).notNull(),
+    voiceSeconds: integer("voice_seconds").default(0).notNull(),
+    musicPlays: integer("music_plays").default(0).notNull()
+  },
+  (t) => [primaryKey({ columns: [t.guildId, t.date] })]
+);
 var commandUsage = pgTable(
   "command_usage",
   {
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
     date: date("date").notNull(),
     command: text("command").notNull(),
     count: integer("count").default(0).notNull()
   },
-  (t) => [primaryKey({ columns: [t.date, t.command] }), index("command_usage_date_idx").on(t.date)]
+  (t) => [
+    primaryKey({ columns: [t.guildId, t.date, t.command] }),
+    index("command_usage_guild_date_idx").on(t.guildId, t.date)
+  ]
 );
 var configAudit = pgTable(
   "config_audit",
   {
     id: serial("id").primaryKey(),
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
     actorId: text("actor_id").notNull(),
     module: text("module").notNull(),
     before: jsonb("before").$type(),
     after: jsonb("after").$type(),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
   },
-  (t) => [index("config_audit_created_idx").on(t.createdAt)]
+  (t) => [index("config_audit_guild_created_idx").on(t.guildId, t.createdAt)]
 );
 var sessions = pgTable(
   "sessions",
@@ -93682,6 +93759,7 @@ var reminders = pgTable(
   "reminders",
   {
     id: serial("id").primaryKey(),
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
     userId: text("user_id").notNull(),
     channelId: text("channel_id").notNull(),
     message: text("message").notNull(),
@@ -93691,6 +93769,32 @@ var reminders = pgTable(
   },
   (t) => [index("reminders_due_idx").on(t.sent, t.remindAt)]
 );
+var premiumSubscriptions = pgTable(
+  "premium_subscriptions",
+  {
+    id: serial("id").primaryKey(),
+    guildId: text("guild_id").notNull().references(() => guilds.id, { onDelete: "cascade" }),
+    userId: text("user_id").notNull(),
+    provider: text("provider").default("stripe").notNull(),
+    stripeCustomerId: text("stripe_customer_id"),
+    stripeSubscriptionId: text("stripe_subscription_id").unique(),
+    tier: text("tier").$type().default("premium").notNull(),
+    status: text("status").$type().default("inactive").notNull(),
+    currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }),
+    cancelAtPeriodEnd: boolean("cancel_at_period_end").default(false).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()
+  },
+  (t) => [
+    index("premium_subscriptions_guild_idx").on(t.guildId),
+    index("premium_subscriptions_customer_idx").on(t.stripeCustomerId)
+  ]
+);
+var stripeEvents = pgTable("stripe_events", {
+  id: text("id").primaryKey(),
+  type: text("type").notNull(),
+  processedAt: timestamp("processed_at", { withTimezone: true }).defaultNow().notNull()
+});
 
 // packages/db/src/client.ts
 function createDatabase(url2, options = {}) {
@@ -93712,8 +93816,8 @@ __name(createDatabase, "createDatabase");
 
 // packages/shared/src/brand.ts
 var BRAND = {
-  name: "Nervana",
-  footer: "Nervana",
+  name: "Veyra",
+  footer: "Veyra",
   color: 9133302,
   success: 2278750,
   danger: 15680580,
@@ -114296,6 +114400,19 @@ var CommunityConfigSchema = external_exports.object({
 var StatsConfigSchema = external_exports.object({
   enabled: external_exports.boolean()
 });
+var HexColorSchema = external_exports.string().regex(/^#[0-9a-fA-F]{6}$/, "Use a six-digit hex colour such as #8b5cf6");
+var PersonalizerConfigSchema = external_exports.object({
+  enabled: external_exports.boolean(),
+  /** Applied as the bot's nickname in this server. */
+  nickname: external_exports.string().trim().min(1).max(32).nullable(),
+  embedColor: HexColorSchema,
+  footerText: external_exports.string().trim().min(1).max(2048).nullable(),
+  footerIconUrl: external_exports.url().max(2048).nullable(),
+  thumbnailUrl: external_exports.url().max(2048).nullable(),
+  levelUpMessage: external_exports.string().trim().min(1).max(2e3).nullable(),
+  ticketPanelTitle: external_exports.string().trim().min(1).max(256).nullable(),
+  ticketPanelDescription: external_exports.string().trim().min(1).max(4e3).nullable()
+});
 var AppConfigSchema = external_exports.object({
   moderation: ModerationConfigSchema,
   logging: LoggingConfigSchema,
@@ -114305,7 +114422,8 @@ var AppConfigSchema = external_exports.object({
   tickets: TicketsConfigSchema,
   music: MusicConfigSchema,
   community: CommunityConfigSchema,
-  stats: StatsConfigSchema
+  stats: StatsConfigSchema,
+  personalizer: PersonalizerConfigSchema
 });
 var DEFAULT_CONFIG = {
   moderation: {
@@ -114424,6 +114542,17 @@ var DEFAULT_CONFIG = {
   },
   stats: {
     enabled: true
+  },
+  personalizer: {
+    enabled: false,
+    nickname: null,
+    embedColor: "#8b5cf6",
+    footerText: null,
+    footerIconUrl: null,
+    thumbnailUrl: null,
+    levelUpMessage: null,
+    ticketPanelTitle: null,
+    ticketPanelDescription: null
   }
 };
 function isPlainObject2(value) {
@@ -114453,6 +114582,53 @@ function parseModule(key, raw) {
   return schema.parse(raw);
 }
 __name(parseModule, "parseModule");
+
+// packages/shared/src/premium.ts
+var PREMIUM_TIERS = ["free", "premium"];
+var PremiumTierSchema = external_exports.enum(PREMIUM_TIERS);
+var PREMIUM_PLAN = {
+  id: "premium",
+  name: "Veyra Premium",
+  amountCents: 499,
+  currency: "usd",
+  interval: "month",
+  trialDays: 0
+};
+var PREMIUM_FEATURES = [
+  {
+    id: "personalizer",
+    name: "Server personalizer",
+    description: "Per-server nickname, embed color, footer, thumbnail, and custom level-up and ticket-panel copy."
+  },
+  {
+    id: "music-247",
+    name: "24/7 music",
+    description: "Keep the music player connected even when everyone leaves the voice channel."
+  },
+  {
+    id: "music-queue",
+    name: "Extended music queue",
+    description: "Queue up to 500 tracks per server instead of the free 100."
+  },
+  {
+    id: "analytics",
+    name: "Extended analytics",
+    description: "Keep detailed server activity and command analytics for a full year."
+  },
+  {
+    id: "priority",
+    name: "Priority support",
+    description: "Get priority help in the support server and early access to new modules."
+  }
+];
+var FREE_MUSIC_QUEUE = 100;
+function premiumActive(tier, until, now = Date.now()) {
+  if (tier !== "premium") return false;
+  if (!until) return true;
+  const end = until instanceof Date ? until.getTime() : new Date(until).getTime();
+  return Number.isFinite(end) ? end > now : false;
+}
+__name(premiumActive, "premiumActive");
 
 // packages/shared/src/time.ts
 var SECOND = 1e3;
@@ -114562,9 +114738,44 @@ function progressBar(current, needed, size2 = 12) {
 }
 __name(progressBar, "progressBar");
 
+// packages/db/src/guilds.ts
+async function ensureGuild(db, guild) {
+  const rows = await db.insert(guilds).values({
+    id: guild.id,
+    name: guild.name,
+    icon: guild.icon ?? null,
+    ownerId: guild.ownerId ?? null,
+    memberCount: guild.memberCount ?? 0,
+    leftAt: null
+  }).onConflictDoUpdate({
+    target: guilds.id,
+    set: {
+      name: guild.name,
+      icon: guild.icon ?? null,
+      ownerId: guild.ownerId ?? null,
+      memberCount: guild.memberCount ?? 0,
+      leftAt: null,
+      updatedAt: /* @__PURE__ */ new Date()
+    }
+  }).returning();
+  const row = rows[0];
+  if (!row) throw new Error("Could not persist guild.");
+  return row;
+}
+__name(ensureGuild, "ensureGuild");
+async function markGuildLeft(db, guildId) {
+  await db.update(guilds).set({ leftAt: /* @__PURE__ */ new Date(), updatedAt: /* @__PURE__ */ new Date() }).where(eq(guilds.id, guildId));
+}
+__name(markGuildLeft, "markGuildLeft");
+async function readGuild(db, guildId) {
+  const rows = await db.select().from(guilds).where(eq(guilds.id, guildId)).limit(1);
+  return rows[0] ?? null;
+}
+__name(readGuild, "readGuild");
+
 // packages/db/src/settings.ts
-async function readLockedConfig(tx) {
-  const rows = await tx.select({ modules: settings.modules }).from(settings).where(eq(settings.id, 1)).limit(1).for("update");
+async function readLockedConfig(tx, guildId) {
+  const rows = await tx.select({ modules: settings.modules }).from(settings).where(eq(settings.guildId, guildId)).limit(1).for("update");
   const stored = rows[0]?.modules;
   try {
     return parseConfig(stored ?? DEFAULT_CONFIG);
@@ -114573,17 +114784,18 @@ async function readLockedConfig(tx) {
   }
 }
 __name(readLockedConfig, "readLockedConfig");
-async function updateModule(db, actorId, module2, raw) {
+async function updateModule(db, guildId, actorId, module2, raw) {
   return db.transaction(async (tx) => {
-    const before = await readLockedConfig(tx);
+    const before = await readLockedConfig(tx, guildId);
     const after = parseModule(module2, raw);
     const config2 = { ...before, [module2]: after };
     const updatedAt = /* @__PURE__ */ new Date();
-    await tx.insert(settings).values({ id: 1, modules: config2, updatedAt }).onConflictDoUpdate({
-      target: settings.id,
+    await tx.insert(settings).values({ guildId, modules: config2, updatedAt }).onConflictDoUpdate({
+      target: settings.guildId,
       set: { modules: config2, updatedAt }
     });
     await tx.insert(configAudit).values({
+      guildId,
       actorId,
       module: module2,
       before: before[module2],
@@ -114593,10 +114805,21 @@ async function updateModule(db, actorId, module2, raw) {
   });
 }
 __name(updateModule, "updateModule");
-async function resetModule(db, actorId, module2) {
-  return updateModule(db, actorId, module2, DEFAULT_CONFIG[module2]);
+async function resetModule(db, guildId, actorId, module2) {
+  return updateModule(db, guildId, actorId, module2, DEFAULT_CONFIG[module2]);
 }
 __name(resetModule, "resetModule");
+async function readGuildConfig(db, guildId) {
+  const rows = await db.select({ modules: settings.modules, updatedAt: settings.updatedAt }).from(settings).where(eq(settings.guildId, guildId)).limit(1);
+  const row = rows[0];
+  if (!row) return null;
+  try {
+    return { config: parseConfig(row.modules), updatedAt: row.updatedAt };
+  } catch {
+    return { config: parseConfig(DEFAULT_CONFIG), updatedAt: row.updatedAt };
+  }
+}
+__name(readGuildConfig, "readGuildConfig");
 
 // packages/db/src/migrate.ts
 var import_promises = require("node:fs/promises");
@@ -114610,7 +114833,7 @@ async function runMigrations(sql2, directory, logger) {
   }
   let applied = 0;
   await sql2.begin(async (tx) => {
-    await tx`SELECT pg_advisory_xact_lock(hashtext('nervana_migrations'))`;
+    await tx`SELECT pg_advisory_xact_lock(hashtext('veyra_migrations'))`;
     await tx`
       CREATE TABLE IF NOT EXISTS schema_migrations (
         name text PRIMARY KEY,
@@ -114643,7 +114866,7 @@ var helpCommand = {
   cooldownSeconds: 3,
   async execute({ client, interaction, member, settings: settings2 }) {
     const visible = [...client.commands.values()].filter((command) => {
-      if (!client.isCategoryEnabled(command.category)) return false;
+      if (!client.isCategoryEnabled(command.category, settings2)) return false;
       if (!command.userPermissions?.length) return true;
       return member.permissions.has(command.userPermissions);
     });
@@ -114653,7 +114876,7 @@ var helpCommand = {
       bucket.push(`\`/${command.data.name}\` \u2014 ${command.data.description}`);
       groups.set(command.category, bucket);
     }
-    const embed = new import_discord.EmbedBuilder().setColor(BRAND.color).setTitle("Nervana commands").setDescription(
+    const embed = new import_discord.EmbedBuilder().setColor(BRAND.color).setTitle("Veyra commands").setDescription(
       `${visible.length} command${visible.length === 1 ? "" : "s"} available to you in this server.`
     ).setFooter({ text: BRAND.footer });
     for (const category of COMMAND_CATEGORIES) {
@@ -114690,8 +114913,40 @@ var pingCommand = {
   }
 };
 
+// apps/bot/src/commands/core/premium.ts
+var import_discord3 = __toESM(require_src(), 1);
+var premiumCommand = {
+  data: new import_discord3.SlashCommandBuilder().setName("premium").setDescription("Show this server's Veyra Premium status."),
+  category: "core",
+  cooldownSeconds: 3,
+  async execute({ client, interaction, guild }) {
+    const premium = await client.isPremium(guild.id);
+    const record2 = client.db ? await readGuild(client.db, guild.id) : null;
+    const until = record2?.premiumUntil ?? null;
+    const dashboard = client.env.DASHBOARD_URL?.replace(/\/$/, "");
+    const price = `$${(PREMIUM_PLAN.amountCents / 100).toFixed(2)} / ${PREMIUM_PLAN.interval}`;
+    const embed = new import_discord3.EmbedBuilder().setColor(premium ? 16096779 : BRAND.color).setTitle(premium ? "Veyra Premium" : "Veyra Free").setDescription(
+      premium ? "Premium is active for this server. Thank you for supporting Veyra." : "This server uses the free core. Premium adds branding, music persistence, longer queues, extended analytics, and priority support."
+    ).addFields({
+      name: "Status",
+      value: premium ? until ? `Active until <t:${Math.floor(until.getTime() / 1e3)}:F>` : "Active" : "Free",
+      inline: true
+    }).addFields({ name: "Price", value: price, inline: true }).addFields({
+      name: "Premium includes",
+      value: PREMIUM_FEATURES.map((feature) => `- ${feature.name}`).join("\n")
+    }).setFooter({ text: BRAND.footer });
+    if (dashboard) {
+      embed.addFields({
+        name: "Manage",
+        value: `[Open the server dashboard](${dashboard}/g/${guild.id}/premium)`
+      });
+    }
+    await interaction.reply({ embeds: [embed] });
+  }
+};
+
 // apps/bot/src/commands/core/setup.ts
-var import_discord4 = __toESM(require_src(), 1);
+var import_discord6 = __toESM(require_src(), 1);
 
 // apps/bot/src/core/errors.ts
 var import_node_crypto = require("node:crypto");
@@ -114711,61 +114966,6 @@ function newErrorId() {
 }
 __name(newErrorId, "newErrorId");
 
-// apps/bot/src/config/settings.ts
-async function readSettings(db, onInvalid) {
-  const rows = await db.select({ modules: settings.modules, updatedAt: settings.updatedAt }).from(settings).where(eq(settings.id, 1)).limit(1);
-  const row = rows[0];
-  if (!row) {
-    await db.insert(settings).values({ id: 1, modules: DEFAULT_CONFIG }).onConflictDoNothing();
-    return { config: parseConfig(DEFAULT_CONFIG), updatedAt: Date.now() };
-  }
-  try {
-    return { config: parseConfig(row.modules), updatedAt: row.updatedAt.getTime() };
-  } catch (error62) {
-    onInvalid?.(error62);
-    return { config: parseConfig(DEFAULT_CONFIG), updatedAt: row.updatedAt.getTime() };
-  }
-}
-__name(readSettings, "readSettings");
-function applyOverrides(config2, musicEnabled) {
-  if (musicEnabled) return config2;
-  return { ...config2, music: { ...config2.music, enabled: false } };
-}
-__name(applyOverrides, "applyOverrides");
-function startSettingsPoller(client) {
-  if (!client.db) return;
-  if (client.settingsPollTimer) return;
-  client.settingsPollTimer = setInterval(() => {
-    void poll(client);
-  }, 15e3);
-  client.settingsPollTimer.unref();
-}
-__name(startSettingsPoller, "startSettingsPoller");
-async function poll(client) {
-  if (!client.db) return;
-  try {
-    const rows = await client.db.select({ modules: settings.modules, updatedAt: settings.updatedAt }).from(settings).where(eq(settings.id, 1)).limit(1);
-    const row = rows[0];
-    if (!row) return;
-    const updatedAt = row.updatedAt.getTime();
-    if (updatedAt === client.settingsUpdatedAt) return;
-    const config2 = parseConfig(row.modules);
-    client.settings = applyOverrides(config2, client.env.MUSIC_ENABLED);
-    client.settingsUpdatedAt = updatedAt;
-    client.logger.info({ updatedAt }, "settings reloaded");
-  } catch (error62) {
-    client.logger.warn({ err: error62 }, "settings poll failed");
-  }
-}
-__name(poll, "poll");
-function stopSettingsPoller(client) {
-  if (client.settingsPollTimer) {
-    clearInterval(client.settingsPollTimer);
-    client.settingsPollTimer = null;
-  }
-}
-__name(stopSettingsPoller, "stopSettingsPoller");
-
 // apps/bot/src/config/service.ts
 function invalidConfig(error62) {
   if (error62 instanceof ZodError) {
@@ -114775,30 +114975,37 @@ function invalidConfig(error62) {
   throw error62;
 }
 __name(invalidConfig, "invalidConfig");
-function adopt(client, result) {
-  client.settings = applyOverrides(result.config, client.env.MUSIC_ENABLED);
-  client.settingsUpdatedAt = result.updatedAt.getTime();
+function adopt(client, guildId, result) {
+  client.cacheSettings(guildId, result.config, result.updatedAt.getTime());
   return result;
 }
 __name(adopt, "adopt");
-async function updateModule2(client, actorId, module2, value) {
+async function updateModule2(client, guildId, actorId, module2, value) {
   if (!client.db) throw new UserFacingError("The database is not configured.");
-  const result = await updateModule(client.db, actorId, module2, value).catch(invalidConfig);
-  return adopt(client, result);
+  if (module2 === "personalizer" && !await client.isPremium(guildId)) {
+    throw new UserFacingError("The server personalizer is a Veyra Premium feature.");
+  }
+  const result = await updateModule(client.db, guildId, actorId, module2, value).catch(
+    invalidConfig
+  );
+  return adopt(client, guildId, result);
 }
 __name(updateModule2, "updateModule");
-async function resetModule2(client, actorId, module2) {
+async function resetModule2(client, guildId, actorId, module2) {
   if (!client.db) throw new UserFacingError("The database is not configured.");
-  const result = await resetModule(client.db, actorId, module2).catch(invalidConfig);
-  return adopt(client, result);
+  if (module2 === "personalizer" && !await client.isPremium(guildId)) {
+    throw new UserFacingError("The server personalizer is a Veyra Premium feature.");
+  }
+  const result = await resetModule(client.db, guildId, actorId, module2).catch(invalidConfig);
+  return adopt(client, guildId, result);
 }
 __name(resetModule2, "resetModule");
 
 // apps/bot/src/core/respond.ts
-var import_discord3 = __toESM(require_src(), 1);
+var import_discord4 = __toESM(require_src(), 1);
 async function deferEphemeral(interaction) {
   if (interaction.deferred || interaction.replied) return;
-  await interaction.deferReply({ flags: import_discord3.MessageFlags.Ephemeral });
+  await interaction.deferReply({ flags: import_discord4.MessageFlags.Ephemeral });
 }
 __name(deferEphemeral, "deferEphemeral");
 async function deferPublic(interaction) {
@@ -114813,14 +115020,67 @@ async function replyError(interaction, message, errorId) {
     if (interaction.deferred && !interaction.replied) {
       await interaction.editReply({ content });
     } else if (interaction.replied) {
-      await interaction.followUp({ content, flags: import_discord3.MessageFlags.Ephemeral });
+      await interaction.followUp({ content, flags: import_discord4.MessageFlags.Ephemeral });
     } else {
-      await interaction.reply({ content, flags: import_discord3.MessageFlags.Ephemeral });
+      await interaction.reply({ content, flags: import_discord4.MessageFlags.Ephemeral });
     }
   } catch {
   }
 }
 __name(replyError, "replyError");
+
+// apps/bot/src/modules/personalizer/service.ts
+var import_discord5 = __toESM(require_src(), 1);
+function personalizerActive(config2, premium) {
+  return premium && config2.enabled;
+}
+__name(personalizerActive, "personalizerActive");
+async function applyPersonalizer(client, guild, config2) {
+  const resolved = config2 ?? await client.getConfig(guild.id);
+  const me = guild.members.me;
+  if (!me) return;
+  if (!resolved.personalizer.enabled && me.nickname === null) return;
+  const premium = await client.isPremium(guild.id);
+  const active = personalizerActive(resolved.personalizer, premium);
+  const nickname = active ? resolved.personalizer.nickname : null;
+  try {
+    if (nickname && me.nickname !== nickname) {
+      await me.setNickname(nickname, "Veyra personalizer");
+    } else if (!nickname && me.nickname !== null) {
+      await me.setNickname(null, "Veyra personalizer reset");
+    }
+  } catch (error62) {
+    client.logger.warn({ err: error62, guildId: guild.id }, "could not apply personalizer nickname");
+  }
+}
+__name(applyPersonalizer, "applyPersonalizer");
+function brandEmbed(client, guildId, embed, config2, preserveColor = false) {
+  const cached2 = client.settingsCache.get(guildId)?.config;
+  const resolved = config2 ?? cached2;
+  const personalizer = resolved?.personalizer;
+  if (personalizer?.enabled && client.premiumCached(guildId)) {
+    if (!preserveColor) embed.setColor(personalizer.embedColor);
+    if (personalizer.footerText) {
+      embed.setFooter({
+        text: personalizer.footerText,
+        iconURL: personalizer.footerIconUrl ?? void 0
+      });
+    }
+    if (personalizer.thumbnailUrl && !embed.data.thumbnail) {
+      embed.setThumbnail(personalizer.thumbnailUrl);
+    }
+    return embed;
+  }
+  if (!embed.data.color) embed.setColor(BRAND.color);
+  if (!embed.data.footer) embed.setFooter({ text: BRAND.footer });
+  return embed;
+}
+__name(brandEmbed, "brandEmbed");
+function renderLevelUpMessage(template, values2) {
+  if (!template) return null;
+  return template.replaceAll("{user}", values2.user).replaceAll("{username}", values2.username).replaceAll("{level}", String(values2.level)).replaceAll("{server}", values2.server).slice(0, 2e3);
+}
+__name(renderLevelUpMessage, "renderLevelUpMessage");
 
 // apps/bot/src/commands/core/setup.ts
 var AUTOMOD_RULES = ["invites", "links", "spam", "mentions", "caps", "words", "raid"];
@@ -114833,7 +115093,8 @@ var MODULES = [
   "tickets",
   "music",
   "community",
-  "stats"
+  "stats",
+  "personalizer"
 ];
 function label(value) {
   return value.replace(/([A-Z])/g, " $1").replace(/^./, (character) => character.toUpperCase()).trim();
@@ -114848,7 +115109,19 @@ function textChannel(channel) {
 }
 __name(textChannel, "textChannel");
 var setupCommand = {
-  data: new import_discord4.SlashCommandBuilder().setName("setup").setDescription("Configure logging, moderation, leveling, and welcome messages.").setDefaultMemberPermissions(import_discord4.PermissionFlagsBits.ManageGuild).addSubcommand((sub) => sub.setName("status").setDescription("Show the current configuration.")).addSubcommand(
+  data: new import_discord6.SlashCommandBuilder().setName("setup").setDescription("Configure logging, moderation, leveling, and welcome messages.").setDefaultMemberPermissions(import_discord6.PermissionFlagsBits.ManageGuild).addSubcommand((sub) => sub.setName("status").setDescription("Show the current configuration.")).addSubcommand(
+    (sub) => sub.setName("personalizer").setDescription("Premium: brand Veyra in this server.").addBooleanOption(
+      (option) => option.setName("enabled").setDescription("Enable or disable the personalizer")
+    ).addStringOption(
+      (option) => option.setName("nickname").setDescription("Bot nickname in this server (blank clears it)").setMaxLength(32)
+    ).addStringOption(
+      (option) => option.setName("color").setDescription("Embed colour, e.g. #8b5cf6").setMaxLength(7)
+    ).addStringOption(
+      (option) => option.setName("level-message").setDescription("Level-up template: {user}, {level}, {server}").setMaxLength(2e3)
+    ).addStringOption(
+      (option) => option.setName("ticket-title").setDescription("Ticket panel title").setMaxLength(256)
+    )
+  ).addSubcommand(
     (sub) => sub.setName("logging").setDescription("Route one log event to a channel, or clear it.").addStringOption(
       (option) => option.setName("event").setDescription("Which event to route").setRequired(true).addChoices(...LOG_EVENTS.map((event) => ({ name: label(event), value: event })))
     ).addChannelOption(
@@ -114933,11 +115206,11 @@ var setupCommand = {
     (sub) => sub.setName("starboard").setDescription("Configure the starboard channel and threshold.").addBooleanOption(
       (option) => option.setName("enabled").setDescription("Enable or disable the starboard")
     ).addChannelOption(
-      (option) => option.setName("channel").setDescription("Channel where starred messages are posted").addChannelTypes(import_discord4.ChannelType.GuildText)
+      (option) => option.setName("channel").setDescription("Channel where starred messages are posted").addChannelTypes(import_discord6.ChannelType.GuildText)
     ).addIntegerOption(
       (option) => option.setName("threshold").setDescription("Stars required to post").setMinValue(1).setMaxValue(50)
     ).addChannelOption(
-      (option) => option.setName("ignore-channel").setDescription("Add a channel the starboard should ignore").addChannelTypes(import_discord4.ChannelType.GuildText)
+      (option) => option.setName("ignore-channel").setDescription("Add a channel the starboard should ignore").addChannelTypes(import_discord6.ChannelType.GuildText)
     ).addBooleanOption(
       (option) => option.setName("clear-ignore").setDescription("Clear the ignored-channel list")
     )
@@ -114971,7 +115244,7 @@ var setupCommand = {
     (sub) => sub.setName("tickets").setDescription("Configure the ticket category, staff role, and panel.").addBooleanOption(
       (option) => option.setName("enabled").setDescription("Enable or disable tickets")
     ).addChannelOption(
-      (option) => option.setName("category").setDescription("Category where ticket channels are created").addChannelTypes(import_discord4.ChannelType.GuildCategory)
+      (option) => option.setName("category").setDescription("Category where ticket channels are created").addChannelTypes(import_discord6.ChannelType.GuildCategory)
     ).addRoleOption(
       (option) => option.setName("staff-role").setDescription("Role that can see and manage tickets")
     ).addChannelOption(
@@ -114987,13 +115260,44 @@ var setupCommand = {
     )
   ),
   category: "core",
-  userPermissions: [import_discord4.PermissionFlagsBits.ManageGuild],
+  userPermissions: [import_discord6.PermissionFlagsBits.ManageGuild],
   cooldownSeconds: 2,
-  async execute({ client, interaction, settings: settings2 }) {
+  async execute({ client, interaction, settings: settings2, premium }) {
     await deferEphemeral(interaction);
     const sub = interaction.options.getSubcommand(true);
     if (sub === "status") {
       await showStatus(interaction, settings2);
+      return;
+    }
+    if (sub === "personalizer") {
+      if (!await client.isPremium(interaction.guildId)) {
+        throw new UserFacingError(
+          "The personalizer is a Premium feature. Open the dashboard Premium page to subscribe for this server."
+        );
+      }
+      const enabled = interaction.options.getBoolean("enabled");
+      const nickname = interaction.options.getString("nickname");
+      const color = interaction.options.getString("color")?.trim();
+      const levelMessage = interaction.options.getString("level-message");
+      const ticketTitle = interaction.options.getString("ticket-title");
+      const personalizer = structuredClone(settings2.personalizer);
+      if (enabled !== null) personalizer.enabled = enabled;
+      if (nickname !== null) personalizer.nickname = nickname.trim() || null;
+      if (color) personalizer.embedColor = color.startsWith("#") ? color : `#${color}`;
+      if (levelMessage !== null) personalizer.levelUpMessage = levelMessage.trim() || null;
+      if (ticketTitle !== null) personalizer.ticketPanelTitle = ticketTitle.trim() || null;
+      await updateModule2(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        "personalizer",
+        personalizer
+      );
+      const updated = { ...settings2, personalizer };
+      if (interaction.guild) await applyPersonalizer(client, interaction.guild, updated);
+      await interaction.editReply({
+        content: `Personalizer is **${personalizer.enabled ? "on" : "off"}** \xB7 colour ${personalizer.embedColor} \xB7 nickname ${personalizer.nickname ? `**${personalizer.nickname}**` : "default"}.`
+      });
       return;
     }
     if (sub === "logging") {
@@ -115002,7 +115306,7 @@ var setupCommand = {
       const logging = structuredClone(settings2.logging);
       logging.channels[event] = channel?.id ?? null;
       if (channel) logging.enabled = true;
-      await updateModule2(client, interaction.user.id, "logging", logging);
+      await updateModule2(client, interaction.guildId, interaction.user.id, "logging", logging);
       await interaction.editReply({
         content: channel ? `**${label(event)}** logs now go to <#${channel.id}>.` : `Disabled **${label(event)}** logs.`
       });
@@ -115012,7 +115316,13 @@ var setupCommand = {
       const channel = textChannel(interaction.options.getChannel("channel"));
       const moderation = structuredClone(settings2.moderation);
       moderation.modLogChannelId = channel?.id ?? null;
-      await updateModule2(client, interaction.user.id, "moderation", moderation);
+      await updateModule2(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        "moderation",
+        moderation
+      );
       await interaction.editReply({
         content: channel ? `Moderation cases now log to <#${channel.id}>.` : "Cleared the moderation case log channel."
       });
@@ -115029,7 +115339,13 @@ var setupCommand = {
       const target = moderation.automod[rule];
       target.enabled = enabled;
       if (action) target.action = action;
-      await updateModule2(client, interaction.user.id, "moderation", moderation);
+      await updateModule2(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        "moderation",
+        moderation
+      );
       await interaction.editReply({
         content: `**${label(rule)}** automod is now **${enabled ? "on" : "off"}**${action ? ` (action: ${action})` : ""}.`
       });
@@ -115047,7 +115363,13 @@ var setupCommand = {
       if (remove) set2.delete(host);
       else set2.add(host);
       moderation.automod.links.allowlist = [...set2];
-      await updateModule2(client, interaction.user.id, "moderation", moderation);
+      await updateModule2(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        "moderation",
+        moderation
+      );
       await interaction.editReply({
         content: `${remove ? "Removed" : "Added"} **${host}** ${remove ? "from" : "to"} the link allowlist.`
       });
@@ -115062,7 +115384,13 @@ var setupCommand = {
       if (remove) set2.delete(word);
       else set2.add(word);
       moderation.automod.words.words = [...set2];
-      await updateModule2(client, interaction.user.id, "moderation", moderation);
+      await updateModule2(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        "moderation",
+        moderation
+      );
       await interaction.editReply({
         content: `${remove ? "Removed" : "Added"} **${word}** ${remove ? "from" : "to"} the filtered words.`
       });
@@ -115087,7 +115415,7 @@ var setupCommand = {
         );
       }
       if (cooldown !== null) leveling.cooldownSeconds = cooldown;
-      await updateModule2(client, interaction.user.id, "leveling", leveling);
+      await updateModule2(client, interaction.guildId, interaction.user.id, "leveling", leveling);
       await interaction.editReply({
         content: `Leveling is **${enabled ? "on" : "off"}** \xB7 ${leveling.xpMin}\u2013${leveling.xpMax} XP every ${leveling.cooldownSeconds}s.`
       });
@@ -115116,7 +115444,7 @@ var setupCommand = {
           `Work max (${economy.workMax}) must be at least work min (${economy.workMin}).`
         );
       }
-      await updateModule2(client, interaction.user.id, "economy", economy);
+      await updateModule2(client, interaction.guildId, interaction.user.id, "economy", economy);
       await interaction.editReply({
         content: `Economy is **${economy.enabled ? "on" : "off"}** - ${economy.dailyAmount} ${economy.currency} daily, work ${economy.workMin}-${economy.workMax} every ${economy.workCooldownSeconds}s.`
       });
@@ -115134,8 +115462,20 @@ var setupCommand = {
       if (clearDj) music.djRoleId = null;
       else if (djRole) music.djRoleId = djRole.id;
       if (volume !== null) music.defaultVolume = volume;
-      if (maxQueue !== null) music.maxQueue = maxQueue;
-      if (stay247 !== null) music.stay247 = stay247;
+      if (maxQueue !== null) {
+        if (!premium && maxQueue > FREE_MUSIC_QUEUE) {
+          throw new UserFacingError(
+            `Free servers can configure up to ${FREE_MUSIC_QUEUE} queued tracks. Premium raises the limit to 500.`
+          );
+        }
+        music.maxQueue = maxQueue;
+      }
+      if (stay247 !== null) {
+        if (stay247 && !premium) {
+          throw new UserFacingError("24/7 music is a Premium feature for this server.");
+        }
+        music.stay247 = stay247;
+      }
       if (music.enabled) {
         if (!client.env.MUSIC_ENABLED) {
           throw new UserFacingError(
@@ -115148,7 +115488,7 @@ var setupCommand = {
           );
         }
       }
-      await updateModule2(client, interaction.user.id, "music", music);
+      await updateModule2(client, interaction.guildId, interaction.user.id, "music", music);
       const lines = [
         `Music: **${music.enabled ? "on" : "off"}**`,
         `DJ role: ${music.djRoleId ? `<@&${music.djRoleId}>` : "*everyone*"}`,
@@ -115188,7 +115528,7 @@ var setupCommand = {
       if (starboard.enabled && !starboard.channelId) {
         throw new UserFacingError("Set a starboard channel before enabling it.");
       }
-      await updateModule2(client, interaction.user.id, "community", community);
+      await updateModule2(client, interaction.guildId, interaction.user.id, "community", community);
       await interaction.editReply({
         content: [
           `Starboard: **${starboard.enabled ? "on" : "off"}**`,
@@ -115224,7 +115564,7 @@ var setupCommand = {
         }
         if (message) welcome.leaveMessage = message;
       }
-      await updateModule2(client, interaction.user.id, "welcome", welcome);
+      await updateModule2(client, interaction.guildId, interaction.user.id, "welcome", welcome);
       await interaction.editReply({
         content: channel ? `${label(kind)} messages will be sent to <#${channel.id}>.` : message ? `Updated the ${kind} message template.` : `Disabled ${kind} messages.`
       });
@@ -115239,7 +115579,13 @@ var setupCommand = {
         if (remove) set3.delete(role.id);
         else set3.add(role.id);
         moderation.exemptRoleIds = [...set3];
-        await updateModule2(client, interaction.user.id, "moderation", moderation);
+        await updateModule2(
+          client,
+          interaction.guildId,
+          interaction.user.id,
+          "moderation",
+          moderation
+        );
         await interaction.editReply({
           content: `${remove ? "Removed" : "Added"} role exemption for ${role}.`
         });
@@ -115251,7 +115597,13 @@ var setupCommand = {
       if (remove) set2.delete(channel.id);
       else set2.add(channel.id);
       moderation.exemptChannelIds = [...set2];
-      await updateModule2(client, interaction.user.id, "moderation", moderation);
+      await updateModule2(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        "moderation",
+        moderation
+      );
       await interaction.editReply({
         content: `${remove ? "Removed" : "Added"} automod exemption for <#${channel.id}>.`
       });
@@ -115281,7 +115633,7 @@ var setupCommand = {
       if (remove) set2.delete(role.id);
       else set2.add(role.id);
       welcome.autoRoleIds = [...set2];
-      await updateModule2(client, interaction.user.id, "welcome", welcome);
+      await updateModule2(client, interaction.guildId, interaction.user.id, "welcome", welcome);
       await interaction.editReply({
         content: `${remove ? "Removed" : "Added"} ${role} as an auto role.`
       });
@@ -115296,7 +115648,7 @@ var setupCommand = {
       const maxOpen = interaction.options.getInteger("max-open");
       const tickets2 = structuredClone(settings2.tickets);
       if (category) {
-        if (category.type !== import_discord4.ChannelType.GuildCategory) {
+        if (category.type !== import_discord6.ChannelType.GuildCategory) {
           throw new UserFacingError("Pick a server category, not a channel.");
         }
         tickets2.categoryId = category.id;
@@ -115319,7 +115671,7 @@ var setupCommand = {
           "Set a ticket category and a staff role before enabling tickets."
         );
       }
-      await updateModule2(client, interaction.user.id, "tickets", tickets2);
+      await updateModule2(client, interaction.guildId, interaction.user.id, "tickets", tickets2);
       const lines = [
         `Tickets: **${tickets2.enabled ? "enabled" : "disabled"}**`,
         `Category: ${tickets2.categoryId ? `<#${tickets2.categoryId}>` : "*not set*"}`,
@@ -115338,7 +115690,7 @@ Run \`/ticket panel\` to publish the panel.`,
     }
     if (sub === "reset") {
       const module2 = interaction.options.getString("module", true);
-      await resetModule2(client, interaction.user.id, module2);
+      await resetModule2(client, interaction.guildId, interaction.user.id, module2);
       await interaction.editReply({
         content: `Reset the **${label(module2)}** module to defaults.`
       });
@@ -115349,7 +115701,7 @@ async function showStatus(interaction, settings2) {
   const configuredLogs = LOG_EVENTS.filter((event) => settings2.logging.channels[event] !== null);
   const enabledRules = AUTOMOD_RULES.filter((rule) => settings2.moderation.automod[rule].enabled);
   const rewards = settings2.leveling.rewards.length;
-  const embed = new import_discord4.EmbedBuilder().setColor(BRAND.color).setTitle("Nervana setup").addFields(
+  const embed = new import_discord6.EmbedBuilder().setColor(BRAND.color).setTitle("Veyra setup").addFields(
     {
       name: "Moderation",
       value: [
@@ -115416,7 +115768,7 @@ async function showStatus(interaction, settings2) {
 __name(showStatus, "showStatus");
 
 // apps/bot/src/commands/core/stats.ts
-var import_discord5 = __toESM(require_src(), 1);
+var import_discord7 = __toESM(require_src(), 1);
 
 // apps/bot/src/core/database.ts
 function requireDb(client) {
@@ -115428,6 +115780,7 @@ __name(requireDb, "requireDb");
 // apps/bot/src/modules/stats/service.ts
 var FLUSH_MS = 3e4;
 var RETENTION_DAYS = 90;
+var PREMIUM_RETENTION_DAYS = 365;
 var RETENTION_MS = 24 * 60 * 60 * 1e3;
 function utcDateKey(date6 = /* @__PURE__ */ new Date()) {
   return date6.toISOString().slice(0, 10);
@@ -115479,35 +115832,41 @@ var StatsService = class {
     this.closeAllVoiceSessions();
     await this.flush();
   }
-  enabled() {
-    return this.client.settings.stats.enabled;
+  enabled(guildId) {
+    const config2 = this.client.settingsCache.get(guildId)?.config;
+    return config2 ? config2.stats.enabled : true;
   }
-  day(date6 = /* @__PURE__ */ new Date()) {
-    const key = utcDateKey(date6);
-    let counters = this.days.get(key);
-    if (!counters) {
-      counters = emptyCounters();
-      this.days.set(key, counters);
+  bucketKey(guildId, date6) {
+    return `${guildId}|${date6}`;
+  }
+  day(guildId, date6 = /* @__PURE__ */ new Date()) {
+    const dateKey = utcDateKey(date6);
+    const key = this.bucketKey(guildId, dateKey);
+    let bucket = this.days.get(key);
+    if (!bucket) {
+      bucket = { guildId, date: dateKey, ...emptyCounters() };
+      this.days.set(key, bucket);
     }
-    return counters;
+    return bucket;
   }
-  recordMessage() {
-    if (!this.enabled()) return;
-    this.day().messages += 1;
+  recordMessage(guildId) {
+    if (!this.enabled(guildId)) return;
+    this.day(guildId).messages += 1;
   }
-  recordJoin() {
-    if (!this.enabled()) return;
-    this.day().joins += 1;
+  recordJoin(guildId) {
+    if (!this.enabled(guildId)) return;
+    this.day(guildId).joins += 1;
   }
-  recordLeave() {
-    if (!this.enabled()) return;
-    this.day().leaves += 1;
+  recordLeave(guildId) {
+    if (!this.enabled(guildId)) return;
+    this.day(guildId).leaves += 1;
   }
-  recordCommand(command) {
-    if (!this.enabled()) return;
-    const day = this.day();
+  recordCommand(guildId, command) {
+    if (!this.enabled(guildId)) return;
+    const day = this.day(guildId);
     day.commands += 1;
-    const key = utcDateKey();
+    const date6 = utcDateKey();
+    const key = this.bucketKey(guildId, date6);
     let usage = this.commands.get(key);
     if (!usage) {
       usage = /* @__PURE__ */ new Map();
@@ -115515,48 +115874,51 @@ var StatsService = class {
     }
     usage.set(command, (usage.get(command) ?? 0) + 1);
   }
-  recordMusicPlay() {
-    if (!this.enabled()) return;
-    this.day().musicPlays += 1;
+  recordMusicPlay(guildId) {
+    if (!this.enabled(guildId)) return;
+    this.day(guildId).musicPlays += 1;
   }
-  recordVoiceSeconds(seconds) {
-    if (!this.enabled()) return;
+  recordVoiceSeconds(guildId, seconds) {
+    if (!this.enabled(guildId)) return;
     if (!Number.isFinite(seconds) || seconds <= 0) return;
-    this.day().voiceSeconds += Math.floor(seconds);
+    this.day(guildId).voiceSeconds += Math.floor(seconds);
   }
   /** Tracks voice sessions so time is credited to the day it was actually spent. */
   handleVoiceState(oldState, newState) {
-    if (!this.enabled()) return;
+    const guildId = newState.guild.id;
+    if (!this.enabled(guildId)) return;
     const member = newState.member ?? oldState.member;
     if (!member || member.user.bot) return;
-    const userId = member.id;
+    const key = this.bucketKey(guildId, member.id);
     const wasIn = Boolean(oldState.channelId);
     const isIn = Boolean(newState.channelId);
     const now = Date.now();
     if (!wasIn && isIn) {
-      this.voiceStartedAt.set(userId, now);
+      this.voiceStartedAt.set(key, now);
       return;
     }
     if (wasIn && !isIn) {
-      this.closeVoiceSession(userId, now);
+      this.closeVoiceSession(key, guildId, now);
       return;
     }
     if (wasIn && isIn && oldState.channelId !== newState.channelId) {
-      this.closeVoiceSession(userId, now);
-      this.voiceStartedAt.set(userId, now);
+      this.closeVoiceSession(key, guildId, now);
+      this.voiceStartedAt.set(key, now);
     }
   }
-  closeVoiceSession(userId, now) {
-    const started = this.voiceStartedAt.get(userId);
+  closeVoiceSession(key, guildId, now) {
+    const started = this.voiceStartedAt.get(key);
     if (started === void 0) return;
-    this.voiceStartedAt.delete(userId);
-    this.recordVoiceSeconds((now - started) / 1e3);
+    this.voiceStartedAt.delete(key);
+    this.recordVoiceSeconds(guildId, (now - started) / 1e3);
   }
   closeAllVoiceSessions() {
     const now = Date.now();
-    for (const userId of [...this.voiceStartedAt.keys()]) {
-      this.closeVoiceSession(userId, now);
+    for (const [key, started] of this.voiceStartedAt) {
+      const [guildId] = key.split("|");
+      if (guildId) this.recordVoiceSeconds(guildId, (now - started) / 1e3);
     }
+    this.voiceStartedAt.clear();
   }
   async flush() {
     const db = this.client.db;
@@ -115565,31 +115927,33 @@ var StatsService = class {
     this.flushing = true;
     const daySnapshot = new Map(this.days);
     const commandSnapshot = new Map(
-      [...this.commands.entries()].map(([date6, usage]) => [date6, new Map(usage)])
+      [...this.commands.entries()].map(([key, usage]) => [key, new Map(usage)])
     );
     this.days.clear();
     this.commands.clear();
     try {
-      for (const [date6, counters] of daySnapshot) {
-        if (counters.messages === 0 && counters.joins === 0 && counters.leaves === 0 && counters.commands === 0 && counters.voiceSeconds === 0 && counters.musicPlays === 0) {
+      for (const bucket of daySnapshot.values()) {
+        if (bucket.messages === 0 && bucket.joins === 0 && bucket.leaves === 0 && bucket.commands === 0 && bucket.voiceSeconds === 0 && bucket.musicPlays === 0) {
           continue;
         }
-        await db.insert(statsDaily).values({ date: date6, ...counters }).onConflictDoUpdate({
-          target: statsDaily.date,
+        await db.insert(statsDaily).values(bucket).onConflictDoUpdate({
+          target: [statsDaily.guildId, statsDaily.date],
           set: {
-            messages: sql`${statsDaily.messages} + ${counters.messages}`,
-            joins: sql`${statsDaily.joins} + ${counters.joins}`,
-            leaves: sql`${statsDaily.leaves} + ${counters.leaves}`,
-            commands: sql`${statsDaily.commands} + ${counters.commands}`,
-            voiceSeconds: sql`${statsDaily.voiceSeconds} + ${counters.voiceSeconds}`,
-            musicPlays: sql`${statsDaily.musicPlays} + ${counters.musicPlays}`
+            messages: sql`${statsDaily.messages} + ${bucket.messages}`,
+            joins: sql`${statsDaily.joins} + ${bucket.joins}`,
+            leaves: sql`${statsDaily.leaves} + ${bucket.leaves}`,
+            commands: sql`${statsDaily.commands} + ${bucket.commands}`,
+            voiceSeconds: sql`${statsDaily.voiceSeconds} + ${bucket.voiceSeconds}`,
+            musicPlays: sql`${statsDaily.musicPlays} + ${bucket.musicPlays}`
           }
         });
       }
-      for (const [date6, usage] of commandSnapshot) {
+      for (const [key, usage] of commandSnapshot) {
+        const [guildId, date6] = key.split("|");
+        if (!guildId || !date6) continue;
         for (const [command, count2] of usage) {
-          await db.insert(commandUsage).values({ date: date6, command, count: count2 }).onConflictDoUpdate({
-            target: [commandUsage.date, commandUsage.command],
+          await db.insert(commandUsage).values({ guildId, date: date6, command, count: count2 }).onConflictDoUpdate({
+            target: [commandUsage.guildId, commandUsage.date, commandUsage.command],
             set: { count: sql`${commandUsage.count} + ${count2}` }
           });
         }
@@ -115602,32 +115966,54 @@ var StatsService = class {
     }
   }
   mergeBack(days, commands2) {
-    for (const [date6, counters] of days) {
-      const target = this.days.get(date6) ?? emptyCounters();
-      target.messages += counters.messages;
-      target.joins += counters.joins;
-      target.leaves += counters.leaves;
-      target.commands += counters.commands;
-      target.voiceSeconds += counters.voiceSeconds;
-      target.musicPlays += counters.musicPlays;
-      this.days.set(date6, target);
+    for (const [key, bucket] of days) {
+      const target = this.days.get(key) ?? { ...bucket, ...emptyCounters() };
+      target.messages += bucket.messages;
+      target.joins += bucket.joins;
+      target.leaves += bucket.leaves;
+      target.commands += bucket.commands;
+      target.voiceSeconds += bucket.voiceSeconds;
+      target.musicPlays += bucket.musicPlays;
+      this.days.set(key, target);
     }
-    for (const [date6, usage] of commands2) {
-      const target = this.commands.get(date6) ?? /* @__PURE__ */ new Map();
+    for (const [key, usage] of commands2) {
+      const target = this.commands.get(key) ?? /* @__PURE__ */ new Map();
       for (const [command, count2] of usage) {
         target.set(command, (target.get(command) ?? 0) + count2);
       }
-      this.commands.set(date6, target);
+      this.commands.set(key, target);
     }
   }
   async prune() {
     const db = this.client.db;
     if (!db) return;
-    const cutoff = retentionCutoff();
+    const now = /* @__PURE__ */ new Date();
+    const freeCutoff = retentionCutoff(now, RETENTION_DAYS);
+    const premiumCutoff = retentionCutoff(now, PREMIUM_RETENTION_DAYS);
     try {
-      await db.delete(statsDaily).where(sql`${statsDaily.date} < ${cutoff}`);
-      await db.delete(commandUsage).where(sql`${commandUsage.date} < ${cutoff}`);
-      this.client.logger.info({ cutoff }, "stats retention applied");
+      await db.execute(sql`
+        DELETE FROM ${statsDaily}
+        WHERE ${statsDaily.date} < ${freeCutoff}
+          AND NOT EXISTS (
+            SELECT 1 FROM ${guilds}
+            WHERE ${guilds.id} = ${statsDaily.guildId}
+              AND ${guilds.premiumTier} = 'premium'
+              AND (${guilds.premiumUntil} IS NULL OR ${guilds.premiumUntil} > now())
+          )
+      `);
+      await db.execute(sql`
+        DELETE FROM ${commandUsage}
+        WHERE ${commandUsage.date} < ${freeCutoff}
+          AND NOT EXISTS (
+            SELECT 1 FROM ${guilds}
+            WHERE ${guilds.id} = ${commandUsage.guildId}
+              AND ${guilds.premiumTier} = 'premium'
+              AND (${guilds.premiumUntil} IS NULL OR ${guilds.premiumUntil} > now())
+          )
+      `);
+      await db.delete(statsDaily).where(sql`${statsDaily.date} < ${premiumCutoff}`);
+      await db.delete(commandUsage).where(sql`${commandUsage.date} < ${premiumCutoff}`);
+      this.client.logger.info({ freeCutoff, premiumCutoff }, "stats retention applied");
     } catch (error62) {
       this.client.logger.warn({ err: error62 }, "stats retention failed");
     }
@@ -115640,7 +116026,7 @@ function compact(value) {
 }
 __name(compact, "compact");
 var statsCommand = {
-  data: new import_discord5.SlashCommandBuilder().setName("stats").setDescription("Show server and bot statistics."),
+  data: new import_discord7.SlashCommandBuilder().setName("stats").setDescription("Show server and bot statistics."),
   category: "stats",
   cooldownSeconds: 5,
   async execute({ client, interaction }) {
@@ -115648,13 +116034,14 @@ var statsCommand = {
     await client.stats?.flush();
     const db = requireDb(client);
     const cutoff = retentionCutoff(/* @__PURE__ */ new Date(), 7);
+    const guildId = interaction.guildId;
     const [memberRows, caseRows, openTicketRows, activeGiveawayRows, dayRows, commandRows] = await Promise.all([
-      db.select({ value: count() }).from(members),
-      db.select({ value: count() }).from(cases),
-      db.select({ value: count() }).from(tickets).where(eq(tickets.status, "open")),
-      db.select({ value: count() }).from(giveaways).where(eq(giveaways.ended, false)),
-      db.select().from(statsDaily).where(gte(statsDaily.date, cutoff)).orderBy(statsDaily.date),
-      db.select({ command: commandUsage.command, total: sum(commandUsage.count) }).from(commandUsage).where(gte(commandUsage.date, cutoff)).groupBy(commandUsage.command).orderBy(sql`sum(${commandUsage.count}) DESC`).limit(5)
+      db.select({ value: count() }).from(members).where(eq(members.guildId, guildId)),
+      db.select({ value: count() }).from(cases).where(eq(cases.guildId, guildId)),
+      db.select({ value: count() }).from(tickets).where(and(eq(tickets.guildId, guildId), eq(tickets.status, "open"))),
+      db.select({ value: count() }).from(giveaways).where(and(eq(giveaways.guildId, guildId), eq(giveaways.ended, false))),
+      db.select().from(statsDaily).where(and(eq(statsDaily.guildId, guildId), gte(statsDaily.date, cutoff))).orderBy(statsDaily.date),
+      db.select({ command: commandUsage.command, total: sum(commandUsage.count) }).from(commandUsage).where(and(eq(commandUsage.guildId, guildId), gte(commandUsage.date, cutoff))).groupBy(commandUsage.command).orderBy(sql`sum(${commandUsage.count}) DESC`).limit(5)
     ]);
     const total = dayRows.reduce(
       (accumulator, row) => ({
@@ -115667,7 +116054,7 @@ var statsCommand = {
       }),
       { messages: 0, joins: 0, leaves: 0, commands: 0, voiceSeconds: 0, musicPlays: 0 }
     );
-    const embed = new import_discord5.EmbedBuilder().setColor(5793266).setTitle("Nervana statistics").addFields(
+    const embed = new import_discord7.EmbedBuilder().setColor(5793266).setTitle("Veyra statistics").addFields(
       { name: "Members tracked", value: compact(memberRows[0]?.value ?? 0), inline: true },
       { name: "Cases", value: compact(caseRows[0]?.value ?? 0), inline: true },
       { name: "Open tickets", value: compact(openTicketRows[0]?.value ?? 0), inline: true },
@@ -115711,9 +116098,9 @@ var statsCommand = {
 };
 
 // apps/bot/src/commands/leveling/leaderboard.ts
-var import_discord6 = __toESM(require_src(), 1);
+var import_discord8 = __toESM(require_src(), 1);
 var leaderboardCommand = {
-  data: new import_discord6.SlashCommandBuilder().setName("leaderboard").setDescription("Show the top 10 members by XP."),
+  data: new import_discord8.SlashCommandBuilder().setName("leaderboard").setDescription("Show the top 10 members by XP."),
   category: "leveling",
   cooldownSeconds: 5,
   async execute({ client, interaction }) {
@@ -115723,7 +116110,7 @@ var leaderboardCommand = {
       await interaction.editReply({ content: "The database is not configured." });
       return;
     }
-    const rows = await db.select({ userId: members.userId, xp: members.xp }).from(members).orderBy(desc(members.xp)).limit(10);
+    const rows = await db.select({ userId: members.userId, xp: members.xp }).from(members).where(eq(members.guildId, interaction.guildId)).orderBy(desc(members.xp)).limit(10);
     if (rows.length === 0) {
       await interaction.editReply({ content: "Nobody has earned XP yet." });
       return;
@@ -115732,15 +116119,15 @@ var leaderboardCommand = {
       const level = levelFromXp(row.xp).level;
       return `**#${index2 + 1}** <@${row.userId}> \u2014 level ${level} \xB7 ${row.xp.toLocaleString()} XP`;
     });
-    const embed = new import_discord6.EmbedBuilder().setColor(BRAND.color).setTitle("XP leaderboard").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: BRAND.footer });
+    const embed = new import_discord8.EmbedBuilder().setColor(BRAND.color).setTitle("XP leaderboard").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: BRAND.footer });
     await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
   }
 };
 
 // apps/bot/src/commands/leveling/rank.ts
-var import_discord7 = __toESM(require_src(), 1);
+var import_discord9 = __toESM(require_src(), 1);
 var rankCommand = {
-  data: new import_discord7.SlashCommandBuilder().setName("rank").setDescription("Show a member\u2019s level and XP progress.").addUserOption(
+  data: new import_discord9.SlashCommandBuilder().setName("rank").setDescription("Show a member\u2019s level and XP progress.").addUserOption(
     (option) => option.setName("user").setDescription("Member to look up (defaults to you)")
   ),
   category: "leveling",
@@ -115752,13 +116139,13 @@ var rankCommand = {
       return;
     }
     const target = interaction.options.getUser("user") ?? interaction.user;
-    const rows = await db.select({ xp: members.xp, messages: members.messages }).from(members).where(eq(members.userId, target.id)).limit(1);
+    const rows = await db.select({ xp: members.xp, messages: members.messages }).from(members).where(and(eq(members.guildId, interaction.guildId), eq(members.userId, target.id))).limit(1);
     const xp = rows[0]?.xp ?? 0;
     const messageCount = rows[0]?.messages ?? 0;
     const progress = levelFromXp(xp);
-    const rankRows = await db.select({ value: count() }).from(members).where(gt(members.xp, xp));
+    const rankRows = await db.select({ value: count() }).from(members).where(and(eq(members.guildId, interaction.guildId), gt(members.xp, xp)));
     const rank = (rankRows[0]?.value ?? 0) + 1;
-    const embed = new import_discord7.EmbedBuilder().setColor(BRAND.color).setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ size: 128 }) }).setTitle(`Level ${progress.level}`).setDescription(
+    const embed = new import_discord9.EmbedBuilder().setColor(BRAND.color).setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ size: 128 }) }).setTitle(`Level ${progress.level}`).setDescription(
       `${progressBar(progress.current, progress.needed, 14)}
 ${progress.current.toLocaleString()} / ${progress.needed.toLocaleString()} XP to level ${progress.level + 1}`
     ).addFields(
@@ -115771,7 +116158,7 @@ ${progress.current.toLocaleString()} / ${progress.needed.toLocaleString()} XP to
 };
 
 // apps/bot/src/commands/economy/balance.ts
-var import_discord8 = __toESM(require_src(), 1);
+var import_discord10 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/economy/service.ts
 var DAILY_INTERVAL_MS = 24 * 60 * 60 * 1e3;
@@ -115796,22 +116183,22 @@ function nextDailyStreak(lastDaily, currentStreak, now) {
   return elapsed < DAILY_STREAK_WINDOW_MS ? currentStreak + 1 : 1;
 }
 __name(nextDailyStreak, "nextDailyStreak");
-async function ensureMember(db, userId) {
-  await db.insert(members).values({ userId }).onConflictDoNothing();
-  const rows = await db.select().from(members).where(eq(members.userId, userId)).limit(1);
+async function ensureMember(db, guildId, userId) {
+  await db.insert(members).values({ guildId, userId }).onConflictDoNothing();
+  const rows = await db.select().from(members).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).limit(1);
   const row = rows[0];
   if (!row) throw new UserFacingError("Could not load that member.");
   return row;
 }
 __name(ensureMember, "ensureMember");
-async function getBalance(db, userId) {
-  return ensureMember(db, userId);
+async function getBalance(db, guildId, userId) {
+  return ensureMember(db, guildId, userId);
 }
 __name(getBalance, "getBalance");
-async function claimDaily(db, userId, config2, now = Date.now()) {
+async function claimDaily(db, guildId, userId, config2, now = Date.now()) {
   return db.transaction(async (tx) => {
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for("update");
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).for("update");
     const member = locked[0];
     if (!member) throw new UserFacingError("Could not load that member.");
     const last = member.lastDaily?.getTime() ?? 0;
@@ -115828,7 +116215,7 @@ async function claimDaily(db, userId, config2, now = Date.now()) {
       lastDaily: new Date(now),
       dailyStreak: streak,
       updatedAt: new Date(now)
-    }).where(eq(members.userId, userId)).returning({ balance: members.balance });
+    }).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).returning({ balance: members.balance });
     return {
       payout,
       streak,
@@ -115838,10 +116225,10 @@ async function claimDaily(db, userId, config2, now = Date.now()) {
   });
 }
 __name(claimDaily, "claimDaily");
-async function work(db, userId, config2, now = Date.now()) {
+async function work(db, guildId, userId, config2, now = Date.now()) {
   return db.transaction(async (tx) => {
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for("update");
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).for("update");
     const member = locked[0];
     if (!member) throw new UserFacingError("Could not load that member.");
     const cooldownMs = config2.workCooldownSeconds * 1e3;
@@ -115857,7 +116244,7 @@ async function work(db, userId, config2, now = Date.now()) {
       balance: sql`${members.balance} + ${payout}`,
       lastWork: new Date(now),
       updatedAt: new Date(now)
-    }).where(eq(members.userId, userId)).returning({ balance: members.balance });
+    }).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).returning({ balance: members.balance });
     return {
       payout,
       balance: updated[0]?.balance ?? member.balance + payout,
@@ -115866,15 +116253,15 @@ async function work(db, userId, config2, now = Date.now()) {
   });
 }
 __name(work, "work");
-async function transferBalance(db, senderId, receiverId, amount) {
+async function transferBalance(db, guildId, senderId, receiverId, amount) {
   const value = parseAmount(amount);
   if (senderId === receiverId) {
     throw new UserFacingError("You cannot pay yourself.");
   }
   const ids = [senderId, receiverId].sort();
   return db.transaction(async (tx) => {
-    await tx.insert(members).values(ids.map((userId) => ({ userId }))).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(inArray(members.userId, ids)).orderBy(asc(members.userId)).for("update");
+    await tx.insert(members).values(ids.map((userId) => ({ guildId, userId }))).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(and(eq(members.guildId, guildId), inArray(members.userId, ids))).orderBy(asc(members.userId)).for("update");
     const sender = locked.find((row) => row.userId === senderId);
     const receiver = locked.find((row) => row.userId === receiverId);
     if (!sender || !receiver) throw new UserFacingError("Could not load both members.");
@@ -115882,12 +116269,18 @@ async function transferBalance(db, senderId, receiverId, amount) {
     const senderRows = await tx.update(members).set({
       balance: sql`${members.balance} - ${value}`,
       updatedAt: /* @__PURE__ */ new Date()
-    }).where(and(eq(members.userId, senderId), gte(members.balance, value))).returning({ balance: members.balance });
+    }).where(
+      and(
+        eq(members.guildId, guildId),
+        eq(members.userId, senderId),
+        gte(members.balance, value)
+      )
+    ).returning({ balance: members.balance });
     if (!senderRows[0]) throw new UserFacingError("You do not have enough coins.");
     const receiverRows = await tx.update(members).set({
       balance: sql`${members.balance} + ${value}`,
       updatedAt: /* @__PURE__ */ new Date()
-    }).where(eq(members.userId, receiverId)).returning({ balance: members.balance });
+    }).where(and(eq(members.guildId, guildId), eq(members.userId, receiverId))).returning({ balance: members.balance });
     return {
       amount: value,
       senderBalance: senderRows[0].balance,
@@ -115896,11 +116289,11 @@ async function transferBalance(db, senderId, receiverId, amount) {
   });
 }
 __name(transferBalance, "transferBalance");
-async function gamble(db, userId, amount) {
+async function gamble(db, guildId, userId, amount) {
   const value = parseAmount(amount);
   return db.transaction(async (tx) => {
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for("update");
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).for("update");
     const member = locked[0];
     if (!member) throw new UserFacingError("Could not load that member.");
     if (member.balance < value) throw new UserFacingError("You do not have enough coins.");
@@ -115909,7 +116302,7 @@ async function gamble(db, userId, amount) {
     const updated = await tx.update(members).set({
       balance: sql`${members.balance} + ${delta}`,
       updatedAt: /* @__PURE__ */ new Date()
-    }).where(eq(members.userId, userId)).returning({ balance: members.balance });
+    }).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).returning({ balance: members.balance });
     return {
       won,
       amount: value,
@@ -115918,73 +116311,78 @@ async function gamble(db, userId, amount) {
   });
 }
 __name(gamble, "gamble");
-async function listShop(db) {
-  return db.select().from(shopItems).orderBy(asc(shopItems.price), asc(shopItems.id));
+async function listShop(db, guildId) {
+  return db.select().from(shopItems).where(eq(shopItems.guildId, guildId)).orderBy(asc(shopItems.price), asc(shopItems.id));
 }
 __name(listShop, "listShop");
-async function findShopItem(db, query) {
+async function findShopItem(db, guildId, query) {
   const trimmed = query.trim();
   if (!trimmed) return null;
   if (/^\d+$/.test(trimmed)) {
-    const rows2 = await db.select().from(shopItems).where(eq(shopItems.id, Number(trimmed))).limit(1);
+    const rows2 = await db.select().from(shopItems).where(and(eq(shopItems.guildId, guildId), eq(shopItems.id, Number(trimmed)))).limit(1);
     if (rows2[0]) return rows2[0];
   }
-  const rows = await db.select().from(shopItems).where(eq(shopItems.name, trimmed)).limit(1);
+  const rows = await db.select().from(shopItems).where(and(eq(shopItems.guildId, guildId), eq(shopItems.name, trimmed))).limit(1);
   return rows[0] ?? null;
 }
 __name(findShopItem, "findShopItem");
-async function purchaseItem(db, userId, itemId) {
-  const result = await db.transaction(async (tx) => {
-    const items = await tx.select().from(shopItems).where(eq(shopItems.id, itemId)).for("update");
+async function purchaseItem(db, guildId, userId, itemId) {
+  return db.transaction(async (tx) => {
+    const items = await tx.select().from(shopItems).where(and(eq(shopItems.guildId, guildId), eq(shopItems.id, itemId))).for("update");
     const item = items[0];
     if (!item) throw new UserFacingError("That shop item no longer exists.");
     if (item.stock !== null && item.stock <= 0) throw new UserFacingError("That item is sold out.");
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for("update");
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).for("update");
     const member = locked[0];
     if (!member) throw new UserFacingError("Could not load that member.");
     if (member.balance < item.price) throw new UserFacingError("You do not have enough coins.");
     const memberRows = await tx.update(members).set({
       balance: sql`${members.balance} - ${item.price}`,
       updatedAt: /* @__PURE__ */ new Date()
-    }).where(and(eq(members.userId, userId), gte(members.balance, item.price))).returning({ balance: members.balance });
+    }).where(
+      and(
+        eq(members.guildId, guildId),
+        eq(members.userId, userId),
+        gte(members.balance, item.price)
+      )
+    ).returning({ balance: members.balance });
     if (!memberRows[0]) throw new UserFacingError("You do not have enough coins.");
-    const itemRows = await tx.update(shopItems).set({ stock: item.stock === null ? null : item.stock - 1 }).where(eq(shopItems.id, item.id)).returning({ stock: shopItems.stock });
+    const itemRows = await tx.update(shopItems).set({ stock: item.stock === null ? null : item.stock - 1 }).where(and(eq(shopItems.guildId, guildId), eq(shopItems.id, item.id))).returning({ stock: shopItems.stock });
     return {
       item,
       balance: memberRows[0].balance,
       stock: itemRows[0]?.stock ?? null
     };
   });
-  return result;
 }
 __name(purchaseItem, "purchaseItem");
-async function refundPurchase(db, userId, item) {
+async function refundPurchase(db, guildId, userId, item) {
   await db.transaction(async (tx) => {
     await tx.update(members).set({
       balance: sql`${members.balance} + ${item.price}`,
       updatedAt: /* @__PURE__ */ new Date()
-    }).where(eq(members.userId, userId));
+    }).where(and(eq(members.guildId, guildId), eq(members.userId, userId)));
     if (item.stock !== null) {
-      await tx.update(shopItems).set({ stock: sql`${shopItems.stock} + 1` }).where(eq(shopItems.id, item.id));
+      await tx.update(shopItems).set({ stock: sql`${shopItems.stock} + 1` }).where(and(eq(shopItems.guildId, guildId), eq(shopItems.id, item.id)));
     }
   });
 }
 __name(refundPurchase, "refundPurchase");
-async function inventoryForRoleIds(db, roleIds) {
+async function inventoryForRoleIds(db, guildId, roleIds) {
   if (roleIds.length === 0) return [];
-  return db.select().from(shopItems).where(inArray(shopItems.roleId, [...roleIds])).orderBy(asc(shopItems.price));
+  return db.select().from(shopItems).where(and(eq(shopItems.guildId, guildId), inArray(shopItems.roleId, [...roleIds]))).orderBy(asc(shopItems.price));
 }
 __name(inventoryForRoleIds, "inventoryForRoleIds");
-async function topBalances(db, limit = 10) {
-  return db.select({ userId: members.userId, balance: members.balance }).from(members).orderBy(sql`${members.balance} DESC`).limit(limit);
+async function topBalances(db, guildId, limit = 10) {
+  return db.select({ userId: members.userId, balance: members.balance }).from(members).where(eq(members.guildId, guildId)).orderBy(sql`${members.balance} DESC`).limit(limit);
 }
 __name(topBalances, "topBalances");
-async function adjustBalance(db, userId, delta) {
+async function adjustBalance(db, guildId, userId, delta) {
   if (!Number.isSafeInteger(delta)) throw new UserFacingError("Use a whole number.");
   return db.transaction(async (tx) => {
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for("update");
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).for("update");
     const member = locked[0];
     if (!member) throw new UserFacingError("Could not load that member.");
     if (delta < 0 && member.balance + delta < 0) {
@@ -115993,18 +116391,18 @@ async function adjustBalance(db, userId, delta) {
     const updated = await tx.update(members).set({
       balance: member.balance + delta,
       updatedAt: /* @__PURE__ */ new Date()
-    }).where(eq(members.userId, userId)).returning({ balance: members.balance });
+    }).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).returning({ balance: members.balance });
     return { balance: updated[0]?.balance ?? member.balance + delta };
   });
 }
 __name(adjustBalance, "adjustBalance");
-async function setBalance(db, userId, amount) {
+async function setBalance(db, guildId, userId, amount) {
   if (!Number.isSafeInteger(amount) || amount < 0) {
     throw new UserFacingError("Use a non-negative whole number.");
   }
   return db.transaction(async (tx) => {
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const updated = await tx.update(members).set({ balance: amount, updatedAt: /* @__PURE__ */ new Date() }).where(eq(members.userId, userId)).returning({ balance: members.balance });
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const updated = await tx.update(members).set({ balance: amount, updatedAt: /* @__PURE__ */ new Date() }).where(and(eq(members.guildId, guildId), eq(members.userId, userId))).returning({ balance: members.balance });
     return { balance: updated[0]?.balance ?? amount };
   });
 }
@@ -116012,16 +116410,16 @@ __name(setBalance, "setBalance");
 
 // apps/bot/src/commands/economy/balance.ts
 var balanceCommand = {
-  data: new import_discord8.SlashCommandBuilder().setName("balance").setDescription("Show a member\u2019s balance.").addUserOption(
+  data: new import_discord10.SlashCommandBuilder().setName("balance").setDescription("Show a member\u2019s balance.").addUserOption(
     (option) => option.setName("user").setDescription("Member to inspect (defaults to you)")
   ),
   category: "economy",
   cooldownSeconds: 2,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings: settings2 }) {
     await deferPublic(interaction);
     const target = interaction.options.getUser("user") ?? interaction.user;
-    const member = await getBalance(requireDb(client), target.id);
-    const config2 = client.settings.economy;
+    const member = await getBalance(requireDb(client), interaction.guildId, target.id);
+    const config2 = settings2.economy;
     await interaction.editReply({
       content: `${target} has ${formatCurrency(member.balance, config2)}.
 Daily streak: **${member.dailyStreak}** day(s).`,
@@ -116031,24 +116429,24 @@ Daily streak: **${member.dailyStreak}** day(s).`,
 };
 
 // apps/bot/src/commands/economy/baltop.ts
-var import_discord9 = __toESM(require_src(), 1);
+var import_discord11 = __toESM(require_src(), 1);
 var baltopCommand = {
-  data: new import_discord9.SlashCommandBuilder().setName("baltop").setDescription("Show the top 10 members by balance."),
+  data: new import_discord11.SlashCommandBuilder().setName("baltop").setDescription("Show the top 10 members by balance."),
   category: "economy",
   cooldownSeconds: 5,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings: settings2 }) {
     await deferPublic(interaction);
-    const rows = await topBalances(requireDb(client));
+    const rows = await topBalances(requireDb(client), interaction.guildId);
     if (rows.length === 0) {
       await interaction.editReply({ content: "Nobody has coins yet." });
       return;
     }
-    const config2 = client.settings.economy;
-    const embed = new import_discord9.EmbedBuilder().setColor(5793266).setTitle("Richest members").setDescription(
+    const config2 = settings2.economy;
+    const embed = new import_discord11.EmbedBuilder().setColor(5793266).setTitle("Richest members").setDescription(
       rows.map(
         (row, index2) => `**#${index2 + 1}** <@${row.userId}> \u2014 ${formatCurrency(row.balance, config2)}`
       ).join("\n")
-    ).setFooter({ text: "Nervana economy" });
+    ).setFooter({ text: "Veyra economy" });
     await interaction.editReply({
       embeds: [embed],
       allowedMentions: { parse: [] }
@@ -116057,21 +116455,21 @@ var baltopCommand = {
 };
 
 // apps/bot/src/commands/economy/buy.ts
-var import_discord10 = __toESM(require_src(), 1);
+var import_discord12 = __toESM(require_src(), 1);
 var buyCommand = {
-  data: new import_discord10.SlashCommandBuilder().setName("buy").setDescription("Buy an item from the coin shop.").addStringOption(
+  data: new import_discord12.SlashCommandBuilder().setName("buy").setDescription("Buy an item from the coin shop.").addStringOption(
     (option) => option.setName("item").setDescription("Item name or ID from /shop").setRequired(true).setMaxLength(64)
   ),
   category: "economy",
   cooldownSeconds: 3,
-  async execute({ client, interaction, guild, member }) {
+  async execute({ client, interaction, guild, member, settings: settings2 }) {
     await deferEphemeral(interaction);
     const db = requireDb(client);
     const query = interaction.options.getString("item", true);
-    const item = await findShopItem(db, query);
+    const item = await findShopItem(db, interaction.guildId, query);
     if (!item) throw new UserFacingError("That item is not in the shop.");
     if (item.stock !== null && item.stock <= 0) throw new UserFacingError("That item is sold out.");
-    const config2 = client.settings.economy;
+    const config2 = settings2.economy;
     const role = item.roleId ? await guild.roles.fetch(item.roleId).catch(() => null) : null;
     if (item.roleId && !role) {
       throw new UserFacingError(
@@ -116085,24 +116483,26 @@ var buyCommand = {
         throw new UserFacingError("You already have that role.");
       }
       const me = guild.members.me;
-      if (!me?.permissions.has(import_discord10.PermissionFlagsBits.ManageRoles)) {
+      if (!me?.permissions.has(import_discord12.PermissionFlagsBits.ManageRoles)) {
         throw new UserFacingError("I need Manage Roles to deliver that item.");
       }
       if (role.position >= me.roles.highest.position) {
         throw new UserFacingError("That role is above my highest role, so I cannot grant it.");
       }
     }
-    const purchase = await purchaseItem(db, interaction.user.id, item.id);
+    const purchase = await purchaseItem(db, interaction.guildId, interaction.user.id, item.id);
     if (role) {
       try {
         await member.roles.add(role.id, `Shop purchase: ${item.name}`);
       } catch (error62) {
-        await refundPurchase(db, interaction.user.id, item).catch((refundError) => {
-          client.logger.error(
-            { err: refundError, itemId: item.id, userId: interaction.user.id },
-            "shop refund failed after role grant error"
-          );
-        });
+        await refundPurchase(db, interaction.guildId, interaction.user.id, item).catch(
+          (refundError) => {
+            client.logger.error(
+              { err: refundError, itemId: item.id, userId: interaction.user.id },
+              "shop refund failed after role grant error"
+            );
+          }
+        );
         client.logger.warn(
           { err: error62, itemId: item.id, userId: interaction.user.id },
           "shop role grant failed - refunded"
@@ -116121,16 +116521,21 @@ Balance: ${formatCurrency(purchase.balance, config2)}`
 };
 
 // apps/bot/src/commands/economy/daily.ts
-var import_discord11 = __toESM(require_src(), 1);
+var import_discord13 = __toESM(require_src(), 1);
 var dailyCommand = {
-  data: new import_discord11.SlashCommandBuilder().setName("daily").setDescription("Claim your daily coins."),
+  data: new import_discord13.SlashCommandBuilder().setName("daily").setDescription("Claim your daily coins."),
   category: "economy",
   cooldownSeconds: 3,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings: settings2 }) {
     await deferEphemeral(interaction);
-    const config2 = client.settings.economy;
-    const result = await claimDaily(requireDb(client), interaction.user.id, config2);
-    const embed = new import_discord11.EmbedBuilder().setColor(5763719).setTitle("Daily claimed").addFields(
+    const config2 = settings2.economy;
+    const result = await claimDaily(
+      requireDb(client),
+      interaction.guildId,
+      interaction.user.id,
+      config2
+    );
+    const embed = new import_discord13.EmbedBuilder().setColor(5763719).setTitle("Daily claimed").addFields(
       { name: "Base", value: formatCurrency(config2.dailyAmount, config2), inline: true },
       { name: "Streak bonus", value: formatCurrency(result.bonus, config2), inline: true },
       { name: "Streak", value: `**${result.streak}** day(s)`, inline: true },
@@ -116141,14 +116546,14 @@ var dailyCommand = {
 };
 
 // apps/bot/src/commands/economy/ecoadmin.ts
-var import_discord12 = __toESM(require_src(), 1);
+var import_discord14 = __toESM(require_src(), 1);
 function assertAssignableRole(member, roleId) {
   const role = member.guild.roles.cache.get(roleId);
   if (!role) throw new UserFacingError("That role no longer exists.");
   if (role.id === member.guild.id) throw new UserFacingError("Pick a real role, not @everyone.");
   if (role.managed) throw new UserFacingError("That role is managed by an integration.");
   const me = member.guild.members.me;
-  if (!me?.permissions.has(import_discord12.PermissionFlagsBits.ManageRoles)) {
+  if (!me?.permissions.has(import_discord14.PermissionFlagsBits.ManageRoles)) {
     throw new UserFacingError("I need Manage Roles to sell that role.");
   }
   if (role.position >= me.roles.highest.position) {
@@ -116157,7 +116562,7 @@ function assertAssignableRole(member, roleId) {
 }
 __name(assertAssignableRole, "assertAssignableRole");
 var ecoAdminCommand = {
-  data: new import_discord12.SlashCommandBuilder().setName("ecoadmin").setDescription("Administrator tools for the economy and shop.").addSubcommand(
+  data: new import_discord14.SlashCommandBuilder().setName("ecoadmin").setDescription("Administrator tools for the economy and shop.").addSubcommand(
     (sub) => sub.setName("grant").setDescription("Give coins to a member.").addUserOption(
       (option) => option.setName("user").setDescription("Member").setRequired(true)
     ).addIntegerOption(
@@ -116200,18 +116605,23 @@ var ecoAdminCommand = {
   ).addSubcommand((sub) => sub.setName("shop-list").setDescription("List every shop item.")),
   category: "economy",
   allowWhenDisabled: true,
-  userPermissions: [import_discord12.PermissionFlagsBits.ManageGuild],
+  userPermissions: [import_discord14.PermissionFlagsBits.ManageGuild],
   cooldownSeconds: 2,
-  async execute({ client, interaction, guild, member }) {
+  async execute({ client, interaction, guild, member, settings: settings2 }) {
     await deferEphemeral(interaction);
     const db = requireDb(client);
-    const config2 = client.settings.economy;
+    const config2 = settings2.economy;
     const sub = interaction.options.getSubcommand(true);
     if (sub === "grant" || sub === "take" || sub === "set") {
       const target = interaction.options.getUser("user", true);
       const amount = interaction.options.getInteger("amount", true);
       if (target.bot) throw new UserFacingError("Bots do not have wallets.");
-      const result = sub === "set" ? await setBalance(db, target.id, amount) : await adjustBalance(db, target.id, sub === "grant" ? amount : -amount);
+      const result = sub === "set" ? await setBalance(db, interaction.guildId, target.id, amount) : await adjustBalance(
+        db,
+        interaction.guildId,
+        target.id,
+        sub === "grant" ? amount : -amount
+      );
       await interaction.editReply({
         content: `${target} now has ${formatCurrency(result.balance, config2)}.`,
         allowedMentions: { parse: [] }
@@ -116228,6 +116638,7 @@ var ecoAdminCommand = {
         assertAssignableRole(member, role.id);
       }
       const rows = await db.insert(shopItems).values({
+        guildId: interaction.guildId,
         name,
         price,
         roleId: role?.id ?? null,
@@ -116244,14 +116655,22 @@ var ecoAdminCommand = {
       return;
     }
     if (sub === "shop-remove") {
-      const item = await findShopItem(db, interaction.options.getString("item", true));
+      const item = await findShopItem(
+        db,
+        interaction.guildId,
+        interaction.options.getString("item", true)
+      );
       if (!item) throw new UserFacingError("That item does not exist.");
-      await db.delete(shopItems).where(eq(shopItems.id, item.id));
+      await db.delete(shopItems).where(and(eq(shopItems.guildId, interaction.guildId), eq(shopItems.id, item.id)));
       await interaction.editReply({ content: `Removed **${item.name}** from the shop.` });
       return;
     }
     if (sub === "shop-stock") {
-      const item = await findShopItem(db, interaction.options.getString("item", true));
+      const item = await findShopItem(
+        db,
+        interaction.guildId,
+        interaction.options.getString("item", true)
+      );
       if (!item) throw new UserFacingError("That item does not exist.");
       const unlimited = interaction.options.getBoolean("unlimited") ?? false;
       const stock = interaction.options.getInteger("stock");
@@ -116261,18 +116680,18 @@ var ecoAdminCommand = {
       if (!unlimited && stock === null) {
         throw new UserFacingError("Provide a stock number or set unlimited:true.");
       }
-      await db.update(shopItems).set({ stock: unlimited ? null : stock }).where(eq(shopItems.id, item.id));
+      await db.update(shopItems).set({ stock: unlimited ? null : stock }).where(and(eq(shopItems.guildId, interaction.guildId), eq(shopItems.id, item.id)));
       await interaction.editReply({
         content: `**${item.name}** now has ${unlimited ? "unlimited stock" : `${stock} in stock`}.`
       });
       return;
     }
-    const items = await listShop(db);
+    const items = await listShop(db, interaction.guildId);
     if (items.length === 0) {
       await interaction.editReply({ content: "The shop is empty." });
       return;
     }
-    const embed = new import_discord12.EmbedBuilder().setColor(5793266).setTitle("Shop items").setDescription(
+    const embed = new import_discord14.EmbedBuilder().setColor(5793266).setTitle("Shop items").setDescription(
       items.map(
         (item) => `**#${item.id}** ${item.name} \u2014 ${formatCurrency(item.price, config2)} \xB7 ${item.stock === null ? "unlimited" : `${item.stock} left`}${item.roleId ? ` \xB7 <@&${item.roleId}>` : ""}`
       ).join("\n").slice(0, 4e3)
@@ -116282,18 +116701,23 @@ var ecoAdminCommand = {
 };
 
 // apps/bot/src/commands/economy/gamble.ts
-var import_discord13 = __toESM(require_src(), 1);
+var import_discord15 = __toESM(require_src(), 1);
 var gambleCommand = {
-  data: new import_discord13.SlashCommandBuilder().setName("gamble").setDescription("Bet coins on a 50/50 flip.").addIntegerOption(
+  data: new import_discord15.SlashCommandBuilder().setName("gamble").setDescription("Bet coins on a 50/50 flip.").addIntegerOption(
     (option) => option.setName("amount").setDescription("How many coins to bet").setRequired(true).setMinValue(1).setMaxValue(1e9)
   ),
   category: "economy",
   cooldownSeconds: 5,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings: settings2 }) {
     await deferEphemeral(interaction);
     const amount = interaction.options.getInteger("amount", true);
-    const config2 = client.settings.economy;
-    const result = await gamble(requireDb(client), interaction.user.id, amount);
+    const config2 = settings2.economy;
+    const result = await gamble(
+      requireDb(client),
+      interaction.guildId,
+      interaction.user.id,
+      amount
+    );
     await interaction.editReply({
       content: result.won ? `You won ${formatCurrency(result.amount, config2)}.
 Balance: ${formatCurrency(
@@ -116309,20 +116733,20 @@ Balance: ${formatCurrency(
 };
 
 // apps/bot/src/commands/economy/inventory.ts
-var import_discord14 = __toESM(require_src(), 1);
+var import_discord16 = __toESM(require_src(), 1);
 var inventoryCommand = {
-  data: new import_discord14.SlashCommandBuilder().setName("inventory").setDescription("Show the role items you own from the shop."),
+  data: new import_discord16.SlashCommandBuilder().setName("inventory").setDescription("Show the role items you own from the shop."),
   category: "economy",
   cooldownSeconds: 3,
-  async execute({ client, interaction, member }) {
+  async execute({ client, interaction, member, settings: settings2 }) {
     await deferPublic(interaction);
     const db = requireDb(client);
-    const config2 = client.settings.economy;
+    const config2 = settings2.economy;
     const [balance, items] = await Promise.all([
-      getBalance(db, interaction.user.id),
-      inventoryForRoleIds(db, [...member.roles.cache.keys()])
+      getBalance(db, interaction.guildId, interaction.user.id),
+      inventoryForRoleIds(db, interaction.guildId, [...member.roles.cache.keys()])
     ]);
-    const embed = new import_discord14.EmbedBuilder().setColor(5793266).setTitle("Your inventory").addFields({ name: "Balance", value: formatCurrency(balance.balance, config2) }).setFooter({ text: "Role items appear here while you own their role." });
+    const embed = new import_discord16.EmbedBuilder().setColor(5793266).setTitle("Your inventory").addFields({ name: "Balance", value: formatCurrency(balance.balance, config2) }).setFooter({ text: "Role items appear here while you own their role." });
     if (items.length > 0) {
       embed.addFields({
         name: "Owned items",
@@ -116337,23 +116761,29 @@ var inventoryCommand = {
 };
 
 // apps/bot/src/commands/economy/pay.ts
-var import_discord15 = __toESM(require_src(), 1);
+var import_discord17 = __toESM(require_src(), 1);
 var payCommand = {
-  data: new import_discord15.SlashCommandBuilder().setName("pay").setDescription("Send coins to another member.").addUserOption(
+  data: new import_discord17.SlashCommandBuilder().setName("pay").setDescription("Send coins to another member.").addUserOption(
     (option) => option.setName("user").setDescription("Who to pay").setRequired(true)
   ).addIntegerOption(
     (option) => option.setName("amount").setDescription("How many coins").setRequired(true).setMinValue(1).setMaxValue(1e9)
   ),
   category: "economy",
   cooldownSeconds: 3,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings: settings2 }) {
     await deferEphemeral(interaction);
     const target = interaction.options.getUser("user", true);
     const amount = interaction.options.getInteger("amount", true);
     if (target.bot) throw new UserFacingError("Bots do not have wallets.");
     if (target.id === interaction.user.id) throw new UserFacingError("You cannot pay yourself.");
-    const config2 = client.settings.economy;
-    const result = await transferBalance(requireDb(client), interaction.user.id, target.id, amount);
+    const config2 = settings2.economy;
+    const result = await transferBalance(
+      requireDb(client),
+      interaction.guildId,
+      interaction.user.id,
+      target.id,
+      amount
+    );
     await interaction.editReply({
       content: `Sent ${formatCurrency(result.amount, config2)} to ${target}.
 Your balance: ${formatCurrency(
@@ -116366,22 +116796,22 @@ Your balance: ${formatCurrency(
 };
 
 // apps/bot/src/commands/economy/shop.ts
-var import_discord16 = __toESM(require_src(), 1);
+var import_discord18 = __toESM(require_src(), 1);
 var shopCommand = {
-  data: new import_discord16.SlashCommandBuilder().setName("shop").setDescription("Browse the coin shop."),
+  data: new import_discord18.SlashCommandBuilder().setName("shop").setDescription("Browse the coin shop."),
   category: "economy",
   cooldownSeconds: 3,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings: settings2 }) {
     await deferPublic(interaction);
-    const items = await listShop(requireDb(client));
-    const config2 = client.settings.economy;
+    const items = await listShop(requireDb(client), interaction.guildId);
+    const config2 = settings2.economy;
     if (items.length === 0) {
       await interaction.editReply({
         content: "The shop is empty. An administrator can add items with `/ecoadmin shop-add`."
       });
       return;
     }
-    const embed = new import_discord16.EmbedBuilder().setColor(5793266).setTitle("Coin shop").setDescription(
+    const embed = new import_discord18.EmbedBuilder().setColor(5793266).setTitle("Coin shop").setDescription(
       items.map((item) => {
         const stock = item.stock === null ? "unlimited" : `${item.stock} left`;
         const role = item.roleId ? ` \xB7 <@&${item.roleId}>` : "";
@@ -116399,15 +116829,15 @@ var shopCommand = {
 };
 
 // apps/bot/src/commands/economy/work.ts
-var import_discord17 = __toESM(require_src(), 1);
+var import_discord19 = __toESM(require_src(), 1);
 var workCommand = {
-  data: new import_discord17.SlashCommandBuilder().setName("work").setDescription("Work for some coins."),
+  data: new import_discord19.SlashCommandBuilder().setName("work").setDescription("Work for some coins."),
   category: "economy",
   cooldownSeconds: 3,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings: settings2 }) {
     await deferEphemeral(interaction);
-    const config2 = client.settings.economy;
-    const result = await work(requireDb(client), interaction.user.id, config2);
+    const config2 = settings2.economy;
+    const result = await work(requireDb(client), interaction.guildId, interaction.user.id, config2);
     await interaction.editReply({
       content: `You earned ${formatCurrency(result.payout, config2)}.
 Balance: ${formatCurrency(
@@ -116419,7 +116849,7 @@ Balance: ${formatCurrency(
 };
 
 // apps/bot/src/commands/moderation/ban.ts
-var import_discord19 = __toESM(require_src(), 1);
+var import_discord21 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/moderation/guards.ts
 function assertModeratable(guild, actor, target) {
@@ -116454,7 +116884,7 @@ async function fetchMember(guild, userId) {
 __name(fetchMember, "fetchMember");
 
 // apps/bot/src/modules/moderation/service.ts
-var import_discord18 = __toESM(require_src(), 1);
+var import_discord20 = __toESM(require_src(), 1);
 var ACTIVE_CASE_TYPES = /* @__PURE__ */ new Set(["warn", "timeout", "ban", "slowmode"]);
 var CASE_LABELS = {
   warn: "Warning",
@@ -116497,6 +116927,7 @@ async function createCase(db, input2) {
   const expiresAt = durationMs ? new Date(Date.now() + durationMs) : null;
   return db.transaction(async (tx) => {
     const rows = await tx.insert(cases).values({
+      guildId: input2.guildId,
       type: input2.type,
       targetId: input2.targetId,
       moderatorId: input2.moderatorId,
@@ -116508,7 +116939,12 @@ async function createCase(db, input2) {
     const row = rows[0];
     if (!row) throw new UserFacingError("Could not record that case.");
     if (input2.type === "warn" && input2.warning !== false) {
-      await tx.insert(warnings).values({ caseId: row.id, userId: input2.targetId, active: true });
+      await tx.insert(warnings).values({
+        caseId: row.id,
+        guildId: input2.guildId,
+        userId: input2.targetId,
+        active: true
+      });
     }
     return row;
   });
@@ -116520,23 +116956,25 @@ async function finishModAction(client, input2) {
   return row;
 }
 __name(finishModAction, "finishModAction");
-async function sendModLogEmbed(client, embed) {
-  const config2 = client.settings.moderation;
-  const channelId = config2.modLogChannelId ?? (client.settings.logging.enabled ? client.settings.logging.channels.modAction : null);
+async function sendModLogEmbed(client, guildId, embed) {
+  const appConfig = await client.getConfig(guildId);
+  const config2 = appConfig.moderation;
+  const channelId = config2.modLogChannelId ?? (appConfig.logging.enabled ? appConfig.logging.channels.modAction : null);
   if (!channelId) return;
-  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const guild = client.guilds.cache.get(guildId);
   const channel = guild?.channels.cache.get(channelId);
   if (!channel?.isTextBased()) return;
+  brandEmbed(client, guildId, embed, appConfig, true);
   if (!embed.data.footer) embed.setFooter({ text: BRAND.footer });
   if (!embed.data.timestamp) embed.setTimestamp();
   await channel.send({ embeds: [embed], allowedMentions: { parse: [] } }).catch((error62) => {
-    client.logger.warn({ err: error62, channelId }, "failed to send moderation log");
+    client.logger.warn({ err: error62, guildId, channelId }, "failed to send moderation log");
   });
 }
 __name(sendModLogEmbed, "sendModLogEmbed");
 async function sendModLog(client, row) {
   const type = row.type;
-  const embed = new import_discord18.EmbedBuilder().setColor(CASE_COLORS[type] ?? BRAND.muted).setTitle(`Case #${row.id} \xB7 ${caseLabel(row.type)}`).addFields(
+  const embed = new import_discord20.EmbedBuilder().setColor(CASE_COLORS[type] ?? BRAND.muted).setTitle(`Case #${row.id} \xB7 ${caseLabel(row.type)}`).addFields(
     {
       name: "Target",
       value: `${targetMention(row.type, row.targetId)}
@@ -116557,14 +116995,15 @@ async function sendModLog(client, row) {
       inline: true
     });
   }
-  await sendModLogEmbed(client, embed);
+  await sendModLogEmbed(client, row.guildId, embed);
 }
 __name(sendModLog, "sendModLog");
 async function dmTarget(client, row) {
-  if (!client.settings.moderation.dmOnPunish) return;
+  const config2 = await client.getConfig(row.guildId);
+  if (!config2.moderation.dmOnPunish) return;
   const type = row.type;
   if (!["warn", "timeout", "kick", "ban", "softban", "unban"].includes(type)) return;
-  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const guild = client.guilds.cache.get(row.guildId);
   const server = guild?.name ?? "the server";
   const duration3 = row.durationMs ? ` for ${formatDuration(row.durationMs)}` : "";
   const bodies = {
@@ -116593,7 +117032,7 @@ If you believe this was a mistake, contact the server staff.`
 __name(dmTarget, "dmTarget");
 function caseEmbed(row) {
   const type = row.type;
-  const embed = new import_discord18.EmbedBuilder().setColor(CASE_COLORS[type] ?? BRAND.muted).setTitle(`Case #${row.id} \xB7 ${caseLabel(row.type)}`).addFields(
+  const embed = new import_discord20.EmbedBuilder().setColor(CASE_COLORS[type] ?? BRAND.muted).setTitle(`Case #${row.id} \xB7 ${caseLabel(row.type)}`).addFields(
     {
       name: "Target",
       value: `${targetMention(row.type, row.targetId)} \`${row.targetId}\``,
@@ -116629,16 +117068,16 @@ __name(readDuration, "readDuration");
 
 // apps/bot/src/commands/moderation/ban.ts
 var banCommand = {
-  data: new import_discord19.SlashCommandBuilder().setName("ban").setDescription("Ban a user, optionally for a limited time.").addUserOption(
+  data: new import_discord21.SlashCommandBuilder().setName("ban").setDescription("Ban a user, optionally for a limited time.").addUserOption(
     (option) => option.setName("user").setDescription("User to ban").setRequired(true)
   ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).addStringOption(
     (option) => option.setName("duration").setDescription("Optional: 7d, 12h, 30m (max 365d)")
   ).addIntegerOption(
     (option) => option.setName("delete-days").setDescription("Delete this many days of their recent messages (0\u20137)").setMinValue(0).setMaxValue(7)
-  ).setDefaultMemberPermissions(import_discord19.PermissionFlagsBits.BanMembers),
+  ).setDefaultMemberPermissions(import_discord21.PermissionFlagsBits.BanMembers),
   category: "moderation",
-  userPermissions: [import_discord19.PermissionFlagsBits.BanMembers],
-  botPermissions: [import_discord19.PermissionFlagsBits.BanMembers],
+  userPermissions: [import_discord21.PermissionFlagsBits.BanMembers],
+  botPermissions: [import_discord21.PermissionFlagsBits.BanMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -116658,6 +117097,7 @@ var banCommand = {
       deleteMessageSeconds: deleteDays * 86400
     });
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: "ban",
       targetId: user.id,
       moderatorId: interaction.user.id,
@@ -116671,19 +117111,19 @@ var banCommand = {
 };
 
 // apps/bot/src/commands/moderation/case.ts
-var import_discord20 = __toESM(require_src(), 1);
+var import_discord22 = __toESM(require_src(), 1);
 var caseCommand = {
-  data: new import_discord20.SlashCommandBuilder().setName("case").setDescription("Show a moderation case by number.").addIntegerOption(
+  data: new import_discord22.SlashCommandBuilder().setName("case").setDescription("Show a moderation case by number.").addIntegerOption(
     (option) => option.setName("id").setDescription("Case number").setRequired(true).setMinValue(1)
-  ).setDefaultMemberPermissions(import_discord20.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord22.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord20.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord22.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction }) {
     await deferEphemeral(interaction);
     const db = requireDb(client);
     const id = interaction.options.getInteger("id", true);
-    const rows = await db.select().from(cases).where(eq(cases.id, id)).limit(1);
+    const rows = await db.select().from(cases).where(and(eq(cases.guildId, interaction.guildId), eq(cases.id, id))).limit(1);
     const row = rows[0];
     if (!row) throw new UserFacingError(`Case **#${id}** does not exist.`);
     await interaction.editReply({
@@ -116694,7 +117134,7 @@ var caseCommand = {
 };
 
 // apps/bot/src/commands/moderation/cases.ts
-var import_discord21 = __toESM(require_src(), 1);
+var import_discord23 = __toESM(require_src(), 1);
 var TYPES = [
   "warn",
   "warn-clear",
@@ -116708,18 +117148,18 @@ var TYPES = [
   "slowmode"
 ];
 var casesCommand = {
-  data: new import_discord21.SlashCommandBuilder().setName("cases").setDescription("List recent moderation cases.").addUserOption((option) => option.setName("user").setDescription("Filter by member")).addStringOption(
+  data: new import_discord23.SlashCommandBuilder().setName("cases").setDescription("List recent moderation cases.").addUserOption((option) => option.setName("user").setDescription("Filter by member")).addStringOption(
     (option) => option.setName("type").setDescription("Filter by case type").addChoices(...TYPES.map((type) => ({ name: caseLabel(type), value: type })))
-  ).setDefaultMemberPermissions(import_discord21.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord23.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord21.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord23.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 3,
   async execute({ client, interaction }) {
     await deferEphemeral(interaction);
     const db = requireDb(client);
     const user = interaction.options.getUser("user");
     const type = interaction.options.getString("type");
-    const filters = [];
+    const filters = [eq(cases.guildId, interaction.guildId)];
     if (user) filters.push(eq(cases.targetId, user.id));
     if (type) filters.push(eq(cases.type, type));
     const rows = await db.select().from(cases).where(filters.length > 0 ? and(...filters) : void 0).orderBy(desc(cases.createdAt)).limit(10);
@@ -116731,19 +117171,19 @@ var casesCommand = {
       const at = `<t:${Math.floor(row.createdAt.getTime() / 1e3)}:R>`;
       return `**#${row.id}** \xB7 ${caseLabel(row.type)} \xB7 ${targetMention(row.type, row.targetId)} \xB7 ${at}`;
     });
-    const embed = new import_discord21.EmbedBuilder().setColor(BRAND.info).setTitle("Recent cases").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: `${rows.length} result${rows.length === 1 ? "" : "s"}` });
+    const embed = new import_discord23.EmbedBuilder().setColor(BRAND.info).setTitle("Recent cases").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: `${rows.length} result${rows.length === 1 ? "" : "s"}` });
     await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
   }
 };
 
 // apps/bot/src/commands/moderation/clearwarnings.ts
-var import_discord22 = __toESM(require_src(), 1);
+var import_discord24 = __toESM(require_src(), 1);
 var clearWarningsCommand = {
-  data: new import_discord22.SlashCommandBuilder().setName("clearwarnings").setDescription("Clear all active warnings for a member.").addUserOption(
+  data: new import_discord24.SlashCommandBuilder().setName("clearwarnings").setDescription("Clear all active warnings for a member.").addUserOption(
     (option) => option.setName("user").setDescription("Member to clear").setRequired(true)
-  ).setDefaultMemberPermissions(import_discord22.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord24.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord22.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord24.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild }) {
     await deferEphemeral(interaction);
@@ -116751,7 +117191,13 @@ var clearWarningsCommand = {
     const user = interaction.options.getUser("user", true);
     const target = await fetchMember(guild, user.id);
     if (!target) throw new UserFacingError("That member is not in this server.");
-    const cleared = await db.update(warnings).set({ active: false }).where(and(eq(warnings.userId, user.id), eq(warnings.active, true))).returning({ caseId: warnings.caseId });
+    const cleared = await db.update(warnings).set({ active: false }).where(
+      and(
+        eq(warnings.guildId, interaction.guildId),
+        eq(warnings.userId, user.id),
+        eq(warnings.active, true)
+      )
+    ).returning({ caseId: warnings.caseId });
     if (cleared.length === 0) {
       await interaction.editReply({ content: `${user} has no active warnings.` });
       return;
@@ -116763,6 +117209,7 @@ var clearWarningsCommand = {
       )
     );
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: "warn-clear",
       targetId: user.id,
       moderatorId: interaction.user.id,
@@ -116775,14 +117222,14 @@ var clearWarningsCommand = {
 };
 
 // apps/bot/src/commands/moderation/kick.ts
-var import_discord23 = __toESM(require_src(), 1);
+var import_discord25 = __toESM(require_src(), 1);
 var kickCommand = {
-  data: new import_discord23.SlashCommandBuilder().setName("kick").setDescription("Kick a member.").addUserOption(
+  data: new import_discord25.SlashCommandBuilder().setName("kick").setDescription("Kick a member.").addUserOption(
     (option) => option.setName("user").setDescription("Member to kick").setRequired(true)
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord23.PermissionFlagsBits.KickMembers),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord25.PermissionFlagsBits.KickMembers),
   category: "moderation",
-  userPermissions: [import_discord23.PermissionFlagsBits.KickMembers],
-  botPermissions: [import_discord23.PermissionFlagsBits.KickMembers],
+  userPermissions: [import_discord25.PermissionFlagsBits.KickMembers],
+  botPermissions: [import_discord25.PermissionFlagsBits.KickMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -116793,6 +117240,7 @@ var kickCommand = {
     assertModeratable(guild, member, target);
     await target.kick(auditReason(reason));
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: "kick",
       targetId: target.id,
       moderatorId: interaction.user.id,
@@ -116803,16 +117251,16 @@ var kickCommand = {
 };
 
 // apps/bot/src/commands/moderation/purge.ts
-var import_discord24 = __toESM(require_src(), 1);
+var import_discord26 = __toESM(require_src(), 1);
 var purgeCommand = {
-  data: new import_discord24.SlashCommandBuilder().setName("purge").setDescription("Bulk-delete recent messages in this channel.").addIntegerOption(
+  data: new import_discord26.SlashCommandBuilder().setName("purge").setDescription("Bulk-delete recent messages in this channel.").addIntegerOption(
     (option) => option.setName("count").setDescription("How many messages (1\u2013100)").setRequired(true).setMinValue(1).setMaxValue(100)
   ).addUserOption(
     (option) => option.setName("user").setDescription("Only delete messages from this member")
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord24.PermissionFlagsBits.ManageMessages),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord26.PermissionFlagsBits.ManageMessages),
   category: "moderation",
-  userPermissions: [import_discord24.PermissionFlagsBits.ManageMessages],
-  botPermissions: [import_discord24.PermissionFlagsBits.ManageMessages, import_discord24.PermissionFlagsBits.ReadMessageHistory],
+  userPermissions: [import_discord26.PermissionFlagsBits.ManageMessages],
+  botPermissions: [import_discord26.PermissionFlagsBits.ManageMessages, import_discord26.PermissionFlagsBits.ReadMessageHistory],
   cooldownSeconds: 5,
   async execute({ client, interaction }) {
     await deferEphemeral(interaction);
@@ -116832,6 +117280,7 @@ var purgeCommand = {
     }
     const deleted = await channel.bulkDelete(messages2, true);
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: "purge",
       targetId: channel.id,
       moderatorId: interaction.user.id,
@@ -116844,16 +117293,16 @@ var purgeCommand = {
 };
 
 // apps/bot/src/commands/moderation/slowmode.ts
-var import_discord25 = __toESM(require_src(), 1);
+var import_discord27 = __toESM(require_src(), 1);
 var slowmodeCommand = {
-  data: new import_discord25.SlashCommandBuilder().setName("slowmode").setDescription("Set a channel\u2019s slowmode (0 disables it).").addIntegerOption(
+  data: new import_discord27.SlashCommandBuilder().setName("slowmode").setDescription("Set a channel\u2019s slowmode (0 disables it).").addIntegerOption(
     (option) => option.setName("seconds").setDescription("Seconds between messages (0\u201321600)").setRequired(true).setMinValue(0).setMaxValue(21600)
   ).addChannelOption(
     (option) => option.setName("channel").setDescription("Defaults to the current channel")
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord25.PermissionFlagsBits.ManageChannels),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord27.PermissionFlagsBits.ManageChannels),
   category: "moderation",
-  userPermissions: [import_discord25.PermissionFlagsBits.ManageChannels],
-  botPermissions: [import_discord25.PermissionFlagsBits.ManageChannels],
+  userPermissions: [import_discord27.PermissionFlagsBits.ManageChannels],
+  botPermissions: [import_discord27.PermissionFlagsBits.ManageChannels],
   cooldownSeconds: 3,
   async execute({ client, interaction }) {
     await deferEphemeral(interaction);
@@ -116866,6 +117315,7 @@ var slowmodeCommand = {
     }
     await channel.setRateLimitPerUser(seconds, auditReason(reason));
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: "slowmode",
       targetId: channel.id,
       moderatorId: interaction.user.id,
@@ -116879,16 +117329,16 @@ var slowmodeCommand = {
 };
 
 // apps/bot/src/commands/moderation/softban.ts
-var import_discord26 = __toESM(require_src(), 1);
+var import_discord28 = __toESM(require_src(), 1);
 var softbanCommand = {
-  data: new import_discord26.SlashCommandBuilder().setName("softban").setDescription("Ban and immediately unban a user to delete recent messages.").addUserOption(
+  data: new import_discord28.SlashCommandBuilder().setName("softban").setDescription("Ban and immediately unban a user to delete recent messages.").addUserOption(
     (option) => option.setName("user").setDescription("User to softban").setRequired(true)
   ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).addIntegerOption(
     (option) => option.setName("delete-days").setDescription("Delete this many days of recent messages (default 7)").setMinValue(0).setMaxValue(7)
-  ).setDefaultMemberPermissions(import_discord26.PermissionFlagsBits.BanMembers),
+  ).setDefaultMemberPermissions(import_discord28.PermissionFlagsBits.BanMembers),
   category: "moderation",
-  userPermissions: [import_discord26.PermissionFlagsBits.BanMembers],
-  botPermissions: [import_discord26.PermissionFlagsBits.BanMembers],
+  userPermissions: [import_discord28.PermissionFlagsBits.BanMembers],
+  botPermissions: [import_discord28.PermissionFlagsBits.BanMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -116904,6 +117354,7 @@ var softbanCommand = {
     });
     await guild.bans.remove(user.id, "Softban completed");
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: "softban",
       targetId: user.id,
       moderatorId: interaction.user.id,
@@ -116916,17 +117367,17 @@ var softbanCommand = {
 };
 
 // apps/bot/src/commands/moderation/timeout.ts
-var import_discord27 = __toESM(require_src(), 1);
+var import_discord29 = __toESM(require_src(), 1);
 var MAX_TIMEOUT_MS = 28 * 864e5;
 var timeoutCommand = {
-  data: new import_discord27.SlashCommandBuilder().setName("timeout").setDescription("Time out a member for a duration.").addUserOption(
+  data: new import_discord29.SlashCommandBuilder().setName("timeout").setDescription("Time out a member for a duration.").addUserOption(
     (option) => option.setName("user").setDescription("Member to time out").setRequired(true)
   ).addStringOption(
     (option) => option.setName("duration").setDescription("Examples: 10m, 2h, 7d (max 28d)").setRequired(true)
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord27.PermissionFlagsBits.ModerateMembers),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord29.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord27.PermissionFlagsBits.ModerateMembers],
-  botPermissions: [import_discord27.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord29.PermissionFlagsBits.ModerateMembers],
+  botPermissions: [import_discord29.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -116947,6 +117398,7 @@ var timeoutCommand = {
     await target.timeout(duration3, auditReason(reason));
     await db.update(cases).set({ active: false }).where(and(eq(cases.targetId, target.id), eq(cases.type, "timeout"), eq(cases.active, true)));
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: "timeout",
       targetId: target.id,
       moderatorId: interaction.user.id,
@@ -116961,14 +117413,14 @@ var timeoutCommand = {
 };
 
 // apps/bot/src/commands/moderation/unban.ts
-var import_discord28 = __toESM(require_src(), 1);
+var import_discord30 = __toESM(require_src(), 1);
 var unbanCommand = {
-  data: new import_discord28.SlashCommandBuilder().setName("unban").setDescription("Unban a user by ID.").addStringOption(
+  data: new import_discord30.SlashCommandBuilder().setName("unban").setDescription("Unban a user by ID.").addStringOption(
     (option) => option.setName("user-id").setDescription("The banned user\u2019s ID (17\u201320 digits)").setRequired(true).setMinLength(17).setMaxLength(20)
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord28.PermissionFlagsBits.BanMembers),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord30.PermissionFlagsBits.BanMembers),
   category: "moderation",
-  userPermissions: [import_discord28.PermissionFlagsBits.BanMembers],
-  botPermissions: [import_discord28.PermissionFlagsBits.BanMembers],
+  userPermissions: [import_discord30.PermissionFlagsBits.BanMembers],
+  botPermissions: [import_discord30.PermissionFlagsBits.BanMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild }) {
     await deferEphemeral(interaction);
@@ -116986,6 +117438,7 @@ var unbanCommand = {
     await guild.bans.remove(userId, auditReason(reason));
     await db.update(cases).set({ active: false }).where(and(eq(cases.targetId, userId), eq(cases.type, "ban"), eq(cases.active, true)));
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: "unban",
       targetId: userId,
       moderatorId: interaction.user.id,
@@ -116996,14 +117449,14 @@ var unbanCommand = {
 };
 
 // apps/bot/src/commands/moderation/untimeout.ts
-var import_discord29 = __toESM(require_src(), 1);
+var import_discord31 = __toESM(require_src(), 1);
 var untimeoutCommand = {
-  data: new import_discord29.SlashCommandBuilder().setName("untimeout").setDescription("Remove a member\u2019s timeout.").addUserOption(
+  data: new import_discord31.SlashCommandBuilder().setName("untimeout").setDescription("Remove a member\u2019s timeout.").addUserOption(
     (option) => option.setName("user").setDescription("Member to un-timeout").setRequired(true)
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord29.PermissionFlagsBits.ModerateMembers),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord31.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord29.PermissionFlagsBits.ModerateMembers],
-  botPermissions: [import_discord29.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord31.PermissionFlagsBits.ModerateMembers],
+  botPermissions: [import_discord31.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -117019,6 +117472,7 @@ var untimeoutCommand = {
     await target.timeout(null, auditReason(reason));
     await db.update(cases).set({ active: false }).where(and(eq(cases.targetId, target.id), eq(cases.type, "timeout"), eq(cases.active, true)));
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: "timeout-clear",
       targetId: target.id,
       moderatorId: interaction.user.id,
@@ -117031,15 +117485,15 @@ var untimeoutCommand = {
 };
 
 // apps/bot/src/commands/moderation/warn.ts
-var import_discord30 = __toESM(require_src(), 1);
+var import_discord32 = __toESM(require_src(), 1);
 var warnCommand = {
-  data: new import_discord30.SlashCommandBuilder().setName("warn").setDescription("Warn a member and record a case.").addUserOption(
+  data: new import_discord32.SlashCommandBuilder().setName("warn").setDescription("Warn a member and record a case.").addUserOption(
     (option) => option.setName("user").setDescription("Member to warn").setRequired(true)
   ).addStringOption(
     (option) => option.setName("reason").setDescription("Why").setRequired(true).setMaxLength(1e3)
-  ).setDefaultMemberPermissions(import_discord30.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord32.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord30.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord32.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -117049,6 +117503,7 @@ var warnCommand = {
     if (!target) throw new UserFacingError("That member is not in this server.");
     assertModeratable(guild, member, target);
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: "warn",
       targetId: target.id,
       moderatorId: interaction.user.id,
@@ -117059,13 +117514,13 @@ var warnCommand = {
 };
 
 // apps/bot/src/commands/moderation/warnings.ts
-var import_discord31 = __toESM(require_src(), 1);
+var import_discord33 = __toESM(require_src(), 1);
 var warningsCommand = {
-  data: new import_discord31.SlashCommandBuilder().setName("warnings").setDescription("List a member\u2019s active warnings.").addUserOption(
+  data: new import_discord33.SlashCommandBuilder().setName("warnings").setDescription("List a member\u2019s active warnings.").addUserOption(
     (option) => option.setName("user").setDescription("Member to inspect").setRequired(true)
-  ).setDefaultMemberPermissions(import_discord31.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord33.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord31.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord33.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction }) {
     await deferEphemeral(interaction);
@@ -117076,7 +117531,13 @@ var warningsCommand = {
       reason: cases.reason,
       createdAt: cases.createdAt,
       moderatorId: cases.moderatorId
-    }).from(warnings).innerJoin(cases, eq(warnings.caseId, cases.id)).where(and(eq(warnings.userId, user.id), eq(warnings.active, true))).orderBy(desc(cases.createdAt)).limit(20);
+    }).from(warnings).innerJoin(cases, eq(warnings.caseId, cases.id)).where(
+      and(
+        eq(warnings.guildId, interaction.guildId),
+        eq(warnings.userId, user.id),
+        eq(warnings.active, true)
+      )
+    ).orderBy(desc(cases.createdAt)).limit(20);
     if (rows.length === 0) {
       await interaction.editReply({ content: `${user} has no active warnings.` });
       return;
@@ -117086,16 +117547,16 @@ var warningsCommand = {
       return `**#${row.caseId}** ${at} \xB7 <@${row.moderatorId}>
 ${truncate(row.reason, 180)}`;
     });
-    const embed = new import_discord31.EmbedBuilder().setColor(BRAND.warning).setTitle(`Active warnings \xB7 ${user.username}`).setDescription(truncate(lines.join("\n\n"), 4e3)).setFooter({ text: `${rows.length} active warning${rows.length === 1 ? "" : "s"}` });
+    const embed = new import_discord33.EmbedBuilder().setColor(BRAND.warning).setTitle(`Active warnings \xB7 ${user.username}`).setDescription(truncate(lines.join("\n\n"), 4e3)).setFooter({ text: `${rows.length} active warning${rows.length === 1 ? "" : "s"}` });
     await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
   }
 };
 
 // apps/bot/src/commands/tickets/ticket.ts
-var import_discord33 = __toESM(require_src(), 1);
+var import_discord35 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/tickets/service.ts
-var import_discord32 = __toESM(require_src(), 1);
+var import_discord34 = __toESM(require_src(), 1);
 var import_node_zlib = require("node:zlib");
 
 // apps/bot/src/modules/tickets/transcript.ts
@@ -117145,7 +117606,7 @@ Closed by ${escapeHtml(meta3.closedBy)} \xB7 Reason: ${escapeHtml(meta3.reason)}
   let truncated = false;
   let messageCount = 0;
   const footer = `</main>
-<footer>Nervana ticket transcript \xB7 ${escapeHtml(meta3.closedAt.toISOString())}</footer>
+<footer>Veyra ticket transcript \xB7 ${escapeHtml(meta3.closedAt.toISOString())}</footer>
 </body>
 </html>
 `;
@@ -117190,24 +117651,24 @@ __name(buildTranscriptHtml, "buildTranscriptHtml");
 // apps/bot/src/modules/tickets/service.ts
 var MAX_TRANSCRIPT_MESSAGES = 1e3;
 var TRANSCRIPT_PAGE = 100;
-function isTicketStaff(client, member) {
-  const staffRoleId = client.settings.tickets.staffRoleId;
-  return member.permissions.has(import_discord32.PermissionFlagsBits.ManageChannels) || staffRoleId !== null && member.roles.cache.has(staffRoleId);
+function isTicketStaff(client, member, config2) {
+  const staffRoleId = (config2 ?? client.settingsCache.get(member.guild.id)?.config.tickets)?.staffRoleId;
+  return member.permissions.has(import_discord34.PermissionFlagsBits.ManageChannels) || staffRoleId != null && member.roles.cache.has(staffRoleId);
 }
 __name(isTicketStaff, "isTicketStaff");
-function requiredTicketStaff(client, member) {
-  if (!isTicketStaff(client, member)) {
+function requiredTicketStaff(client, member, config2) {
+  if (!isTicketStaff(client, member, config2)) {
     throw new UserFacingError("Only ticket staff can do that.");
   }
 }
 __name(requiredTicketStaff, "requiredTicketStaff");
-async function findTicketByChannel(client, channelId) {
-  const rows = await requireDb(client).select().from(tickets).where(eq(tickets.channelId, channelId)).limit(1);
+async function findTicketByChannel(client, guildId, channelId) {
+  const rows = await requireDb(client).select().from(tickets).where(and(eq(tickets.guildId, guildId), eq(tickets.channelId, channelId))).limit(1);
   return rows[0] ?? null;
 }
 __name(findTicketByChannel, "findTicketByChannel");
-async function requireOpenTicket(client, channelId) {
-  const ticket = await findTicketByChannel(client, channelId);
+async function requireOpenTicket(client, guildId, channelId) {
+  const ticket = await findTicketByChannel(client, guildId, channelId);
   if (!ticket) throw new UserFacingError("This channel is not a ticket.");
   if (ticket.status !== "open") throw new UserFacingError("This ticket is already closed.");
   return ticket;
@@ -117226,7 +117687,9 @@ function botMember(guild) {
 }
 __name(botMember, "botMember");
 async function openTicket(client, guild, member, categoryId) {
-  const config2 = client.settings.tickets;
+  const appConfig = await client.getConfig(guild.id);
+  const config2 = appConfig.tickets;
+  const premium = await client.isPremium(guild.id);
   if (!config2.enabled) throw new UserFacingError("Tickets are disabled.");
   if (!config2.categoryId || !config2.staffRoleId) {
     throw new UserFacingError("Tickets are not configured yet. Ask staff to run `/setup tickets`.");
@@ -117239,7 +117702,9 @@ async function openTicket(client, guild, member, categoryId) {
     );
   }
   const db = requireDb(client);
-  const openRows = await db.select({ value: count() }).from(tickets).where(and(eq(tickets.userId, member.id), eq(tickets.status, "open")));
+  const openRows = await db.select({ value: count() }).from(tickets).where(
+    and(eq(tickets.guildId, guild.id), eq(tickets.userId, member.id), eq(tickets.status, "open"))
+  );
   const openCount = openRows[0]?.value ?? 0;
   if (openCount >= config2.maxOpenPerUser) {
     throw new UserFacingError(
@@ -117248,11 +117713,11 @@ async function openTicket(client, guild, member, categoryId) {
   }
   const me = botMember(guild);
   if (!me) throw new UserFacingError("I could not resolve my own server member.");
-  if (!me.permissions.has(import_discord32.PermissionFlagsBits.ManageChannels) || !me.permissions.has(import_discord32.PermissionFlagsBits.ManageRoles)) {
+  if (!me.permissions.has(import_discord34.PermissionFlagsBits.ManageChannels) || !me.permissions.has(import_discord34.PermissionFlagsBits.ManageRoles)) {
     throw new UserFacingError("I need Manage Channels and Manage Roles to open ticket channels.");
   }
   const parent = await guild.channels.fetch(config2.categoryId).catch(() => null);
-  if (!parent || parent.type !== import_discord32.ChannelType.GuildCategory) {
+  if (!parent || parent.type !== import_discord34.ChannelType.GuildCategory) {
     throw new UserFacingError(
       "The configured ticket category is missing. Ask staff to fix `/setup tickets`."
     );
@@ -117266,41 +117731,41 @@ async function openTicket(client, guild, member, categoryId) {
   const base = member.user.username.toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "").slice(0, 80);
   const channel = await guild.channels.create({
     name: `ticket-${base || "user"}`,
-    type: import_discord32.ChannelType.GuildText,
+    type: import_discord34.ChannelType.GuildText,
     parent: parent.id,
     permissionOverwrites: [
-      { id: guild.id, deny: [import_discord32.PermissionFlagsBits.ViewChannel] },
+      { id: guild.id, deny: [import_discord34.PermissionFlagsBits.ViewChannel] },
       {
         id: member.id,
         allow: [
-          import_discord32.PermissionFlagsBits.ViewChannel,
-          import_discord32.PermissionFlagsBits.SendMessages,
-          import_discord32.PermissionFlagsBits.ReadMessageHistory,
-          import_discord32.PermissionFlagsBits.AttachFiles,
-          import_discord32.PermissionFlagsBits.EmbedLinks
+          import_discord34.PermissionFlagsBits.ViewChannel,
+          import_discord34.PermissionFlagsBits.SendMessages,
+          import_discord34.PermissionFlagsBits.ReadMessageHistory,
+          import_discord34.PermissionFlagsBits.AttachFiles,
+          import_discord34.PermissionFlagsBits.EmbedLinks
         ]
       },
       {
         id: staffRole.id,
         allow: [
-          import_discord32.PermissionFlagsBits.ViewChannel,
-          import_discord32.PermissionFlagsBits.SendMessages,
-          import_discord32.PermissionFlagsBits.ReadMessageHistory,
-          import_discord32.PermissionFlagsBits.AttachFiles,
-          import_discord32.PermissionFlagsBits.EmbedLinks,
-          import_discord32.PermissionFlagsBits.ManageMessages
+          import_discord34.PermissionFlagsBits.ViewChannel,
+          import_discord34.PermissionFlagsBits.SendMessages,
+          import_discord34.PermissionFlagsBits.ReadMessageHistory,
+          import_discord34.PermissionFlagsBits.AttachFiles,
+          import_discord34.PermissionFlagsBits.EmbedLinks,
+          import_discord34.PermissionFlagsBits.ManageMessages
         ]
       },
       {
         id: me.id,
         allow: [
-          import_discord32.PermissionFlagsBits.ViewChannel,
-          import_discord32.PermissionFlagsBits.SendMessages,
-          import_discord32.PermissionFlagsBits.ReadMessageHistory,
-          import_discord32.PermissionFlagsBits.AttachFiles,
-          import_discord32.PermissionFlagsBits.EmbedLinks,
-          import_discord32.PermissionFlagsBits.ManageMessages,
-          import_discord32.PermissionFlagsBits.ManageChannels
+          import_discord34.PermissionFlagsBits.ViewChannel,
+          import_discord34.PermissionFlagsBits.SendMessages,
+          import_discord34.PermissionFlagsBits.ReadMessageHistory,
+          import_discord34.PermissionFlagsBits.AttachFiles,
+          import_discord34.PermissionFlagsBits.EmbedLinks,
+          import_discord34.PermissionFlagsBits.ManageMessages,
+          import_discord34.PermissionFlagsBits.ManageChannels
         ]
       }
     ]
@@ -117308,6 +117773,7 @@ async function openTicket(client, guild, member, categoryId) {
   let row;
   try {
     const inserted = await db.insert(tickets).values({
+      guildId: guild.id,
       channelId: channel.id,
       userId: member.id,
       category: category.id
@@ -117325,7 +117791,9 @@ async function openTicket(client, guild, member, categoryId) {
   });
   await channel.setTopic(ticketTopic(row, member, category.label), `Ticket #${row.id}`).catch(() => {
   });
-  const embed = new import_discord32.EmbedBuilder().setColor(BRAND.color).setTitle(`Ticket #${paddedId}`).setDescription(
+  const embed = new import_discord34.EmbedBuilder().setColor(
+    appConfig.personalizer.enabled && premium ? appConfig.personalizer.embedColor : BRAND.color
+  ).setTitle(`Ticket #${paddedId}`).setDescription(
     `Thanks for opening a ticket, ${member}.
 
 **Category:** ${category.label}
@@ -117334,9 +117802,9 @@ Please describe your issue and a staff member will help you.`
     { name: "Opened by", value: `${member}`, inline: true },
     { name: "Opened", value: `<t:${Math.floor(row.openedAt.getTime() / 1e3)}:R>`, inline: true }
   ).setFooter({ text: "Use the buttons below to close or claim this ticket." });
-  const buttons = new import_discord32.ActionRowBuilder().addComponents(
-    new import_discord32.ButtonBuilder().setCustomId("ticket:close").setLabel("Close").setStyle(import_discord32.ButtonStyle.Danger),
-    new import_discord32.ButtonBuilder().setCustomId("ticket:claim").setLabel("Claim").setStyle(import_discord32.ButtonStyle.Secondary)
+  const buttons = new import_discord34.ActionRowBuilder().addComponents(
+    new import_discord34.ButtonBuilder().setCustomId("ticket:close").setLabel("Close").setStyle(import_discord34.ButtonStyle.Danger),
+    new import_discord34.ButtonBuilder().setCustomId("ticket:claim").setLabel("Claim").setStyle(import_discord34.ButtonStyle.Secondary)
   );
   const roleMention = staffRole.id === guild.id ? "" : `${staffRole}`;
   await channel.send({
@@ -117352,12 +117820,12 @@ Please describe your issue and a staff member will help you.`
 }
 __name(openTicket, "openTicket");
 async function closeTicket(client, guild, channel, actor, reason) {
-  const ticket = await requireOpenTicket(client, channel.id);
-  const staff = isTicketStaff(client, actor);
+  const ticket = await requireOpenTicket(client, guild.id, channel.id);
+  const config2 = (await client.getConfig(guild.id)).tickets;
+  const staff = isTicketStaff(client, actor, config2);
   if (!staff && actor.id !== ticket.userId) {
     throw new UserFacingError("Only the ticket opener or ticket staff can close this ticket.");
   }
-  const config2 = client.settings.tickets;
   const label2 = ticketCategoryLabel(config2, ticket);
   const safeReason = reason.trim().slice(0, 500) || "No reason provided";
   const closedAt = /* @__PURE__ */ new Date();
@@ -117410,7 +117878,7 @@ async function closeTicket(client, guild, channel, actor, reason) {
   };
   const logChannel = config2.logChannelId ? await guild.channels.fetch(config2.logChannelId).catch(() => null) : null;
   if (logChannel?.isSendable()) {
-    const logEmbed2 = new import_discord32.EmbedBuilder().setColor(BRAND.muted).setTitle(`Ticket #${String(ticket.id).padStart(4, "0")} closed`).addFields(
+    const logEmbed2 = new import_discord34.EmbedBuilder().setColor(BRAND.muted).setTitle(`Ticket #${String(ticket.id).padStart(4, "0")} closed`).addFields(
       { name: "Opened by", value: `<@${ticket.userId}>`, inline: true },
       { name: "Closed by", value: `${actor}`, inline: true },
       { name: "Category", value: label2, inline: true },
@@ -117419,7 +117887,7 @@ async function closeTicket(client, guild, channel, actor, reason) {
     await logChannel.send({
       embeds: [logEmbed2],
       files: [
-        new import_discord32.AttachmentBuilder(gzipped, {
+        new import_discord34.AttachmentBuilder(gzipped, {
           name: `ticket-${String(ticket.id).padStart(4, "0")}.html.gz`
         })
       ],
@@ -117445,8 +117913,9 @@ async function closeTicket(client, guild, channel, actor, reason) {
 }
 __name(closeTicket, "closeTicket");
 async function claimTicket(client, guild, channel, actor) {
-  requiredTicketStaff(client, actor);
-  const ticket = await requireOpenTicket(client, channel.id);
+  const config2 = (await client.getConfig(guild.id)).tickets;
+  requiredTicketStaff(client, actor, config2);
+  const ticket = await requireOpenTicket(client, guild.id, channel.id);
   if (ticket.claimedBy && ticket.claimedBy !== actor.id) {
     throw new UserFacingError(`This ticket is already claimed by <@${ticket.claimedBy}>.`);
   }
@@ -117467,12 +117936,12 @@ async function claimTicket(client, guild, channel, actor) {
 __name(claimTicket, "claimTicket");
 async function addTicketMember(client, guild, channel, actor, target) {
   requiredTicketStaff(client, actor);
-  await requireOpenTicket(client, channel.id);
+  await requireOpenTicket(client, guild.id, channel.id);
   if (target.bot) throw new UserFacingError("Bots cannot be added to tickets.");
   const targetMember = await guild.members.fetch(target.id).catch(() => null);
   if (!targetMember) throw new UserFacingError("That user is not a member of this server.");
   const me = botMember(guild);
-  if (!me?.permissions.has(import_discord32.PermissionFlagsBits.ManageRoles)) {
+  if (!me?.permissions.has(import_discord34.PermissionFlagsBits.ManageRoles)) {
     throw new UserFacingError("I need Manage Roles to update ticket permissions.");
   }
   await channel.permissionOverwrites.edit(
@@ -117495,7 +117964,7 @@ async function addTicketMember(client, guild, channel, actor, target) {
 __name(addTicketMember, "addTicketMember");
 async function removeTicketMember(client, guild, channel, actor, target) {
   requiredTicketStaff(client, actor);
-  const ticket = await requireOpenTicket(client, channel.id);
+  const ticket = await requireOpenTicket(client, guild.id, channel.id);
   if (target.id === ticket.userId) {
     throw new UserFacingError("The ticket opener cannot be removed. Close the ticket instead.");
   }
@@ -117503,7 +117972,7 @@ async function removeTicketMember(client, guild, channel, actor, target) {
     throw new UserFacingError("I cannot remove myself from a ticket.");
   }
   const me = botMember(guild);
-  if (!me?.permissions.has(import_discord32.PermissionFlagsBits.ManageRoles)) {
+  if (!me?.permissions.has(import_discord34.PermissionFlagsBits.ManageRoles)) {
     throw new UserFacingError("I need Manage Roles to update ticket permissions.");
   }
   await channel.permissionOverwrites.delete(target.id, `Removed from ticket by ${actor.user.tag}`);
@@ -117514,22 +117983,26 @@ async function removeTicketMember(client, guild, channel, actor, target) {
   });
 }
 __name(removeTicketMember, "removeTicketMember");
-function buildTicketPanel(config2) {
+function buildTicketPanel(config2, personalizer) {
   const categories = config2.categories;
-  const embed = new import_discord32.EmbedBuilder().setColor(BRAND.color).setTitle("Support tickets").setDescription(
-    "Choose a category below to open a private channel with staff.\n\nPlease do not open a ticket for something you can ask in a public channel."
+  const branded = personalizer?.enabled ? personalizer : null;
+  const embed = new import_discord34.EmbedBuilder().setColor(branded?.embedColor ?? BRAND.color).setTitle(branded?.ticketPanelTitle ?? "Support tickets").setDescription(
+    branded?.ticketPanelDescription ?? "Choose a category below to open a private channel with staff.\n\nPlease do not open a ticket for something you can ask in a public channel."
   ).addFields(
     categories.map((category) => ({
       name: `${category.emoji ? `${category.emoji} ` : ""}${category.label}`,
       value: category.description ?? "Open a private ticket with staff.",
       inline: false
     }))
-  ).setFooter({ text: `Up to ${config2.maxOpenPerUser} open ticket(s) per member` });
+  ).setFooter({
+    text: branded?.footerText ?? `Up to ${config2.maxOpenPerUser} open ticket(s) per member`,
+    iconURL: branded?.footerIconUrl ?? void 0
+  });
   const components = [];
   for (let index2 = 0; index2 < categories.length; index2 += 5) {
-    const row = new import_discord32.ActionRowBuilder();
+    const row = new import_discord34.ActionRowBuilder();
     for (const category of categories.slice(index2, index2 + 5)) {
-      const button = new import_discord32.ButtonBuilder().setCustomId(`ticket:open:${category.id}`).setLabel(category.label).setStyle(import_discord32.ButtonStyle.Primary);
+      const button = new import_discord34.ButtonBuilder().setCustomId(`ticket:open:${category.id}`).setLabel(category.label).setStyle(import_discord34.ButtonStyle.Primary);
       if (category.emoji) {
         try {
           button.setEmoji(category.emoji);
@@ -117544,7 +118017,9 @@ function buildTicketPanel(config2) {
 }
 __name(buildTicketPanel, "buildTicketPanel");
 async function postTicketPanel(client, guild, actorId) {
-  const config2 = client.settings.tickets;
+  const appConfig = await client.getConfig(guild.id);
+  const config2 = appConfig.tickets;
+  const premium = await client.isPremium(guild.id);
   if (!config2.enabled) throw new UserFacingError("Enable tickets with `/setup tickets` first.");
   if (!config2.categoryId || !config2.staffRoleId || !config2.panelChannelId) {
     throw new UserFacingError(
@@ -117560,12 +118035,12 @@ async function postTicketPanel(client, guild, actorId) {
     if (old) await old.delete().catch(() => {
     });
   }
-  const panel = buildTicketPanel(config2);
+  const panel = buildTicketPanel(config2, premium ? appConfig.personalizer : void 0);
   const message = await channel.send({
     embeds: panel.embeds,
     components: panel.components
   });
-  await updateModule2(client, actorId, "tickets", {
+  await updateModule2(client, guild.id, actorId, "tickets", {
     ...config2,
     panelMessageId: message.id
   });
@@ -117576,14 +118051,14 @@ __name(postTicketPanel, "postTicketPanel");
 // apps/bot/src/commands/tickets/ticket.ts
 function currentTicketChannel(interaction) {
   const channel = interaction.channel;
-  if (!channel || channel.type !== import_discord33.ChannelType.GuildText) {
+  if (!channel || channel.type !== import_discord35.ChannelType.GuildText) {
     throw new UserFacingError("Run this command inside a ticket channel.");
   }
   return channel;
 }
 __name(currentTicketChannel, "currentTicketChannel");
 var ticketCommand = {
-  data: new import_discord33.SlashCommandBuilder().setName("ticket").setDescription("Open, close, and manage support tickets.").addSubcommand(
+  data: new import_discord35.SlashCommandBuilder().setName("ticket").setDescription("Open, close, and manage support tickets.").addSubcommand(
     (sub) => sub.setName("panel").setDescription("Publish the ticket panel in the configured channel.")
   ).addSubcommand(
     (sub) => sub.setName("close").setDescription("Close the current ticket.").addStringOption(
@@ -117605,7 +118080,7 @@ var ticketCommand = {
     await deferEphemeral(interaction);
     const sub = interaction.options.getSubcommand(true);
     if (sub === "panel") {
-      if (!interaction.memberPermissions?.has(import_discord33.PermissionFlagsBits.ManageGuild)) {
+      if (!interaction.memberPermissions?.has(import_discord35.PermissionFlagsBits.ManageGuild)) {
         throw new UserFacingError("You need Manage Server to publish the ticket panel.");
       }
       const message = await postTicketPanel(client, guild, interaction.user.id);
@@ -117640,10 +118115,10 @@ var ticketCommand = {
 };
 
 // apps/bot/src/commands/community/giveaway.ts
-var import_discord35 = __toESM(require_src(), 1);
+var import_discord37 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/community/giveaways.ts
-var import_discord34 = __toESM(require_src(), 1);
+var import_discord36 = __toESM(require_src(), 1);
 var import_node_crypto2 = require("node:crypto");
 function pickWinners(entries, count2) {
   if (entries.length === 0 || count2 <= 0) return [];
@@ -117668,7 +118143,7 @@ function requirementLabel(requirements) {
 __name(requirementLabel, "requirementLabel");
 function giveawayEmbed(giveaway, ended = false, entryCount) {
   const unix = Math.floor(giveaway.endsAt.getTime() / 1e3);
-  const embed = new import_discord34.EmbedBuilder().setColor(ended ? 10070709 : 16705372).setTitle(ended ? `Giveaway ended: ${giveaway.prize}` : `Giveaway: ${giveaway.prize}`).setDescription(
+  const embed = new import_discord36.EmbedBuilder().setColor(ended ? 10070709 : 16705372).setTitle(ended ? `Giveaway ended: ${giveaway.prize}` : `Giveaway: ${giveaway.prize}`).setDescription(
     ended ? "The giveaway has ended. Winners are announced below." : `Click **Enter** for a chance to win.
 
 Ends <t:${unix}:F> (<t:${unix}:R>)`
@@ -117686,8 +118161,8 @@ Ends <t:${unix}:F> (<t:${unix}:R>)`
 __name(giveawayEmbed, "giveawayEmbed");
 function giveawayComponents(id, disabled = false) {
   return [
-    new import_discord34.ActionRowBuilder().addComponents(
-      new import_discord34.ButtonBuilder().setCustomId(`giveaway:enter:${id}`).setLabel(disabled ? "Ended" : "Enter").setStyle(disabled ? import_discord34.ButtonStyle.Secondary : import_discord34.ButtonStyle.Success).setDisabled(disabled)
+    new import_discord36.ActionRowBuilder().addComponents(
+      new import_discord36.ButtonBuilder().setCustomId(`giveaway:enter:${id}`).setLabel(disabled ? "Ended" : "Enter").setStyle(disabled ? import_discord36.ButtonStyle.Secondary : import_discord36.ButtonStyle.Success).setDisabled(disabled)
     )
   ];
 }
@@ -117696,6 +118171,7 @@ async function createGiveaway(client, channel, prize, durationMs, winnerCount, r
   const db = requireDb(client);
   const endsAt = new Date(Date.now() + durationMs);
   const inserted = await db.insert(giveaways).values({
+    guildId: channel.guild.id,
     channelId: channel.id,
     messageId: `pending-${(0, import_node_crypto2.randomUUID)()}`,
     prize,
@@ -117724,15 +118200,15 @@ async function createGiveaway(client, channel, prize, durationMs, winnerCount, r
   }
 }
 __name(createGiveaway, "createGiveaway");
-async function findGiveaway(db, messageId) {
-  const rows = await db.select().from(giveaways).where(eq(giveaways.messageId, messageId)).limit(1);
+async function findGiveaway(db, guildId, messageId) {
+  const rows = await db.select().from(giveaways).where(and(eq(giveaways.guildId, guildId), eq(giveaways.messageId, messageId))).limit(1);
   return rows[0] ?? null;
 }
 __name(findGiveaway, "findGiveaway");
 async function entryBlockedReason(client, guild, userId, requirements) {
   if (!requirements) return null;
   if (requirements.level) {
-    const rows = await requireDb(client).select({ level: members.level }).from(members).where(eq(members.userId, userId)).limit(1);
+    const rows = await requireDb(client).select({ level: members.level }).from(members).where(and(eq(members.guildId, guild.id), eq(members.userId, userId))).limit(1);
     const level = rows[0]?.level ?? 0;
     if (level < requirements.level) {
       return `You need level **${requirements.level}** or higher to enter.`;
@@ -117750,7 +118226,7 @@ __name(entryBlockedReason, "entryBlockedReason");
 async function enterGiveaway(client, guild, user, giveawayId) {
   if (user.bot) throw new UserFacingError("Bots cannot enter giveaways.");
   const db = requireDb(client);
-  const rows = await db.select().from(giveaways).where(eq(giveaways.id, giveawayId)).limit(1);
+  const rows = await db.select().from(giveaways).where(and(eq(giveaways.guildId, guild.id), eq(giveaways.id, giveawayId))).limit(1);
   const giveaway = rows[0];
   if (!giveaway) throw new UserFacingError("That giveaway no longer exists.");
   if (giveaway.ended || giveaway.endsAt.getTime() <= Date.now()) {
@@ -117863,9 +118339,9 @@ var GiveawayScheduler = class {
 var MIN_DURATION_MS = 1e4;
 var MAX_DURATION_MS2 = 30 * 24 * 60 * 60 * 1e3;
 var giveawayCommand = {
-  data: new import_discord35.SlashCommandBuilder().setName("giveaway").setDescription("Run persistent button giveaways.").addSubcommand(
+  data: new import_discord37.SlashCommandBuilder().setName("giveaway").setDescription("Run persistent button giveaways.").addSubcommand(
     (sub) => sub.setName("start").setDescription("Start a giveaway.").addChannelOption(
-      (option) => option.setName("channel").setDescription("Channel for the giveaway").setRequired(true).addChannelTypes(import_discord35.ChannelType.GuildText)
+      (option) => option.setName("channel").setDescription("Channel for the giveaway").setRequired(true).addChannelTypes(import_discord37.ChannelType.GuildText)
     ).addStringOption(
       (option) => option.setName("prize").setDescription("What are you giving away?").setRequired(true).setMaxLength(256)
     ).addStringOption(
@@ -117887,15 +118363,15 @@ var giveawayCommand = {
     )
   ).addSubcommand((sub) => sub.setName("list").setDescription("List active giveaways.")),
   category: "community",
-  userPermissions: [import_discord35.PermissionFlagsBits.ManageGuild],
+  userPermissions: [import_discord37.PermissionFlagsBits.ManageGuild],
   cooldownSeconds: 2,
-  async execute({ client, interaction, guild }) {
+  async execute({ client, interaction, guild, settings: settings2 }) {
     await deferEphemeral(interaction);
     const db = requireDb(client);
     const sub = interaction.options.getSubcommand(true);
     if (sub === "start") {
       const channel = interaction.options.getChannel("channel", true);
-      if (channel.type !== import_discord35.ChannelType.GuildText) {
+      if (channel.type !== import_discord37.ChannelType.GuildText) {
         throw new UserFacingError("Pick a standard text channel.");
       }
       const prize = interaction.options.getString("prize", true).trim();
@@ -117905,7 +118381,7 @@ var giveawayCommand = {
           "Use a duration between 10 seconds and 30 days (`10m`, `2h`, `3d`)."
         );
       }
-      const winnerCount = interaction.options.getInteger("winners") ?? client.settings.community.giveaways.defaultWinners;
+      const winnerCount = interaction.options.getInteger("winners") ?? settings2.community.giveaways.defaultWinners;
       const level = interaction.options.getInteger("level");
       const role = interaction.options.getRole("role");
       if (role?.id === guild.id) throw new UserFacingError("Pick a real role, not @everyone.");
@@ -117927,7 +118403,7 @@ var giveawayCommand = {
       return;
     }
     const messageId = interaction.options.getString("message-id", true).trim();
-    const giveaway = await findGiveaway(db, messageId);
+    const giveaway = await findGiveaway(db, interaction.guildId, messageId);
     if (!giveaway) throw new UserFacingError("No giveaway matches that message ID.");
     if (sub === "end") {
       const result = await endGiveaway(client, giveaway, "manual");
@@ -117950,12 +118426,12 @@ var giveawayCommand = {
       channelId: giveaways.channelId,
       endsAt: giveaways.endsAt,
       winnerCount: giveaways.winnerCount
-    }).from(giveaways).where(eq(giveaways.ended, false)).limit(10);
+    }).from(giveaways).where(and(eq(giveaways.guildId, interaction.guildId), eq(giveaways.ended, false))).limit(10);
     if (active.length === 0) {
       await interaction.editReply({ content: "No active giveaways." });
       return;
     }
-    const embed = new import_discord35.EmbedBuilder().setColor(16705372).setTitle("Active giveaways").setDescription(
+    const embed = new import_discord37.EmbedBuilder().setColor(16705372).setTitle("Active giveaways").setDescription(
       active.map(
         (row) => `**#${row.id}** ${row.prize} \xB7 <#${row.channelId}> \xB7 ends <t:${Math.floor(
           row.endsAt.getTime() / 1e3
@@ -117967,10 +118443,10 @@ var giveawayCommand = {
 };
 
 // apps/bot/src/commands/community/reactionrole.ts
-var import_discord37 = __toESM(require_src(), 1);
+var import_discord39 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/community/reaction-roles.ts
-var import_discord36 = __toESM(require_src(), 1);
+var import_discord38 = __toESM(require_src(), 1);
 function normalizeEmoji(value) {
   return value.trim();
 }
@@ -117985,7 +118461,7 @@ function canManageRole(client, member, roleId) {
   const me = guild.members.me;
   if (!role || !me) return false;
   if (role.id === guild.id || role.managed) return false;
-  if (!me.permissions.has(import_discord36.PermissionFlagsBits.ManageRoles)) return false;
+  if (!me.permissions.has(import_discord38.PermissionFlagsBits.ManageRoles)) return false;
   return role.position < me.roles.highest.position;
 }
 __name(canManageRole, "canManageRole");
@@ -118004,16 +118480,28 @@ async function applyRole(client, member, roleId, add) {
   }
 }
 __name(applyRole, "applyRole");
-async function rowsForReaction(client, messageId, emoji3) {
-  return requireDb(client).select().from(reactionRoles).where(and(eq(reactionRoles.messageId, messageId), eq(reactionRoles.emoji, emoji3)));
+async function rowsForReaction(client, guildId, messageId, emoji3) {
+  return requireDb(client).select().from(reactionRoles).where(
+    and(
+      eq(reactionRoles.guildId, guildId),
+      eq(reactionRoles.messageId, messageId),
+      eq(reactionRoles.emoji, emoji3)
+    )
+  );
 }
 __name(rowsForReaction, "rowsForReaction");
 async function removeGroupRoles(client, member, row) {
   if (row.mode !== "unique") return;
   const db = requireDb(client);
   const siblings = row.groupKey ? await db.select().from(reactionRoles).where(
-    and(eq(reactionRoles.messageId, row.messageId), eq(reactionRoles.groupKey, row.groupKey))
-  ) : await db.select().from(reactionRoles).where(eq(reactionRoles.messageId, row.messageId));
+    and(
+      eq(reactionRoles.guildId, row.guildId),
+      eq(reactionRoles.messageId, row.messageId),
+      eq(reactionRoles.groupKey, row.groupKey)
+    )
+  ) : await db.select().from(reactionRoles).where(
+    and(eq(reactionRoles.guildId, row.guildId), eq(reactionRoles.messageId, row.messageId))
+  );
   for (const sibling of siblings) {
     if (sibling.roleId !== row.roleId && member.roles.cache.has(sibling.roleId)) {
       await applyRole(client, member, sibling.roleId, false);
@@ -118024,11 +118512,10 @@ __name(removeGroupRoles, "removeGroupRoles");
 async function handleReactionRoleAdd(client, reaction, user) {
   if (user.bot) return;
   if (!reaction.message.inGuild()) return;
-  if (reaction.message.guildId !== client.env.GUILD_ID) return;
   if (reaction.partial) await reaction.fetch().catch(() => null);
   if (reaction.message.partial) await reaction.message.fetch().catch(() => null);
   const emoji3 = normalizeEmoji(reaction.emoji.toString());
-  const rows = await rowsForReaction(client, reaction.message.id, emoji3);
+  const rows = await rowsForReaction(client, reaction.message.guildId, reaction.message.id, emoji3);
   if (rows.length === 0) return;
   const member = await reaction.message.guild?.members.fetch(user.id).catch(() => null);
   if (!member) return;
@@ -118042,11 +118529,10 @@ __name(handleReactionRoleAdd, "handleReactionRoleAdd");
 async function handleReactionRoleRemove(client, reaction, user) {
   if (user.bot) return;
   if (!reaction.message.inGuild()) return;
-  if (reaction.message.guildId !== client.env.GUILD_ID) return;
   if (reaction.partial) await reaction.fetch().catch(() => null);
   if (reaction.message.partial) await reaction.message.fetch().catch(() => null);
   const emoji3 = normalizeEmoji(reaction.emoji.toString());
-  const rows = await rowsForReaction(client, reaction.message.id, emoji3);
+  const rows = await rowsForReaction(client, reaction.message.guildId, reaction.message.id, emoji3);
   if (rows.length === 0) return;
   const member = await reaction.message.guild?.members.fetch(user.id).catch(() => null);
   if (!member) return;
@@ -118056,7 +118542,14 @@ async function handleReactionRoleRemove(client, reaction, user) {
 }
 __name(handleReactionRoleRemove, "handleReactionRoleRemove");
 async function applySelectRoles(client, member, messageId, selectedRoleIds) {
-  const rows = await requireDb(client).select().from(reactionRoles).where(and(eq(reactionRoles.messageId, messageId), eq(reactionRoles.mode, "select")));
+  const guildId = member.guild.id;
+  const rows = await requireDb(client).select().from(reactionRoles).where(
+    and(
+      eq(reactionRoles.guildId, guildId),
+      eq(reactionRoles.messageId, messageId),
+      eq(reactionRoles.mode, "select")
+    )
+  );
   if (rows.length === 0) {
     throw new UserFacingError("That reaction-role panel no longer exists.");
   }
@@ -118101,7 +118594,7 @@ function parsePanelEntries(raw) {
 }
 __name(parsePanelEntries, "parsePanelEntries");
 var reactionRoleCommand = {
-  data: new import_discord37.SlashCommandBuilder().setName("reactionrole").setDescription("Create reaction roles and select-menu role panels.").addSubcommand(
+  data: new import_discord39.SlashCommandBuilder().setName("reactionrole").setDescription("Create reaction roles and select-menu role panels.").addSubcommand(
     (sub) => sub.setName("add").setDescription("Bind one emoji on a message to a role.").addStringOption(
       (option) => option.setName("message-id").setDescription("Message ID").setRequired(true)
     ).addStringOption(
@@ -118113,7 +118606,7 @@ var reactionRoleCommand = {
     ).addStringOption(
       (option) => option.setName("group").setDescription("Group name for unique role sets").setMaxLength(32)
     ).addChannelOption(
-      (option) => option.setName("channel").setDescription("Channel containing the message (defaults to here)").addChannelTypes(import_discord37.ChannelType.GuildText)
+      (option) => option.setName("channel").setDescription("Channel containing the message (defaults to here)").addChannelTypes(import_discord39.ChannelType.GuildText)
     )
   ).addSubcommand(
     (sub) => sub.setName("remove").setDescription("Remove an emoji reaction-role binding.").addStringOption(
@@ -118127,7 +118620,7 @@ var reactionRoleCommand = {
     )
   ).addSubcommand(
     (sub) => sub.setName("panel").setDescription("Post a select-menu role panel.").addChannelOption(
-      (option) => option.setName("channel").setDescription("Where to post the panel").setRequired(true).addChannelTypes(import_discord37.ChannelType.GuildText)
+      (option) => option.setName("channel").setDescription("Where to post the panel").setRequired(true).addChannelTypes(import_discord39.ChannelType.GuildText)
     ).addStringOption(
       (option) => option.setName("title").setDescription("Panel title").setRequired(true).setMaxLength(256)
     ).addStringOption(
@@ -118137,7 +118630,7 @@ var reactionRoleCommand = {
     )
   ),
   category: "community",
-  userPermissions: [import_discord37.PermissionFlagsBits.ManageGuild],
+  userPermissions: [import_discord39.PermissionFlagsBits.ManageGuild],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild }) {
     await deferEphemeral(interaction);
@@ -118156,7 +118649,7 @@ var reactionRoleCommand = {
       if (role.id === guild.id) throw new UserFacingError("Pick a real role, not @everyone.");
       if (role.managed) throw new UserFacingError("That role is managed by an integration.");
       const me = guild.members.me;
-      if (!me?.permissions.has(import_discord37.PermissionFlagsBits.ManageRoles)) {
+      if (!me?.permissions.has(import_discord39.PermissionFlagsBits.ManageRoles)) {
         throw new UserFacingError("I need Manage Roles to create reaction roles.");
       }
       if (role.position >= me.roles.highest.position) {
@@ -118172,6 +118665,7 @@ var reactionRoleCommand = {
         );
       }
       await db.insert(reactionRoles).values({
+        guildId: interaction.guildId,
         messageId,
         emoji: emoji3,
         roleId: role.id,
@@ -118187,7 +118681,13 @@ var reactionRoleCommand = {
     if (sub === "remove") {
       const messageId = interaction.options.getString("message-id", true).trim();
       const emoji3 = normalizeEmoji(interaction.options.getString("emoji", true));
-      const rows = await db.delete(reactionRoles).where(and(eq(reactionRoles.messageId, messageId), eq(reactionRoles.emoji, emoji3))).returning({ id: reactionRoles.id });
+      const rows = await db.delete(reactionRoles).where(
+        and(
+          eq(reactionRoles.guildId, interaction.guildId),
+          eq(reactionRoles.messageId, messageId),
+          eq(reactionRoles.emoji, emoji3)
+        )
+      ).returning({ id: reactionRoles.id });
       await interaction.editReply({
         content: rows.length > 0 ? `Removed ${rows.length} binding(s) for ${emoji3}.` : "No binding matched that message and emoji."
       });
@@ -118195,12 +118695,17 @@ var reactionRoleCommand = {
     }
     if (sub === "list") {
       const messageId = interaction.options.getString("message-id")?.trim();
-      const rows = await db.select().from(reactionRoles).where(messageId ? eq(reactionRoles.messageId, messageId) : void 0).orderBy(asc(reactionRoles.messageId), asc(reactionRoles.id)).limit(40);
+      const rows = await db.select().from(reactionRoles).where(
+        messageId ? and(
+          eq(reactionRoles.guildId, interaction.guildId),
+          eq(reactionRoles.messageId, messageId)
+        ) : eq(reactionRoles.guildId, interaction.guildId)
+      ).orderBy(asc(reactionRoles.messageId), asc(reactionRoles.id)).limit(40);
       if (rows.length === 0) {
         await interaction.editReply({ content: "No reaction roles configured." });
         return;
       }
-      const embed2 = new import_discord37.EmbedBuilder().setColor(5793266).setTitle("Reaction roles").setDescription(
+      const embed2 = new import_discord39.EmbedBuilder().setColor(5793266).setTitle("Reaction roles").setDescription(
         rows.map(
           (row) => `${row.mode === "select" ? "Select" : row.emoji} \u2192 <@&${row.roleId}> \xB7 \`${row.messageId}\`${row.mode === "unique" ? ` \xB7 group: ${row.groupKey ?? "all"}` : ""}`
         ).join("\n").slice(0, 4e3)
@@ -118223,7 +118728,7 @@ var reactionRoleCommand = {
       if (role.id === guild.id) throw new UserFacingError("Do not add @everyone to a panel.");
       if (role.managed) throw new UserFacingError(`${role.name} is managed by an integration.`);
       const me = guild.members.me;
-      if (!me?.permissions.has(import_discord37.PermissionFlagsBits.ManageRoles)) {
+      if (!me?.permissions.has(import_discord39.PermissionFlagsBits.ManageRoles)) {
         throw new UserFacingError("I need Manage Roles to create reaction roles.");
       }
       if (role.position >= me.roles.highest.position) {
@@ -118236,21 +118741,22 @@ var reactionRoleCommand = {
       });
     }
     if (resolved.length === 0) throw new UserFacingError("No unique roles were left in the panel.");
-    const select2 = new import_discord37.StringSelectMenuBuilder().setCustomId("rr:select").setPlaceholder("Choose your roles").setMinValues(0).setMaxValues(resolved.length).addOptions(
+    const select2 = new import_discord39.StringSelectMenuBuilder().setCustomId("rr:select").setPlaceholder("Choose your roles").setMinValues(0).setMaxValues(resolved.length).addOptions(
       resolved.map(
-        (entry) => new import_discord37.StringSelectMenuOptionBuilder().setLabel(entry.label).setValue(entry.roleId).setDescription("Toggle this role")
+        (entry) => new import_discord39.StringSelectMenuOptionBuilder().setLabel(entry.label).setValue(entry.roleId).setDescription("Toggle this role")
       )
     );
-    const embed = new import_discord37.EmbedBuilder().setColor(5793266).setTitle(title.slice(0, 256)).setFooter({ text: "Pick roles below. Selecting none removes them." });
+    const embed = new import_discord39.EmbedBuilder().setColor(5793266).setTitle(title.slice(0, 256)).setFooter({ text: "Pick roles below. Selecting none removes them." });
     if (description) embed.setDescription(description.slice(0, 4e3));
     const message = await channel.send({
       embeds: [embed],
-      components: [new import_discord37.ActionRowBuilder().addComponents(select2)],
+      components: [new import_discord39.ActionRowBuilder().addComponents(select2)],
       allowedMentions: { parse: [] }
     });
     try {
       await db.insert(reactionRoles).values(
         resolved.map((entry) => ({
+          guildId: interaction.guildId,
           messageId: message.id,
           emoji: `select:${entry.roleId}`,
           roleId: entry.roleId,
@@ -118268,7 +118774,7 @@ var reactionRoleCommand = {
 };
 
 // apps/bot/src/commands/music/controls.ts
-var import_discord40 = __toESM(require_src(), 1);
+var import_discord42 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/music/helpers.ts
 var DEFAULT_LAVALINK_PORT = 2333;
@@ -118341,7 +118847,7 @@ function progressBar2(position, duration3, length = 15) {
 __name(progressBar2, "progressBar");
 
 // apps/bot/src/modules/music/service.ts
-var import_discord38 = __toESM(require_src(), 1);
+var import_discord40 = __toESM(require_src(), 1);
 
 // node_modules/lavalink-client/dist/index.mjs
 var import_node_events = require("node:events");
@@ -125213,7 +125719,7 @@ var MusicService = class {
     const manager = this.manager;
     this.manager = null;
     if (this.rawListener) {
-      this.client.off(import_discord38.Events.Raw, this.rawListener);
+      this.client.off(import_discord40.Events.Raw, this.rawListener);
       this.rawListener = null;
     }
     for (const timer2 of this.emptyTimers.values()) clearTimeout(timer2);
@@ -125320,11 +125826,12 @@ var MusicService = class {
       }
       return existing;
     }
+    const appConfig = await this.client.getConfig(input2.guildId);
     const player = manager.createPlayer({
       guildId: input2.guildId,
       voiceChannelId: input2.voiceChannelId,
       textChannelId: input2.textChannelId,
-      volume: this.client.settings.music.defaultVolume,
+      volume: appConfig.music.defaultVolume,
       selfDeaf: true,
       selfMute: false
     });
@@ -125375,10 +125882,29 @@ var MusicService = class {
       spotify ? "No playable tracks were found. Spotify links need a Lavalink node with the LavaSrc plugin enabled." : "No playable tracks were found. Try a different search or link."
     );
   }
+  async handleQueueEnd(player) {
+    this.clearEmptyTimer(player.guildId);
+    const [config2, premium] = await Promise.all([
+      this.client.getConfig(player.guildId),
+      this.client.isPremium(player.guildId)
+    ]);
+    if (config2.music.stay247 && premium) return;
+    const timer2 = setTimeout(() => {
+      this.emptyTimers.delete(player.guildId);
+      const current = this.manager?.getPlayer(player.guildId);
+      if (!current) return;
+      if (current.queue.current || current.queue.tracks.length > 0) return;
+      void current.destroy("Queue empty", true).catch((error62) => {
+        this.client.logger.warn({ err: error62, guildId: player.guildId }, "music cleanup failed");
+      });
+    }, EMPTY_QUEUE_DESTROY_MS);
+    timer2.unref();
+    this.emptyTimers.set(player.guildId, timer2);
+  }
   registerEvents(manager) {
     manager.on("trackStart", (player, track) => {
       this.clearEmptyTimer(player.guildId);
-      this.client.stats?.recordMusicPlay();
+      this.client.stats?.recordMusicPlay(player.guildId);
       if (track) {
         this.client.logger.debug(
           {
@@ -125401,19 +125927,7 @@ var MusicService = class {
       );
     });
     manager.on("queueEnd", (player) => {
-      this.clearEmptyTimer(player.guildId);
-      if (this.client.settings.music.stay247) return;
-      const timer2 = setTimeout(() => {
-        this.emptyTimers.delete(player.guildId);
-        const current = this.manager?.getPlayer(player.guildId);
-        if (!current) return;
-        if (current.queue.current || current.queue.tracks.length > 0) return;
-        void current.destroy("Queue empty", true).catch((error62) => {
-          this.client.logger.warn({ err: error62, guildId: player.guildId }, "music cleanup failed");
-        });
-      }, EMPTY_QUEUE_DESTROY_MS);
-      timer2.unref();
-      this.emptyTimers.set(player.guildId, timer2);
+      void this.handleQueueEnd(player);
     });
     manager.on("playerDestroy", (player) => {
       this.clearEmptyTimer(player.guildId);
@@ -125438,7 +125952,7 @@ var MusicService = class {
       });
     }, "listener");
     this.rawListener = listener;
-    this.client.on(import_discord38.Events.Raw, listener);
+    this.client.on(import_discord40.Events.Raw, listener);
   }
   clearEmptyTimer(guildId) {
     const timer2 = this.emptyTimers.get(guildId);
@@ -125449,7 +125963,7 @@ var MusicService = class {
 };
 
 // apps/bot/src/commands/music/shared.ts
-var import_discord39 = __toESM(require_src(), 1);
+var import_discord41 = __toESM(require_src(), 1);
 function musicService(client) {
   if (!client.music) {
     throw new UserFacingError(
@@ -125468,15 +125982,15 @@ __name(requireMusicPlayer, "requireMusicPlayer");
 function requireVoice(member) {
   const channel = member.voice.channel;
   if (!channel) throw new UserFacingError("Join a voice channel first.");
-  if (channel.type === import_discord39.ChannelType.GuildStageVoice) {
+  if (channel.type === import_discord41.ChannelType.GuildStageVoice) {
     throw new UserFacingError("Music does not support stage channels. Use a voice channel.");
   }
   const me = member.guild.members.me;
   const permissions = me ? channel.permissionsFor(me) : null;
   if (!permissions?.has([
-    import_discord39.PermissionFlagsBits.ViewChannel,
-    import_discord39.PermissionFlagsBits.Connect,
-    import_discord39.PermissionFlagsBits.Speak
+    import_discord41.PermissionFlagsBits.ViewChannel,
+    import_discord41.PermissionFlagsBits.Connect,
+    import_discord41.PermissionFlagsBits.Speak
   ])) {
     throw new UserFacingError("I need View Channel, Connect, and Speak in that voice channel.");
   }
@@ -125495,7 +126009,7 @@ __name(assertSameVoice, "assertSameVoice");
 function assertDj(member, config2) {
   if (!config2.djRoleId) return;
   if (member.roles.cache.has(config2.djRoleId)) return;
-  if (member.permissions.has(import_discord39.PermissionFlagsBits.ManageGuild)) return;
+  if (member.permissions.has(import_discord41.PermissionFlagsBits.ManageGuild)) return;
   const humans = member.voice.channel?.members.filter((candidate) => !candidate.user.bot).size ?? 0;
   if (humans <= 1) return;
   throw new UserFacingError(
@@ -125517,7 +126031,7 @@ function controlled({ client, interaction, member, settings: settings2 }) {
 }
 __name(controlled, "controlled");
 var pauseCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("pause").setDescription("Pause the current track."),
+  data: new import_discord42.SlashCommandBuilder().setName("pause").setDescription("Pause the current track."),
   category: "music",
   cooldownSeconds: 1,
   async execute(context) {
@@ -125530,7 +126044,7 @@ var pauseCommand = {
   }
 };
 var resumeCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("resume").setDescription("Resume the paused track."),
+  data: new import_discord42.SlashCommandBuilder().setName("resume").setDescription("Resume the paused track."),
   category: "music",
   cooldownSeconds: 1,
   async execute(context) {
@@ -125542,7 +126056,7 @@ var resumeCommand = {
   }
 };
 var skipCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("skip").setDescription("Skip the current track.").addIntegerOption(
+  data: new import_discord42.SlashCommandBuilder().setName("skip").setDescription("Skip the current track.").addIntegerOption(
     (option) => option.setName("amount").setDescription("How many tracks to skip (default 1)").setMinValue(1).setMaxValue(25)
   ),
   category: "music",
@@ -125574,7 +126088,7 @@ var skipCommand = {
   }
 };
 var stopCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("stop").setDescription("Stop playback, clear the queue, and disconnect."),
+  data: new import_discord42.SlashCommandBuilder().setName("stop").setDescription("Stop playback, clear the queue, and disconnect."),
   category: "music",
   cooldownSeconds: 2,
   async execute(context) {
@@ -125587,7 +126101,7 @@ var stopCommand = {
   }
 };
 var disconnectCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("disconnect").setDescription("Disconnect the music player from voice."),
+  data: new import_discord42.SlashCommandBuilder().setName("disconnect").setDescription("Disconnect the music player from voice."),
   category: "music",
   cooldownSeconds: 2,
   async execute(context) {
@@ -125598,7 +126112,7 @@ var disconnectCommand = {
   }
 };
 var volumeCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("volume").setDescription("Set the player volume.").addIntegerOption(
+  data: new import_discord42.SlashCommandBuilder().setName("volume").setDescription("Set the player volume.").addIntegerOption(
     (option) => option.setName("percent").setDescription("Volume from 1 to 100").setRequired(true).setMinValue(1).setMaxValue(100)
   ),
   category: "music",
@@ -125612,7 +126126,7 @@ var volumeCommand = {
   }
 };
 var loopCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("loop").setDescription("Set the repeat mode.").addStringOption(
+  data: new import_discord42.SlashCommandBuilder().setName("loop").setDescription("Set the repeat mode.").addStringOption(
     (option) => option.setName("mode").setDescription("What to repeat").setRequired(true).addChoices(
       { name: "Off", value: "off" },
       { name: "Track", value: "track" },
@@ -125630,7 +126144,7 @@ var loopCommand = {
   }
 };
 var shuffleCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("shuffle").setDescription("Shuffle the upcoming queue."),
+  data: new import_discord42.SlashCommandBuilder().setName("shuffle").setDescription("Shuffle the upcoming queue."),
   category: "music",
   cooldownSeconds: 2,
   async execute(context) {
@@ -125646,7 +126160,7 @@ var shuffleCommand = {
   }
 };
 var removeCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("remove").setDescription("Remove one upcoming track from the queue.").addIntegerOption(
+  data: new import_discord42.SlashCommandBuilder().setName("remove").setDescription("Remove one upcoming track from the queue.").addIntegerOption(
     (option) => option.setName("position").setDescription("Queue position from /queue").setRequired(true).setMinValue(1).setMaxValue(500)
   ),
   category: "music",
@@ -125670,7 +126184,7 @@ var removeCommand = {
   }
 };
 var clearCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("clear").setDescription("Clear the upcoming queue without stopping the current track."),
+  data: new import_discord42.SlashCommandBuilder().setName("clear").setDescription("Clear the upcoming queue without stopping the current track."),
   category: "music",
   cooldownSeconds: 2,
   async execute(context) {
@@ -125685,7 +126199,7 @@ var clearCommand = {
   }
 };
 var seekCommand = {
-  data: new import_discord40.SlashCommandBuilder().setName("seek").setDescription("Seek within the current track.").addStringOption(
+  data: new import_discord42.SlashCommandBuilder().setName("seek").setDescription("Seek within the current track.").addStringOption(
     (option) => option.setName("time").setDescription("Position: 1:30, 1:02:03, 90s, or 2m").setRequired(true).setMaxLength(32)
   ),
   category: "music",
@@ -125715,10 +126229,10 @@ var seekCommand = {
 };
 
 // apps/bot/src/commands/music/nowplaying.ts
-var import_discord41 = __toESM(require_src(), 1);
+var import_discord43 = __toESM(require_src(), 1);
 var PAGE_SIZE = 10;
 var nowPlayingCommand = {
-  data: new import_discord41.SlashCommandBuilder().setName("nowplaying").setDescription("Show the track that is currently playing."),
+  data: new import_discord43.SlashCommandBuilder().setName("nowplaying").setDescription("Show the track that is currently playing."),
   category: "music",
   cooldownSeconds: 2,
   async execute({ client, interaction }) {
@@ -125730,7 +126244,7 @@ var nowPlayingCommand = {
     const timing = track.info.isStream ? "\u{1F534} LIVE" : `${progressBar2(position, track.info.duration)} \`${formatDuration(
       position
     )} / ${formatDuration(track.info.duration)}\``;
-    const embed = new import_discord41.EmbedBuilder().setColor(BRAND.color).setTitle("Now playing").setDescription(`${describeTrack(track)}
+    const embed = new import_discord43.EmbedBuilder().setColor(BRAND.color).setTitle("Now playing").setDescription(`${describeTrack(track)}
 ${timing}`).addFields(
       { name: "Volume", value: `**${player.volume}%**`, inline: true },
       { name: "Loop", value: `**${player.repeatMode}**`, inline: true },
@@ -125750,7 +126264,7 @@ ${timing}`).addFields(
   }
 };
 var queueCommand = {
-  data: new import_discord41.SlashCommandBuilder().setName("queue").setDescription("Show the current track and the upcoming queue.").addIntegerOption(
+  data: new import_discord43.SlashCommandBuilder().setName("queue").setDescription("Show the current track and the upcoming queue.").addIntegerOption(
     (option) => option.setName("page").setDescription("Queue page (10 tracks per page)").setMinValue(1).setMaxValue(50)
   ),
   category: "music",
@@ -125784,7 +126298,7 @@ var queueCommand = {
       lines.push("*No upcoming tracks.*");
     }
     const totalDuration = (current?.info.duration ?? 0) + player.queue.utils.totalDuration();
-    const embed = new import_discord41.EmbedBuilder().setColor(BRAND.color).setTitle("Music queue").setDescription(lines.join("\n")).setFooter({
+    const embed = new import_discord43.EmbedBuilder().setColor(BRAND.color).setTitle("Music queue").setDescription(lines.join("\n")).setFooter({
       text: `Page ${page}/${totalPages} \xB7 ${upcoming.length} upcoming \xB7 ${formatDuration(
         totalDuration
       )}`
@@ -125797,33 +126311,34 @@ var queueCommand = {
 };
 
 // apps/bot/src/commands/music/play.ts
-var import_discord42 = __toESM(require_src(), 1);
+var import_discord44 = __toESM(require_src(), 1);
 var playCommand = {
-  data: new import_discord42.SlashCommandBuilder().setName("play").setDescription("Play a track or playlist from a URL or search.").addStringOption(
+  data: new import_discord44.SlashCommandBuilder().setName("play").setDescription("Play a track or playlist from a URL or search.").addStringOption(
     (option) => option.setName("query").setDescription("Track name, SoundCloud/Spotify/YouTube URL, or playlist link").setRequired(true).setMaxLength(500)
   ),
   category: "music",
   cooldownSeconds: 2,
-  async execute({ client, interaction, member, settings: settings2 }) {
+  async execute({ client, interaction, member, settings: settings2, premium }) {
     await deferPublic(interaction);
     const voice = requireVoice(member);
     assertDj(member, settings2.music);
+    const maxQueue = premium ? settings2.music.maxQueue : Math.min(settings2.music.maxQueue, FREE_MUSIC_QUEUE);
     const result = await musicService(client).play({
       guildId: interaction.guildId,
       voiceChannelId: voice.id,
       textChannelId: interaction.channelId,
       query: interaction.options.getString("query", true),
       requester: interaction.user,
-      maxQueue: settings2.music.maxQueue
+      maxQueue
     });
     await interaction.editReply({
-      embeds: [buildPlayEmbed(result)],
+      embeds: [buildPlayEmbed(result, premium)],
       allowedMentions: { parse: [] }
     });
   }
 };
-function buildPlayEmbed(result) {
-  const embed = new import_discord42.EmbedBuilder().setColor(BRAND.color).setFooter({ text: BRAND.footer });
+function buildPlayEmbed(result, premium) {
+  const embed = new import_discord44.EmbedBuilder().setColor(BRAND.color).setFooter({ text: BRAND.footer });
   if (result.playlist) {
     embed.setTitle("Playlist queued").setDescription(
       `Added **${result.tracks.length}** track${result.tracks.length === 1 ? "" : "s"} from **${truncate(
@@ -125843,7 +126358,7 @@ function buildPlayEmbed(result) {
   if (result.truncated) {
     embed.addFields({
       name: "Queue limit",
-      value: "Only the first tracks that fit under the configured queue limit were added."
+      value: premium ? "Only the first tracks that fit under the configured queue limit were added." : `Free servers queue up to ${FREE_MUSIC_QUEUE} tracks. Premium raises the limit to the server's configured maximum (up to 500).`
     });
   }
   return embed;
@@ -125851,7 +126366,7 @@ function buildPlayEmbed(result) {
 __name(buildPlayEmbed, "buildPlayEmbed");
 
 // apps/bot/src/commands/utility/announce.ts
-var import_discord43 = __toESM(require_src(), 1);
+var import_discord45 = __toESM(require_src(), 1);
 function sendable(channel) {
   if (!channel?.isSendable()) {
     throw new UserFacingError("Pick a text channel.");
@@ -125860,16 +126375,16 @@ function sendable(channel) {
 }
 __name(sendable, "sendable");
 var announceCommand = {
-  data: new import_discord43.SlashCommandBuilder().setName("announce").setDescription("Post an announcement, optionally pinging one role.").addStringOption(
+  data: new import_discord45.SlashCommandBuilder().setName("announce").setDescription("Post an announcement, optionally pinging one role.").addStringOption(
     (option) => option.setName("message").setDescription("Announcement text").setRequired(true).setMaxLength(2e3)
   ).addChannelOption(
     (option) => option.setName("channel").setDescription("Where to post (defaults to this channel)")
   ).addRoleOption(
     (option) => option.setName("role").setDescription("Optional role to ping (never @everyone)")
-  ).setDefaultMemberPermissions(import_discord43.PermissionFlagsBits.ManageMessages),
+  ).setDefaultMemberPermissions(import_discord45.PermissionFlagsBits.ManageMessages),
   category: "utility",
-  userPermissions: [import_discord43.PermissionFlagsBits.ManageMessages],
-  botPermissions: [import_discord43.PermissionFlagsBits.SendMessages],
+  userPermissions: [import_discord45.PermissionFlagsBits.ManageMessages],
+  botPermissions: [import_discord45.PermissionFlagsBits.SendMessages],
   cooldownSeconds: 3,
   async execute({ interaction }) {
     await deferEphemeral(interaction);
@@ -125892,9 +126407,9 @@ var announceCommand = {
 };
 
 // apps/bot/src/commands/utility/avatar.ts
-var import_discord44 = __toESM(require_src(), 1);
+var import_discord46 = __toESM(require_src(), 1);
 var avatarCommand = {
-  data: new import_discord44.SlashCommandBuilder().setName("avatar").setDescription("Show a user\u2019s avatar.").addUserOption(
+  data: new import_discord46.SlashCommandBuilder().setName("avatar").setDescription("Show a user\u2019s avatar.").addUserOption(
     (option) => option.setName("user").setDescription("User to inspect (defaults to you)")
   ),
   category: "utility",
@@ -125905,7 +126420,7 @@ var avatarCommand = {
     const member = await guild.members.fetch(user.id).catch(() => null);
     const global2 = user.displayAvatarURL({ size: 1024, extension: "png" });
     const server = member?.avatarURL({ size: 1024, extension: "png" }) ?? null;
-    const embed = new import_discord44.EmbedBuilder().setColor(BRAND.color).setTitle(`${user.username}\u2019s avatar`).setImage(server ?? global2).addFields({ name: "Global avatar", value: `[Open](${global2})` });
+    const embed = new import_discord46.EmbedBuilder().setColor(BRAND.color).setTitle(`${user.username}\u2019s avatar`).setImage(server ?? global2).addFields({ name: "Global avatar", value: `[Open](${global2})` });
     if (server) {
       embed.addFields({ name: "Server avatar", value: `[Open](${server})` });
     }
@@ -125914,9 +126429,9 @@ var avatarCommand = {
 };
 
 // apps/bot/src/commands/utility/banner.ts
-var import_discord45 = __toESM(require_src(), 1);
+var import_discord47 = __toESM(require_src(), 1);
 var bannerCommand = {
-  data: new import_discord45.SlashCommandBuilder().setName("banner").setDescription("Show a user\u2019s profile banner.").addUserOption(
+  data: new import_discord47.SlashCommandBuilder().setName("banner").setDescription("Show a user\u2019s profile banner.").addUserOption(
     (option) => option.setName("user").setDescription("User to inspect (defaults to you)")
   ),
   category: "utility",
@@ -125932,7 +126447,7 @@ var bannerCommand = {
       await interaction.editReply({ content: `${target} does not have a banner.` });
       return;
     }
-    const embed = new import_discord45.EmbedBuilder().setColor(BRAND.color).setTitle(`${target.username}\u2019s banner`).setImage(server ?? global2);
+    const embed = new import_discord47.EmbedBuilder().setColor(BRAND.color).setTitle(`${target.username}\u2019s banner`).setImage(server ?? global2);
     if (global2) embed.addFields({ name: "Profile banner", value: `[Open](${global2})` });
     if (server) embed.addFields({ name: "Server banner", value: `[Open](${server})` });
     await interaction.editReply({ embeds: [embed] });
@@ -125940,9 +126455,9 @@ var bannerCommand = {
 };
 
 // apps/bot/src/commands/utility/channelinfo.ts
-var import_discord46 = __toESM(require_src(), 1);
+var import_discord48 = __toESM(require_src(), 1);
 var channelInfoCommand = {
-  data: new import_discord46.SlashCommandBuilder().setName("channelinfo").setDescription("Show information about a channel.").addChannelOption(
+  data: new import_discord48.SlashCommandBuilder().setName("channelinfo").setDescription("Show information about a channel.").addChannelOption(
     (option) => option.setName("channel").setDescription("Channel to inspect (defaults to this one)")
   ),
   category: "utility",
@@ -125951,9 +126466,9 @@ var channelInfoCommand = {
     await deferPublic(interaction);
     const channel = interaction.options.getChannel("channel") ?? interaction.channel;
     if (!channel) throw new UserFacingError("Could not resolve that channel.");
-    const embed = new import_discord46.EmbedBuilder().setColor(BRAND.color).setTitle(`#${channel.name}`).addFields(
+    const embed = new import_discord48.EmbedBuilder().setColor(BRAND.color).setTitle(`#${channel.name}`).addFields(
       { name: "Channel ID", value: `\`${channel.id}\``, inline: true },
-      { name: "Type", value: String(import_discord46.ChannelType[channel.type]), inline: true },
+      { name: "Type", value: String(import_discord48.ChannelType[channel.type]), inline: true },
       {
         name: "Category",
         value: channel.parentId ? `<#${channel.parentId}>` : "None",
@@ -125992,7 +126507,7 @@ var channelInfoCommand = {
 };
 
 // apps/bot/src/commands/utility/embed.ts
-var import_discord47 = __toESM(require_src(), 1);
+var import_discord49 = __toESM(require_src(), 1);
 function sendable2(channel) {
   if (!channel?.isSendable()) {
     throw new UserFacingError("Pick a text channel.");
@@ -126001,7 +126516,7 @@ function sendable2(channel) {
 }
 __name(sendable2, "sendable");
 var embedCommand = {
-  data: new import_discord47.SlashCommandBuilder().setName("embed").setDescription("Post a custom embed.").addChannelOption(
+  data: new import_discord49.SlashCommandBuilder().setName("embed").setDescription("Post a custom embed.").addChannelOption(
     (option) => option.setName("channel").setDescription("Where to post (defaults to this channel)")
   ).addStringOption(
     (option) => option.setName("description").setDescription("Embed body").setRequired(true).setMaxLength(4e3)
@@ -126013,10 +126528,10 @@ var embedCommand = {
     (option) => option.setName("footer").setDescription("Footer text").setMaxLength(2048)
   ).addStringOption(
     (option) => option.setName("image").setDescription("Image URL").setMaxLength(2048)
-  ).setDefaultMemberPermissions(import_discord47.PermissionFlagsBits.ManageMessages),
+  ).setDefaultMemberPermissions(import_discord49.PermissionFlagsBits.ManageMessages),
   category: "utility",
-  userPermissions: [import_discord47.PermissionFlagsBits.ManageMessages],
-  botPermissions: [import_discord47.PermissionFlagsBits.SendMessages, import_discord47.PermissionFlagsBits.EmbedLinks],
+  userPermissions: [import_discord49.PermissionFlagsBits.ManageMessages],
+  botPermissions: [import_discord49.PermissionFlagsBits.SendMessages, import_discord49.PermissionFlagsBits.EmbedLinks],
   cooldownSeconds: 3,
   async execute({ interaction }) {
     await deferEphemeral(interaction);
@@ -126033,7 +126548,7 @@ var embedCommand = {
       }
       color = Number.parseInt(colorInput.replace("#", ""), 16);
     }
-    const embed = new import_discord47.EmbedBuilder().setColor(color ?? BRAND.color).setDescription(description);
+    const embed = new import_discord49.EmbedBuilder().setColor(color ?? BRAND.color).setDescription(description);
     if (title) embed.setTitle(title);
     if (footer) embed.setFooter({ text: footer });
     if (image) embed.setImage(image);
@@ -126043,17 +126558,17 @@ var embedCommand = {
 };
 
 // apps/bot/src/commands/utility/emojis.ts
-var import_discord48 = __toESM(require_src(), 1);
+var import_discord50 = __toESM(require_src(), 1);
 var MAX_PER_FIELD = 40;
 var emojisCommand = {
-  data: new import_discord48.SlashCommandBuilder().setName("emojis").setDescription("List this server\u2019s custom emojis and stickers."),
+  data: new import_discord50.SlashCommandBuilder().setName("emojis").setDescription("List this server\u2019s custom emojis and stickers."),
   category: "utility",
   cooldownSeconds: 3,
   async execute({ interaction, guild }) {
     await deferPublic(interaction);
     const emojis = [...guild.emojis.cache.values()];
     const stickers = [...guild.stickers.cache.values()];
-    const embed = new import_discord48.EmbedBuilder().setColor(BRAND.color).setTitle("Server emojis and stickers").setFooter({
+    const embed = new import_discord50.EmbedBuilder().setColor(BRAND.color).setTitle("Server emojis and stickers").setFooter({
       text: `${emojis.length} emoji(s) \xB7 ${stickers.length} sticker(s) \xB7 showing up to ${MAX_PER_FIELD} each`
     });
     const emojiText = emojis.slice(0, MAX_PER_FIELD).map(
@@ -126069,11 +126584,11 @@ var emojisCommand = {
 };
 
 // apps/bot/src/commands/utility/poll.ts
-var import_discord49 = __toESM(require_src(), 1);
+var import_discord51 = __toESM(require_src(), 1);
 var MAX_OPTIONS = 10;
 var MAX_ANSWER_LENGTH = 55;
 var pollCommand = {
-  data: new import_discord49.SlashCommandBuilder().setName("poll").setDescription("Create a native Discord poll.").addStringOption(
+  data: new import_discord51.SlashCommandBuilder().setName("poll").setDescription("Create a native Discord poll.").addStringOption(
     (option) => option.setName("question").setDescription("What should people vote on?").setRequired(true).setMaxLength(300)
   ).addStringOption(
     (option) => option.setName("options").setDescription("2\u201310 answers, separated by | or new lines").setRequired(true).setMaxLength(900)
@@ -126084,7 +126599,7 @@ var pollCommand = {
   ),
   category: "utility",
   cooldownSeconds: 10,
-  botPermissions: [import_discord49.PermissionFlagsBits.SendMessages, import_discord49.PermissionFlagsBits.SendPolls],
+  botPermissions: [import_discord51.PermissionFlagsBits.SendMessages, import_discord51.PermissionFlagsBits.SendPolls],
   async execute({ interaction }) {
     await deferEphemeral(interaction);
     const channel = interaction.channel;
@@ -126121,11 +126636,11 @@ var pollCommand = {
 };
 
 // apps/bot/src/commands/utility/remind.ts
-var import_discord50 = __toESM(require_src(), 1);
+var import_discord52 = __toESM(require_src(), 1);
 var MIN_DELAY_MS = 1e4;
 var MAX_MESSAGE = 500;
 var remindCommand = {
-  data: new import_discord50.SlashCommandBuilder().setName("remind").setDescription("Schedule and manage personal reminders.").addSubcommand(
+  data: new import_discord52.SlashCommandBuilder().setName("remind").setDescription("Schedule and manage personal reminders.").addSubcommand(
     (sub) => sub.setName("set").setDescription("Get a DM (or channel ping) at a future time.").addStringOption(
       (option) => option.setName("when").setDescription("When: 10m, 2h, 3d, 2w").setRequired(true).setMaxLength(32)
     ).addStringOption(
@@ -126151,6 +126666,7 @@ var remindCommand = {
       const message = interaction.options.getString("message")?.trim() || "Reminder";
       const remindAt = new Date(Date.now() + duration3);
       const rows = await db.insert(reminders).values({
+        guildId: interaction.guildId,
         userId: interaction.user.id,
         channelId: interaction.channelId,
         message,
@@ -126171,12 +126687,18 @@ var remindCommand = {
         id: reminders.id,
         message: reminders.message,
         remindAt: reminders.remindAt
-      }).from(reminders).where(and(eq(reminders.userId, interaction.user.id), eq(reminders.sent, false))).orderBy(asc(reminders.remindAt)).limit(10);
+      }).from(reminders).where(
+        and(
+          eq(reminders.guildId, interaction.guildId),
+          eq(reminders.userId, interaction.user.id),
+          eq(reminders.sent, false)
+        )
+      ).orderBy(asc(reminders.remindAt)).limit(10);
       if (rows.length === 0) {
         await interaction.editReply({ content: "You have no pending reminders." });
         return;
       }
-      const embed = new import_discord50.EmbedBuilder().setColor(5793266).setTitle("Your reminders").setDescription(
+      const embed = new import_discord52.EmbedBuilder().setColor(5793266).setTitle("Your reminders").setDescription(
         rows.map(
           (row) => `**#${row.id}** \u2014 <t:${Math.floor(row.remindAt.getTime() / 1e3)}:R> \u2014 ${truncate(
             row.message,
@@ -126190,6 +126712,7 @@ var remindCommand = {
     const id = interaction.options.getInteger("id", true);
     const deleted = await db.delete(reminders).where(
       and(
+        eq(reminders.guildId, interaction.guildId),
         eq(reminders.id, id),
         eq(reminders.userId, interaction.user.id),
         eq(reminders.sent, false)
@@ -126203,9 +126726,9 @@ var remindCommand = {
 };
 
 // apps/bot/src/commands/utility/roleinfo.ts
-var import_discord51 = __toESM(require_src(), 1);
+var import_discord53 = __toESM(require_src(), 1);
 var roleInfoCommand = {
-  data: new import_discord51.SlashCommandBuilder().setName("roleinfo").setDescription("Show information about a role.").addRoleOption(
+  data: new import_discord53.SlashCommandBuilder().setName("roleinfo").setDescription("Show information about a role.").addRoleOption(
     (option) => option.setName("role").setDescription("Role to inspect").setRequired(true)
   ),
   category: "utility",
@@ -126214,7 +126737,7 @@ var roleInfoCommand = {
     await deferPublic(interaction);
     const role = interaction.options.getRole("role", true);
     const permissions = role.permissions.toArray();
-    const embed = new import_discord51.EmbedBuilder().setColor(role.color || BRAND.color).setTitle(role.name).addFields(
+    const embed = new import_discord53.EmbedBuilder().setColor(role.color || BRAND.color).setTitle(role.name).addFields(
       { name: "Role ID", value: `\`${role.id}\``, inline: true },
       { name: "Color", value: `\`${role.hexColor}\``, inline: true },
       { name: "Position", value: String(role.position), inline: true },
@@ -126236,7 +126759,7 @@ var roleInfoCommand = {
 };
 
 // apps/bot/src/commands/utility/serverinfo.ts
-var import_discord52 = __toESM(require_src(), 1);
+var import_discord54 = __toESM(require_src(), 1);
 var VERIFICATION = {
   0: "None",
   1: "Low",
@@ -126245,12 +126768,12 @@ var VERIFICATION = {
   4: "Very high"
 };
 var serverInfoCommand = {
-  data: new import_discord52.SlashCommandBuilder().setName("serverinfo").setDescription("Show information about this server."),
+  data: new import_discord54.SlashCommandBuilder().setName("serverinfo").setDescription("Show information about this server."),
   category: "utility",
   cooldownSeconds: 3,
   async execute({ interaction, guild }) {
     await deferPublic(interaction);
-    const embed = new import_discord52.EmbedBuilder().setColor(BRAND.color).setTitle(guild.name).setThumbnail(guild.iconURL({ size: 256 })).addFields(
+    const embed = new import_discord54.EmbedBuilder().setColor(BRAND.color).setTitle(guild.name).setThumbnail(guild.iconURL({ size: 256 })).addFields(
       { name: "Owner", value: `<@${guild.ownerId}>`, inline: true },
       { name: "Server ID", value: `\`${guild.id}\``, inline: true },
       {
@@ -126285,7 +126808,7 @@ var serverInfoCommand = {
 };
 
 // apps/bot/src/commands/utility/timestamp.ts
-var import_discord53 = __toESM(require_src(), 1);
+var import_discord55 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/utility/time.ts
 var DISCORD_TIMESTAMP = /^<t:(\d{1,13})(?::[tTdDfFR])?>$/;
@@ -126322,7 +126845,7 @@ var STYLES = [
   ["Short time", "t"]
 ];
 var timestampCommand = {
-  data: new import_discord53.SlashCommandBuilder().setName("timestamp").setDescription("Convert a time into copy-ready Discord timestamps.").addStringOption(
+  data: new import_discord55.SlashCommandBuilder().setName("timestamp").setDescription("Convert a time into copy-ready Discord timestamps.").addStringOption(
     (option) => option.setName("time").setDescription("10m, 2h, 2026-12-31 18:00, a Unix timestamp, or <t:...>").setRequired(true).setMaxLength(100)
   ),
   category: "utility",
@@ -126337,7 +126860,7 @@ var timestampCommand = {
       );
     }
     const unix = Math.floor(epoch / 1e3);
-    const embed = new import_discord53.EmbedBuilder().setColor(5793266).setTitle("Discord timestamps").setDescription(`Input: \`${raw}\``).addFields(
+    const embed = new import_discord55.EmbedBuilder().setColor(5793266).setTitle("Discord timestamps").setDescription(`Input: \`${raw}\``).addFields(
       STYLES.map(([name, style]) => ({
         name,
         value: `\`<t:${unix}:${style}>\` \u2192 <t:${unix}:${style}>`
@@ -126348,9 +126871,9 @@ var timestampCommand = {
 };
 
 // apps/bot/src/commands/utility/userinfo.ts
-var import_discord54 = __toESM(require_src(), 1);
+var import_discord56 = __toESM(require_src(), 1);
 var userInfoCommand = {
-  data: new import_discord54.SlashCommandBuilder().setName("userinfo").setDescription("Show information about a user or member.").addUserOption(
+  data: new import_discord56.SlashCommandBuilder().setName("userinfo").setDescription("Show information about a user or member.").addUserOption(
     (option) => option.setName("user").setDescription("User to inspect (defaults to you)")
   ),
   category: "utility",
@@ -126359,7 +126882,7 @@ var userInfoCommand = {
     await deferPublic(interaction);
     const user = interaction.options.getUser("user") ?? interaction.user;
     const member = await guild.members.fetch(user.id).catch(() => null);
-    const embed = new import_discord54.EmbedBuilder().setColor(BRAND.color).setTitle(member?.displayName ?? user.username).setThumbnail(user.displayAvatarURL({ size: 256 })).addFields(
+    const embed = new import_discord56.EmbedBuilder().setColor(BRAND.color).setTitle(member?.displayName ?? user.username).setThumbnail(user.displayAvatarURL({ size: 256 })).addFields(
       { name: "Username", value: `\`${user.username}\``, inline: true },
       { name: "User ID", value: `\`${user.id}\``, inline: true },
       { name: "Bot", value: user.bot ? "Yes" : "No", inline: true },
@@ -126406,6 +126929,7 @@ var userInfoCommand = {
 var commands = [
   pingCommand,
   helpCommand,
+  premiumCommand,
   setupCommand,
   statsCommand,
   rankCommand,
@@ -126480,9 +127004,12 @@ var EnvSchema = external_exports.object({
   NODE_ENV: external_exports.enum(["development", "test", "production"]).default("development"),
   DISCORD_TOKEN: external_exports.string().min(20, "Missing bot token"),
   DISCORD_CLIENT_ID: external_exports.string().regex(/^\d{17,20}$/, "Must be the application ID"),
-  GUILD_ID: external_exports.string().regex(/^\d{17,20}$/, "Must be the target guild ID"),
+  /** Optional development shortcut; production commands are registered globally. */
+  DEV_GUILD_ID: external_exports.string().regex(/^\d{17,20}$/, "Must be a guild ID").optional(),
   DATABASE_URL: optionalString,
   MIGRATE_DATABASE_URL: optionalString,
+  /** Public dashboard origin, used only for links in bot replies. */
+  DASHBOARD_URL: optionalString,
   LOG_LEVEL: external_exports.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
   REGISTER_COMMANDS: booleanish(true),
   SKIP_MIGRATIONS: booleanish(false),
@@ -126520,20 +127047,84 @@ ${details}`);
 }
 __name(loadEnv, "loadEnv");
 
-// apps/bot/src/core/client.ts
-var import_discord55 = __toESM(require_src(), 1);
-var NervanaClient = class extends import_discord55.Client {
-  static {
-    __name(this, "NervanaClient");
+// apps/bot/src/config/settings.ts
+async function readSettings(db, guildId, onInvalid) {
+  const rows = await db.select({ modules: settings.modules, updatedAt: settings.updatedAt }).from(settings).where(eq(settings.guildId, guildId)).limit(1);
+  const row = rows[0];
+  if (!row) {
+    await db.insert(settings).values({ guildId, modules: DEFAULT_CONFIG }).onConflictDoNothing().catch(() => {
+    });
+    return { config: parseConfig(DEFAULT_CONFIG), updatedAt: Date.now() };
   }
-  commands = new import_discord55.Collection();
+  try {
+    return { config: parseConfig(row.modules), updatedAt: row.updatedAt.getTime() };
+  } catch (error62) {
+    onInvalid?.(error62);
+    return { config: parseConfig(DEFAULT_CONFIG), updatedAt: row.updatedAt.getTime() };
+  }
+}
+__name(readSettings, "readSettings");
+function startSettingsPoller(client) {
+  if (!client.db) return;
+  if (client.settingsPollTimer) return;
+  client.settingsPollTimer = setInterval(() => {
+    void poll(client);
+  }, 15e3);
+  client.settingsPollTimer.unref();
+}
+__name(startSettingsPoller, "startSettingsPoller");
+async function poll(client) {
+  if (!client.db) return;
+  const since = new Date(client.settingsPollSince);
+  try {
+    const rows = await client.db.select({
+      guildId: settings.guildId,
+      modules: settings.modules,
+      updatedAt: settings.updatedAt
+    }).from(settings).where(gt(settings.updatedAt, since)).orderBy(asc(settings.updatedAt)).limit(500);
+    for (const row of rows) {
+      try {
+        const config2 = parseConfig(row.modules);
+        client.cacheSettings(row.guildId, config2, row.updatedAt.getTime());
+        client.invalidatePremium(row.guildId);
+        const guild = client.guilds.cache.get(row.guildId);
+        if (guild) void applyPersonalizer(client, guild, config2);
+      } catch (error62) {
+        client.logger.warn({ err: error62, guildId: row.guildId }, "invalid guild settings skipped");
+      }
+    }
+    const last = rows[rows.length - 1];
+    client.settingsPollSince = last ? last.updatedAt.getTime() : Date.now();
+  } catch (error62) {
+    client.logger.warn({ err: error62 }, "settings poll failed");
+  }
+}
+__name(poll, "poll");
+function stopSettingsPoller(client) {
+  if (client.settingsPollTimer) {
+    clearInterval(client.settingsPollTimer);
+    client.settingsPollTimer = null;
+  }
+}
+__name(stopSettingsPoller, "stopSettingsPoller");
+
+// apps/bot/src/core/client.ts
+var import_discord57 = __toESM(require_src(), 1);
+var MAX_SETTINGS_CACHE = 5e3;
+var PREMIUM_CACHE_MS = 15e3;
+var VeyraClient = class extends import_discord57.Client {
+  static {
+    __name(this, "VeyraClient");
+  }
+  commands = new import_discord57.Collection();
   startedAt = Date.now();
   env;
   logger;
   db = null;
-  settings;
-  settingsUpdatedAt = 0;
+  settingsCache = /* @__PURE__ */ new Map();
+  settingsPollSince = Date.now() - 6e4;
   settingsPollTimer = null;
+  premiumCache = /* @__PURE__ */ new Map();
   leveling = null;
   moderation = null;
   automod = null;
@@ -126545,20 +127136,20 @@ var NervanaClient = class extends import_discord55.Client {
   constructor() {
     super({
       intents: [
-        import_discord55.GatewayIntentBits.Guilds,
-        import_discord55.GatewayIntentBits.GuildMembers,
-        import_discord55.GatewayIntentBits.GuildMessages,
-        import_discord55.GatewayIntentBits.MessageContent,
-        import_discord55.GatewayIntentBits.DirectMessages,
-        import_discord55.GatewayIntentBits.GuildVoiceStates,
-        import_discord55.GatewayIntentBits.GuildMessageReactions
+        import_discord57.GatewayIntentBits.Guilds,
+        import_discord57.GatewayIntentBits.GuildMembers,
+        import_discord57.GatewayIntentBits.GuildMessages,
+        import_discord57.GatewayIntentBits.MessageContent,
+        import_discord57.GatewayIntentBits.DirectMessages,
+        import_discord57.GatewayIntentBits.GuildVoiceStates,
+        import_discord57.GatewayIntentBits.GuildMessageReactions
       ],
-      partials: [import_discord55.Partials.Message, import_discord55.Partials.Channel, import_discord55.Partials.GuildMember, import_discord55.Partials.Reaction],
+      partials: [import_discord57.Partials.Message, import_discord57.Partials.Channel, import_discord57.Partials.GuildMember, import_discord57.Partials.Reaction],
       allowedMentions: { parse: ["users"], repliedUser: false },
-      makeCache: import_discord55.Options.cacheWithLimits({
-        ...import_discord55.Options.DefaultMakeCacheSettings,
-        // Bound the caches that grow with traffic, keep the ones needed for a
-        // single guild's member lookups.
+      makeCache: import_discord57.Options.cacheWithLimits({
+        ...import_discord57.Options.DefaultMakeCacheSettings,
+        // Bound the caches that grow with traffic. Member caches are per guild
+        // and Discord.js evicts them as the bot joins more servers.
         MessageManager: 100,
         PresenceManager: 0,
         ReactionManager: 50,
@@ -126576,18 +127167,91 @@ var NervanaClient = class extends import_discord55.Client {
       }
     });
   }
-  isCategoryEnabled(category) {
+  /** Returns the config for a guild, loading it lazily and applying env overrides. */
+  async getConfig(guildId) {
+    const cached2 = this.settingsCache.get(guildId);
+    if (cached2) return cached2.config;
+    const config2 = await this.loadConfig(guildId);
+    return config2;
+  }
+  async loadConfig(guildId) {
+    if (!this.db) {
+      const config2 = parseConfig(DEFAULT_CONFIG);
+      this.cacheSettings(guildId, config2, Date.now());
+      return config2;
+    }
+    try {
+      const row = await readGuildConfig(this.db, guildId);
+      const config2 = row?.config ?? parseConfig(DEFAULT_CONFIG);
+      this.cacheSettings(guildId, config2, row?.updatedAt.getTime() ?? Date.now());
+      return config2;
+    } catch (error62) {
+      this.logger?.warn({ err: error62, guildId }, "guild settings load failed - using defaults");
+      return parseConfig(DEFAULT_CONFIG);
+    }
+  }
+  cacheSettings(guildId, config2, updatedAt) {
+    if (this.settingsCache.size >= MAX_SETTINGS_CACHE) {
+      const oldest = this.settingsCache.keys().next().value;
+      if (oldest) this.settingsCache.delete(oldest);
+    }
+    this.settingsCache.set(guildId, {
+      config: this.applyOverrides(config2),
+      updatedAt
+    });
+  }
+  applyOverrides(config2) {
+    if (this.env.MUSIC_ENABLED) return config2;
+    return { ...config2, music: { ...config2.music, enabled: false } };
+  }
+  /** Synchronous view of the last premium check. Unknown guilds are free. */
+  premiumCached(guildId) {
+    const cached2 = this.premiumCache.get(guildId);
+    if (!cached2) return false;
+    return premiumActive(cached2.tier, cached2.until);
+  }
+  /** Cache-backed premium check. Premium grants are per guild. */
+  async isPremium(guildId) {
+    const cached2 = this.premiumCache.get(guildId);
+    const now = Date.now();
+    if (cached2 && now - cached2.checkedAt < PREMIUM_CACHE_MS) {
+      return premiumActive(cached2.tier, cached2.until, now);
+    }
+    if (!this.db) return false;
+    try {
+      const row = await readGuild(this.db, guildId);
+      if (!row) return false;
+      if (this.premiumCache.size >= MAX_SETTINGS_CACHE) {
+        const oldest = this.premiumCache.keys().next().value;
+        if (oldest) this.premiumCache.delete(oldest);
+      }
+      this.premiumCache.set(guildId, {
+        active: premiumActive(row.premiumTier, row.premiumUntil),
+        tier: row.premiumTier,
+        until: row.premiumUntil,
+        checkedAt: now
+      });
+      return premiumActive(row.premiumTier, row.premiumUntil, now);
+    } catch (error62) {
+      this.logger?.warn({ err: error62, guildId }, "premium lookup failed");
+      return false;
+    }
+  }
+  invalidatePremium(guildId) {
+    this.premiumCache.delete(guildId);
+  }
+  isCategoryEnabled(category, config2) {
     switch (category) {
       case "leveling":
-        return this.settings.leveling.enabled;
+        return config2.leveling.enabled;
       case "economy":
-        return this.settings.economy.enabled;
+        return config2.economy.enabled;
       case "tickets":
-        return this.settings.tickets.enabled;
+        return config2.tickets.enabled;
       case "music":
-        return this.settings.music.enabled;
+        return config2.music.enabled;
       case "stats":
-        return this.settings.stats.enabled;
+        return config2.stats.enabled;
       case "core":
       case "moderation":
       case "logging":
@@ -126611,21 +127275,21 @@ function registerCommands(client, commands2) {
   }
 }
 __name(registerCommands, "registerCommands");
-async function registerGuildCommands(client) {
+async function registerApplicationCommands(client) {
   if (!client.env.REGISTER_COMMANDS || !client.application) return;
-  const guild = client.guilds.cache.get(client.env.GUILD_ID);
-  if (!guild) {
-    client.logger.warn(
-      { guildId: client.env.GUILD_ID },
-      "cannot register commands before joining the target guild"
+  const payload = [...client.commands.values()].map((command) => command.data.toJSON());
+  if (client.env.DEV_GUILD_ID) {
+    await client.application.commands.set(payload, client.env.DEV_GUILD_ID);
+    client.logger.info(
+      { count: payload.length, guildId: client.env.DEV_GUILD_ID },
+      "registered development guild commands"
     );
     return;
   }
-  const payload = [...client.commands.values()].map((command) => command.data.toJSON());
-  await client.application.commands.set(payload, guild.id);
-  client.logger.info({ count: payload.length, guildId: guild.id }, "registered guild commands");
+  await client.application.commands.set(payload);
+  client.logger.info({ count: payload.length }, "registered global commands");
 }
-__name(registerGuildCommands, "registerGuildCommands");
+__name(registerApplicationCommands, "registerApplicationCommands");
 
 // apps/bot/src/core/events.ts
 function registerEvents(client, events2) {
@@ -126651,7 +127315,7 @@ var import_pino = __toESM(require_pino(), 1);
 function createLogger(level) {
   return (0, import_pino.default)({
     level,
-    base: { service: "nervana" },
+    base: { service: "Veyra" },
     timestamp: import_pino.default.stdTimeFunctions.isoTime,
     formatters: {
       level: /* @__PURE__ */ __name((label2) => ({ level: label2 }), "level")
@@ -126676,44 +127340,50 @@ ${candidates.map((candidate) => `  - ${candidate}`).join("\n")}`
 __name(resolveMigrationsDir, "resolveMigrationsDir");
 
 // apps/bot/src/events/channel-update.ts
-var import_discord57 = __toESM(require_src(), 1);
+var import_discord59 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/logging/service.ts
-var import_discord56 = __toESM(require_src(), 1);
-function isLogIgnored(client, channelId, userId) {
-  const config2 = client.settings.logging;
+var import_discord58 = __toESM(require_src(), 1);
+function isLogIgnored(config2, channelId, userId) {
   if (channelId && config2.ignoreChannelIds.includes(channelId)) return true;
   if (userId && config2.ignoreUserIds.includes(userId)) return true;
   return false;
 }
 __name(isLogIgnored, "isLogIgnored");
 function logEmbed(title, color = BRAND.muted) {
-  return new import_discord56.EmbedBuilder().setColor(color).setTitle(title);
+  return new import_discord58.EmbedBuilder().setColor(color).setTitle(title);
 }
 __name(logEmbed, "logEmbed");
-async function sendLog(client, event, embed) {
-  const config2 = client.settings.logging;
-  if (!config2.enabled) return;
-  const channelId = config2.channels[event];
+async function sendLog(client, guildId, event, embed, config2) {
+  const resolved = config2 ?? await client.getConfig(guildId);
+  const logging = resolved.logging;
+  if (!logging.enabled) return;
+  const channelId = logging.channels[event];
   if (!channelId) return;
-  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const guild = client.guilds.cache.get(guildId);
   const channel = guild?.channels.cache.get(channelId);
   if (!channel?.isTextBased()) return;
-  embed.setFooter({ text: `${BRAND.footer} \xB7 ${event}` }).setTimestamp();
+  brandEmbed(client, guildId, embed, resolved, true);
+  const footer = embed.data.footer?.text ?? BRAND.footer;
+  embed.setFooter({
+    text: `${footer} \xB7 ${event}`.slice(0, 2048),
+    iconURL: embed.data.footer?.icon_url
+  });
+  embed.setTimestamp();
   await channel.send({ embeds: [embed], allowedMentions: { parse: [] } }).catch((error62) => {
-    client.logger.warn({ err: error62, event, channelId }, "failed to send log");
+    client.logger.warn({ err: error62, guildId, event, channelId }, "failed to send log");
   });
 }
 __name(sendLog, "sendLog");
 
 // apps/bot/src/events/channel-update.ts
 var channelUpdateEvent = {
-  name: import_discord57.Events.ChannelUpdate,
+  name: import_discord59.Events.ChannelUpdate,
   async execute(client, oldChannel, newChannel) {
-    if (newChannel.isDMBased()) return;
-    if (newChannel.guild.id !== client.env.GUILD_ID) return;
-    if (isLogIgnored(client, newChannel.id)) return;
-    if (!("guild" in oldChannel)) return;
+    if (newChannel.isDMBased() || !("guild" in oldChannel)) return;
+    const guildId = newChannel.guild.id;
+    const config2 = await client.getConfig(guildId);
+    if (isLogIgnored(config2.logging, newChannel.id)) return;
     const changes = [];
     if (oldChannel.name !== newChannel.name) {
       changes.push(`**Name:** ${oldChannel.name} \u2192 ${newChannel.name}`);
@@ -126752,60 +127422,79 @@ var channelUpdateEvent = {
       { name: "Channel", value: `<#${newChannel.id}>`, inline: true },
       { name: "Changes", value: truncate(changes.join("\n"), 1024) }
     );
-    await sendLog(client, "channelUpdate", embed);
+    await sendLog(client, guildId, "channelUpdate", embed, config2);
   }
 };
 
 // apps/bot/src/events/client-error.ts
-var import_discord58 = __toESM(require_src(), 1);
+var import_discord60 = __toESM(require_src(), 1);
 var errorEvent = {
-  name: import_discord58.Events.Error,
+  name: import_discord60.Events.Error,
   execute(client, error62) {
     client.logger.error({ err: error62 }, "discord client error");
   }
 };
 var warnEvent = {
-  name: import_discord58.Events.Warn,
+  name: import_discord60.Events.Warn,
   execute(client, message) {
     client.logger.warn({ message }, "discord client warning");
   }
 };
 
 // apps/bot/src/events/guild-create.ts
-var import_discord59 = __toESM(require_src(), 1);
+var import_discord61 = __toESM(require_src(), 1);
 var guildCreateEvent = {
-  name: import_discord59.Events.GuildCreate,
+  name: import_discord61.Events.GuildCreate,
   async execute(client, guild) {
-    if (guild.id === client.env.GUILD_ID) {
-      client.logger.info({ guildId: guild.id, name: guild.name }, "joined the target guild");
-      try {
-        await registerGuildCommands(client);
-      } catch (error62) {
-        client.logger.error({ err: error62 }, "failed to register guild commands");
-      }
-      return;
-    }
-    client.logger.warn(
+    client.logger.info(
       { guildId: guild.id, name: guild.name, members: guild.memberCount },
-      "joined an unauthorized guild \u2014 leaving"
+      "joined a guild"
     );
-    await guild.leave().catch(
-      (error62) => client.logger.error({ err: error62, guildId: guild.id }, "failed to leave guild")
-    );
+    if (!client.db) return;
+    try {
+      await ensureGuild(client.db, {
+        id: guild.id,
+        name: guild.name,
+        icon: guild.icon,
+        ownerId: guild.ownerId,
+        memberCount: guild.memberCount
+      });
+      const settings2 = await readSettings(client.db, guild.id);
+      client.cacheSettings(guild.id, settings2.config, settings2.updatedAt);
+      client.invalidatePremium(guild.id);
+      await applyPersonalizer(client, guild, settings2.config);
+    } catch (error62) {
+      client.logger.error({ err: error62, guildId: guild.id }, "failed to initialise joined guild");
+    }
+  }
+};
+
+// apps/bot/src/events/guild-delete.ts
+var import_discord62 = __toESM(require_src(), 1);
+var guildDeleteEvent = {
+  name: import_discord62.Events.GuildDelete,
+  async execute(client, guild) {
+    client.logger.info({ guildId: guild.id, name: guild.name }, "left or lost a guild");
+    client.settingsCache.delete(guild.id);
+    client.invalidatePremium(guild.id);
+    if (!client.db) return;
+    await markGuildLeft(client.db, guild.id).catch((error62) => {
+      client.logger.warn({ err: error62, guildId: guild.id }, "failed to mark guild as left");
+    });
   }
 };
 
 // apps/bot/src/events/interaction-create.ts
-var import_discord63 = __toESM(require_src(), 1);
+var import_discord66 = __toESM(require_src(), 1);
 
 // apps/bot/src/core/interaction-handler.ts
-var import_discord60 = __toESM(require_src(), 1);
+var import_discord63 = __toESM(require_src(), 1);
 
 // apps/bot/src/core/cooldowns.ts
 var cooldowns = /* @__PURE__ */ new Map();
-function takeCooldown(userId, commandName, seconds) {
+function takeCooldown(guildId, userId, commandName, seconds) {
   if (seconds <= 0) return 0;
-  const key = `${userId}:${commandName}`;
+  const key = `${guildId}:${userId}:${commandName}`;
   const now = Date.now();
   const until = cooldowns.get(key) ?? 0;
   if (until > now) return until - now;
@@ -126823,22 +127512,29 @@ __name(takeCooldown, "takeCooldown");
 async function handleChatInputCommand(client, interaction) {
   if (!interaction.inCachedGuild()) {
     await interaction.reply({
-      content: "Nervana only works inside its configured server.",
-      flags: import_discord60.MessageFlags.Ephemeral
+      content: "Veyra only works inside a Discord server.",
+      flags: import_discord63.MessageFlags.Ephemeral
     }).catch(() => {
     });
     return;
   }
-  if (interaction.guildId !== client.env.GUILD_ID) {
-    await replyError(interaction, "This bot is locked to a different server.");
-    return;
-  }
   const command = client.commands.get(interaction.commandName);
   if (!command) return;
+  const guildId = interaction.guildId;
   const errorId = newErrorId();
+  const config2 = await client.getConfig(guildId);
+  const premium = await client.isPremium(guildId);
   try {
-    if (!client.isCategoryEnabled(command.category) && !command.allowWhenDisabled) {
+    if (!client.isCategoryEnabled(command.category, config2) && !command.allowWhenDisabled) {
       await replyError(interaction, `**/${command.data.name}** is disabled on this server.`);
+      return;
+    }
+    if (command.premiumOnly && !premium) {
+      const feature = command.premiumFeature ? PREMIUM_FEATURES.find((entry) => entry.id === command.premiumFeature) : null;
+      await replyError(
+        interaction,
+        `${feature ? `**${feature.name}** is` : "This command is"} a **Veyra Premium** feature. Upgrade in the dashboard at **/premium**.`
+      );
       return;
     }
     if (command.userPermissions?.length) {
@@ -126846,7 +127542,7 @@ async function handleChatInputCommand(client, interaction) {
       if (missing.length > 0) {
         await replyError(
           interaction,
-          `You need the following permissions: ${new import_discord60.PermissionsBitField(missing).toArray().join(", ")}.`
+          `You need the following permissions: ${new import_discord63.PermissionsBitField(missing).toArray().join(", ")}.`
         );
         return;
       }
@@ -126856,12 +127552,13 @@ async function handleChatInputCommand(client, interaction) {
       if (missing.length > 0) {
         await replyError(
           interaction,
-          `I am missing permissions: ${new import_discord60.PermissionsBitField(missing).toArray().join(", ")}.`
+          `I am missing permissions: ${new import_discord63.PermissionsBitField(missing).toArray().join(", ")}.`
         );
         return;
       }
     }
     const remaining = takeCooldown(
+      guildId,
       interaction.user.id,
       command.data.name,
       command.cooldownSeconds ?? 1
@@ -126870,13 +127567,14 @@ async function handleChatInputCommand(client, interaction) {
       await replyError(interaction, `Slow down - try again in ${(remaining / 1e3).toFixed(1)}s.`);
       return;
     }
-    client.stats?.recordCommand(command.data.name);
+    client.stats?.recordCommand(guildId, command.data.name);
     await command.execute({
       client,
       interaction,
       guild: interaction.guild,
       member: interaction.member,
-      settings: client.settings
+      settings: config2,
+      premium
     });
   } catch (error62) {
     client.logger.error(
@@ -126896,10 +127594,9 @@ async function handleChatInputCommand(client, interaction) {
 __name(handleChatInputCommand, "handleChatInputCommand");
 
 // apps/bot/src/modules/community/interactions.ts
-var import_discord61 = __toESM(require_src(), 1);
+var import_discord64 = __toESM(require_src(), 1);
 async function handleCommunityInteraction(client, interaction) {
   if (!interaction.inCachedGuild()) return;
-  if (interaction.guildId !== client.env.GUILD_ID) return;
   const customId = interaction.customId;
   const isGiveaway = customId.startsWith("giveaway:enter:");
   const isRoleSelect = customId === "rr:select";
@@ -126944,10 +127641,10 @@ async function handleCommunityInteraction(client, interaction) {
 __name(handleCommunityInteraction, "handleCommunityInteraction");
 
 // apps/bot/src/modules/tickets/interactions.ts
-var import_discord62 = __toESM(require_src(), 1);
+var import_discord65 = __toESM(require_src(), 1);
 function requireTextChannel(interaction) {
   const channel = interaction.channel;
-  if (!channel || channel.type !== import_discord62.ChannelType.GuildText) {
+  if (!channel || channel.type !== import_discord65.ChannelType.GuildText) {
     throw new UserFacingError("This action only works inside a ticket channel.");
   }
   return channel;
@@ -126959,7 +127656,6 @@ function closeSummary(result) {
 __name(closeSummary, "closeSummary");
 async function handleTicketInteraction(client, interaction) {
   if (!interaction.inCachedGuild()) return;
-  if (interaction.guildId !== client.env.GUILD_ID) return;
   const customId = interaction.customId;
   if (!customId.startsWith("ticket:")) return;
   const errorId = newErrorId();
@@ -126978,9 +127674,9 @@ async function handleTicketInteraction(client, interaction) {
         return;
       }
       if (customId === "ticket:close") {
-        const modal = new import_discord62.ModalBuilder().setCustomId("ticket:close:modal").setTitle("Close ticket").addComponents(
-          new import_discord62.ActionRowBuilder().addComponents(
-            new import_discord62.TextInputBuilder().setCustomId("reason").setLabel("Reason (optional)").setStyle(import_discord62.TextInputStyle.Paragraph).setRequired(false).setMaxLength(500)
+        const modal = new import_discord65.ModalBuilder().setCustomId("ticket:close:modal").setTitle("Close ticket").addComponents(
+          new import_discord65.ActionRowBuilder().addComponents(
+            new import_discord65.TextInputBuilder().setCustomId("reason").setLabel("Reason (optional)").setStyle(import_discord65.TextInputStyle.Paragraph).setRequired(false).setMaxLength(500)
           )
         );
         await interaction.showModal(modal);
@@ -127025,7 +127721,7 @@ __name(handleTicketInteraction, "handleTicketInteraction");
 
 // apps/bot/src/events/interaction-create.ts
 var interactionCreateEvent = {
-  name: import_discord63.Events.InteractionCreate,
+  name: import_discord66.Events.InteractionCreate,
   async execute(client, interaction) {
     if (interaction.isChatInputCommand()) {
       await handleChatInputCommand(client, interaction);
@@ -127041,47 +127737,49 @@ var interactionCreateEvent = {
 };
 
 // apps/bot/src/events/member-add.ts
-var import_discord64 = __toESM(require_src(), 1);
+var import_discord67 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/welcome/service.ts
 function render(template, member, serverName) {
   return template.replaceAll("{user}", `<@${member.id}>`).replaceAll("{username}", member.user?.username ?? "Unknown").replaceAll("{server}", serverName).replaceAll("{memberCount}", String(member.guild.memberCount));
 }
 __name(render, "render");
-async function deliver(client, channelId, content, userId) {
+async function deliver(client, guildId, channelId, content, userId) {
   if (!channelId) return;
-  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const guild = client.guilds.cache.get(guildId);
   const channel = guild?.channels.cache.get(channelId);
   if (!channel?.isTextBased()) return;
   await channel.send({ content, allowedMentions: { users: [userId] } }).catch((error62) => {
-    client.logger.warn({ err: error62, channelId }, "failed to send welcome message");
+    client.logger.warn({ err: error62, guildId, channelId }, "failed to send welcome message");
   });
 }
 __name(deliver, "deliver");
 async function onMemberJoin(client, member) {
-  const config2 = client.settings.welcome;
-  for (const roleId of config2.autoRoleIds) {
+  const config2 = await client.getConfig(member.guild.id);
+  for (const roleId of config2.welcome.autoRoleIds) {
     if (member.roles.cache.has(roleId)) continue;
     await member.roles.add(roleId, "Automatic join role").catch(
       (error62) => client.logger.warn({ err: error62, roleId, userId: member.id }, "failed to add auto role")
     );
   }
-  if (!config2.joinEnabled || !config2.joinChannelId) return;
+  if (!config2.welcome.joinEnabled || !config2.welcome.joinChannelId) return;
   await deliver(
     client,
-    config2.joinChannelId,
-    render(config2.joinMessage, member, member.guild.name),
+    member.guild.id,
+    config2.welcome.joinChannelId,
+    render(config2.welcome.joinMessage, member, member.guild.name),
     member.id
   );
 }
 __name(onMemberJoin, "onMemberJoin");
 async function onMemberLeave(client, member) {
-  const config2 = client.settings.welcome;
-  if (!config2.leaveEnabled || !config2.leaveChannelId) return;
+  const config2 = await client.getConfig(member.guild.id);
+  if (!config2.welcome.leaveEnabled || !config2.welcome.leaveChannelId) return;
   await deliver(
     client,
-    config2.leaveChannelId,
-    render(config2.leaveMessage, member, member.guild.name),
+    member.guild.id,
+    config2.welcome.leaveChannelId,
+    render(config2.welcome.leaveMessage, member, member.guild.name),
     member.id
   );
 }
@@ -127089,11 +127787,11 @@ __name(onMemberLeave, "onMemberLeave");
 
 // apps/bot/src/events/member-add.ts
 var guildMemberAddEvent = {
-  name: import_discord64.Events.GuildMemberAdd,
+  name: import_discord67.Events.GuildMemberAdd,
   async execute(client, member) {
-    if (member.guild.id !== client.env.GUILD_ID) return;
-    client.stats?.recordJoin();
-    if (!isLogIgnored(client, null, member.id)) {
+    const config2 = await client.getConfig(member.guild.id);
+    client.stats?.recordJoin(member.guild.id);
+    if (!isLogIgnored(config2.logging, null, member.id)) {
       const embed = logEmbed("Member joined", BRAND.success).setThumbnail(member.displayAvatarURL({ size: 128 })).addFields(
         { name: "Member", value: `${member} \`${member.id}\``, inline: true },
         {
@@ -127103,7 +127801,7 @@ var guildMemberAddEvent = {
         },
         { name: "Member count", value: String(member.guild.memberCount), inline: true }
       );
-      await sendLog(client, "memberJoin", embed);
+      await sendLog(client, member.guild.id, "memberJoin", embed, config2);
     }
     const handled = await client.automod?.handleJoin(member) ?? false;
     if (handled) return;
@@ -127112,13 +127810,13 @@ var guildMemberAddEvent = {
 };
 
 // apps/bot/src/events/member-remove.ts
-var import_discord65 = __toESM(require_src(), 1);
+var import_discord68 = __toESM(require_src(), 1);
 var guildMemberRemoveEvent = {
-  name: import_discord65.Events.GuildMemberRemove,
+  name: import_discord68.Events.GuildMemberRemove,
   async execute(client, member) {
-    if (member.guild.id !== client.env.GUILD_ID) return;
-    client.stats?.recordLeave();
-    if (!isLogIgnored(client, null, member.id)) {
+    const config2 = await client.getConfig(member.guild.id);
+    client.stats?.recordLeave(member.guild.id);
+    if (!isLogIgnored(config2.logging, null, member.id)) {
       const avatar = member.user?.displayAvatarURL({ size: 128 });
       const embed = logEmbed("Member left", BRAND.danger).addFields(
         {
@@ -127134,21 +127832,21 @@ var guildMemberRemoveEvent = {
         { name: "Roles", value: String(member.roles?.cache.size ?? 0), inline: true }
       );
       if (avatar) embed.setThumbnail(avatar);
-      await sendLog(client, "memberLeave", embed);
+      await sendLog(client, member.guild.id, "memberLeave", embed, config2);
     }
     await onMemberLeave(client, member);
   }
 };
 
 // apps/bot/src/events/member-update.ts
-var import_discord66 = __toESM(require_src(), 1);
+var import_discord69 = __toESM(require_src(), 1);
 var guildMemberUpdateEvent = {
-  name: import_discord66.Events.GuildMemberUpdate,
+  name: import_discord69.Events.GuildMemberUpdate,
   async execute(client, oldMember, newMember) {
-    if (newMember.guild.id !== client.env.GUILD_ID) return;
-    if (newMember.user.bot) return;
-    if (isLogIgnored(client, null, newMember.id)) return;
-    if (oldMember.partial) return;
+    if (newMember.user.bot || oldMember.partial) return;
+    const guildId = newMember.guild.id;
+    const config2 = await client.getConfig(guildId);
+    if (isLogIgnored(config2.logging, null, newMember.id)) return;
     const changes = [];
     if (oldMember.nickname !== newMember.nickname) {
       changes.push(
@@ -127177,17 +127875,19 @@ var guildMemberUpdateEvent = {
       { name: "Member", value: `${newMember} \`${newMember.id}\``, inline: true },
       { name: "Changes", value: truncate(changes.join("\n"), 1024) }
     );
-    await sendLog(client, "memberUpdate", embed);
+    await sendLog(client, guildId, "memberUpdate", embed, config2);
   }
 };
 
 // apps/bot/src/events/message-bulk-delete.ts
-var import_discord67 = __toESM(require_src(), 1);
+var import_discord70 = __toESM(require_src(), 1);
 var messageBulkDeleteEvent = {
-  name: import_discord67.Events.MessageBulkDelete,
+  name: import_discord70.Events.MessageBulkDelete,
   async execute(client, messages2, channel) {
-    if (!channel.guildId || channel.guildId !== client.env.GUILD_ID) return;
-    if (isLogIgnored(client, channel.id)) return;
+    if (!channel.guildId) return;
+    const guildId = channel.guildId;
+    const config2 = await client.getConfig(guildId);
+    if (isLogIgnored(config2.logging, channel.id)) return;
     const sample = [...messages2.values()].slice(0, 10).map((message) => {
       const author = message.author?.username ?? "Unknown";
       return `\u2022 **${author}**: ${truncate(message.content?.trim() || "*Not cached*", 90)}`;
@@ -127197,17 +127897,17 @@ var messageBulkDeleteEvent = {
       { name: "Count", value: String(messages2.size), inline: true },
       { name: "Sample", value: truncate(sample || "*No cached content*", 1024) }
     );
-    await sendLog(client, "messageBulkDelete", embed);
+    await sendLog(client, guildId, "messageBulkDelete", embed, config2);
   }
 };
 
 // apps/bot/src/events/message-create.ts
-var import_discord68 = __toESM(require_src(), 1);
+var import_discord71 = __toESM(require_src(), 1);
 var messageCreateEvent = {
-  name: import_discord68.Events.MessageCreate,
+  name: import_discord71.Events.MessageCreate,
   async execute(client, message) {
-    if (message.author.bot) return;
-    client.stats?.recordMessage();
+    if (!message.inGuild() || message.author.bot) return;
+    client.stats?.recordMessage(message.guildId);
     const handled = await client.automod?.handleMessage(message) ?? false;
     if (handled) return;
     await client.leveling?.record(message);
@@ -127215,13 +127915,14 @@ var messageCreateEvent = {
 };
 
 // apps/bot/src/events/message-delete.ts
-var import_discord69 = __toESM(require_src(), 1);
+var import_discord72 = __toESM(require_src(), 1);
 var messageDeleteEvent = {
-  name: import_discord69.Events.MessageDelete,
+  name: import_discord72.Events.MessageDelete,
   async execute(client, message) {
-    if (!message.inGuild() || message.guildId !== client.env.GUILD_ID) return;
-    if (message.author?.bot) return;
-    if (isLogIgnored(client, message.channelId, message.author?.id)) return;
+    if (!message.inGuild() || message.author?.bot) return;
+    const guildId = message.guildId;
+    const config2 = await client.getConfig(guildId);
+    if (isLogIgnored(config2.logging, message.channelId, message.author?.id)) return;
     const embed = logEmbed("Message deleted", BRAND.danger).addFields(
       {
         name: "Author",
@@ -127243,18 +127944,18 @@ var messageDeleteEvent = {
         )
       });
     }
-    await sendLog(client, "messageDelete", embed);
+    await sendLog(client, guildId, "messageDelete", embed, config2);
   }
 };
 
 // apps/bot/src/events/message-reaction-add.ts
-var import_discord71 = __toESM(require_src(), 1);
+var import_discord74 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/community/starboard.ts
-var import_discord70 = __toESM(require_src(), 1);
+var import_discord73 = __toESM(require_src(), 1);
 var STAR = "\u2B50";
 function starEmbed(message, count2) {
-  const embed = new import_discord70.EmbedBuilder().setColor(15844367).setAuthor({
+  const embed = new import_discord73.EmbedBuilder().setColor(15844367).setAuthor({
     name: message.author.tag,
     iconURL: message.author.displayAvatarURL({ size: 64 })
   }).setTimestamp(message.createdAt).setFooter({ text: `${count2} ${STAR}` });
@@ -127283,10 +127984,10 @@ async function resolveReaction(reaction) {
 __name(resolveReaction, "resolveReaction");
 async function handleStarboard(client, reaction, user) {
   if (user.bot) return;
-  const config2 = client.settings.community.starboard;
-  if (!config2.enabled || !config2.channelId) return;
   if (!reaction.message.inGuild()) return;
-  if (reaction.message.guildId !== client.env.GUILD_ID) return;
+  const guildId = reaction.message.guildId;
+  const config2 = (await client.getConfig(guildId)).community.starboard;
+  if (!config2.enabled || !config2.channelId) return;
   if (reaction.message.channelId === config2.channelId) return;
   if (config2.ignoreChannelIds.includes(reaction.message.channelId)) return;
   if (reaction.emoji.name !== STAR && reaction.emoji.toString() !== STAR) return;
@@ -127296,7 +127997,9 @@ async function handleStarboard(client, reaction, user) {
   if (message.author.bot || message.system) return;
   const db = requireDb(client);
   const count2 = resolved.reaction.count;
-  const existing = await db.select().from(starboardPosts).where(eq(starboardPosts.originalMessageId, message.id)).limit(1);
+  const existing = await db.select().from(starboardPosts).where(
+    and(eq(starboardPosts.guildId, guildId), eq(starboardPosts.originalMessageId, message.id))
+  ).limit(1);
   const boardChannel = await client.channels.fetch(config2.channelId).catch(() => null);
   if (!boardChannel?.isTextBased() || !boardChannel.isSendable()) return;
   if (count2 >= config2.threshold) {
@@ -127310,7 +128013,12 @@ async function handleStarboard(client, reaction, user) {
             "starboard message edit failed"
           );
         });
-        await db.update(starboardPosts).set({ count: count2, updatedAt: /* @__PURE__ */ new Date() }).where(eq(starboardPosts.originalMessageId, message.id));
+        await db.update(starboardPosts).set({ count: count2, updatedAt: /* @__PURE__ */ new Date() }).where(
+          and(
+            eq(starboardPosts.guildId, guildId),
+            eq(starboardPosts.originalMessageId, message.id)
+          )
+        );
       }
       return;
     }
@@ -127324,6 +128032,7 @@ async function handleStarboard(client, reaction, user) {
     });
     if (!sent) return;
     const inserted = await db.insert(starboardPosts).values({
+      guildId,
       originalMessageId: message.id,
       starboardMessageId: sent.id,
       count: count2
@@ -127336,14 +128045,16 @@ async function handleStarboard(client, reaction, user) {
     const boardMessage = await boardChannel.messages.fetch(existing[0].starboardMessageId).catch(() => null);
     if (boardMessage) await boardMessage.delete().catch(() => {
     });
-    await db.delete(starboardPosts).where(eq(starboardPosts.originalMessageId, message.id));
+    await db.delete(starboardPosts).where(
+      and(eq(starboardPosts.guildId, guildId), eq(starboardPosts.originalMessageId, message.id))
+    );
   }
 }
 __name(handleStarboard, "handleStarboard");
 
 // apps/bot/src/events/message-reaction-add.ts
 var messageReactionAddEvent = {
-  name: import_discord71.Events.MessageReactionAdd,
+  name: import_discord74.Events.MessageReactionAdd,
   async execute(client, reaction, user) {
     await handleReactionRoleAdd(client, reaction, user);
     await handleStarboard(client, reaction, user);
@@ -127351,9 +128062,9 @@ var messageReactionAddEvent = {
 };
 
 // apps/bot/src/events/message-reaction-remove.ts
-var import_discord72 = __toESM(require_src(), 1);
+var import_discord75 = __toESM(require_src(), 1);
 var messageReactionRemoveEvent = {
-  name: import_discord72.Events.MessageReactionRemove,
+  name: import_discord75.Events.MessageReactionRemove,
   async execute(client, reaction, user) {
     await handleReactionRoleRemove(client, reaction, user);
     await handleStarboard(client, reaction, user);
@@ -127361,13 +128072,14 @@ var messageReactionRemoveEvent = {
 };
 
 // apps/bot/src/events/message-update.ts
-var import_discord73 = __toESM(require_src(), 1);
+var import_discord76 = __toESM(require_src(), 1);
 var messageUpdateEvent = {
-  name: import_discord73.Events.MessageUpdate,
+  name: import_discord76.Events.MessageUpdate,
   async execute(client, oldMessage, newMessage) {
-    if (!newMessage.inGuild() || newMessage.guildId !== client.env.GUILD_ID) return;
-    if (newMessage.author?.bot) return;
-    if (isLogIgnored(client, newMessage.channelId, newMessage.author?.id)) return;
+    if (!newMessage.inGuild() || newMessage.author?.bot) return;
+    const guildId = newMessage.guildId;
+    const config2 = await client.getConfig(guildId);
+    if (isLogIgnored(config2.logging, newMessage.channelId, newMessage.author?.id)) return;
     const before = oldMessage.content ?? "";
     const after = newMessage.content ?? "";
     if (before === after) return;
@@ -127383,14 +128095,14 @@ var messageUpdateEvent = {
       { name: "After", value: truncate(after.trim() || "*Empty*", 1024) },
       { name: "Jump", value: `[Go to message](${jump})` }
     );
-    await sendLog(client, "messageEdit", embed);
+    await sendLog(client, guildId, "messageEdit", embed, config2);
   }
 };
 
 // apps/bot/src/events/ready.ts
-var import_discord74 = __toESM(require_src(), 1);
+var import_discord77 = __toESM(require_src(), 1);
 var readyEvent = {
-  name: import_discord74.Events.ClientReady,
+  name: import_discord77.Events.ClientReady,
   once: true,
   async execute(client) {
     if (!client.user) return;
@@ -127404,32 +128116,38 @@ var readyEvent = {
       },
       "connected to Discord"
     );
-    for (const guild2 of client.guilds.cache.values()) {
-      if (guild2.id === client.env.GUILD_ID) continue;
-      client.logger.warn(
-        { guildId: guild2.id, name: guild2.name },
-        "leaving guild that is not GUILD_ID"
-      );
-      await guild2.leave().catch(
-        (error62) => client.logger.error({ err: error62, guildId: guild2.id }, "failed to leave guild")
-      );
-    }
-    const guild = client.guilds.cache.get(client.env.GUILD_ID);
-    if (!guild) {
-      client.logger.warn(
-        { guildId: client.env.GUILD_ID },
-        "bot is not a member of GUILD_ID \u2014 invite it before using commands"
-      );
-    } else {
-      client.logger.info(
-        { guild: guild.name, members: guild.memberCount },
-        "target guild resolved"
-      );
+    if (client.db) {
+      const guilds2 = [...client.guilds.cache.values()];
+      for (let index2 = 0; index2 < guilds2.length; index2 += 8) {
+        await Promise.all(
+          guilds2.slice(index2, index2 + 8).map(async (guild) => {
+            if (!client.db) return;
+            try {
+              await ensureGuild(client.db, {
+                id: guild.id,
+                name: guild.name,
+                icon: guild.icon,
+                ownerId: guild.ownerId,
+                memberCount: guild.memberCount
+              });
+              const settings2 = await readSettings(
+                client.db,
+                guild.id,
+                (error62) => client.logger.warn({ err: error62, guildId: guild.id }, "invalid stored settings")
+              );
+              client.cacheSettings(guild.id, settings2.config, settings2.updatedAt);
+              await applyPersonalizer(client, guild, settings2.config);
+            } catch (error62) {
+              client.logger.error({ err: error62, guildId: guild.id }, "failed to initialise guild");
+            }
+          })
+        );
+      }
     }
     try {
-      await registerGuildCommands(client);
+      await registerApplicationCommands(client);
     } catch (error62) {
-      client.logger.error({ err: error62 }, "failed to register guild commands");
+      client.logger.error({ err: error62 }, "failed to register application commands");
     }
     if (client.db) startSettingsPoller(client);
     if (client.env.SMOKE_TEST) {
@@ -127452,11 +128170,13 @@ var readyEvent = {
 };
 
 // apps/bot/src/events/role-update.ts
-var import_discord75 = __toESM(require_src(), 1);
+var import_discord78 = __toESM(require_src(), 1);
 var roleUpdateEvent = {
-  name: import_discord75.Events.GuildRoleUpdate,
+  name: import_discord78.Events.GuildRoleUpdate,
   async execute(client, oldRole, newRole) {
-    if (newRole.guild.id !== client.env.GUILD_ID) return;
+    const guildId = newRole.guild.id;
+    const config2 = await client.getConfig(guildId);
+    if (!config2.logging.enabled) return;
     const changes = [];
     if (oldRole.name !== newRole.name) {
       changes.push(`**Name:** ${oldRole.name} \u2192 ${newRole.name}`);
@@ -127481,12 +128201,12 @@ var roleUpdateEvent = {
       const removed = before & ~after;
       if (added !== 0n) {
         changes.push(
-          `**Permissions added:** ${new import_discord75.PermissionsBitField(added).toArray().join(", ")}`
+          `**Permissions added:** ${new import_discord78.PermissionsBitField(added).toArray().join(", ")}`
         );
       }
       if (removed !== 0n) {
         changes.push(
-          `**Permissions removed:** ${new import_discord75.PermissionsBitField(removed).toArray().join(", ")}`
+          `**Permissions removed:** ${new import_discord78.PermissionsBitField(removed).toArray().join(", ")}`
         );
       }
     }
@@ -127495,20 +128215,21 @@ var roleUpdateEvent = {
       { name: "Role", value: `<@&${newRole.id}> \`${newRole.id}\``, inline: true },
       { name: "Changes", value: truncate(changes.join("\n"), 1024) }
     );
-    await sendLog(client, "roleUpdate", embed);
+    await sendLog(client, guildId, "roleUpdate", embed, config2);
   }
 };
 
 // apps/bot/src/events/voice-update.ts
-var import_discord76 = __toESM(require_src(), 1);
+var import_discord79 = __toESM(require_src(), 1);
 var voiceUpdateEvent = {
-  name: import_discord76.Events.VoiceStateUpdate,
+  name: import_discord79.Events.VoiceStateUpdate,
   async execute(client, oldState, newState) {
-    if (newState.guild.id !== client.env.GUILD_ID) return;
-    const member = newState.member;
+    const member = newState.member ?? oldState.member;
     if (!member || member.user.bot) return;
+    const guildId = newState.guild.id;
+    const config2 = await client.getConfig(guildId);
     client.stats?.handleVoiceState(oldState, newState);
-    if (isLogIgnored(client, newState.channelId ?? oldState.channelId, member.id)) return;
+    if (isLogIgnored(config2.logging, newState.channelId ?? oldState.channelId, member.id)) return;
     const changes = [];
     let title = "Voice state updated";
     if (oldState.channelId !== newState.channelId) {
@@ -127537,7 +128258,7 @@ var voiceUpdateEvent = {
       { name: "Member", value: `${member} \`${member.id}\``, inline: true },
       { name: "Changes", value: truncate(changes.join("\n"), 1024) }
     );
-    await sendLog(client, "voiceUpdate", embed);
+    await sendLog(client, guildId, "voiceUpdate", embed, config2);
   }
 };
 
@@ -127545,6 +128266,7 @@ var voiceUpdateEvent = {
 var events = [
   readyEvent,
   guildCreateEvent,
+  guildDeleteEvent,
   interactionCreateEvent,
   messageCreateEvent,
   messageDeleteEvent,
@@ -127563,7 +128285,7 @@ var events = [
 ];
 
 // apps/bot/src/modules/automod/service.ts
-var import_discord77 = __toESM(require_src(), 1);
+var import_discord80 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/automod/rules.ts
 var INVITE_PATTERN = /(?:discord\.gg|discord(?:app)?\.com\/invite)\/[a-z0-9-]+/i;
@@ -127625,6 +128347,7 @@ __name(findBannedWord, "findBannedWord");
 var AUTOMOD_TIMEOUT_MS = 10 * 6e4;
 var ACTION_COOLDOWN_MS = 3e4;
 var MAX_TRACKED_USERS = 5e3;
+var MAX_TRACKED_GUILDS = 2e3;
 var AutomodService = class {
   constructor(client) {
     this.client = client;
@@ -127633,18 +128356,23 @@ var AutomodService = class {
   static {
     __name(this, "AutomodService");
   }
+  /** guildId:userId -> recent message timestamps */
   spam = /* @__PURE__ */ new Map();
+  /** guildId:userId:rule -> last action timestamp */
   actionCooldown = /* @__PURE__ */ new Map();
-  joinTimes = [];
-  raidUntil = 0;
+  /** guildId -> join timestamps used by raid detection */
+  joinTimes = /* @__PURE__ */ new Map();
+  /** guildId -> raid mode end timestamp */
+  raidUntil = /* @__PURE__ */ new Map();
   /** Returns true when the message was handled by automod (and should not earn XP). */
   async handleMessage(message) {
-    if (!message.inGuild() || message.guildId !== this.client.env.GUILD_ID) return false;
+    if (!message.inGuild()) return false;
     if (message.author.bot || message.system) return false;
-    const config2 = this.client.settings.moderation;
+    const guildId = message.guildId;
+    const config2 = (await this.client.getConfig(guildId)).moderation;
     const automod = config2.automod;
     if (!automod.enabled) return false;
-    if (this.isExempt(message)) return false;
+    if (this.isExempt(message, config2)) return false;
     const content = message.content ?? "";
     if (!content) return false;
     if (automod.invites.enabled && containsInvite(content)) {
@@ -127663,7 +128391,12 @@ var AutomodService = class {
         );
       }
     }
-    if (automod.spam.enabled && this.isSpam(message.author.id, automod.spam.messageThreshold, automod.spam.windowSeconds)) {
+    if (automod.spam.enabled && this.isSpam(
+      guildId,
+      message.author.id,
+      automod.spam.messageThreshold,
+      automod.spam.windowSeconds
+    )) {
       return this.trigger(
         message,
         "spam",
@@ -127703,26 +128436,29 @@ var AutomodService = class {
   }
   /** Returns true when raid protection handled this join. */
   async handleJoin(member) {
-    if (member.guild.id !== this.client.env.GUILD_ID) return false;
-    const automod = this.client.settings.moderation.automod;
+    const guildId = member.guild.id;
+    const automod = (await this.client.getConfig(guildId)).moderation.automod;
     if (!automod.enabled || !automod.raid.enabled) return false;
     const now = Date.now();
     const windowMs = automod.raid.windowSeconds * 1e3;
-    this.joinTimes.push(now);
-    while (this.joinTimes.length > 0 && now - (this.joinTimes[0] ?? now) >= windowMs) {
-      this.joinTimes.shift();
+    const times = this.joinTimes.get(guildId) ?? [];
+    times.push(now);
+    while (times.length > 0 && now - (times[0] ?? now) >= windowMs) {
+      times.shift();
     }
-    const active = this.raidUntil > now;
-    const count2 = this.joinTimes.length;
+    this.joinTimes.set(guildId, times);
+    this.pruneGuilds(now);
+    const active = (this.raidUntil.get(guildId) ?? 0) > now;
+    const count2 = times.length;
     if (!active && count2 < automod.raid.joinThreshold) return false;
     if (!active) {
-      this.raidUntil = now + windowMs;
-      this.joinTimes.length = 0;
-      const alert = new import_discord77.EmbedBuilder().setColor(BRAND.danger).setTitle("Possible raid detected").setDescription(
+      this.raidUntil.set(guildId, now + windowMs);
+      times.length = 0;
+      const alert = new import_discord80.EmbedBuilder().setColor(BRAND.danger).setTitle("Possible raid detected").setDescription(
         `**${count2}** joins within **${automod.raid.windowSeconds}s**.
-Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.raid.action}**.`
+Raid mode is active for ${automod.raid.windowSeconds}s - action: **${automod.raid.action}**.`
       ).setTimestamp();
-      await sendModLogEmbed(this.client, alert);
+      await sendModLogEmbed(this.client, guildId, alert);
     }
     return this.applyRaidAction(
       member,
@@ -127730,30 +128466,30 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
       `Raid protection: ${count2} joins in ${automod.raid.windowSeconds}s`
     );
   }
-  isExempt(message) {
-    const config2 = this.client.settings.moderation;
+  isExempt(message, config2) {
     if (config2.exemptChannelIds.includes(message.channelId)) return true;
     const member = message.member;
     if (!member) return true;
     if (member.id === message.guild?.ownerId) return true;
     if (config2.exemptRoleIds.some((roleId) => member.roles.cache.has(roleId))) return true;
-    return member.permissions.has(import_discord77.PermissionFlagsBits.ManageMessages);
+    return member.permissions.has(import_discord80.PermissionFlagsBits.ManageMessages);
   }
-  isSpam(userId, threshold, windowSeconds) {
+  isSpam(guildId, userId, threshold, windowSeconds) {
     const now = Date.now();
     const windowMs = windowSeconds * 1e3;
-    const recent = (this.spam.get(userId) ?? []).filter((at) => now - at < windowMs);
+    const key = `${guildId}:${userId}`;
+    const recent = (this.spam.get(key) ?? []).filter((at) => now - at < windowMs);
     recent.push(now);
-    this.spam.set(userId, recent);
+    this.spam.set(key, recent);
     this.prune(this.spam, now - windowMs);
     if (recent.length >= threshold) {
-      this.spam.delete(userId);
+      this.spam.delete(key);
       return true;
     }
     return false;
   }
-  onCooldown(userId, rule) {
-    const key = `${userId}:${rule}`;
+  onCooldown(guildId, userId, rule) {
+    const key = `${guildId}:${userId}:${rule}`;
     const now = Date.now();
     const at = this.actionCooldown.get(key);
     if (at !== void 0 && now - at < ACTION_COOLDOWN_MS) return true;
@@ -127771,11 +128507,24 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
       if (last === void 0 || last < cutoff) map2.delete(key);
     }
   }
+  pruneGuilds(now) {
+    if (this.joinTimes.size <= MAX_TRACKED_GUILDS) return;
+    for (const [guildId, times] of this.joinTimes) {
+      const last = times[times.length - 1];
+      const raidUntil = this.raidUntil.get(guildId) ?? 0;
+      if ((last === void 0 || last < now - 6e4) && raidUntil <= now) {
+        this.joinTimes.delete(guildId);
+        this.raidUntil.delete(guildId);
+      }
+    }
+  }
   async trigger(message, rule, action, detail) {
     await message.delete().catch(() => {
     });
     if (action === "delete") return true;
-    if (this.onCooldown(message.author.id, rule)) return true;
+    if (!message.inGuild()) return true;
+    const guildId = message.guildId;
+    if (this.onCooldown(guildId, message.author.id, rule)) return true;
     const member = message.member;
     if (!member) return true;
     const reason = `Automod (${rule}): ${detail}`;
@@ -127783,6 +128532,7 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
     try {
       if (action === "warn") {
         await finishModAction(this.client, {
+          guildId,
           type: "warn",
           targetId: member.id,
           moderatorId,
@@ -127792,6 +128542,7 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
         if (!member.moderatable) throw new Error("Member is not moderatable");
         await member.timeout(AUTOMOD_TIMEOUT_MS, auditReason(reason));
         await finishModAction(this.client, {
+          guildId,
           type: "timeout",
           targetId: member.id,
           moderatorId,
@@ -127802,6 +128553,7 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
         if (!member.kickable) throw new Error("Member is not kickable");
         await member.kick(auditReason(reason));
         await finishModAction(this.client, {
+          guildId,
           type: "kick",
           targetId: member.id,
           moderatorId,
@@ -127810,7 +128562,7 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
       }
     } catch (error62) {
       this.client.logger.warn(
-        { err: error62, userId: member.id, rule, action },
+        { err: error62, guildId, userId: member.id, rule, action },
         "automod action failed"
       );
     }
@@ -127818,10 +128570,12 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
   }
   async applyRaidAction(member, action, reason) {
     if (action === "delete") return false;
+    const guildId = member.guild.id;
     const moderatorId = this.client.user?.id ?? "automod";
     try {
       if (action === "warn") {
         await finishModAction(this.client, {
+          guildId,
           type: "warn",
           targetId: member.id,
           moderatorId,
@@ -127831,6 +128585,7 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
         if (!member.moderatable) return false;
         await member.timeout(AUTOMOD_TIMEOUT_MS, auditReason(reason));
         await finishModAction(this.client, {
+          guildId,
           type: "timeout",
           targetId: member.id,
           moderatorId,
@@ -127841,6 +128596,7 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
         if (!member.kickable) return false;
         await member.kick(auditReason(reason));
         await finishModAction(this.client, {
+          guildId,
           type: "kick",
           targetId: member.id,
           moderatorId,
@@ -127850,7 +128606,7 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
       }
     } catch (error62) {
       this.client.logger.warn(
-        { err: error62, userId: member.id, action },
+        { err: error62, guildId, userId: member.id, action },
         "raid protection action failed"
       );
     }
@@ -127941,6 +128697,10 @@ __name(evaluateMessageXp, "evaluateMessageXp");
 // apps/bot/src/modules/leveling/service.ts
 var FLUSH_INTERVAL_MS = 3e4;
 var MAX_PENDING_MEMBERS = 5e3;
+function memberKey(guildId, userId) {
+  return `${guildId}|${userId}`;
+}
+__name(memberKey, "memberKey");
 var LevelingService = class {
   constructor(client) {
     this.client = client;
@@ -127970,22 +128730,23 @@ var LevelingService = class {
   async record(message) {
     if (!this.client.db) return;
     if (!message.inGuild()) return;
-    if (message.guildId !== this.client.env.GUILD_ID) return;
     if (message.system) return;
-    const config2 = this.client.settings.leveling;
+    const guildId = message.guildId;
+    const config2 = (await this.client.getConfig(guildId)).leveling;
     if (!config2.enabled) return;
     const now = Date.now();
     const roleIds = message.member ? [...message.member.roles.cache.keys()] : [];
+    const key = memberKey(guildId, message.author.id);
     if (checkXpContext({ isBot: message.author.bot, channelId: message.channelId, roleIds, config: config2 })) {
       return;
     }
-    let lastGainAt = this.lastGainAt.get(message.author.id);
+    let lastGainAt = this.lastGainAt.get(key);
     if (lastGainAt === void 0) {
-      const rows = await this.client.db.select({ lastXpAt: members.lastXpAt }).from(members).where(eq(members.userId, message.author.id)).limit(1);
+      const rows = await this.client.db.select({ lastXpAt: members.lastXpAt }).from(members).where(and(eq(members.guildId, guildId), eq(members.userId, message.author.id))).limit(1);
       const persisted = rows[0]?.lastXpAt?.getTime();
       if (persisted !== void 0) {
         lastGainAt = persisted;
-        this.lastGainAt.set(message.author.id, persisted);
+        this.lastGainAt.set(key, persisted);
       }
     }
     const evaluation = evaluateMessageXp({
@@ -127997,12 +128758,13 @@ var LevelingService = class {
       now
     });
     if (!evaluation.eligible) return;
-    this.lastGainAt.set(message.author.id, now);
+    this.lastGainAt.set(key, now);
     this.pruneCooldowns(now, config2.cooldownSeconds * 1e3);
-    this.bump(message.author.id, evaluation.amount, message.channelId);
+    this.bump(guildId, message.author.id, evaluation.amount, message.channelId);
   }
-  bump(userId, amount, channelId) {
-    const existing = this.pending.get(userId);
+  bump(guildId, userId, amount, channelId) {
+    const key = memberKey(guildId, userId);
+    const existing = this.pending.get(key);
     if (existing) {
       existing.xp += amount;
       existing.messages += 1;
@@ -128013,7 +128775,7 @@ var LevelingService = class {
       const oldest = this.pending.keys().next().value;
       if (oldest) this.pending.delete(oldest);
     }
-    this.pending.set(userId, { xp: amount, messages: 1, channelId });
+    this.pending.set(key, { guildId, userId, xp: amount, messages: 1, channelId });
   }
   /** Applies the buffer. Failures are requeued for the next tick. */
   async flush() {
@@ -128023,28 +128785,29 @@ var LevelingService = class {
     const batch = [...this.pending.entries()];
     this.pending.clear();
     try {
-      for (const [userId, delta] of batch) {
+      for (const [key, delta] of batch) {
         try {
-          await this.apply(db, userId, delta);
+          await this.apply(db, delta);
         } catch (error62) {
-          const requeued = this.pending.get(userId);
+          const requeued = this.pending.get(key);
           if (requeued) {
             requeued.xp += delta.xp;
             requeued.messages += delta.messages;
           } else {
-            this.pending.set(userId, delta);
+            this.pending.set(key, delta);
           }
-          this.client.logger.error({ err: error62, userId }, "failed to apply XP");
+          this.client.logger.error({ err: error62, ...delta }, "failed to apply XP");
         }
       }
     } finally {
       this.flushing = false;
     }
   }
-  async apply(db, userId, delta) {
+  async apply(db, delta) {
     const newLevel = await db.transaction(async (tx) => {
       const rows = await tx.insert(members).values({
-        userId,
+        guildId: delta.guildId,
+        userId: delta.userId,
         xp: delta.xp,
         messages: delta.messages,
         // Start at 0 so the level-up path below announces/rewards correctly
@@ -128052,7 +128815,7 @@ var LevelingService = class {
         level: 0,
         lastXpAt: /* @__PURE__ */ new Date()
       }).onConflictDoUpdate({
-        target: members.userId,
+        target: [members.guildId, members.userId],
         set: {
           xp: sql`${members.xp} + ${delta.xp}`,
           messages: sql`${members.messages} + ${delta.messages}`,
@@ -128064,25 +128827,26 @@ var LevelingService = class {
       if (!row) return null;
       const next = levelFromXp(row.xp).level;
       if (next <= row.level) return null;
-      await tx.update(members).set({ level: next, updatedAt: /* @__PURE__ */ new Date() }).where(eq(members.userId, userId));
+      await tx.update(members).set({ level: next, updatedAt: /* @__PURE__ */ new Date() }).where(and(eq(members.guildId, delta.guildId), eq(members.userId, delta.userId)));
       return next;
     });
     if (newLevel === null) return;
     try {
-      await this.onLevelUp(userId, newLevel, delta.channelId);
+      await this.onLevelUp(delta.guildId, delta.userId, newLevel, delta.channelId);
     } catch (error62) {
       this.client.logger.error(
-        { err: error62, userId, level: newLevel },
+        { err: error62, guildId: delta.guildId, userId: delta.userId, level: newLevel },
         "level-up side effects failed"
       );
     }
   }
-  async onLevelUp(userId, level, fallbackChannelId) {
-    const guild = this.client.guilds.cache.get(this.client.env.GUILD_ID);
+  async onLevelUp(guildId, userId, level, fallbackChannelId) {
+    const guild = this.client.guilds.cache.get(guildId);
     if (!guild) return;
     const member = await guild.members.fetch(userId).catch(() => null);
     if (!member) return;
-    const config2 = this.client.settings.leveling;
+    const config2 = (await this.client.getConfig(guildId)).leveling;
+    const personalizer = (await this.client.getConfig(guildId)).personalizer;
     const eligible = config2.rewards.filter((reward) => reward.level <= level).sort((a, b2) => a.level - b2.level);
     const applicable = config2.stackRewards ? eligible : eligible.slice(-1);
     for (const reward of applicable) {
@@ -128100,17 +128864,27 @@ var LevelingService = class {
     const channelId = config2.announceChannelId ?? fallbackChannelId;
     const channel = guild.channels.cache.get(channelId);
     if (!channel?.isTextBased()) return;
+    const premium = await this.client.isPremium(guild.id);
+    const content = (premium ? renderLevelUpMessage(personalizer.levelUpMessage, {
+      user: `${member}`,
+      username: member.user.username,
+      level,
+      server: guild.name
+    }) : null) ?? `${member} reached **level ${level}**!`;
     await channel.send({
-      content: `${member} reached **level ${level}**!`,
+      content,
       allowedMentions: { users: [userId] }
     }).catch((error62) => {
-      this.client.logger.warn({ err: error62, userId, channelId }, "failed to announce level up");
+      this.client.logger.warn(
+        { err: error62, userId, guildId, channelId },
+        "failed to announce level up"
+      );
     });
   }
   pruneCooldowns(now, windowMs) {
     if (this.lastGainAt.size <= 1e4) return;
-    for (const [userId, at] of this.lastGainAt) {
-      if (now - at > windowMs) this.lastGainAt.delete(userId);
+    for (const [key, at] of this.lastGainAt) {
+      if (now - at > windowMs) this.lastGainAt.delete(key);
     }
   }
 };
@@ -128146,26 +128920,37 @@ var ModerationScheduler = class {
     if (this.running) return;
     const db = this.client.db;
     if (!db) return;
-    const guild = this.client.guilds.cache.get(this.client.env.GUILD_ID);
-    if (!guild) return;
     this.running = true;
     try {
-      await this.sweep(db, guild);
+      await this.sweep(db);
     } finally {
       this.running = false;
     }
   }
-  async sweep(db, guild) {
+  async sweep(db) {
     await db.update(cases).set({ active: false }).where(
       and(eq(cases.type, "timeout"), eq(cases.active, true), lte(cases.expiresAt, /* @__PURE__ */ new Date()))
     ).catch((error62) => {
       this.client.logger.warn({ err: error62 }, "failed to expire timeout cases");
     });
-    const due = await db.select().from(cases).where(and(eq(cases.type, "ban"), eq(cases.active, true), lte(cases.expiresAt, /* @__PURE__ */ new Date()))).limit(50).catch((error62) => {
+    const due = await db.select().from(cases).where(and(eq(cases.type, "ban"), eq(cases.active, true), lte(cases.expiresAt, /* @__PURE__ */ new Date()))).limit(100).catch((error62) => {
       this.client.logger.warn({ err: error62 }, "temporary ban sweep failed");
       return [];
     });
     if (due.length === 0) return;
+    const byGuild = /* @__PURE__ */ new Map();
+    for (const row of due) {
+      const bucket = byGuild.get(row.guildId) ?? [];
+      bucket.push(row);
+      byGuild.set(row.guildId, bucket);
+    }
+    for (const [guildId, rows] of byGuild) {
+      const guild = this.client.guilds.cache.get(guildId);
+      if (!guild) continue;
+      await this.sweepGuild(db, guild, rows);
+    }
+  }
+  async sweepGuild(db, guild, due) {
     const byTarget = /* @__PURE__ */ new Map();
     for (const row of due) {
       const bucket = byTarget.get(row.targetId) ?? [];
@@ -128175,7 +128960,14 @@ var ModerationScheduler = class {
     for (const [targetId, rows] of byTarget) {
       const ids = rows.map((row) => row.id);
       const now = Date.now();
-      const active = await db.select().from(cases).where(and(eq(cases.targetId, targetId), eq(cases.type, "ban"), eq(cases.active, true)));
+      const active = await db.select().from(cases).where(
+        and(
+          eq(cases.guildId, guild.id),
+          eq(cases.targetId, targetId),
+          eq(cases.type, "ban"),
+          eq(cases.active, true)
+        )
+      );
       const dueIds = active.filter((row) => row.expiresAt !== null && row.expiresAt.getTime() <= now).map((row) => row.id);
       if (dueIds.length === 0) continue;
       const stillBanned = active.some(
@@ -128184,6 +128976,7 @@ var ModerationScheduler = class {
       if (stillBanned) {
         await db.update(cases).set({ active: false }).where(
           and(
+            eq(cases.guildId, guild.id),
             eq(cases.targetId, targetId),
             eq(cases.type, "ban"),
             eq(cases.active, true),
@@ -128198,14 +128991,15 @@ var ModerationScheduler = class {
         const code = error62.code;
         if (code !== UNKNOWN_BAN) {
           this.client.logger.warn(
-            { err: error62, targetId, caseIds: ids },
-            "failed to lift temporary ban \u2014 will retry"
+            { err: error62, guildId: guild.id, targetId, caseIds: ids },
+            "failed to lift temporary ban - will retry"
           );
           continue;
         }
       }
       await db.update(cases).set({ active: false }).where(
         and(
+          eq(cases.guildId, guild.id),
           eq(cases.targetId, targetId),
           eq(cases.type, "ban"),
           eq(cases.active, true),
@@ -128213,12 +129007,16 @@ var ModerationScheduler = class {
         )
       );
       await finishModAction(this.client, {
+        guildId: guild.id,
         type: "unban",
         targetId,
         moderatorId: this.client.user?.id ?? "system",
         reason: `Temporary ban expired (case #${ids[0]})`
       }).catch((error62) => {
-        this.client.logger.warn({ err: error62, targetId, caseIds: ids }, "failed to record unban");
+        this.client.logger.warn(
+          { err: error62, guildId: guild.id, targetId },
+          "failed to record unban"
+        );
       });
     }
   }
@@ -128284,7 +129082,7 @@ var ReminderService = class {
         );
       }
     }
-    const guild = this.client.guilds.cache.get(this.client.env.GUILD_ID);
+    const guild = this.client.guilds.cache.get(row.guildId);
     const channel = guild ? await guild.channels.fetch(row.channelId).catch(() => null) : null;
     if (!channel?.isTextBased()) {
       this.client.logger.warn(
@@ -128309,7 +129107,7 @@ var ReminderService = class {
 async function main() {
   const env = loadEnv();
   const logger = createLogger(env.LOG_LEVEL);
-  logger.info({ node: process.version, env: env.NODE_ENV, pid: process.pid }, "starting nervana");
+  logger.info({ node: process.version, env: env.NODE_ENV, pid: process.pid }, "starting Veyra");
   let client = null;
   let sql2 = null;
   let shuttingDown = false;
@@ -128349,7 +129147,6 @@ async function main() {
     void shutdown("uncaughtException", 1);
   });
   try {
-    let settingsState = { config: parseConfig(DEFAULT_CONFIG), updatedAt: 0 };
     let db = null;
     if (env.DATABASE_URL && !env.SMOKE_TEST) {
       const database = createDatabase(env.DATABASE_URL, { max: 4 });
@@ -128366,10 +129163,6 @@ async function main() {
           if (migrationClient) await migrationClient.sql.end({ timeout: 5 });
         }
       }
-      settingsState = await readSettings(db, (error62) => {
-        logger.error({ err: error62 }, "stored settings are invalid \u2014 using defaults");
-      });
-      logger.info({ updatedAt: settingsState.updatedAt }, "settings loaded");
     } else {
       logger.warn(
         { smokeTest: env.SMOKE_TEST },
@@ -128379,12 +129172,10 @@ async function main() {
     if (!env.SMOKE_TEST && env.MUSIC_ENABLED && (!env.LAVALINK_URL || !env.LAVALINK_AUTH)) {
       logger.warn("MUSIC_ENABLED is true but LAVALINK_URL/LAVALINK_AUTH are incomplete");
     }
-    client = new NervanaClient();
+    client = new VeyraClient();
     client.env = env;
     client.logger = logger;
     client.db = db;
-    client.settings = applyOverrides(settingsState.config, env.MUSIC_ENABLED);
-    client.settingsUpdatedAt = settingsState.updatedAt;
     registerCommands(client, commands);
     registerEvents(client, events);
     client.leveling = new LevelingService(client);

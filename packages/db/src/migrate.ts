@@ -30,7 +30,7 @@ export async function runMigrations(
   let applied = 0;
 
   await sql.begin(async (tx) => {
-    await tx`SELECT pg_advisory_xact_lock(hashtext('nervana_migrations'))`;
+    await tx`SELECT pg_advisory_xact_lock(hashtext('veyra_migrations'))`;
     await tx`
       CREATE TABLE IF NOT EXISTS schema_migrations (
         name text PRIMARY KEY,

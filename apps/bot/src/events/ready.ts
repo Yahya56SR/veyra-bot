@@ -1,7 +1,9 @@
+import { ensureGuild } from '@veyra/db';
 import { Events } from 'discord.js';
-import { startSettingsPoller } from '../config/settings.js';
-import { registerGuildCommands } from '../core/commands.js';
+import { readSettings, startSettingsPoller } from '../config/settings.js';
+import { registerApplicationCommands } from '../core/commands.js';
 import type { BotEvent } from '../core/events.js';
+import { applyPersonalizer } from '../modules/personalizer/service.js';
 
 export const readyEvent: BotEvent = {
   name: Events.ClientReady,
@@ -20,37 +22,39 @@ export const readyEvent: BotEvent = {
       'connected to Discord',
     );
 
-    // Enforce the single-guild rule for servers the bot was added to while offline.
-    for (const guild of client.guilds.cache.values()) {
-      if (guild.id === client.env.GUILD_ID) continue;
-      client.logger.warn(
-        { guildId: guild.id, name: guild.name },
-        'leaving guild that is not GUILD_ID',
-      );
-      await guild
-        .leave()
-        .catch((error: unknown) =>
-          client.logger.error({ err: error, guildId: guild.id }, 'failed to leave guild'),
+    if (client.db) {
+      const guilds = [...client.guilds.cache.values()];
+      // A public bot can be in thousands of guilds. Initialise them in small
+      // concurrent batches so first boot is not serialised by pooler latency.
+      for (let index = 0; index < guilds.length; index += 8) {
+        await Promise.all(
+          guilds.slice(index, index + 8).map(async (guild) => {
+            if (!client.db) return;
+            try {
+              await ensureGuild(client.db, {
+                id: guild.id,
+                name: guild.name,
+                icon: guild.icon,
+                ownerId: guild.ownerId,
+                memberCount: guild.memberCount,
+              });
+              const settings = await readSettings(client.db, guild.id, (error) =>
+                client.logger.warn({ err: error, guildId: guild.id }, 'invalid stored settings'),
+              );
+              client.cacheSettings(guild.id, settings.config, settings.updatedAt);
+              await applyPersonalizer(client, guild, settings.config);
+            } catch (error) {
+              client.logger.error({ err: error, guildId: guild.id }, 'failed to initialise guild');
+            }
+          }),
         );
-    }
-
-    const guild = client.guilds.cache.get(client.env.GUILD_ID);
-    if (!guild) {
-      client.logger.warn(
-        { guildId: client.env.GUILD_ID },
-        'bot is not a member of GUILD_ID — invite it before using commands',
-      );
-    } else {
-      client.logger.info(
-        { guild: guild.name, members: guild.memberCount },
-        'target guild resolved',
-      );
+      }
     }
 
     try {
-      await registerGuildCommands(client);
+      await registerApplicationCommands(client);
     } catch (error) {
-      client.logger.error({ err: error }, 'failed to register guild commands');
+      client.logger.error({ err: error }, 'failed to register application commands');
     }
 
     if (client.db) startSettingsPoller(client);

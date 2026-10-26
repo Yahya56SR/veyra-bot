@@ -1,5 +1,5 @@
-import { shopItems } from '@nervana/db';
-import { eq } from 'drizzle-orm';
+import { shopItems } from '@veyra/db';
+import { and, eq } from 'drizzle-orm';
 import {
   EmbedBuilder,
   PermissionFlagsBits,
@@ -150,11 +150,11 @@ export const ecoAdminCommand: Command = {
   allowWhenDisabled: true,
   userPermissions: [PermissionFlagsBits.ManageGuild],
   cooldownSeconds: 2,
-  async execute({ client, interaction, guild, member }) {
+  async execute({ client, interaction, guild, member, settings }) {
     await deferEphemeral(interaction);
 
     const db = requireDb(client);
-    const config = client.settings.economy;
+    const config = settings.economy;
     const sub = interaction.options.getSubcommand(true);
 
     if (sub === 'grant' || sub === 'take' || sub === 'set') {
@@ -164,8 +164,13 @@ export const ecoAdminCommand: Command = {
 
       const result =
         sub === 'set'
-          ? await setBalance(db, target.id, amount)
-          : await adjustBalance(db, target.id, sub === 'grant' ? amount : -amount);
+          ? await setBalance(db, interaction.guildId, target.id, amount)
+          : await adjustBalance(
+              db,
+              interaction.guildId,
+              target.id,
+              sub === 'grant' ? amount : -amount,
+            );
 
       await interaction.editReply({
         content: `${target} now has ${formatCurrency(result.balance, config)}.`,
@@ -188,6 +193,7 @@ export const ecoAdminCommand: Command = {
       const rows = await db
         .insert(shopItems)
         .values({
+          guildId: interaction.guildId,
           name,
           price,
           roleId: role?.id ?? null,
@@ -208,15 +214,25 @@ export const ecoAdminCommand: Command = {
     }
 
     if (sub === 'shop-remove') {
-      const item = await findShopItem(db, interaction.options.getString('item', true));
+      const item = await findShopItem(
+        db,
+        interaction.guildId,
+        interaction.options.getString('item', true),
+      );
       if (!item) throw new UserFacingError('That item does not exist.');
-      await db.delete(shopItems).where(eq(shopItems.id, item.id));
+      await db
+        .delete(shopItems)
+        .where(and(eq(shopItems.guildId, interaction.guildId), eq(shopItems.id, item.id)));
       await interaction.editReply({ content: `Removed **${item.name}** from the shop.` });
       return;
     }
 
     if (sub === 'shop-stock') {
-      const item = await findShopItem(db, interaction.options.getString('item', true));
+      const item = await findShopItem(
+        db,
+        interaction.guildId,
+        interaction.options.getString('item', true),
+      );
       if (!item) throw new UserFacingError('That item does not exist.');
       const unlimited = interaction.options.getBoolean('unlimited') ?? false;
       const stock = interaction.options.getInteger('stock');
@@ -231,7 +247,7 @@ export const ecoAdminCommand: Command = {
       await db
         .update(shopItems)
         .set({ stock: unlimited ? null : stock })
-        .where(eq(shopItems.id, item.id));
+        .where(and(eq(shopItems.guildId, interaction.guildId), eq(shopItems.id, item.id)));
 
       await interaction.editReply({
         content: `**${item.name}** now has ${unlimited ? 'unlimited stock' : `${stock} in stock`}.`,
@@ -239,7 +255,7 @@ export const ecoAdminCommand: Command = {
       return;
     }
 
-    const items = await listShop(db);
+    const items = await listShop(db, interaction.guildId);
     if (items.length === 0) {
       await interaction.editReply({ content: 'The shop is empty.' });
       return;

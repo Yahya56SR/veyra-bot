@@ -5,7 +5,7 @@ import {
   COMMAND_CATEGORIES,
   truncate,
   type CommandCategory,
-} from '@nervana/shared';
+} from '@veyra/shared';
 import type { Command } from '../../core/commands.js';
 
 export const helpCommand: Command = {
@@ -14,7 +14,7 @@ export const helpCommand: Command = {
   cooldownSeconds: 3,
   async execute({ client, interaction, member, settings }) {
     const visible = [...client.commands.values()].filter((command) => {
-      if (!client.isCategoryEnabled(command.category)) return false;
+      if (!client.isCategoryEnabled(command.category, settings)) return false;
       if (!command.userPermissions?.length) return true;
       return member.permissions.has(command.userPermissions);
     });
@@ -29,7 +29,7 @@ export const helpCommand: Command = {
 
     const embed = new EmbedBuilder()
       .setColor(BRAND.color)
-      .setTitle('Nervana commands')
+      .setTitle('Veyra commands')
       .setDescription(
         `${visible.length} command${visible.length === 1 ? '' : 's'} available to you in this server.`,
       )

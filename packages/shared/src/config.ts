@@ -203,6 +203,28 @@ export const StatsConfigSchema = z.object({
   enabled: z.boolean(),
 });
 
+export const HexColorSchema = z
+  .string()
+  .regex(/^#[0-9a-fA-F]{6}$/, 'Use a six-digit hex colour such as #8b5cf6');
+
+/**
+ * Server-level branding. Discord does not allow a bot to have a different
+ * username, avatar, or presence per server; these are the safe customisations
+ * that can be applied consistently to embeds and the bot's server nickname.
+ */
+export const PersonalizerConfigSchema = z.object({
+  enabled: z.boolean(),
+  /** Applied as the bot's nickname in this server. */
+  nickname: z.string().trim().min(1).max(32).nullable(),
+  embedColor: HexColorSchema,
+  footerText: z.string().trim().min(1).max(2048).nullable(),
+  footerIconUrl: z.url().max(2048).nullable(),
+  thumbnailUrl: z.url().max(2048).nullable(),
+  levelUpMessage: z.string().trim().min(1).max(2000).nullable(),
+  ticketPanelTitle: z.string().trim().min(1).max(256).nullable(),
+  ticketPanelDescription: z.string().trim().min(1).max(4000).nullable(),
+});
+
 export const AppConfigSchema = z.object({
   moderation: ModerationConfigSchema,
   logging: LoggingConfigSchema,
@@ -213,6 +235,7 @@ export const AppConfigSchema = z.object({
   music: MusicConfigSchema,
   community: CommunityConfigSchema,
   stats: StatsConfigSchema,
+  personalizer: PersonalizerConfigSchema,
 });
 
 export type AppConfig = z.infer<typeof AppConfigSchema>;
@@ -225,6 +248,7 @@ export type TicketsConfig = z.infer<typeof TicketsConfigSchema>;
 export type TicketCategory = z.infer<typeof TicketCategorySchema>;
 export type MusicConfig = z.infer<typeof MusicConfigSchema>;
 export type CommunityConfig = z.infer<typeof CommunityConfigSchema>;
+export type PersonalizerConfig = z.infer<typeof PersonalizerConfigSchema>;
 
 /**
  * The single source of truth for a fresh install. Persisted to `settings.modules`
@@ -347,6 +371,17 @@ export const DEFAULT_CONFIG = {
   },
   stats: {
     enabled: true,
+  },
+  personalizer: {
+    enabled: false,
+    nickname: null,
+    embedColor: '#8b5cf6',
+    footerText: null,
+    footerIconUrl: null,
+    thumbnailUrl: null,
+    levelUpMessage: null,
+    ticketPanelTitle: null,
+    ticketPanelDescription: null,
   },
 } satisfies AppConfig;
 

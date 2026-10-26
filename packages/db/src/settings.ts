@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG, parseConfig, parseModule, type AppConfig } from '@nervana/shared';
+import { DEFAULT_CONFIG, parseConfig, parseModule, type AppConfig } from '@veyra/shared';
 import { eq } from 'drizzle-orm';
 import type { Database } from './client.js';
 import { configAudit, settings } from './schema.js';
@@ -11,17 +11,20 @@ export interface ModuleUpdateResult<K extends keyof AppConfig> {
 }
 
 /**
- * Reads the singleton config inside a transaction and locks the row so two
+ * Reads one guild's config inside a transaction and locks the row so two
  * admins editing different modules cannot clobber each other.
  *
  * A corrupt stored payload is replaced by defaults rather than blocking the
- * update — otherwise a bad JSONB value could never be repaired from the UI.
+ * update - otherwise a bad JSONB value could never be repaired from the UI.
  */
-async function readLockedConfig(tx: Parameters<Parameters<Database['transaction']>[0]>[0]) {
+async function readLockedConfig(
+  tx: Parameters<Parameters<Database['transaction']>[0]>[0],
+  guildId: string,
+) {
   const rows = await tx
     .select({ modules: settings.modules })
     .from(settings)
-    .where(eq(settings.id, 1))
+    .where(eq(settings.guildId, guildId))
     .limit(1)
     .for('update');
 
@@ -37,25 +40,27 @@ async function readLockedConfig(tx: Parameters<Parameters<Database['transaction'
 /** Validates and persists one module, then records an audit entry. */
 export async function updateModule<K extends keyof AppConfig>(
   db: Database,
+  guildId: string,
   actorId: string,
   module: K,
   raw: unknown,
 ): Promise<ModuleUpdateResult<K>> {
   return db.transaction(async (tx) => {
-    const before = await readLockedConfig(tx);
+    const before = await readLockedConfig(tx, guildId);
     const after = parseModule(module, raw);
     const config: AppConfig = { ...before, [module]: after };
     const updatedAt = new Date();
 
     await tx
       .insert(settings)
-      .values({ id: 1, modules: config, updatedAt })
+      .values({ guildId, modules: config, updatedAt })
       .onConflictDoUpdate({
-        target: settings.id,
+        target: settings.guildId,
         set: { modules: config, updatedAt },
       });
 
     await tx.insert(configAudit).values({
+      guildId,
       actorId,
       module,
       before: before[module],
@@ -69,8 +74,30 @@ export async function updateModule<K extends keyof AppConfig>(
 /** Restores one module to the built-in defaults. */
 export async function resetModule<K extends keyof AppConfig>(
   db: Database,
+  guildId: string,
   actorId: string,
   module: K,
 ): Promise<ModuleUpdateResult<K>> {
-  return updateModule(db, actorId, module, DEFAULT_CONFIG[module]);
+  return updateModule(db, guildId, actorId, module, DEFAULT_CONFIG[module]);
+}
+
+/** Reads a guild's config without writing defaults. */
+export async function readGuildConfig(
+  db: Database,
+  guildId: string,
+): Promise<{ config: AppConfig; updatedAt: Date } | null> {
+  const rows = await db
+    .select({ modules: settings.modules, updatedAt: settings.updatedAt })
+    .from(settings)
+    .where(eq(settings.guildId, guildId))
+    .limit(1);
+
+  const row = rows[0];
+  if (!row) return null;
+
+  try {
+    return { config: parseConfig(row.modules), updatedAt: row.updatedAt };
+  } catch {
+    return { config: parseConfig(DEFAULT_CONFIG), updatedAt: row.updatedAt };
+  }
 }

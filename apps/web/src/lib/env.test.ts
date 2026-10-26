@@ -12,15 +12,15 @@ describe('dashboard environment helpers', () => {
   });
 
   it('normalizes a configured public origin', () => {
-    vi.stubEnv('DASHBOARD_URL', 'https://nervana.example/');
-    expect(dashboardBase()).toBe('https://nervana.example');
-    expect(isHttps('HTTPS://NERVANA.EXAMPLE')).toBe(true);
+    vi.stubEnv('DASHBOARD_URL', 'https://veyra.EXAMPLE/');
+    expect(dashboardBase()).toBe('https://veyra.example');
+    expect(isHttps('HTTPS://veyra.EXAMPLE')).toBe(true);
     expect(isHttps('http://localhost:3000')).toBe(false);
     expect(isHttps('not a url')).toBe(false);
   });
 
   it('rejects a configured path and falls back to the request origin', () => {
-    vi.stubEnv('DASHBOARD_URL', 'https://nervana.example/dashboard');
+    vi.stubEnv('DASHBOARD_URL', 'https://veyra.EXAMPLE/dashboard');
     const request = new Request('http://localhost:3000/login');
     expect(dashboardBase(request)).toBe('http://localhost:3000');
   });

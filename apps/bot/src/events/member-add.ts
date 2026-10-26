@@ -1,4 +1,4 @@
-import { BRAND } from '@nervana/shared';
+import { BRAND } from '@veyra/shared';
 import { Events } from 'discord.js';
 import type { BotEvent } from '../core/events.js';
 import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
@@ -7,11 +7,10 @@ import { onMemberJoin } from '../modules/welcome/service.js';
 export const guildMemberAddEvent: BotEvent = {
   name: Events.GuildMemberAdd,
   async execute(client, member) {
-    if (member.guild.id !== client.env.GUILD_ID) return;
+    const config = await client.getConfig(member.guild.id);
+    client.stats?.recordJoin(member.guild.id);
 
-    client.stats?.recordJoin();
-
-    if (!isLogIgnored(client, null, member.id)) {
+    if (!isLogIgnored(config.logging, null, member.id)) {
       const embed = logEmbed('Member joined', BRAND.success)
         .setThumbnail(member.displayAvatarURL({ size: 128 }))
         .addFields(
@@ -24,7 +23,7 @@ export const guildMemberAddEvent: BotEvent = {
           { name: 'Member count', value: String(member.guild.memberCount), inline: true },
         );
 
-      await sendLog(client, 'memberJoin', embed);
+      await sendLog(client, member.guild.id, 'memberJoin', embed, config);
     }
 
     const handled = (await client.automod?.handleJoin(member)) ?? false;

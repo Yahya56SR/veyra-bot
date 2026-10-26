@@ -10,6 +10,14 @@ export interface DiscordUser {
   discriminator: string;
 }
 
+export interface DiscordGuild {
+  id: string;
+  name: string;
+  icon: string | null;
+  owner: boolean;
+  permissions: string;
+}
+
 interface TokenResponse {
   access_token?: string;
   error?: string;
@@ -53,6 +61,20 @@ export async function fetchDiscordUser(accessToken: string): Promise<DiscordUser
     signal: AbortSignal.timeout(10_000),
   });
   return readJson<DiscordUser>(response);
+}
+
+export async function fetchDiscordGuilds(accessToken: string): Promise<DiscordGuild[]> {
+  const response = await fetch(`${API}/users/@me/guilds`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    signal: AbortSignal.timeout(10_000),
+  });
+  return readJson<DiscordGuild[]>(response);
+}
+
+export function discordGuildIconUrl(guildId: string, icon: string | null): string | null {
+  if (!icon) return null;
+  const extension = icon.startsWith('a_') ? 'gif' : 'png';
+  return `https://cdn.discordapp.com/icons/${guildId}/${icon}.${extension}?size=128`;
 }
 
 export function discordAvatarUrl(userId: string, avatar: string | null): string {

@@ -1,4 +1,4 @@
-import { parseDuration } from '@nervana/shared';
+import { parseDuration } from '@veyra/shared';
 
 const DISCORD_TIMESTAMP = /^<t:(\d{1,13})(?::[tTdDfFR])?>$/;
 const UNIX_NUMBER = /^\d{10,13}$/;

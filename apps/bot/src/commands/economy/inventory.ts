@@ -10,14 +10,14 @@ export const inventoryCommand: Command = {
     .setDescription('Show the role items you own from the shop.'),
   category: 'economy',
   cooldownSeconds: 3,
-  async execute({ client, interaction, member }) {
+  async execute({ client, interaction, member, settings }) {
     await deferPublic(interaction);
 
     const db = requireDb(client);
-    const config = client.settings.economy;
+    const config = settings.economy;
     const [balance, items] = await Promise.all([
-      getBalance(db, interaction.user.id),
-      inventoryForRoleIds(db, [...member.roles.cache.keys()]),
+      getBalance(db, interaction.guildId, interaction.user.id),
+      inventoryForRoleIds(db, interaction.guildId, [...member.roles.cache.keys()]),
     ]);
 
     const embed = new EmbedBuilder()

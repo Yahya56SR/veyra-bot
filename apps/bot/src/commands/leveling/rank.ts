@@ -1,6 +1,6 @@
-import { members } from '@nervana/db';
-import { BRAND, levelFromXp, progressBar } from '@nervana/shared';
-import { count, eq, gt } from 'drizzle-orm';
+import { members } from '@veyra/db';
+import { BRAND, levelFromXp, progressBar } from '@veyra/shared';
+import { and, count, eq, gt } from 'drizzle-orm';
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
 import { deferPublic } from '../../core/respond.js';
@@ -27,14 +27,17 @@ export const rankCommand: Command = {
     const rows = await db
       .select({ xp: members.xp, messages: members.messages })
       .from(members)
-      .where(eq(members.userId, target.id))
+      .where(and(eq(members.guildId, interaction.guildId), eq(members.userId, target.id)))
       .limit(1);
 
     const xp = rows[0]?.xp ?? 0;
     const messageCount = rows[0]?.messages ?? 0;
     const progress = levelFromXp(xp);
 
-    const rankRows = await db.select({ value: count() }).from(members).where(gt(members.xp, xp));
+    const rankRows = await db
+      .select({ value: count() })
+      .from(members)
+      .where(and(eq(members.guildId, interaction.guildId), gt(members.xp, xp)));
     const rank = (rankRows[0]?.value ?? 0) + 1;
 
     const embed = new EmbedBuilder()

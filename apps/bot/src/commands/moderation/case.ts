@@ -1,5 +1,5 @@
-import { cases } from '@nervana/db';
-import { eq } from 'drizzle-orm';
+import { cases } from '@veyra/db';
+import { and, eq } from 'drizzle-orm';
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
 import { UserFacingError } from '../../core/errors.js';
@@ -23,7 +23,11 @@ export const caseCommand: Command = {
     const db = requireDb(client);
     const id = interaction.options.getInteger('id', true);
 
-    const rows = await db.select().from(cases).where(eq(cases.id, id)).limit(1);
+    const rows = await db
+      .select()
+      .from(cases)
+      .where(and(eq(cases.guildId, interaction.guildId), eq(cases.id, id)))
+      .limit(1);
     const row = rows[0];
     if (!row) throw new UserFacingError(`Case **#${id}** does not exist.`);
 

@@ -1,5 +1,5 @@
-import { heartbeat as heartbeatTable } from '@nervana/db';
-import type { NervanaClient } from '../core/client.js';
+import { heartbeat as heartbeatTable } from '@veyra/db';
+import type { VeyraClient } from '../core/client.js';
 
 const INTERVAL_MS = 6 * 60 * 60 * 1000;
 
@@ -11,7 +11,7 @@ export class HeartbeatService {
   private timer: NodeJS.Timeout | null = null;
   private running = false;
 
-  constructor(private readonly client: NervanaClient) {}
+  constructor(private readonly client: VeyraClient) {}
 
   start(): void {
     if (this.timer || !this.client.db) return;

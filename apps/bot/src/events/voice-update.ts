@@ -1,4 +1,4 @@
-import { BRAND, truncate } from '@nervana/shared';
+import { BRAND, truncate } from '@veyra/shared';
 import { Events } from 'discord.js';
 import type { BotEvent } from '../core/events.js';
 import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
@@ -6,14 +6,14 @@ import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
 export const voiceUpdateEvent: BotEvent = {
   name: Events.VoiceStateUpdate,
   async execute(client, oldState, newState) {
-    if (newState.guild.id !== client.env.GUILD_ID) return;
-
-    const member = newState.member;
+    const member = newState.member ?? oldState.member;
     if (!member || member.user.bot) return;
 
+    const guildId = newState.guild.id;
+    const config = await client.getConfig(guildId);
     client.stats?.handleVoiceState(oldState, newState);
 
-    if (isLogIgnored(client, newState.channelId ?? oldState.channelId, member.id)) return;
+    if (isLogIgnored(config.logging, newState.channelId ?? oldState.channelId, member.id)) return;
 
     const changes: string[] = [];
     let title = 'Voice state updated';
@@ -52,6 +52,6 @@ export const voiceUpdateEvent: BotEvent = {
       { name: 'Changes', value: truncate(changes.join('\n'), 1024) },
     );
 
-    await sendLog(client, 'voiceUpdate', embed);
+    await sendLog(client, guildId, 'voiceUpdate', embed, config);
   },
 };

@@ -1,11 +1,14 @@
-import { members } from '@nervana/db';
-import { levelFromXp } from '@nervana/shared';
-import { eq, sql } from 'drizzle-orm';
+import { members } from '@veyra/db';
+import { levelFromXp } from '@veyra/shared';
+import { and, eq, sql } from 'drizzle-orm';
 import type { Message } from 'discord.js';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
+import { renderLevelUpMessage } from '../personalizer/service.js';
 import { checkXpContext, evaluateMessageXp } from './xp.js';
 
 interface PendingXp {
+  guildId: string;
+  userId: string;
   xp: number;
   messages: number;
   channelId: string;
@@ -14,9 +17,14 @@ interface PendingXp {
 const FLUSH_INTERVAL_MS = 30_000;
 const MAX_PENDING_MEMBERS = 5_000;
 
+function memberKey(guildId: string, userId: string): string {
+  return `${guildId}|${userId}`;
+}
+
 /**
- * Batches XP writes to keep the 256 MB host cheap: messages increment an
- * in-memory buffer, which is flushed every 30 s and on shutdown.
+ * Batches XP writes to keep the host cheap: messages increment an in-memory
+ * buffer, which is flushed every 30 s and on shutdown. Every buffer entry is
+ * scoped to a guild.
  */
 export class LevelingService {
   private readonly pending = new Map<string, PendingXp>();
@@ -24,7 +32,7 @@ export class LevelingService {
   private timer: NodeJS.Timeout | null = null;
   private flushing = false;
 
-  constructor(private readonly client: NervanaClient) {}
+  constructor(private readonly client: VeyraClient) {}
 
   start(): void {
     if (this.timer) return;
@@ -45,14 +53,15 @@ export class LevelingService {
   async record(message: Message): Promise<void> {
     if (!this.client.db) return;
     if (!message.inGuild()) return;
-    if (message.guildId !== this.client.env.GUILD_ID) return;
     if (message.system) return;
 
-    const config = this.client.settings.leveling;
+    const guildId = message.guildId;
+    const config = (await this.client.getConfig(guildId)).leveling;
     if (!config.enabled) return;
 
     const now = Date.now();
     const roleIds = message.member ? [...message.member.roles.cache.keys()] : [];
+    const key = memberKey(guildId, message.author.id);
 
     // Cheap bail-out before the cooldown lookup: bots and ignored channels/roles
     // must not cause a database read per message.
@@ -64,18 +73,18 @@ export class LevelingService {
 
     // Seed the in-memory cooldown from the database after a restart so a
     // restart cannot be used to bypass the per-member cooldown.
-    let lastGainAt = this.lastGainAt.get(message.author.id);
+    let lastGainAt = this.lastGainAt.get(key);
     if (lastGainAt === undefined) {
       const rows = await this.client.db
         .select({ lastXpAt: members.lastXpAt })
         .from(members)
-        .where(eq(members.userId, message.author.id))
+        .where(and(eq(members.guildId, guildId), eq(members.userId, message.author.id)))
         .limit(1);
 
       const persisted = rows[0]?.lastXpAt?.getTime();
       if (persisted !== undefined) {
         lastGainAt = persisted;
-        this.lastGainAt.set(message.author.id, persisted);
+        this.lastGainAt.set(key, persisted);
       }
     }
 
@@ -90,13 +99,14 @@ export class LevelingService {
 
     if (!evaluation.eligible) return;
 
-    this.lastGainAt.set(message.author.id, now);
+    this.lastGainAt.set(key, now);
     this.pruneCooldowns(now, config.cooldownSeconds * 1000);
-    this.bump(message.author.id, evaluation.amount, message.channelId);
+    this.bump(guildId, message.author.id, evaluation.amount, message.channelId);
   }
 
-  private bump(userId: string, amount: number, channelId: string): void {
-    const existing = this.pending.get(userId);
+  private bump(guildId: string, userId: string, amount: number, channelId: string): void {
+    const key = memberKey(guildId, userId);
+    const existing = this.pending.get(key);
     if (existing) {
       existing.xp += amount;
       existing.messages += 1;
@@ -109,7 +119,7 @@ export class LevelingService {
       if (oldest) this.pending.delete(oldest);
     }
 
-    this.pending.set(userId, { xp: amount, messages: 1, channelId });
+    this.pending.set(key, { guildId, userId, xp: amount, messages: 1, channelId });
   }
 
   /** Applies the buffer. Failures are requeued for the next tick. */
@@ -122,18 +132,18 @@ export class LevelingService {
     this.pending.clear();
 
     try {
-      for (const [userId, delta] of batch) {
+      for (const [key, delta] of batch) {
         try {
-          await this.apply(db, userId, delta);
+          await this.apply(db, delta);
         } catch (error) {
-          const requeued = this.pending.get(userId);
+          const requeued = this.pending.get(key);
           if (requeued) {
             requeued.xp += delta.xp;
             requeued.messages += delta.messages;
           } else {
-            this.pending.set(userId, delta);
+            this.pending.set(key, delta);
           }
-          this.client.logger.error({ err: error, userId }, 'failed to apply XP');
+          this.client.logger.error({ err: error, ...delta }, 'failed to apply XP');
         }
       }
     } finally {
@@ -141,11 +151,7 @@ export class LevelingService {
     }
   }
 
-  private async apply(
-    db: NonNullable<NervanaClient['db']>,
-    userId: string,
-    delta: PendingXp,
-  ): Promise<void> {
+  private async apply(db: NonNullable<VeyraClient['db']>, delta: PendingXp): Promise<void> {
     // The XP increment and the level update commit together. If either query
     // fails the whole batch is requeued, so XP can never be counted twice by a
     // partial write.
@@ -153,7 +159,8 @@ export class LevelingService {
       const rows = await tx
         .insert(members)
         .values({
-          userId,
+          guildId: delta.guildId,
+          userId: delta.userId,
           xp: delta.xp,
           messages: delta.messages,
           // Start at 0 so the level-up path below announces/rewards correctly
@@ -162,7 +169,7 @@ export class LevelingService {
           lastXpAt: new Date(),
         })
         .onConflictDoUpdate({
-          target: members.userId,
+          target: [members.guildId, members.userId],
           set: {
             xp: sql`${members.xp} + ${delta.xp}`,
             messages: sql`${members.messages} + ${delta.messages}`,
@@ -181,7 +188,7 @@ export class LevelingService {
       await tx
         .update(members)
         .set({ level: next, updatedAt: new Date() })
-        .where(eq(members.userId, userId));
+        .where(and(eq(members.guildId, delta.guildId), eq(members.userId, delta.userId)));
 
       return next;
     });
@@ -191,23 +198,29 @@ export class LevelingService {
     // Announcements and role rewards are best-effort and must not cause the
     // already-committed XP to be requeued.
     try {
-      await this.onLevelUp(userId, newLevel, delta.channelId);
+      await this.onLevelUp(delta.guildId, delta.userId, newLevel, delta.channelId);
     } catch (error) {
       this.client.logger.error(
-        { err: error, userId, level: newLevel },
+        { err: error, guildId: delta.guildId, userId: delta.userId, level: newLevel },
         'level-up side effects failed',
       );
     }
   }
 
-  private async onLevelUp(userId: string, level: number, fallbackChannelId: string): Promise<void> {
-    const guild = this.client.guilds.cache.get(this.client.env.GUILD_ID);
+  private async onLevelUp(
+    guildId: string,
+    userId: string,
+    level: number,
+    fallbackChannelId: string,
+  ): Promise<void> {
+    const guild = this.client.guilds.cache.get(guildId);
     if (!guild) return;
 
     const member = await guild.members.fetch(userId).catch(() => null);
     if (!member) return;
 
-    const config = this.client.settings.leveling;
+    const config = (await this.client.getConfig(guildId)).leveling;
+    const personalizer = (await this.client.getConfig(guildId)).personalizer;
     const eligible = config.rewards
       .filter((reward) => reward.level <= level)
       .sort((a, b) => a.level - b.level);
@@ -232,20 +245,34 @@ export class LevelingService {
     const channel = guild.channels.cache.get(channelId);
     if (!channel?.isTextBased()) return;
 
+    const premium = await this.client.isPremium(guild.id);
+    const content =
+      (premium
+        ? renderLevelUpMessage(personalizer.levelUpMessage, {
+            user: `${member}`,
+            username: member.user.username,
+            level,
+            server: guild.name,
+          })
+        : null) ?? `${member} reached **level ${level}**!`;
+
     await channel
       .send({
-        content: `${member} reached **level ${level}**!`,
+        content,
         allowedMentions: { users: [userId] },
       })
       .catch((error: unknown) => {
-        this.client.logger.warn({ err: error, userId, channelId }, 'failed to announce level up');
+        this.client.logger.warn(
+          { err: error, userId, guildId, channelId },
+          'failed to announce level up',
+        );
       });
   }
 
   private pruneCooldowns(now: number, windowMs: number): void {
     if (this.lastGainAt.size <= 10_000) return;
-    for (const [userId, at] of this.lastGainAt) {
-      if (now - at > windowMs) this.lastGainAt.delete(userId);
+    for (const [key, at] of this.lastGainAt) {
+      if (now - at > windowMs) this.lastGainAt.delete(key);
     }
   }
 }

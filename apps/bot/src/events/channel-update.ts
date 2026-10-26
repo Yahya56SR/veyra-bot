@@ -1,4 +1,4 @@
-import { BRAND, truncate } from '@nervana/shared';
+import { BRAND, truncate } from '@veyra/shared';
 import { Events } from 'discord.js';
 import type { BotEvent } from '../core/events.js';
 import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
@@ -6,10 +6,10 @@ import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
 export const channelUpdateEvent: BotEvent = {
   name: Events.ChannelUpdate,
   async execute(client, oldChannel, newChannel) {
-    if (newChannel.isDMBased()) return;
-    if (newChannel.guild.id !== client.env.GUILD_ID) return;
-    if (isLogIgnored(client, newChannel.id)) return;
-    if (!('guild' in oldChannel)) return;
+    if (newChannel.isDMBased() || !('guild' in oldChannel)) return;
+    const guildId = newChannel.guild.id;
+    const config = await client.getConfig(guildId);
+    if (isLogIgnored(config.logging, newChannel.id)) return;
 
     const changes: string[] = [];
 
@@ -62,6 +62,6 @@ export const channelUpdateEvent: BotEvent = {
       { name: 'Changes', value: truncate(changes.join('\n'), 1024) },
     );
 
-    await sendLog(client, 'channelUpdate', embed);
+    await sendLog(client, guildId, 'channelUpdate', embed, config);
   },
 };

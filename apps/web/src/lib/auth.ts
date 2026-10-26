@@ -1,14 +1,14 @@
-import { sessions, users } from '@nervana/db';
+import { sessions, users } from '@veyra/db';
 import { and, eq, gt, lt } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getDb } from './db';
 import { discordAvatarUrl } from './discord';
-import { adminIds, isHttps } from './env';
+import { isHttps } from './env';
 import { hashToken, randomToken } from './tokens';
 
-export const SESSION_COOKIE = 'nervana_session';
-export const OAUTH_STATE_COOKIE = 'nervana_oauth_state';
+export const SESSION_COOKIE = 'veyra_session';
+export const OAUTH_STATE_COOKIE = 'veyra_oauth_state';
 export const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 export interface CookieOptions {
@@ -92,12 +92,6 @@ export async function getSessionUser(): Promise<SessionUser | null> {
 
   const row = rows[0];
   if (!row) return null;
-
-  // Removing an operator from the allowlist revokes live sessions too.
-  if (!adminIds().has(row.id)) {
-    await db.delete(sessions).where(eq(sessions.id, tokenHash));
-    return null;
-  }
 
   return {
     id: row.id,

@@ -5,7 +5,7 @@ export type Logger = pino.Logger;
 export function createLogger(level: string): Logger {
   return pino({
     level,
-    base: { service: 'nervana' },
+    base: { service: 'Veyra' },
     timestamp: pino.stdTimeFunctions.isoTime,
     formatters: {
       level: (label) => ({ level: label }),

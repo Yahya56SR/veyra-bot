@@ -1,17 +1,26 @@
 'use client';
 
-import { updateSettingsAction, type SettingsActionState } from '@/app/(dashboard)/settings/actions';
+import { updateSettingsAction, type SettingsActionState } from '@/lib/settings-actions';
 import type { ModuleKey } from '@/lib/modules';
 import { useActionState } from 'react';
 
 const initial: SettingsActionState = { status: 'idle', message: '' };
 
-export function SettingsForm({ module, initialJson }: { module: ModuleKey; initialJson: string }) {
+export function SettingsForm({
+  module,
+  initialJson,
+  guildId,
+}: {
+  module: ModuleKey;
+  initialJson: string;
+  guildId: string;
+}) {
   const [state, formAction, pending] = useActionState(updateSettingsAction, initial);
 
   return (
     <form action={formAction} className="space-y-3">
       <input type="hidden" name="module" value={module} />
+      <input type="hidden" name="guildId" value={guildId} />
       <textarea
         name="json"
         defaultValue={initialJson}

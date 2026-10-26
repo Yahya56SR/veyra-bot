@@ -1,17 +1,17 @@
 import type { ClientEvents } from 'discord.js';
-import type { NervanaClient } from './client.js';
+import type { VeyraClient } from './client.js';
 
 export interface BotEvent {
   name: keyof ClientEvents;
   once?: boolean;
   // Discord's event argument tuples differ per event; the registry validates
   // the pairing by event name, so the implementation signature is widened.
-  execute: (client: NervanaClient, ...args: any[]) => Promise<void> | void;
+  execute: (client: VeyraClient, ...args: any[]) => Promise<void> | void;
 }
 
 type Listener = (...args: unknown[]) => void;
 
-export function registerEvents(client: NervanaClient, events: readonly BotEvent[]): void {
+export function registerEvents(client: VeyraClient, events: readonly BotEvent[]): void {
   const emitter = client as unknown as {
     on(event: string, listener: Listener): void;
     once(event: string, listener: Listener): void;

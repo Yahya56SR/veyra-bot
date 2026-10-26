@@ -1,36 +1,46 @@
+import { PREMIUM_FEATURES } from '@veyra/shared';
 import { MessageFlags, PermissionsBitField } from 'discord.js';
-import type { NervanaClient } from './client.js';
+import type { VeyraClient } from './client.js';
 import { takeCooldown } from './cooldowns.js';
 import { newErrorId, UserFacingError } from './errors.js';
 import { replyError } from './respond.js';
 
 export async function handleChatInputCommand(
-  client: NervanaClient,
+  client: VeyraClient,
   interaction: import('discord.js').ChatInputCommandInteraction,
 ): Promise<void> {
   if (!interaction.inCachedGuild()) {
     await interaction
       .reply({
-        content: 'Nervana only works inside its configured server.',
+        content: 'Veyra only works inside a Discord server.',
         flags: MessageFlags.Ephemeral,
       })
       .catch(() => {});
     return;
   }
 
-  if (interaction.guildId !== client.env.GUILD_ID) {
-    await replyError(interaction, 'This bot is locked to a different server.');
-    return;
-  }
-
   const command = client.commands.get(interaction.commandName);
   if (!command) return;
 
+  const guildId = interaction.guildId;
   const errorId = newErrorId();
+  const config = await client.getConfig(guildId);
+  const premium = await client.isPremium(guildId);
 
   try {
-    if (!client.isCategoryEnabled(command.category) && !command.allowWhenDisabled) {
+    if (!client.isCategoryEnabled(command.category, config) && !command.allowWhenDisabled) {
       await replyError(interaction, `**/${command.data.name}** is disabled on this server.`);
+      return;
+    }
+
+    if (command.premiumOnly && !premium) {
+      const feature = command.premiumFeature
+        ? PREMIUM_FEATURES.find((entry) => entry.id === command.premiumFeature)
+        : null;
+      await replyError(
+        interaction,
+        `${feature ? `**${feature.name}** is` : 'This command is'} a **Veyra Premium** feature. Upgrade in the dashboard at **/premium**.`,
+      );
       return;
     }
 
@@ -57,6 +67,7 @@ export async function handleChatInputCommand(
     }
 
     const remaining = takeCooldown(
+      guildId,
       interaction.user.id,
       command.data.name,
       command.cooldownSeconds ?? 1,
@@ -66,14 +77,15 @@ export async function handleChatInputCommand(
       return;
     }
 
-    client.stats?.recordCommand(command.data.name);
+    client.stats?.recordCommand(guildId, command.data.name);
 
     await command.execute({
       client,
       interaction,
       guild: interaction.guild,
       member: interaction.member,
-      settings: client.settings,
+      settings: config,
+      premium,
     });
   } catch (error) {
     client.logger.error(

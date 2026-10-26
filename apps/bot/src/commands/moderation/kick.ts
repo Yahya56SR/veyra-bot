@@ -33,6 +33,7 @@ export const kickCommand: Command = {
     await target.kick(auditReason(reason));
 
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: 'kick',
       targetId: target.id,
       moderatorId: interaction.user.id,

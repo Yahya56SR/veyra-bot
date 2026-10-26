@@ -13,12 +13,12 @@ export const balanceCommand: Command = {
     ),
   category: 'economy',
   cooldownSeconds: 2,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings }) {
     await deferPublic(interaction);
 
     const target = interaction.options.getUser('user') ?? interaction.user;
-    const member = await getBalance(requireDb(client), target.id);
-    const config = client.settings.economy;
+    const member = await getBalance(requireDb(client), interaction.guildId, target.id);
+    const config = settings.economy;
 
     await interaction.editReply({
       content: `${target} has ${formatCurrency(member.balance, config)}.\nDaily streak: **${

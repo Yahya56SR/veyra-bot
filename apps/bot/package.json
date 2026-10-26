@@ -1,5 +1,5 @@
 {
-  "name": "@nervana/bot",
+  "name": "@veyra/bot",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -9,8 +9,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@nervana/db": "*",
-    "@nervana/shared": "*",
+    "@veyra/db": "*",
+    "@veyra/shared": "*",
     "discord.js": "^14.27.0",
     "drizzle-orm": "^0.45.4",
     "lavalink-client": "^2.11.0",

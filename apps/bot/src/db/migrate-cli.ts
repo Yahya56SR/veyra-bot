@@ -1,5 +1,5 @@
-import { createDatabase } from '@nervana/db';
-import { runMigrations } from '@nervana/db/migrate';
+import { createDatabase } from '@veyra/db';
+import { runMigrations } from '@veyra/db/migrate';
 import { loadEnv } from '../config/env.js';
 import { createLogger } from '../core/logger.js';
 import { resolveMigrationsDir } from './migrations-dir.js';

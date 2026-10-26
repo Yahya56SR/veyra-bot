@@ -1,10 +1,11 @@
 import {
   BRAND,
+  FREE_MUSIC_QUEUE,
   LOG_EVENTS,
   type AppConfig,
   type AutomodAction,
   type LogEvent,
-} from '@nervana/shared';
+} from '@veyra/shared';
 import {
   ChannelType,
   EmbedBuilder,
@@ -16,6 +17,7 @@ import { resetModule, updateModule } from '../../config/service.js';
 import type { Command } from '../../core/commands.js';
 import { UserFacingError } from '../../core/errors.js';
 import { deferEphemeral } from '../../core/respond.js';
+import { applyPersonalizer } from '../../modules/personalizer/service.js';
 
 const AUTOMOD_RULES = ['invites', 'links', 'spam', 'mentions', 'caps', 'words', 'raid'] as const;
 type AutomodRule = (typeof AUTOMOD_RULES)[number];
@@ -30,6 +32,7 @@ const MODULES = [
   'music',
   'community',
   'stats',
+  'personalizer',
 ] as const;
 
 function label(value: string): string {
@@ -53,6 +56,32 @@ export const setupCommand: Command = {
     .setDescription('Configure logging, moderation, leveling, and welcome messages.')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
     .addSubcommand((sub) => sub.setName('status').setDescription('Show the current configuration.'))
+    .addSubcommand((sub) =>
+      sub
+        .setName('personalizer')
+        .setDescription('Premium: brand Veyra in this server.')
+        .addBooleanOption((option) =>
+          option.setName('enabled').setDescription('Enable or disable the personalizer'),
+        )
+        .addStringOption((option) =>
+          option
+            .setName('nickname')
+            .setDescription('Bot nickname in this server (blank clears it)')
+            .setMaxLength(32),
+        )
+        .addStringOption((option) =>
+          option.setName('color').setDescription('Embed colour, e.g. #8b5cf6').setMaxLength(7),
+        )
+        .addStringOption((option) =>
+          option
+            .setName('level-message')
+            .setDescription('Level-up template: {user}, {level}, {server}')
+            .setMaxLength(2000),
+        )
+        .addStringOption((option) =>
+          option.setName('ticket-title').setDescription('Ticket panel title').setMaxLength(256),
+        ),
+    )
     .addSubcommand((sub) =>
       sub
         .setName('logging')
@@ -385,13 +414,52 @@ export const setupCommand: Command = {
   category: 'core',
   userPermissions: [PermissionFlagsBits.ManageGuild],
   cooldownSeconds: 2,
-  async execute({ client, interaction, settings }) {
+  async execute({ client, interaction, settings, premium }) {
     await deferEphemeral(interaction);
 
     const sub = interaction.options.getSubcommand(true);
 
     if (sub === 'status') {
       await showStatus(interaction, settings);
+      return;
+    }
+
+    if (sub === 'personalizer') {
+      if (!(await client.isPremium(interaction.guildId))) {
+        throw new UserFacingError(
+          'The personalizer is a Premium feature. Open the dashboard Premium page to subscribe for this server.',
+        );
+      }
+
+      const enabled = interaction.options.getBoolean('enabled');
+      const nickname = interaction.options.getString('nickname');
+      const color = interaction.options.getString('color')?.trim();
+      const levelMessage = interaction.options.getString('level-message');
+      const ticketTitle = interaction.options.getString('ticket-title');
+
+      const personalizer = structuredClone(settings.personalizer);
+      if (enabled !== null) personalizer.enabled = enabled;
+      if (nickname !== null) personalizer.nickname = nickname.trim() || null;
+      if (color) personalizer.embedColor = color.startsWith('#') ? color : `#${color}`;
+      if (levelMessage !== null) personalizer.levelUpMessage = levelMessage.trim() || null;
+      if (ticketTitle !== null) personalizer.ticketPanelTitle = ticketTitle.trim() || null;
+
+      await updateModule(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        'personalizer',
+        personalizer,
+      );
+
+      const updated = { ...settings, personalizer };
+      if (interaction.guild) await applyPersonalizer(client, interaction.guild, updated);
+
+      await interaction.editReply({
+        content: `Personalizer is **${personalizer.enabled ? 'on' : 'off'}** · colour ${
+          personalizer.embedColor
+        } · nickname ${personalizer.nickname ? `**${personalizer.nickname}**` : 'default'}.`,
+      });
       return;
     }
 
@@ -403,7 +471,7 @@ export const setupCommand: Command = {
       logging.channels[event] = channel?.id ?? null;
       if (channel) logging.enabled = true;
 
-      await updateModule(client, interaction.user.id, 'logging', logging);
+      await updateModule(client, interaction.guildId, interaction.user.id, 'logging', logging);
 
       await interaction.editReply({
         content: channel
@@ -419,7 +487,13 @@ export const setupCommand: Command = {
       const moderation = structuredClone(settings.moderation);
       moderation.modLogChannelId = channel?.id ?? null;
 
-      await updateModule(client, interaction.user.id, 'moderation', moderation);
+      await updateModule(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        'moderation',
+        moderation,
+      );
 
       await interaction.editReply({
         content: channel
@@ -443,7 +517,13 @@ export const setupCommand: Command = {
       target.enabled = enabled;
       if (action) target.action = action;
 
-      await updateModule(client, interaction.user.id, 'moderation', moderation);
+      await updateModule(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        'moderation',
+        moderation,
+      );
 
       await interaction.editReply({
         content: `**${label(rule)}** automod is now **${enabled ? 'on' : 'off'}**${
@@ -472,7 +552,13 @@ export const setupCommand: Command = {
       else set.add(host);
       moderation.automod.links.allowlist = [...set];
 
-      await updateModule(client, interaction.user.id, 'moderation', moderation);
+      await updateModule(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        'moderation',
+        moderation,
+      );
 
       await interaction.editReply({
         content: `${remove ? 'Removed' : 'Added'} **${host}** ${
@@ -494,7 +580,13 @@ export const setupCommand: Command = {
       else set.add(word);
       moderation.automod.words.words = [...set];
 
-      await updateModule(client, interaction.user.id, 'moderation', moderation);
+      await updateModule(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        'moderation',
+        moderation,
+      );
 
       await interaction.editReply({
         content: `${remove ? 'Removed' : 'Added'} **${word}** ${
@@ -527,7 +619,7 @@ export const setupCommand: Command = {
       }
       if (cooldown !== null) leveling.cooldownSeconds = cooldown;
 
-      await updateModule(client, interaction.user.id, 'leveling', leveling);
+      await updateModule(client, interaction.guildId, interaction.user.id, 'leveling', leveling);
 
       await interaction.editReply({
         content: `Leveling is **${enabled ? 'on' : 'off'}** · ${leveling.xpMin}–${leveling.xpMax} XP every ${leveling.cooldownSeconds}s.`,
@@ -561,7 +653,7 @@ export const setupCommand: Command = {
         );
       }
 
-      await updateModule(client, interaction.user.id, 'economy', economy);
+      await updateModule(client, interaction.guildId, interaction.user.id, 'economy', economy);
 
       await interaction.editReply({
         content: `Economy is **${economy.enabled ? 'on' : 'off'}** - ${economy.dailyAmount} ${
@@ -585,8 +677,20 @@ export const setupCommand: Command = {
       if (clearDj) music.djRoleId = null;
       else if (djRole) music.djRoleId = djRole.id;
       if (volume !== null) music.defaultVolume = volume;
-      if (maxQueue !== null) music.maxQueue = maxQueue;
-      if (stay247 !== null) music.stay247 = stay247;
+      if (maxQueue !== null) {
+        if (!premium && maxQueue > FREE_MUSIC_QUEUE) {
+          throw new UserFacingError(
+            `Free servers can configure up to ${FREE_MUSIC_QUEUE} queued tracks. Premium raises the limit to 500.`,
+          );
+        }
+        music.maxQueue = maxQueue;
+      }
+      if (stay247 !== null) {
+        if (stay247 && !premium) {
+          throw new UserFacingError('24/7 music is a Premium feature for this server.');
+        }
+        music.stay247 = stay247;
+      }
 
       if (music.enabled) {
         if (!client.env.MUSIC_ENABLED) {
@@ -601,7 +705,7 @@ export const setupCommand: Command = {
         }
       }
 
-      await updateModule(client, interaction.user.id, 'music', music);
+      await updateModule(client, interaction.guildId, interaction.user.id, 'music', music);
 
       const lines = [
         `Music: **${music.enabled ? 'on' : 'off'}**`,
@@ -650,7 +754,7 @@ export const setupCommand: Command = {
         throw new UserFacingError('Set a starboard channel before enabling it.');
       }
 
-      await updateModule(client, interaction.user.id, 'community', community);
+      await updateModule(client, interaction.guildId, interaction.user.id, 'community', community);
 
       await interaction.editReply({
         content: [
@@ -691,7 +795,7 @@ export const setupCommand: Command = {
         if (message) welcome.leaveMessage = message;
       }
 
-      await updateModule(client, interaction.user.id, 'welcome', welcome);
+      await updateModule(client, interaction.guildId, interaction.user.id, 'welcome', welcome);
 
       await interaction.editReply({
         content: channel
@@ -714,7 +818,13 @@ export const setupCommand: Command = {
         else set.add(role.id);
         moderation.exemptRoleIds = [...set];
 
-        await updateModule(client, interaction.user.id, 'moderation', moderation);
+        await updateModule(
+          client,
+          interaction.guildId,
+          interaction.user.id,
+          'moderation',
+          moderation,
+        );
 
         await interaction.editReply({
           content: `${remove ? 'Removed' : 'Added'} role exemption for ${role}.`,
@@ -729,7 +839,13 @@ export const setupCommand: Command = {
       else set.add(channel.id);
       moderation.exemptChannelIds = [...set];
 
-      await updateModule(client, interaction.user.id, 'moderation', moderation);
+      await updateModule(
+        client,
+        interaction.guildId,
+        interaction.user.id,
+        'moderation',
+        moderation,
+      );
 
       await interaction.editReply({
         content: `${remove ? 'Removed' : 'Added'} automod exemption for <#${channel.id}>.`,
@@ -765,7 +881,7 @@ export const setupCommand: Command = {
       else set.add(role.id);
       welcome.autoRoleIds = [...set];
 
-      await updateModule(client, interaction.user.id, 'welcome', welcome);
+      await updateModule(client, interaction.guildId, interaction.user.id, 'welcome', welcome);
 
       await interaction.editReply({
         content: `${remove ? 'Removed' : 'Added'} ${role} as an auto role.`,
@@ -812,7 +928,7 @@ export const setupCommand: Command = {
         );
       }
 
-      await updateModule(client, interaction.user.id, 'tickets', tickets);
+      await updateModule(client, interaction.guildId, interaction.user.id, 'tickets', tickets);
 
       const lines = [
         `Tickets: **${tickets.enabled ? 'enabled' : 'disabled'}**`,
@@ -832,7 +948,7 @@ export const setupCommand: Command = {
 
     if (sub === 'reset') {
       const module = interaction.options.getString('module', true) as keyof AppConfig;
-      await resetModule(client, interaction.user.id, module);
+      await resetModule(client, interaction.guildId, interaction.user.id, module);
 
       await interaction.editReply({
         content: `Reset the **${label(module)}** module to defaults.`,
@@ -851,7 +967,7 @@ async function showStatus(
 
   const embed = new EmbedBuilder()
     .setColor(BRAND.color)
-    .setTitle('Nervana setup')
+    .setTitle('Veyra setup')
     .addFields(
       {
         name: 'Moderation',

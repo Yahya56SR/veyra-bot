@@ -1,4 +1,4 @@
-import { BRAND } from '@nervana/shared';
+import { BRAND } from '@veyra/shared';
 import {
   EmbedBuilder,
   PermissionFlagsBits,

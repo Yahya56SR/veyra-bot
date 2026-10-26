@@ -10,93 +10,115 @@ interface NavItem {
   icon: ReactNode;
 }
 
-const links: NavItem[] = [
-  {
-    href: '/',
-    label: 'Overview',
-    icon: (
-      <>
-        <rect x="3" y="3" width="7" height="7" rx="1.5" />
-        <rect x="14" y="3" width="7" height="7" rx="1.5" />
-        <rect x="3" y="14" width="7" height="7" rx="1.5" />
-        <rect x="14" y="14" width="7" height="7" rx="1.5" />
-      </>
-    ),
-  },
-  {
-    href: '/activity',
-    label: 'Activity',
-    icon: (
-      <>
-        <path d="M4 19V5" />
-        <path d="M4 19h16" />
-        <path d="m7 15 3-4 3 2 4-6" />
-      </>
-    ),
-  },
-  {
-    href: '/moderation',
-    label: 'Moderation',
-    icon: (
-      <>
-        <path d="M12 3 5 6v5c0 4.2 2.9 7.8 7 9 4.1-1.2 7-4.8 7-9V6l-7-3Z" />
-        <path d="m9 12 2 2 4-4" />
-      </>
-    ),
-  },
-  {
-    href: '/members',
-    label: 'Members',
-    icon: (
-      <>
-        <circle cx="9" cy="8" r="3" />
-        <path d="M3.5 20a5.5 5.5 0 0 1 11 0" />
-        <path d="M16 5.5a3 3 0 0 1 0 5.8" />
-        <path d="M17 14.5a5.5 5.5 0 0 1 3.5 5" />
-      </>
-    ),
-  },
-  {
-    href: '/tickets',
-    label: 'Tickets',
-    icon: (
-      <>
-        <path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7Z" />
-        <path d="M12 8v1M12 12v1M12 16v1" />
-      </>
-    ),
-  },
-  {
-    href: '/settings',
-    label: 'Settings',
-    icon: (
-      <>
-        <path d="M4 7h10M18 7h2M4 17h2M10 17h10" />
-        <circle cx="16" cy="7" r="2" />
-        <circle cx="8" cy="17" r="2" />
-      </>
-    ),
-  },
-  {
-    href: '/audit',
-    label: 'Audit log',
-    icon: (
-      <>
-        <path d="M6 3h9l4 4v14H6V3Z" />
-        <path d="M14 3v5h5" />
-        <path d="M9 12h6M9 16h6" />
-      </>
-    ),
-  },
-];
-
-export function NavLinks() {
+export function NavLinks({ guildId }: { guildId: string }) {
   const pathname = usePathname();
+  const base = `/g/${guildId}`;
+
+  const links: NavItem[] = [
+    {
+      href: base,
+      label: 'Overview',
+      icon: (
+        <>
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        </>
+      ),
+    },
+    {
+      href: `${base}/activity`,
+      label: 'Activity',
+      icon: (
+        <>
+          <path d="M4 19V5" />
+          <path d="M4 19h16" />
+          <path d="m7 15 3-4 3 2 4-6" />
+        </>
+      ),
+    },
+    {
+      href: `${base}/moderation`,
+      label: 'Moderation',
+      icon: (
+        <>
+          <path d="M12 3 5 6v5c0 4.2 2.9 7.8 7 9 4.1-1.2 7-4.8 7-9V6l-7-3Z" />
+          <path d="m9 12 2 2 4-4" />
+        </>
+      ),
+    },
+    {
+      href: `${base}/members`,
+      label: 'Members',
+      icon: (
+        <>
+          <circle cx="9" cy="8" r="3" />
+          <path d="M3.5 20a5.5 5.5 0 0 1 11 0" />
+          <path d="M16 5.5a3 3 0 0 1 0 5.8" />
+          <path d="M17 14.5a5.5 5.5 0 0 1 3.5 5" />
+        </>
+      ),
+    },
+    {
+      href: `${base}/tickets`,
+      label: 'Tickets',
+      icon: (
+        <>
+          <path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7Z" />
+          <path d="M12 8v1M12 12v1M12 16v1" />
+        </>
+      ),
+    },
+    {
+      href: `${base}/settings`,
+      label: 'Settings',
+      icon: (
+        <>
+          <path d="M4 7h10M18 7h2M4 17h2M10 17h10" />
+          <circle cx="16" cy="7" r="2" />
+          <circle cx="8" cy="17" r="2" />
+        </>
+      ),
+    },
+    {
+      href: `${base}/personalizer`,
+      label: 'Personalizer',
+      icon: (
+        <>
+          <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
+          <circle cx="12" cy="12" r="4" />
+          <path d="M5.6 5.6 7.8 7.8M16.2 16.2l2.2 2.2M18.4 5.6l-2.2 2.2M7.8 16.2l-2.2 2.2" />
+        </>
+      ),
+    },
+    {
+      href: `${base}/premium`,
+      label: 'Premium',
+      icon: (
+        <>
+          <path d="m12 3 2.6 5.6L21 10l-4.5 4.3 1.1 6.2L12 17.6 6.4 20.5l1.1-6.2L3 10l6.4-1.4L12 3Z" />
+        </>
+      ),
+    },
+    {
+      href: `${base}/audit`,
+      label: 'Audit log',
+      icon: (
+        <>
+          <path d="M6 3h9l4 4v14H6V3Z" />
+          <path d="M14 3v5h5" />
+          <path d="M9 12h6M9 16h6" />
+        </>
+      ),
+    },
+  ];
 
   return (
     <nav className="flex gap-1 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0">
       {links.map((link) => {
-        const active = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+        const active =
+          link.href === base ? pathname === base : pathname.startsWith(`${link.href}/`);
         return (
           <Link
             key={link.href}

@@ -1,10 +1,11 @@
-import type { Database } from '@nervana/db';
-import { cases, warnings } from '@nervana/db';
-import { BRAND, formatDuration } from '@nervana/shared';
+import type { Database } from '@veyra/db';
+import { cases, warnings } from '@veyra/db';
+import { BRAND, formatDuration } from '@veyra/shared';
 import { EmbedBuilder } from 'discord.js';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 import { requireDb } from '../../core/database.js';
 import { UserFacingError } from '../../core/errors.js';
+import { brandEmbed } from '../personalizer/service.js';
 
 export { requireDb };
 
@@ -21,6 +22,7 @@ export type CaseType =
   | 'slowmode';
 
 export interface CreateCaseInput {
+  guildId: string;
   type: CaseType;
   targetId: string;
   moderatorId: string;
@@ -85,6 +87,7 @@ export async function createCase(db: Database, input: CreateCaseInput): Promise<
     const rows = await tx
       .insert(cases)
       .values({
+        guildId: input.guildId,
         type: input.type,
         targetId: input.targetId,
         moderatorId: input.moderatorId,
@@ -99,7 +102,12 @@ export async function createCase(db: Database, input: CreateCaseInput): Promise<
     if (!row) throw new UserFacingError('Could not record that case.');
 
     if (input.type === 'warn' && input.warning !== false) {
-      await tx.insert(warnings).values({ caseId: row.id, userId: input.targetId, active: true });
+      await tx.insert(warnings).values({
+        caseId: row.id,
+        guildId: input.guildId,
+        userId: input.targetId,
+        active: true,
+      });
     }
 
     return row;
@@ -108,7 +116,7 @@ export async function createCase(db: Database, input: CreateCaseInput): Promise<
 
 /** Records a case, writes the mod log, and DMs the target. */
 export async function finishModAction(
-  client: NervanaClient,
+  client: VeyraClient,
   input: CreateCaseInput,
 ): Promise<CaseRow> {
   const row = await createCase(requireDb(client), input);
@@ -120,29 +128,35 @@ export async function finishModAction(
  * Sends an arbitrary embed to the configured case log. `modLogChannelId` is
  * authoritative; `logging.channels.modAction` is the fallback.
  */
-export async function sendModLogEmbed(client: NervanaClient, embed: EmbedBuilder): Promise<void> {
-  const config = client.settings.moderation;
+export async function sendModLogEmbed(
+  client: VeyraClient,
+  guildId: string,
+  embed: EmbedBuilder,
+): Promise<void> {
+  const appConfig = await client.getConfig(guildId);
+  const config = appConfig.moderation;
   const channelId =
     config.modLogChannelId ??
-    (client.settings.logging.enabled ? client.settings.logging.channels.modAction : null);
+    (appConfig.logging.enabled ? appConfig.logging.channels.modAction : null);
 
   if (!channelId) return;
 
-  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const guild = client.guilds.cache.get(guildId);
   const channel = guild?.channels.cache.get(channelId);
   if (!channel?.isTextBased()) return;
 
+  brandEmbed(client, guildId, embed, appConfig, true);
   if (!embed.data.footer) embed.setFooter({ text: BRAND.footer });
   if (!embed.data.timestamp) embed.setTimestamp();
 
   await channel
     .send({ embeds: [embed], allowedMentions: { parse: [] } })
     .catch((error: unknown) => {
-      client.logger.warn({ err: error, channelId }, 'failed to send moderation log');
+      client.logger.warn({ err: error, guildId, channelId }, 'failed to send moderation log');
     });
 }
 
-export async function sendModLog(client: NervanaClient, row: CaseRow): Promise<void> {
+export async function sendModLog(client: VeyraClient, row: CaseRow): Promise<void> {
   const type = row.type as CaseType;
   const embed = new EmbedBuilder()
     .setColor(CASE_COLORS[type] ?? BRAND.muted)
@@ -171,16 +185,17 @@ export async function sendModLog(client: NervanaClient, row: CaseRow): Promise<v
     });
   }
 
-  await sendModLogEmbed(client, embed);
+  await sendModLogEmbed(client, row.guildId, embed);
 }
 
-async function dmTarget(client: NervanaClient, row: CaseRow): Promise<void> {
-  if (!client.settings.moderation.dmOnPunish) return;
+async function dmTarget(client: VeyraClient, row: CaseRow): Promise<void> {
+  const config = await client.getConfig(row.guildId);
+  if (!config.moderation.dmOnPunish) return;
 
   const type = row.type as CaseType;
   if (!['warn', 'timeout', 'kick', 'ban', 'softban', 'unban'].includes(type)) return;
 
-  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const guild = client.guilds.cache.get(row.guildId);
   const server = guild?.name ?? 'the server';
   const duration = row.durationMs ? ` for ${formatDuration(row.durationMs)}` : '';
 

@@ -8,7 +8,7 @@ import {
   type ModalSubmitInteraction,
   type TextChannel,
 } from 'discord.js';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 import { newErrorId, UserFacingError } from '../../core/errors.js';
 import { deferEphemeral, replyError } from '../../core/respond.js';
 import { claimTicket, closeTicket, openTicket, type CloseTicketResult } from './service.js';
@@ -32,11 +32,10 @@ function closeSummary(result: CloseTicketResult): string {
  * IDs so future components can use the same event listener.
  */
 export async function handleTicketInteraction(
-  client: NervanaClient,
+  client: VeyraClient,
   interaction: ButtonInteraction | ModalSubmitInteraction,
 ): Promise<void> {
   if (!interaction.inCachedGuild()) return;
-  if (interaction.guildId !== client.env.GUILD_ID) return;
 
   const customId = interaction.customId;
   if (!customId.startsWith('ticket:')) return;

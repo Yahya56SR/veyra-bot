@@ -8,11 +8,11 @@ export const workCommand: Command = {
   data: new SlashCommandBuilder().setName('work').setDescription('Work for some coins.'),
   category: 'economy',
   cooldownSeconds: 3,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings }) {
     await deferEphemeral(interaction);
 
-    const config = client.settings.economy;
-    const result = await work(requireDb(client), interaction.user.id, config);
+    const config = settings.economy;
+    const result = await work(requireDb(client), interaction.guildId, interaction.user.id, config);
 
     await interaction.editReply({
       content: `You earned ${formatCurrency(result.payout, config)}.\nBalance: ${formatCurrency(

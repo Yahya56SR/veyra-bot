@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG } from '@nervana/shared';
+import { DEFAULT_CONFIG } from '@veyra/shared';
 import { describe, expect, it } from 'vitest';
 import {
   DAILY_INTERVAL_MS,

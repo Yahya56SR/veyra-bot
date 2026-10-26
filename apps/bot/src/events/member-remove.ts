@@ -1,4 +1,4 @@
-import { BRAND } from '@nervana/shared';
+import { BRAND } from '@veyra/shared';
 import { Events } from 'discord.js';
 import type { BotEvent } from '../core/events.js';
 import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
@@ -7,11 +7,10 @@ import { onMemberLeave } from '../modules/welcome/service.js';
 export const guildMemberRemoveEvent: BotEvent = {
   name: Events.GuildMemberRemove,
   async execute(client, member) {
-    if (member.guild.id !== client.env.GUILD_ID) return;
+    const config = await client.getConfig(member.guild.id);
+    client.stats?.recordLeave(member.guild.id);
 
-    client.stats?.recordLeave();
-
-    if (!isLogIgnored(client, null, member.id)) {
+    if (!isLogIgnored(config.logging, null, member.id)) {
       const avatar = member.user?.displayAvatarURL({ size: 128 });
       const embed = logEmbed('Member left', BRAND.danger).addFields(
         {
@@ -31,7 +30,7 @@ export const guildMemberRemoveEvent: BotEvent = {
 
       if (avatar) embed.setThumbnail(avatar);
 
-      await sendLog(client, 'memberLeave', embed);
+      await sendLog(client, member.guild.id, 'memberLeave', embed, config);
     }
 
     await onMemberLeave(client, member);

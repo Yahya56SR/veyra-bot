@@ -1,5 +1,5 @@
-import { cases, warnings } from '@nervana/db';
-import { BRAND, truncate } from '@nervana/shared';
+import { cases, warnings } from '@veyra/db';
+import { BRAND, truncate } from '@veyra/shared';
 import { and, desc, eq } from 'drizzle-orm';
 import { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
@@ -32,7 +32,13 @@ export const warningsCommand: Command = {
       })
       .from(warnings)
       .innerJoin(cases, eq(warnings.caseId, cases.id))
-      .where(and(eq(warnings.userId, user.id), eq(warnings.active, true)))
+      .where(
+        and(
+          eq(warnings.guildId, interaction.guildId),
+          eq(warnings.userId, user.id),
+          eq(warnings.active, true),
+        ),
+      )
       .orderBy(desc(cases.createdAt))
       .limit(20);
 

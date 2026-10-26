@@ -1,4 +1,4 @@
-import { reactionRoles } from '@nervana/db';
+import { reactionRoles } from '@veyra/db';
 import { and, asc, eq } from 'drizzle-orm';
 import {
   ActionRowBuilder,
@@ -172,6 +172,7 @@ export const reactionRoleCommand: Command = {
       await db
         .insert(reactionRoles)
         .values({
+          guildId: interaction.guildId,
           messageId,
           emoji,
           roleId: role.id,
@@ -192,7 +193,13 @@ export const reactionRoleCommand: Command = {
       const emoji = normalizeEmoji(interaction.options.getString('emoji', true));
       const rows = await db
         .delete(reactionRoles)
-        .where(and(eq(reactionRoles.messageId, messageId), eq(reactionRoles.emoji, emoji)))
+        .where(
+          and(
+            eq(reactionRoles.guildId, interaction.guildId),
+            eq(reactionRoles.messageId, messageId),
+            eq(reactionRoles.emoji, emoji),
+          ),
+        )
         .returning({ id: reactionRoles.id });
 
       await interaction.editReply({
@@ -209,7 +216,14 @@ export const reactionRoleCommand: Command = {
       const rows = await db
         .select()
         .from(reactionRoles)
-        .where(messageId ? eq(reactionRoles.messageId, messageId) : undefined)
+        .where(
+          messageId
+            ? and(
+                eq(reactionRoles.guildId, interaction.guildId),
+                eq(reactionRoles.messageId, messageId),
+              )
+            : eq(reactionRoles.guildId, interaction.guildId),
+        )
         .orderBy(asc(reactionRoles.messageId), asc(reactionRoles.id))
         .limit(40);
 
@@ -303,6 +317,7 @@ export const reactionRoleCommand: Command = {
     try {
       await db.insert(reactionRoles).values(
         resolved.map((entry) => ({
+          guildId: interaction.guildId,
           messageId: message.id,
           emoji: `select:${entry.roleId}`,
           roleId: entry.roleId,

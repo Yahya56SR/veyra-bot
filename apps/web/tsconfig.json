@@ -9,9 +9,9 @@
     "plugins": [{ "name": "next" }],
     "paths": {
       "@/*": ["./src/*"],
-      "@nervana/shared": ["../../packages/shared/src/index.ts"],
-      "@nervana/db": ["../../packages/db/src/index.ts"],
-      "@nervana/db/migrate": ["../../packages/db/src/migrate.ts"]
+      "@veyra/shared": ["../../packages/shared/src/index.ts"],
+      "@veyra/db": ["../../packages/db/src/index.ts"],
+      "@veyra/db/migrate": ["../../packages/db/src/migrate.ts"]
     }
   },
   "include": [

@@ -2,12 +2,20 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.DASHBOARD_URL?.trim() || 'http://localhost:3000'),
   title: {
-    default: 'Nervana',
-    template: '%s · Nervana',
+    default: 'Veyra · Discord operations, simplified',
+    template: '%s · Veyra',
   },
-  description: 'Nervana control room for a single Discord community.',
-  robots: { index: false, follow: false },
+  description:
+    'Moderation, logging, tickets, leveling, economy, community, music, and analytics in one Discord bot with a real dashboard.',
+  openGraph: {
+    title: 'Veyra · Discord operations, simplified',
+    description:
+      'One Discord bot for moderation, tickets, leveling, economy, community, music, and analytics.',
+    type: 'website',
+  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {

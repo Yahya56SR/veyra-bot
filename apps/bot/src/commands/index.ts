@@ -1,6 +1,7 @@
 import type { Command } from '../core/commands.js';
 import { helpCommand } from './core/help.js';
 import { pingCommand } from './core/ping.js';
+import { premiumCommand } from './core/premium.js';
 import { setupCommand } from './core/setup.js';
 import { statsCommand } from './core/stats.js';
 import { leaderboardCommand } from './leveling/leaderboard.js';
@@ -66,6 +67,7 @@ import { userInfoCommand } from './utility/userinfo.js';
 export const commands: readonly Command[] = [
   pingCommand,
   helpCommand,
+  premiumCommand,
   setupCommand,
   statsCommand,
   rankCommand,

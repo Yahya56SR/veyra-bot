@@ -1,5 +1,5 @@
-import { reminders } from '@nervana/db';
-import { formatDuration, parseDuration, truncate } from '@nervana/shared';
+import { reminders } from '@veyra/db';
+import { formatDuration, parseDuration, truncate } from '@veyra/shared';
 import { and, asc, eq } from 'drizzle-orm';
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
@@ -66,6 +66,7 @@ export const remindCommand: Command = {
       const rows = await db
         .insert(reminders)
         .values({
+          guildId: interaction.guildId,
           userId: interaction.user.id,
           channelId: interaction.channelId,
           message,
@@ -93,7 +94,13 @@ export const remindCommand: Command = {
           remindAt: reminders.remindAt,
         })
         .from(reminders)
-        .where(and(eq(reminders.userId, interaction.user.id), eq(reminders.sent, false)))
+        .where(
+          and(
+            eq(reminders.guildId, interaction.guildId),
+            eq(reminders.userId, interaction.user.id),
+            eq(reminders.sent, false),
+          ),
+        )
         .orderBy(asc(reminders.remindAt))
         .limit(10);
 
@@ -126,6 +133,7 @@ export const remindCommand: Command = {
       .delete(reminders)
       .where(
         and(
+          eq(reminders.guildId, interaction.guildId),
           eq(reminders.id, id),
           eq(reminders.userId, interaction.user.id),
           eq(reminders.sent, false),

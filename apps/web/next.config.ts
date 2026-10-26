@@ -7,7 +7,7 @@ const repoRoot = path.join(root, '../..');
 
 const nextConfig: NextConfig = {
   // The dashboard consumes the workspace packages' TypeScript sources.
-  transpilePackages: ['@nervana/db', '@nervana/shared'],
+  transpilePackages: ['@veyra/db', '@veyra/shared'],
   // postgres.js opens sockets and must stay a runtime dependency.
   serverExternalPackages: ['postgres'],
   outputFileTracingRoot: repoRoot,

@@ -82,7 +82,7 @@ Closed by ${escapeHtml(meta.closedBy)} · Reason: ${escapeHtml(meta.reason)}
   let truncated = false;
   let messageCount = 0;
   const footer = `</main>
-<footer>Nervana ticket transcript · ${escapeHtml(meta.closedAt.toISOString())}</footer>
+<footer>Veyra ticket transcript · ${escapeHtml(meta.closedAt.toISOString())}</footer>
 </body>
 </html>
 `;

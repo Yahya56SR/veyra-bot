@@ -1,5 +1,5 @@
-import { cases } from '@nervana/db';
-import { BRAND, truncate } from '@nervana/shared';
+import { cases } from '@veyra/db';
+import { BRAND, truncate } from '@veyra/shared';
 import { and, desc, eq, type SQL } from 'drizzle-orm';
 import { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
@@ -41,7 +41,7 @@ export const casesCommand: Command = {
     const user = interaction.options.getUser('user');
     const type = interaction.options.getString('type');
 
-    const filters: SQL[] = [];
+    const filters: SQL[] = [eq(cases.guildId, interaction.guildId)];
     if (user) filters.push(eq(cases.targetId, user.id));
     if (type) filters.push(eq(cases.type, type));
 

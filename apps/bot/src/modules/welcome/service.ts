@@ -1,5 +1,5 @@
 import type { GuildMember, PartialGuildMember } from 'discord.js';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 
 function render(
   template: string,
@@ -14,26 +14,27 @@ function render(
 }
 
 async function deliver(
-  client: NervanaClient,
+  client: VeyraClient,
+  guildId: string,
   channelId: string | null,
   content: string,
   userId: string,
 ): Promise<void> {
   if (!channelId) return;
 
-  const guild = client.guilds.cache.get(client.env.GUILD_ID);
+  const guild = client.guilds.cache.get(guildId);
   const channel = guild?.channels.cache.get(channelId);
   if (!channel?.isTextBased()) return;
 
   await channel.send({ content, allowedMentions: { users: [userId] } }).catch((error: unknown) => {
-    client.logger.warn({ err: error, channelId }, 'failed to send welcome message');
+    client.logger.warn({ err: error, guildId, channelId }, 'failed to send welcome message');
   });
 }
 
-export async function onMemberJoin(client: NervanaClient, member: GuildMember): Promise<void> {
-  const config = client.settings.welcome;
+export async function onMemberJoin(client: VeyraClient, member: GuildMember): Promise<void> {
+  const config = await client.getConfig(member.guild.id);
 
-  for (const roleId of config.autoRoleIds) {
+  for (const roleId of config.welcome.autoRoleIds) {
     if (member.roles.cache.has(roleId)) continue;
     await member.roles
       .add(roleId, 'Automatic join role')
@@ -42,27 +43,29 @@ export async function onMemberJoin(client: NervanaClient, member: GuildMember): 
       );
   }
 
-  if (!config.joinEnabled || !config.joinChannelId) return;
+  if (!config.welcome.joinEnabled || !config.welcome.joinChannelId) return;
 
   await deliver(
     client,
-    config.joinChannelId,
-    render(config.joinMessage, member, member.guild.name),
+    member.guild.id,
+    config.welcome.joinChannelId,
+    render(config.welcome.joinMessage, member, member.guild.name),
     member.id,
   );
 }
 
 export async function onMemberLeave(
-  client: NervanaClient,
+  client: VeyraClient,
   member: GuildMember | PartialGuildMember,
 ): Promise<void> {
-  const config = client.settings.welcome;
-  if (!config.leaveEnabled || !config.leaveChannelId) return;
+  const config = await client.getConfig(member.guild.id);
+  if (!config.welcome.leaveEnabled || !config.welcome.leaveChannelId) return;
 
   await deliver(
     client,
-    config.leaveChannelId,
-    render(config.leaveMessage, member, member.guild.name),
+    member.guild.id,
+    config.welcome.leaveChannelId,
+    render(config.welcome.leaveMessage, member, member.guild.name),
     member.id,
   );
 }

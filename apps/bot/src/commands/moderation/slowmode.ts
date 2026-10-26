@@ -41,6 +41,7 @@ export const slowmodeCommand: Command = {
     await (channel as TextChannel).setRateLimitPerUser(seconds, auditReason(reason));
 
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: 'slowmode',
       targetId: channel.id,
       moderatorId: interaction.user.id,

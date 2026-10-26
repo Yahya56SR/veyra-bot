@@ -1,5 +1,5 @@
 {
-  "name": "@nervana/web",
+  "name": "@veyra/web",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -10,13 +10,14 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@nervana/db": "*",
-    "@nervana/shared": "*",
+    "@veyra/db": "*",
+    "@veyra/shared": "*",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.3",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "recharts": "3.10.1",
+    "stripe": "^23.0.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import { reactionRoles } from '@nervana/db';
+import { reactionRoles } from '@veyra/db';
 import { and, eq } from 'drizzle-orm';
 import {
   PermissionFlagsBits,
@@ -8,7 +8,7 @@ import {
   type PartialUser,
   type User,
 } from 'discord.js';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 import { requireDb } from '../../core/database.js';
 import { UserFacingError } from '../../core/errors.js';
 
@@ -22,7 +22,7 @@ export function isSelectRow(row: ReactionRoleRow): boolean {
   return row.mode === 'select' || row.emoji.startsWith('select:');
 }
 
-function canManageRole(client: NervanaClient, member: GuildMember, roleId: string): boolean {
+function canManageRole(client: VeyraClient, member: GuildMember, roleId: string): boolean {
   const guild = member.guild;
   const role = guild.roles.cache.get(roleId);
   const me = guild.members.me;
@@ -33,7 +33,7 @@ function canManageRole(client: NervanaClient, member: GuildMember, roleId: strin
 }
 
 async function applyRole(
-  client: NervanaClient,
+  client: VeyraClient,
   member: GuildMember,
   roleId: string,
   add: boolean,
@@ -54,18 +54,25 @@ async function applyRole(
 }
 
 async function rowsForReaction(
-  client: NervanaClient,
+  client: VeyraClient,
+  guildId: string,
   messageId: string,
   emoji: string,
 ): Promise<ReactionRoleRow[]> {
   return requireDb(client)
     .select()
     .from(reactionRoles)
-    .where(and(eq(reactionRoles.messageId, messageId), eq(reactionRoles.emoji, emoji)));
+    .where(
+      and(
+        eq(reactionRoles.guildId, guildId),
+        eq(reactionRoles.messageId, messageId),
+        eq(reactionRoles.emoji, emoji),
+      ),
+    );
 }
 
 async function removeGroupRoles(
-  client: NervanaClient,
+  client: VeyraClient,
   member: GuildMember,
   row: ReactionRoleRow,
 ): Promise<void> {
@@ -77,9 +84,18 @@ async function removeGroupRoles(
         .select()
         .from(reactionRoles)
         .where(
-          and(eq(reactionRoles.messageId, row.messageId), eq(reactionRoles.groupKey, row.groupKey)),
+          and(
+            eq(reactionRoles.guildId, row.guildId),
+            eq(reactionRoles.messageId, row.messageId),
+            eq(reactionRoles.groupKey, row.groupKey),
+          ),
         )
-    : await db.select().from(reactionRoles).where(eq(reactionRoles.messageId, row.messageId));
+    : await db
+        .select()
+        .from(reactionRoles)
+        .where(
+          and(eq(reactionRoles.guildId, row.guildId), eq(reactionRoles.messageId, row.messageId)),
+        );
 
   for (const sibling of siblings) {
     if (sibling.roleId !== row.roleId && member.roles.cache.has(sibling.roleId)) {
@@ -89,18 +105,17 @@ async function removeGroupRoles(
 }
 
 export async function handleReactionRoleAdd(
-  client: NervanaClient,
+  client: VeyraClient,
   reaction: MessageReaction | PartialMessageReaction,
   user: User | PartialUser,
 ): Promise<void> {
   if (user.bot) return;
   if (!reaction.message.inGuild()) return;
-  if (reaction.message.guildId !== client.env.GUILD_ID) return;
   if (reaction.partial) await reaction.fetch().catch(() => null);
   if (reaction.message.partial) await reaction.message.fetch().catch(() => null);
 
   const emoji = normalizeEmoji(reaction.emoji.toString());
-  const rows = await rowsForReaction(client, reaction.message.id, emoji);
+  const rows = await rowsForReaction(client, reaction.message.guildId, reaction.message.id, emoji);
   if (rows.length === 0) return;
 
   const member = await reaction.message.guild?.members.fetch(user.id).catch(() => null);
@@ -114,18 +129,17 @@ export async function handleReactionRoleAdd(
 }
 
 export async function handleReactionRoleRemove(
-  client: NervanaClient,
+  client: VeyraClient,
   reaction: MessageReaction | PartialMessageReaction,
   user: User | PartialUser,
 ): Promise<void> {
   if (user.bot) return;
   if (!reaction.message.inGuild()) return;
-  if (reaction.message.guildId !== client.env.GUILD_ID) return;
   if (reaction.partial) await reaction.fetch().catch(() => null);
   if (reaction.message.partial) await reaction.message.fetch().catch(() => null);
 
   const emoji = normalizeEmoji(reaction.emoji.toString());
-  const rows = await rowsForReaction(client, reaction.message.id, emoji);
+  const rows = await rowsForReaction(client, reaction.message.guildId, reaction.message.id, emoji);
   if (rows.length === 0) return;
 
   const member = await reaction.message.guild?.members.fetch(user.id).catch(() => null);
@@ -137,15 +151,22 @@ export async function handleReactionRoleRemove(
 }
 
 export async function applySelectRoles(
-  client: NervanaClient,
+  client: VeyraClient,
   member: GuildMember,
   messageId: string,
   selectedRoleIds: readonly string[],
 ): Promise<{ added: number; removed: number }> {
+  const guildId = member.guild.id;
   const rows = await requireDb(client)
     .select()
     .from(reactionRoles)
-    .where(and(eq(reactionRoles.messageId, messageId), eq(reactionRoles.mode, 'select')));
+    .where(
+      and(
+        eq(reactionRoles.guildId, guildId),
+        eq(reactionRoles.messageId, messageId),
+        eq(reactionRoles.mode, 'select'),
+      ),
+    );
 
   if (rows.length === 0) {
     throw new UserFacingError('That reaction-role panel no longer exists.');

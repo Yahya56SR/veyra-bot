@@ -20,6 +20,10 @@ const DASHBOARD_ENV_KEYS = [
   'SESSION_SECRET',
   'DASHBOARD_URL',
   'DASHBOARD_ADMIN_IDS',
+  'STRIPE_SECRET_KEY',
+  'STRIPE_PRICE_ID',
+  'STRIPE_WEBHOOK_SECRET',
+  'SUPPORT_SERVER_URL',
 ] as const;
 
 function loadLocalEnv(): void {

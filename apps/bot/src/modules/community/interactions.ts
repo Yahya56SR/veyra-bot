@@ -1,16 +1,15 @@
 import { type ButtonInteraction, type StringSelectMenuInteraction } from 'discord.js';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 import { newErrorId, UserFacingError } from '../../core/errors.js';
 import { deferEphemeral, replyError } from '../../core/respond.js';
 import { enterGiveaway } from './giveaways.js';
 import { applySelectRoles } from './reaction-roles.js';
 
 export async function handleCommunityInteraction(
-  client: NervanaClient,
+  client: VeyraClient,
   interaction: ButtonInteraction | StringSelectMenuInteraction,
 ): Promise<void> {
   if (!interaction.inCachedGuild()) return;
-  if (interaction.guildId !== client.env.GUILD_ID) return;
 
   const customId = interaction.customId;
   const isGiveaway = customId.startsWith('giveaway:enter:');

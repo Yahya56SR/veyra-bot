@@ -1,6 +1,6 @@
 export const BRAND = {
-  name: 'Nervana',
-  footer: 'Nervana',
+  name: 'Veyra',
+  footer: 'Veyra',
   color: 0x8b5cf6,
   success: 0x22c55e,
   danger: 0xef4444,

@@ -1,5 +1,5 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-import { BRAND, formatDuration } from '@nervana/shared';
+import { BRAND, formatDuration } from '@veyra/shared';
 import type { Command } from '../../core/commands.js';
 
 export const pingCommand: Command = {

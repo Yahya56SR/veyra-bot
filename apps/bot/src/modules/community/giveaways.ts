@@ -1,5 +1,5 @@
-import { giveawayEntries, giveaways, members, type Database } from '@nervana/db';
-import { randomInt } from '@nervana/shared';
+import { giveawayEntries, giveaways, members, type Database } from '@veyra/db';
+import { randomInt } from '@veyra/shared';
 import { and, eq, lte } from 'drizzle-orm';
 import {
   ActionRowBuilder,
@@ -13,7 +13,7 @@ import {
   type User,
 } from 'discord.js';
 import { randomUUID } from 'node:crypto';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 import { requireDb } from '../../core/database.js';
 import { UserFacingError } from '../../core/errors.js';
 
@@ -96,7 +96,7 @@ export function giveawayComponents(
 }
 
 export async function createGiveaway(
-  client: NervanaClient,
+  client: VeyraClient,
   channel: TextChannel,
   prize: string,
   durationMs: number,
@@ -109,6 +109,7 @@ export async function createGiveaway(
   const inserted = await db
     .insert(giveaways)
     .values({
+      guildId: channel.guild.id,
       channelId: channel.id,
       messageId: `pending-${randomUUID()}`,
       prize,
@@ -144,13 +145,21 @@ export async function createGiveaway(
   }
 }
 
-export async function findGiveaway(db: Database, messageId: string): Promise<GiveawayRow | null> {
-  const rows = await db.select().from(giveaways).where(eq(giveaways.messageId, messageId)).limit(1);
+export async function findGiveaway(
+  db: Database,
+  guildId: string,
+  messageId: string,
+): Promise<GiveawayRow | null> {
+  const rows = await db
+    .select()
+    .from(giveaways)
+    .where(and(eq(giveaways.guildId, guildId), eq(giveaways.messageId, messageId)))
+    .limit(1);
   return rows[0] ?? null;
 }
 
 export async function entryBlockedReason(
-  client: NervanaClient,
+  client: VeyraClient,
   guild: Guild,
   userId: string,
   requirements: GiveawayRequirements | null,
@@ -161,7 +170,7 @@ export async function entryBlockedReason(
     const rows = await requireDb(client)
       .select({ level: members.level })
       .from(members)
-      .where(eq(members.userId, userId))
+      .where(and(eq(members.guildId, guild.id), eq(members.userId, userId)))
       .limit(1);
     const level = rows[0]?.level ?? 0;
     if (level < requirements.level) {
@@ -180,7 +189,7 @@ export async function entryBlockedReason(
 }
 
 export async function enterGiveaway(
-  client: NervanaClient,
+  client: VeyraClient,
   guild: Guild,
   user: User,
   giveawayId: number,
@@ -188,7 +197,11 @@ export async function enterGiveaway(
   if (user.bot) throw new UserFacingError('Bots cannot enter giveaways.');
   const db = requireDb(client);
 
-  const rows = await db.select().from(giveaways).where(eq(giveaways.id, giveawayId)).limit(1);
+  const rows = await db
+    .select()
+    .from(giveaways)
+    .where(and(eq(giveaways.guildId, guild.id), eq(giveaways.id, giveawayId)))
+    .limit(1);
   const giveaway = rows[0];
   if (!giveaway) throw new UserFacingError('That giveaway no longer exists.');
   if (giveaway.ended || giveaway.endsAt.getTime() <= Date.now()) {
@@ -211,7 +224,7 @@ export async function enterGiveaway(
 }
 
 export async function endGiveaway(
-  client: NervanaClient,
+  client: VeyraClient,
   giveaway: GiveawayRow,
   reason: 'automatic' | 'manual',
 ): Promise<{ winners: GiveawayEntry[]; message: Message | null }> {
@@ -270,7 +283,7 @@ export async function endGiveaway(
 }
 
 export async function rerollGiveaway(
-  client: NervanaClient,
+  client: VeyraClient,
   giveaway: GiveawayRow,
   winnerCount: number,
 ): Promise<GiveawayEntry[]> {
@@ -308,7 +321,7 @@ export class GiveawayScheduler {
   private timer: NodeJS.Timeout | null = null;
   private running = false;
 
-  constructor(private readonly client: NervanaClient) {}
+  constructor(private readonly client: VeyraClient) {}
 
   start(): void {
     if (this.timer || !this.client.isReady()) return;

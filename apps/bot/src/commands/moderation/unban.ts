@@ -1,4 +1,4 @@
-import { cases } from '@nervana/db';
+import { cases } from '@veyra/db';
 import { and, eq } from 'drizzle-orm';
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
@@ -50,6 +50,7 @@ export const unbanCommand: Command = {
       .where(and(eq(cases.targetId, userId), eq(cases.type, 'ban'), eq(cases.active, true)));
 
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: 'unban',
       targetId: userId,
       moderatorId: interaction.user.id,

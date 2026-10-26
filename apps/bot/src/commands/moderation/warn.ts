@@ -32,6 +32,7 @@ export const warnCommand: Command = {
     assertModeratable(guild, member, target);
 
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: 'warn',
       targetId: target.id,
       moderatorId: interaction.user.id,

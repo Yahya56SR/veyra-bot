@@ -1,4 +1,4 @@
-import { BRAND, truncate } from '@nervana/shared';
+import { BRAND, truncate } from '@veyra/shared';
 import { Events, PermissionsBitField } from 'discord.js';
 import type { BotEvent } from '../core/events.js';
 import { logEmbed, sendLog } from '../modules/logging/service.js';
@@ -6,7 +6,9 @@ import { logEmbed, sendLog } from '../modules/logging/service.js';
 export const roleUpdateEvent: BotEvent = {
   name: Events.GuildRoleUpdate,
   async execute(client, oldRole, newRole) {
-    if (newRole.guild.id !== client.env.GUILD_ID) return;
+    const guildId = newRole.guild.id;
+    const config = await client.getConfig(guildId);
+    if (!config.logging.enabled) return;
 
     const changes: string[] = [];
 
@@ -52,6 +54,6 @@ export const roleUpdateEvent: BotEvent = {
       { name: 'Changes', value: truncate(changes.join('\n'), 1024) },
     );
 
-    await sendLog(client, 'roleUpdate', embed);
+    await sendLog(client, guildId, 'roleUpdate', embed, config);
   },
 };

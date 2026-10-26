@@ -48,6 +48,7 @@ export const softbanCommand: Command = {
     await guild.bans.remove(user.id, 'Softban completed');
 
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: 'softban',
       targetId: user.id,
       moderatorId: interaction.user.id,

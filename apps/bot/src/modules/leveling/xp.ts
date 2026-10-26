@@ -1,4 +1,4 @@
-import { randomInt, type LevelingConfig } from '@nervana/shared';
+import { randomInt, type LevelingConfig } from '@veyra/shared';
 
 export type XpIneligibleReason = 'bot' | 'ignored-channel' | 'ignored-role' | 'cooldown';
 

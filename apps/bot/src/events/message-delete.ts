@@ -1,4 +1,4 @@
-import { BRAND, truncate } from '@nervana/shared';
+import { BRAND, truncate } from '@veyra/shared';
 import { Events } from 'discord.js';
 import type { BotEvent } from '../core/events.js';
 import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
@@ -6,9 +6,10 @@ import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
 export const messageDeleteEvent: BotEvent = {
   name: Events.MessageDelete,
   async execute(client, message) {
-    if (!message.inGuild() || message.guildId !== client.env.GUILD_ID) return;
-    if (message.author?.bot) return;
-    if (isLogIgnored(client, message.channelId, message.author?.id)) return;
+    if (!message.inGuild() || message.author?.bot) return;
+    const guildId = message.guildId;
+    const config = await client.getConfig(guildId);
+    if (isLogIgnored(config.logging, message.channelId, message.author?.id)) return;
 
     const embed = logEmbed('Message deleted', BRAND.danger).addFields(
       {
@@ -38,6 +39,6 @@ export const messageDeleteEvent: BotEvent = {
       });
     }
 
-    await sendLog(client, 'messageDelete', embed);
+    await sendLog(client, guildId, 'messageDelete', embed, config);
   },
 };

@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG, type LevelingConfig } from '@nervana/shared';
+import { DEFAULT_CONFIG, type LevelingConfig } from '@veyra/shared';
 import { describe, expect, it } from 'vitest';
 import { effectiveMultiplier, evaluateMessageXp } from './xp.js';
 

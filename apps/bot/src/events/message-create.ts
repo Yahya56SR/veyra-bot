@@ -4,9 +4,9 @@ import type { BotEvent } from '../core/events.js';
 export const messageCreateEvent: BotEvent = {
   name: Events.MessageCreate,
   async execute(client, message) {
-    if (message.author.bot) return;
+    if (!message.inGuild() || message.author.bot) return;
 
-    client.stats?.recordMessage();
+    client.stats?.recordMessage(message.guildId);
 
     const handled = (await client.automod?.handleMessage(message)) ?? false;
     if (handled) return;

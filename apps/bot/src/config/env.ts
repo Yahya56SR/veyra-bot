@@ -22,10 +22,16 @@ export const EnvSchema = z.object({
 
   DISCORD_TOKEN: z.string().min(20, 'Missing bot token'),
   DISCORD_CLIENT_ID: z.string().regex(/^\d{17,20}$/, 'Must be the application ID'),
-  GUILD_ID: z.string().regex(/^\d{17,20}$/, 'Must be the target guild ID'),
+  /** Optional development shortcut; production commands are registered globally. */
+  DEV_GUILD_ID: z
+    .string()
+    .regex(/^\d{17,20}$/, 'Must be a guild ID')
+    .optional(),
 
   DATABASE_URL: optionalString,
   MIGRATE_DATABASE_URL: optionalString,
+  /** Public dashboard origin, used only for links in bot replies. */
+  DASHBOARD_URL: optionalString,
 
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
   REGISTER_COMMANDS: booleanish(true),

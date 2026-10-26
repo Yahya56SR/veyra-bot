@@ -1,10 +1,9 @@
-import { createDatabase, type Database, type Sql } from '@nervana/db';
-import { runMigrations } from '@nervana/db/migrate';
-import { DEFAULT_CONFIG, parseConfig } from '@nervana/shared';
+import { createDatabase, type Database, type Sql } from '@veyra/db';
+import { runMigrations } from '@veyra/db/migrate';
 import { commands } from './commands/index.js';
 import { loadEnv } from './config/env.js';
-import { applyOverrides, readSettings, stopSettingsPoller } from './config/settings.js';
-import { NervanaClient } from './core/client.js';
+import { stopSettingsPoller } from './config/settings.js';
+import { VeyraClient } from './core/client.js';
 import { registerCommands } from './core/commands.js';
 import { registerEvents } from './core/events.js';
 import { createLogger } from './core/logger.js';
@@ -22,9 +21,9 @@ import { StatsService } from './modules/stats/service.js';
 async function main(): Promise<void> {
   const env = loadEnv();
   const logger = createLogger(env.LOG_LEVEL);
-  logger.info({ node: process.version, env: env.NODE_ENV, pid: process.pid }, 'starting nervana');
+  logger.info({ node: process.version, env: env.NODE_ENV, pid: process.pid }, 'starting Veyra');
 
-  let client: NervanaClient | null = null;
+  let client: VeyraClient | null = null;
   let sql: Sql | null = null;
   let shuttingDown = false;
 
@@ -74,7 +73,6 @@ async function main(): Promise<void> {
   });
 
   try {
-    let settingsState = { config: parseConfig(DEFAULT_CONFIG), updatedAt: 0 };
     let db: Database | null = null;
 
     if (env.DATABASE_URL && !env.SMOKE_TEST) {
@@ -98,11 +96,6 @@ async function main(): Promise<void> {
           if (migrationClient) await migrationClient.sql.end({ timeout: 5 });
         }
       }
-
-      settingsState = await readSettings(db, (error) => {
-        logger.error({ err: error }, 'stored settings are invalid — using defaults');
-      });
-      logger.info({ updatedAt: settingsState.updatedAt }, 'settings loaded');
     } else {
       logger.warn(
         { smokeTest: env.SMOKE_TEST },
@@ -114,12 +107,10 @@ async function main(): Promise<void> {
       logger.warn('MUSIC_ENABLED is true but LAVALINK_URL/LAVALINK_AUTH are incomplete');
     }
 
-    client = new NervanaClient();
+    client = new VeyraClient();
     client.env = env;
     client.logger = logger;
     client.db = db;
-    client.settings = applyOverrides(settingsState.config, env.MUSIC_ENABLED);
-    client.settingsUpdatedAt = settingsState.updatedAt;
 
     registerCommands(client, commands);
     registerEvents(client, events);

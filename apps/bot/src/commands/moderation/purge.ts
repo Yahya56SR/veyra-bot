@@ -50,6 +50,7 @@ export const purgeCommand: Command = {
     const deleted = await (channel as TextChannel).bulkDelete(messages, true);
 
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: 'purge',
       targetId: channel.id,
       moderatorId: interaction.user.id,

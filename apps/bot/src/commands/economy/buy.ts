@@ -23,16 +23,16 @@ export const buyCommand: Command = {
     ),
   category: 'economy',
   cooldownSeconds: 3,
-  async execute({ client, interaction, guild, member }) {
+  async execute({ client, interaction, guild, member, settings }) {
     await deferEphemeral(interaction);
 
     const db = requireDb(client);
     const query = interaction.options.getString('item', true);
-    const item = await findShopItem(db, query);
+    const item = await findShopItem(db, interaction.guildId, query);
     if (!item) throw new UserFacingError('That item is not in the shop.');
     if (item.stock !== null && item.stock <= 0) throw new UserFacingError('That item is sold out.');
 
-    const config = client.settings.economy;
+    const config = settings.economy;
     const role = item.roleId ? await guild.roles.fetch(item.roleId).catch(() => null) : null;
 
     if (item.roleId && !role) {
@@ -56,18 +56,20 @@ export const buyCommand: Command = {
       }
     }
 
-    const purchase = await purchaseItem(db, interaction.user.id, item.id);
+    const purchase = await purchaseItem(db, interaction.guildId, interaction.user.id, item.id);
 
     if (role) {
       try {
         await member.roles.add(role.id, `Shop purchase: ${item.name}`);
       } catch (error) {
-        await refundPurchase(db, interaction.user.id, item).catch((refundError: unknown) => {
-          client.logger.error(
-            { err: refundError, itemId: item.id, userId: interaction.user.id },
-            'shop refund failed after role grant error',
-          );
-        });
+        await refundPurchase(db, interaction.guildId, interaction.user.id, item).catch(
+          (refundError: unknown) => {
+            client.logger.error(
+              { err: refundError, itemId: item.id, userId: interaction.user.id },
+              'shop refund failed after role grant error',
+            );
+          },
+        );
         client.logger.warn(
           { err: error, itemId: item.id, userId: interaction.user.id },
           'shop role grant failed - refunded',

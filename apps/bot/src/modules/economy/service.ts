@@ -1,7 +1,7 @@
-import { members, shopItems, type Database } from '@nervana/db';
-import { formatDuration, randomInt } from '@nervana/shared';
+import { members, shopItems, type Database } from '@veyra/db';
+import { formatDuration, randomInt } from '@veyra/shared';
 import { and, asc, eq, gte, inArray, sql } from 'drizzle-orm';
-import type { EconomyConfig } from '@nervana/shared';
+import type { EconomyConfig } from '@veyra/shared';
 import { UserFacingError } from '../../core/errors.js';
 
 export const DAILY_INTERVAL_MS = 24 * 60 * 60 * 1000;
@@ -35,16 +35,28 @@ export function nextDailyStreak(
   return elapsed < DAILY_STREAK_WINDOW_MS ? currentStreak + 1 : 1;
 }
 
-export async function ensureMember(db: Database, userId: string): Promise<MemberRow> {
-  await db.insert(members).values({ userId }).onConflictDoNothing();
-  const rows = await db.select().from(members).where(eq(members.userId, userId)).limit(1);
+export async function ensureMember(
+  db: Database,
+  guildId: string,
+  userId: string,
+): Promise<MemberRow> {
+  await db.insert(members).values({ guildId, userId }).onConflictDoNothing();
+  const rows = await db
+    .select()
+    .from(members)
+    .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
+    .limit(1);
   const row = rows[0];
   if (!row) throw new UserFacingError('Could not load that member.');
   return row;
 }
 
-export async function getBalance(db: Database, userId: string): Promise<MemberRow> {
-  return ensureMember(db, userId);
+export async function getBalance(
+  db: Database,
+  guildId: string,
+  userId: string,
+): Promise<MemberRow> {
+  return ensureMember(db, guildId, userId);
 }
 
 export interface DailyResult {
@@ -56,13 +68,18 @@ export interface DailyResult {
 
 export async function claimDaily(
   db: Database,
+  guildId: string,
   userId: string,
   config: EconomyConfig,
   now = Date.now(),
 ): Promise<DailyResult> {
   return db.transaction(async (tx) => {
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for('update');
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const locked = await tx
+      .select()
+      .from(members)
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
+      .for('update');
     const member = locked[0];
     if (!member) throw new UserFacingError('Could not load that member.');
 
@@ -85,7 +102,7 @@ export async function claimDaily(
         dailyStreak: streak,
         updatedAt: new Date(now),
       })
-      .where(eq(members.userId, userId))
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
       .returning({ balance: members.balance });
 
     return {
@@ -105,13 +122,18 @@ export interface WorkResult {
 
 export async function work(
   db: Database,
+  guildId: string,
   userId: string,
   config: EconomyConfig,
   now = Date.now(),
 ): Promise<WorkResult> {
   return db.transaction(async (tx) => {
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for('update');
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const locked = await tx
+      .select()
+      .from(members)
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
+      .for('update');
     const member = locked[0];
     if (!member) throw new UserFacingError('Could not load that member.');
 
@@ -133,7 +155,7 @@ export async function work(
         lastWork: new Date(now),
         updatedAt: new Date(now),
       })
-      .where(eq(members.userId, userId))
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
       .returning({ balance: members.balance });
 
     return {
@@ -156,6 +178,7 @@ export interface TransferResult {
  */
 export async function transferBalance(
   db: Database,
+  guildId: string,
   senderId: string,
   receiverId: string,
   amount: number,
@@ -170,13 +193,13 @@ export async function transferBalance(
   return db.transaction(async (tx) => {
     await tx
       .insert(members)
-      .values(ids.map((userId) => ({ userId })))
+      .values(ids.map((userId) => ({ guildId, userId })))
       .onConflictDoNothing();
 
     const locked = await tx
       .select()
       .from(members)
-      .where(inArray(members.userId, ids))
+      .where(and(eq(members.guildId, guildId), inArray(members.userId, ids)))
       .orderBy(asc(members.userId))
       .for('update');
 
@@ -191,7 +214,13 @@ export async function transferBalance(
         balance: sql`${members.balance} - ${value}`,
         updatedAt: new Date(),
       })
-      .where(and(eq(members.userId, senderId), gte(members.balance, value)))
+      .where(
+        and(
+          eq(members.guildId, guildId),
+          eq(members.userId, senderId),
+          gte(members.balance, value),
+        ),
+      )
       .returning({ balance: members.balance });
 
     if (!senderRows[0]) throw new UserFacingError('You do not have enough coins.');
@@ -202,7 +231,7 @@ export async function transferBalance(
         balance: sql`${members.balance} + ${value}`,
         updatedAt: new Date(),
       })
-      .where(eq(members.userId, receiverId))
+      .where(and(eq(members.guildId, guildId), eq(members.userId, receiverId)))
       .returning({ balance: members.balance });
 
     return {
@@ -219,12 +248,21 @@ export interface GambleResult {
   balance: number;
 }
 
-export async function gamble(db: Database, userId: string, amount: number): Promise<GambleResult> {
+export async function gamble(
+  db: Database,
+  guildId: string,
+  userId: string,
+  amount: number,
+): Promise<GambleResult> {
   const value = parseAmount(amount);
 
   return db.transaction(async (tx) => {
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for('update');
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const locked = await tx
+      .select()
+      .from(members)
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
+      .for('update');
     const member = locked[0];
     if (!member) throw new UserFacingError('Could not load that member.');
     if (member.balance < value) throw new UserFacingError('You do not have enough coins.');
@@ -238,7 +276,7 @@ export async function gamble(db: Database, userId: string, amount: number): Prom
         balance: sql`${members.balance} + ${delta}`,
         updatedAt: new Date(),
       })
-      .where(eq(members.userId, userId))
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
       .returning({ balance: members.balance });
 
     return {
@@ -249,11 +287,19 @@ export async function gamble(db: Database, userId: string, amount: number): Prom
   });
 }
 
-export async function listShop(db: Database): Promise<ShopItemRow[]> {
-  return db.select().from(shopItems).orderBy(asc(shopItems.price), asc(shopItems.id));
+export async function listShop(db: Database, guildId: string): Promise<ShopItemRow[]> {
+  return db
+    .select()
+    .from(shopItems)
+    .where(eq(shopItems.guildId, guildId))
+    .orderBy(asc(shopItems.price), asc(shopItems.id));
 }
 
-export async function findShopItem(db: Database, query: string): Promise<ShopItemRow | null> {
+export async function findShopItem(
+  db: Database,
+  guildId: string,
+  query: string,
+): Promise<ShopItemRow | null> {
   const trimmed = query.trim();
   if (!trimmed) return null;
 
@@ -261,12 +307,16 @@ export async function findShopItem(db: Database, query: string): Promise<ShopIte
     const rows = await db
       .select()
       .from(shopItems)
-      .where(eq(shopItems.id, Number(trimmed)))
+      .where(and(eq(shopItems.guildId, guildId), eq(shopItems.id, Number(trimmed))))
       .limit(1);
     if (rows[0]) return rows[0];
   }
 
-  const rows = await db.select().from(shopItems).where(eq(shopItems.name, trimmed)).limit(1);
+  const rows = await db
+    .select()
+    .from(shopItems)
+    .where(and(eq(shopItems.guildId, guildId), eq(shopItems.name, trimmed)))
+    .limit(1);
   return rows[0] ?? null;
 }
 
@@ -283,17 +333,26 @@ export interface PurchaseResult {
  */
 export async function purchaseItem(
   db: Database,
+  guildId: string,
   userId: string,
   itemId: number,
 ): Promise<PurchaseResult> {
-  const result = await db.transaction(async (tx) => {
-    const items = await tx.select().from(shopItems).where(eq(shopItems.id, itemId)).for('update');
+  return db.transaction(async (tx) => {
+    const items = await tx
+      .select()
+      .from(shopItems)
+      .where(and(eq(shopItems.guildId, guildId), eq(shopItems.id, itemId)))
+      .for('update');
     const item = items[0];
     if (!item) throw new UserFacingError('That shop item no longer exists.');
     if (item.stock !== null && item.stock <= 0) throw new UserFacingError('That item is sold out.');
 
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for('update');
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const locked = await tx
+      .select()
+      .from(members)
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
+      .for('update');
     const member = locked[0];
     if (!member) throw new UserFacingError('Could not load that member.');
     if (member.balance < item.price) throw new UserFacingError('You do not have enough coins.');
@@ -304,7 +363,13 @@ export async function purchaseItem(
         balance: sql`${members.balance} - ${item.price}`,
         updatedAt: new Date(),
       })
-      .where(and(eq(members.userId, userId), gte(members.balance, item.price)))
+      .where(
+        and(
+          eq(members.guildId, guildId),
+          eq(members.userId, userId),
+          gte(members.balance, item.price),
+        ),
+      )
       .returning({ balance: members.balance });
 
     if (!memberRows[0]) throw new UserFacingError('You do not have enough coins.');
@@ -312,7 +377,7 @@ export async function purchaseItem(
     const itemRows = await tx
       .update(shopItems)
       .set({ stock: item.stock === null ? null : item.stock - 1 })
-      .where(eq(shopItems.id, item.id))
+      .where(and(eq(shopItems.guildId, guildId), eq(shopItems.id, item.id)))
       .returning({ stock: shopItems.stock });
 
     return {
@@ -321,12 +386,11 @@ export async function purchaseItem(
       stock: itemRows[0]?.stock ?? null,
     };
   });
-
-  return result;
 }
 
 export async function refundPurchase(
   db: Database,
+  guildId: string,
   userId: string,
   item: ShopItemRow,
 ): Promise<void> {
@@ -337,36 +401,39 @@ export async function refundPurchase(
         balance: sql`${members.balance} + ${item.price}`,
         updatedAt: new Date(),
       })
-      .where(eq(members.userId, userId));
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)));
 
     if (item.stock !== null) {
       await tx
         .update(shopItems)
         .set({ stock: sql`${shopItems.stock} + 1` })
-        .where(eq(shopItems.id, item.id));
+        .where(and(eq(shopItems.guildId, guildId), eq(shopItems.id, item.id)));
     }
   });
 }
 
 export async function inventoryForRoleIds(
   db: Database,
+  guildId: string,
   roleIds: readonly string[],
 ): Promise<ShopItemRow[]> {
   if (roleIds.length === 0) return [];
   return db
     .select()
     .from(shopItems)
-    .where(inArray(shopItems.roleId, [...roleIds]))
+    .where(and(eq(shopItems.guildId, guildId), inArray(shopItems.roleId, [...roleIds])))
     .orderBy(asc(shopItems.price));
 }
 
 export async function topBalances(
   db: Database,
+  guildId: string,
   limit = 10,
 ): Promise<{ userId: string; balance: number }[]> {
   return db
     .select({ userId: members.userId, balance: members.balance })
     .from(members)
+    .where(eq(members.guildId, guildId))
     .orderBy(sql`${members.balance} DESC`)
     .limit(limit);
 }
@@ -377,14 +444,19 @@ export interface AdminAdjustResult {
 
 export async function adjustBalance(
   db: Database,
+  guildId: string,
   userId: string,
   delta: number,
 ): Promise<AdminAdjustResult> {
   if (!Number.isSafeInteger(delta)) throw new UserFacingError('Use a whole number.');
 
   return db.transaction(async (tx) => {
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
-    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for('update');
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
+    const locked = await tx
+      .select()
+      .from(members)
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
+      .for('update');
     const member = locked[0];
     if (!member) throw new UserFacingError('Could not load that member.');
     if (delta < 0 && member.balance + delta < 0) {
@@ -397,7 +469,7 @@ export async function adjustBalance(
         balance: member.balance + delta,
         updatedAt: new Date(),
       })
-      .where(eq(members.userId, userId))
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
       .returning({ balance: members.balance });
 
     return { balance: updated[0]?.balance ?? member.balance + delta };
@@ -406,6 +478,7 @@ export async function adjustBalance(
 
 export async function setBalance(
   db: Database,
+  guildId: string,
   userId: string,
   amount: number,
 ): Promise<AdminAdjustResult> {
@@ -414,11 +487,11 @@ export async function setBalance(
   }
 
   return db.transaction(async (tx) => {
-    await tx.insert(members).values({ userId }).onConflictDoNothing();
+    await tx.insert(members).values({ guildId, userId }).onConflictDoNothing();
     const updated = await tx
       .update(members)
       .set({ balance: amount, updatedAt: new Date() })
-      .where(eq(members.userId, userId))
+      .where(and(eq(members.guildId, guildId), eq(members.userId, userId)))
       .returning({ balance: members.balance });
 
     return { balance: updated[0]?.balance ?? amount };

@@ -1,4 +1,4 @@
-import { BRAND, truncate } from '@nervana/shared';
+import { BRAND, truncate } from '@veyra/shared';
 import { Events } from 'discord.js';
 import type { BotEvent } from '../core/events.js';
 import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
@@ -6,9 +6,10 @@ import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
 export const messageUpdateEvent: BotEvent = {
   name: Events.MessageUpdate,
   async execute(client, oldMessage, newMessage) {
-    if (!newMessage.inGuild() || newMessage.guildId !== client.env.GUILD_ID) return;
-    if (newMessage.author?.bot) return;
-    if (isLogIgnored(client, newMessage.channelId, newMessage.author?.id)) return;
+    if (!newMessage.inGuild() || newMessage.author?.bot) return;
+    const guildId = newMessage.guildId;
+    const config = await client.getConfig(guildId);
+    if (isLogIgnored(config.logging, newMessage.channelId, newMessage.author?.id)) return;
 
     const before = oldMessage.content ?? '';
     const after = newMessage.content ?? '';
@@ -30,6 +31,6 @@ export const messageUpdateEvent: BotEvent = {
       { name: 'Jump', value: `[Go to message](${jump})` },
     );
 
-    await sendLog(client, 'messageEdit', embed);
+    await sendLog(client, guildId, 'messageEdit', embed, config);
   },
 };

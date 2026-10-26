@@ -1,8 +1,8 @@
 {
-  "name": "nervana",
+  "name": "veyra",
   "version": "0.1.0",
   "private": true,
-  "description": "Nervana — an all-in-one Discord bot for a single server",
+  "description": "Veyra - a multi-server Discord bot with a per-guild dashboard and premium billing",
   "license": "MIT",
   "engines": {
     "node": ">=24"
@@ -12,9 +12,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev -w @nervana/bot",
-    "dev:web": "npm run dev -w @nervana/web",
-    "start": "npm run start -w @nervana/bot",
+    "dev": "npm run dev -w @veyra/bot",
+    "dev:web": "npm run dev -w @veyra/web",
+    "start": "npm run start -w @veyra/bot",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -23,7 +23,7 @@
     "check:lavalink": "node scripts/check-lavalink.mjs",
     "db:generate": "drizzle-kit generate --config packages/db/drizzle.config.ts",
     "db:migrate": "tsx apps/bot/src/db/migrate-cli.ts",
-    "build:web": "npm run build -w @nervana/web"
+    "build:web": "npm run build -w @veyra/web"
   },
   "devDependencies": {
     "@types/node": "^24.19.2",

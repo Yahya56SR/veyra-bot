@@ -1,6 +1,6 @@
-import { giveaways } from '@nervana/db';
-import { formatDuration, parseDuration } from '@nervana/shared';
-import { eq } from 'drizzle-orm';
+import { giveaways } from '@veyra/db';
+import { formatDuration, parseDuration } from '@veyra/shared';
+import { and, eq } from 'drizzle-orm';
 import { ChannelType, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
 import { requireDb } from '../../core/database.js';
@@ -88,7 +88,7 @@ export const giveawayCommand: Command = {
   category: 'community',
   userPermissions: [PermissionFlagsBits.ManageGuild],
   cooldownSeconds: 2,
-  async execute({ client, interaction, guild }) {
+  async execute({ client, interaction, guild, settings }) {
     await deferEphemeral(interaction);
 
     const db = requireDb(client);
@@ -109,8 +109,7 @@ export const giveawayCommand: Command = {
       }
 
       const winnerCount =
-        interaction.options.getInteger('winners') ??
-        client.settings.community.giveaways.defaultWinners;
+        interaction.options.getInteger('winners') ?? settings.community.giveaways.defaultWinners;
       const level = interaction.options.getInteger('level');
       const role = interaction.options.getRole('role');
 
@@ -140,7 +139,7 @@ export const giveawayCommand: Command = {
     }
 
     const messageId = interaction.options.getString('message-id', true).trim();
-    const giveaway = await findGiveaway(db, messageId);
+    const giveaway = await findGiveaway(db, interaction.guildId, messageId);
     if (!giveaway) throw new UserFacingError('No giveaway matches that message ID.');
 
     if (sub === 'end') {
@@ -169,7 +168,7 @@ export const giveawayCommand: Command = {
         winnerCount: giveaways.winnerCount,
       })
       .from(giveaways)
-      .where(eq(giveaways.ended, false))
+      .where(and(eq(giveaways.guildId, interaction.guildId), eq(giveaways.ended, false)))
       .limit(10);
 
     if (active.length === 0) {

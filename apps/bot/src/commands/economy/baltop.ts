@@ -10,16 +10,16 @@ export const baltopCommand: Command = {
     .setDescription('Show the top 10 members by balance.'),
   category: 'economy',
   cooldownSeconds: 5,
-  async execute({ client, interaction }) {
+  async execute({ client, interaction, settings }) {
     await deferPublic(interaction);
 
-    const rows = await topBalances(requireDb(client));
+    const rows = await topBalances(requireDb(client), interaction.guildId);
     if (rows.length === 0) {
       await interaction.editReply({ content: 'Nobody has coins yet.' });
       return;
     }
 
-    const config = client.settings.economy;
+    const config = settings.economy;
     const embed = new EmbedBuilder()
       .setColor(0x5865f2)
       .setTitle('Richest members')
@@ -31,7 +31,7 @@ export const baltopCommand: Command = {
           )
           .join('\n'),
       )
-      .setFooter({ text: 'Nervana economy' });
+      .setFooter({ text: 'Veyra economy' });
 
     await interaction.editReply({
       embeds: [embed],

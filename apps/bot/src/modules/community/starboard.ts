@@ -1,5 +1,5 @@
-import { starboardPosts } from '@nervana/db';
-import { eq } from 'drizzle-orm';
+import { starboardPosts } from '@veyra/db';
+import { and, eq } from 'drizzle-orm';
 import {
   EmbedBuilder,
   type Message,
@@ -8,7 +8,7 @@ import {
   type User,
   type PartialUser,
 } from 'discord.js';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 import { requireDb } from '../../core/database.js';
 
 const STAR = '\u2b50';
@@ -54,16 +54,16 @@ async function resolveReaction(
 }
 
 export async function handleStarboard(
-  client: NervanaClient,
+  client: VeyraClient,
   reaction: MessageReaction | PartialMessageReaction,
   user: User | PartialUser,
 ): Promise<void> {
   if (user.bot) return;
-
-  const config = client.settings.community.starboard;
-  if (!config.enabled || !config.channelId) return;
   if (!reaction.message.inGuild()) return;
-  if (reaction.message.guildId !== client.env.GUILD_ID) return;
+
+  const guildId = reaction.message.guildId;
+  const config = (await client.getConfig(guildId)).community.starboard;
+  if (!config.enabled || !config.channelId) return;
   if (reaction.message.channelId === config.channelId) return;
   if (config.ignoreChannelIds.includes(reaction.message.channelId)) return;
   if (reaction.emoji.name !== STAR && reaction.emoji.toString() !== STAR) return;
@@ -78,7 +78,9 @@ export async function handleStarboard(
   const existing = await db
     .select()
     .from(starboardPosts)
-    .where(eq(starboardPosts.originalMessageId, message.id))
+    .where(
+      and(eq(starboardPosts.guildId, guildId), eq(starboardPosts.originalMessageId, message.id)),
+    )
     .limit(1);
 
   const boardChannel = await client.channels.fetch(config.channelId).catch(() => null);
@@ -103,7 +105,12 @@ export async function handleStarboard(
         await db
           .update(starboardPosts)
           .set({ count, updatedAt: new Date() })
-          .where(eq(starboardPosts.originalMessageId, message.id));
+          .where(
+            and(
+              eq(starboardPosts.guildId, guildId),
+              eq(starboardPosts.originalMessageId, message.id),
+            ),
+          );
       }
       return;
     }
@@ -124,6 +131,7 @@ export async function handleStarboard(
     const inserted = await db
       .insert(starboardPosts)
       .values({
+        guildId,
         originalMessageId: message.id,
         starboardMessageId: sent.id,
         count,
@@ -140,6 +148,10 @@ export async function handleStarboard(
       .fetch(existing[0].starboardMessageId)
       .catch(() => null);
     if (boardMessage) await boardMessage.delete().catch(() => {});
-    await db.delete(starboardPosts).where(eq(starboardPosts.originalMessageId, message.id));
+    await db
+      .delete(starboardPosts)
+      .where(
+        and(eq(starboardPosts.guildId, guildId), eq(starboardPosts.originalMessageId, message.id)),
+      );
   }
 }

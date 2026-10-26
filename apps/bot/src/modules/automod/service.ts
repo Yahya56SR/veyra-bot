@@ -1,6 +1,6 @@
-import { BRAND } from '@nervana/shared';
+import { BRAND } from '@veyra/shared';
 import { EmbedBuilder, PermissionFlagsBits, type GuildMember, type Message } from 'discord.js';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 import { auditReason, finishModAction, sendModLogEmbed } from '../moderation/service.js';
 import {
   capsStats,
@@ -13,26 +13,32 @@ import {
 const AUTOMOD_TIMEOUT_MS = 10 * 60_000;
 const ACTION_COOLDOWN_MS = 30_000;
 const MAX_TRACKED_USERS = 5_000;
+const MAX_TRACKED_GUILDS = 2_000;
 
 type RuleName = 'invites' | 'links' | 'spam' | 'mentions' | 'caps' | 'words';
 
 export class AutomodService {
+  /** guildId:userId -> recent message timestamps */
   private readonly spam = new Map<string, number[]>();
+  /** guildId:userId:rule -> last action timestamp */
   private readonly actionCooldown = new Map<string, number>();
-  private readonly joinTimes: number[] = [];
-  private raidUntil = 0;
+  /** guildId -> join timestamps used by raid detection */
+  private readonly joinTimes = new Map<string, number[]>();
+  /** guildId -> raid mode end timestamp */
+  private readonly raidUntil = new Map<string, number>();
 
-  constructor(private readonly client: NervanaClient) {}
+  constructor(private readonly client: VeyraClient) {}
 
   /** Returns true when the message was handled by automod (and should not earn XP). */
   async handleMessage(message: Message): Promise<boolean> {
-    if (!message.inGuild() || message.guildId !== this.client.env.GUILD_ID) return false;
+    if (!message.inGuild()) return false;
     if (message.author.bot || message.system) return false;
 
-    const config = this.client.settings.moderation;
+    const guildId = message.guildId;
+    const config = (await this.client.getConfig(guildId)).moderation;
     const automod = config.automod;
     if (!automod.enabled) return false;
-    if (this.isExempt(message)) return false;
+    if (this.isExempt(message, config)) return false;
 
     const content = message.content ?? '';
     if (!content) return false;
@@ -58,7 +64,12 @@ export class AutomodService {
 
     if (
       automod.spam.enabled &&
-      this.isSpam(message.author.id, automod.spam.messageThreshold, automod.spam.windowSeconds)
+      this.isSpam(
+        guildId,
+        message.author.id,
+        automod.spam.messageThreshold,
+        automod.spam.windowSeconds,
+      )
     ) {
       return this.trigger(
         message,
@@ -104,37 +115,39 @@ export class AutomodService {
 
   /** Returns true when raid protection handled this join. */
   async handleJoin(member: GuildMember): Promise<boolean> {
-    if (member.guild.id !== this.client.env.GUILD_ID) return false;
-
-    const automod = this.client.settings.moderation.automod;
+    const guildId = member.guild.id;
+    const automod = (await this.client.getConfig(guildId)).moderation.automod;
     if (!automod.enabled || !automod.raid.enabled) return false;
 
     const now = Date.now();
     const windowMs = automod.raid.windowSeconds * 1000;
+    const times = this.joinTimes.get(guildId) ?? [];
 
-    this.joinTimes.push(now);
-    while (this.joinTimes.length > 0 && now - (this.joinTimes[0] ?? now) >= windowMs) {
-      this.joinTimes.shift();
+    times.push(now);
+    while (times.length > 0 && now - (times[0] ?? now) >= windowMs) {
+      times.shift();
     }
+    this.joinTimes.set(guildId, times);
+    this.pruneGuilds(now);
 
-    const active = this.raidUntil > now;
-    const count = this.joinTimes.length;
+    const active = (this.raidUntil.get(guildId) ?? 0) > now;
+    const count = times.length;
 
     if (!active && count < automod.raid.joinThreshold) return false;
 
     if (!active) {
-      this.raidUntil = now + windowMs;
-      this.joinTimes.length = 0;
+      this.raidUntil.set(guildId, now + windowMs);
+      times.length = 0;
 
       const alert = new EmbedBuilder()
         .setColor(BRAND.danger)
         .setTitle('Possible raid detected')
         .setDescription(
-          `**${count}** joins within **${automod.raid.windowSeconds}s**.\nRaid mode is active for ${automod.raid.windowSeconds}s · action: **${automod.raid.action}**.`,
+          `**${count}** joins within **${automod.raid.windowSeconds}s**.\nRaid mode is active for ${automod.raid.windowSeconds}s - action: **${automod.raid.action}**.`,
         )
         .setTimestamp();
 
-      await sendModLogEmbed(this.client, alert);
+      await sendModLogEmbed(this.client, guildId, alert);
     }
 
     // Only a successful kick removes the member; warned/timed-out members (and
@@ -146,8 +159,7 @@ export class AutomodService {
     );
   }
 
-  private isExempt(message: Message): boolean {
-    const config = this.client.settings.moderation;
+  private isExempt(message: Message, config: import('@veyra/shared').ModerationConfig): boolean {
     if (config.exemptChannelIds.includes(message.channelId)) return true;
 
     const member = message.member;
@@ -159,25 +171,31 @@ export class AutomodService {
     return member.permissions.has(PermissionFlagsBits.ManageMessages);
   }
 
-  private isSpam(userId: string, threshold: number, windowSeconds: number): boolean {
+  private isSpam(
+    guildId: string,
+    userId: string,
+    threshold: number,
+    windowSeconds: number,
+  ): boolean {
     const now = Date.now();
     const windowMs = windowSeconds * 1000;
-    const recent = (this.spam.get(userId) ?? []).filter((at) => now - at < windowMs);
+    const key = `${guildId}:${userId}`;
+    const recent = (this.spam.get(key) ?? []).filter((at) => now - at < windowMs);
 
     recent.push(now);
-    this.spam.set(userId, recent);
+    this.spam.set(key, recent);
     this.prune(this.spam, now - windowMs);
 
     if (recent.length >= threshold) {
-      this.spam.delete(userId);
+      this.spam.delete(key);
       return true;
     }
 
     return false;
   }
 
-  private onCooldown(userId: string, rule: RuleName): boolean {
-    const key = `${userId}:${rule}`;
+  private onCooldown(guildId: string, userId: string, rule: RuleName): boolean {
+    const key = `${guildId}:${userId}:${rule}`;
     const now = Date.now();
     const at = this.actionCooldown.get(key);
 
@@ -201,6 +219,18 @@ export class AutomodService {
     }
   }
 
+  private pruneGuilds(now: number): void {
+    if (this.joinTimes.size <= MAX_TRACKED_GUILDS) return;
+    for (const [guildId, times] of this.joinTimes) {
+      const last = times[times.length - 1];
+      const raidUntil = this.raidUntil.get(guildId) ?? 0;
+      if ((last === undefined || last < now - 60_000) && raidUntil <= now) {
+        this.joinTimes.delete(guildId);
+        this.raidUntil.delete(guildId);
+      }
+    }
+  }
+
   private async trigger(
     message: Message,
     rule: RuleName,
@@ -210,7 +240,9 @@ export class AutomodService {
     await message.delete().catch(() => {});
 
     if (action === 'delete') return true;
-    if (this.onCooldown(message.author.id, rule)) return true;
+    if (!message.inGuild()) return true;
+    const guildId = message.guildId;
+    if (this.onCooldown(guildId, message.author.id, rule)) return true;
 
     const member = message.member;
     if (!member) return true;
@@ -221,6 +253,7 @@ export class AutomodService {
     try {
       if (action === 'warn') {
         await finishModAction(this.client, {
+          guildId,
           type: 'warn',
           targetId: member.id,
           moderatorId,
@@ -230,6 +263,7 @@ export class AutomodService {
         if (!member.moderatable) throw new Error('Member is not moderatable');
         await member.timeout(AUTOMOD_TIMEOUT_MS, auditReason(reason));
         await finishModAction(this.client, {
+          guildId,
           type: 'timeout',
           targetId: member.id,
           moderatorId,
@@ -240,6 +274,7 @@ export class AutomodService {
         if (!member.kickable) throw new Error('Member is not kickable');
         await member.kick(auditReason(reason));
         await finishModAction(this.client, {
+          guildId,
           type: 'kick',
           targetId: member.id,
           moderatorId,
@@ -248,7 +283,7 @@ export class AutomodService {
       }
     } catch (error) {
       this.client.logger.warn(
-        { err: error, userId: member.id, rule, action },
+        { err: error, guildId, userId: member.id, rule, action },
         'automod action failed',
       );
     }
@@ -263,11 +298,13 @@ export class AutomodService {
   ): Promise<boolean> {
     if (action === 'delete') return false;
 
+    const guildId = member.guild.id;
     const moderatorId = this.client.user?.id ?? 'automod';
 
     try {
       if (action === 'warn') {
         await finishModAction(this.client, {
+          guildId,
           type: 'warn',
           targetId: member.id,
           moderatorId,
@@ -277,6 +314,7 @@ export class AutomodService {
         if (!member.moderatable) return false;
         await member.timeout(AUTOMOD_TIMEOUT_MS, auditReason(reason));
         await finishModAction(this.client, {
+          guildId,
           type: 'timeout',
           targetId: member.id,
           moderatorId,
@@ -287,6 +325,7 @@ export class AutomodService {
         if (!member.kickable) return false;
         await member.kick(auditReason(reason));
         await finishModAction(this.client, {
+          guildId,
           type: 'kick',
           targetId: member.id,
           moderatorId,
@@ -296,7 +335,7 @@ export class AutomodService {
       }
     } catch (error) {
       this.client.logger.warn(
-        { err: error, userId: member.id, action },
+        { err: error, guildId, userId: member.id, action },
         'raid protection action failed',
       );
     }

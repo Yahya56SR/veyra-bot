@@ -1,6 +1,6 @@
 # Deployment
 
-Nervana is designed around free tiers. Nothing here uses Docker.
+Veyra is designed around free tiers. Nothing here uses Docker.
 
 | Piece     | Host                                       | Free-tier constraint                |
 | --------- | ------------------------------------------ | ----------------------------------- |
@@ -18,8 +18,8 @@ node index.js
 There is no install or build step on the host. `index.js` and `drizzle/` must stay committed.
 
 Current status: core, moderation, logging, welcome, leveling, automod, utility, reminders,
-tickets, economy, community features, music, stats, the heartbeat, and the Next.js dashboard
-are implemented. Final hardening and production smoke tests remain.
+tickets, economy, community features, music, stats, the heartbeat, the public site, the
+per-server dashboard, and Stripe billing are implemented. Final production smoke tests remain.
 
 ---
 
@@ -31,15 +31,15 @@ are implemented. Final hardening and production smoke tests remain.
 3. Under **Bot → Privileged Gateway Intents**, enable:
    - **Server Members** (join/leave, role and timeout logs, moderation)
    - **Message Content** (automod, XP, message logs)
-4. Copy **Application ID** into `DISCORD_CLIENT_ID` and your server ID into `GUILD_ID`.
-   Enable Discord's Developer Mode to copy the server ID.
+4. Copy **Application ID** into `DISCORD_CLIENT_ID`. `DEV_GUILD_ID` is optional and only
+   registers commands in one guild for faster local iteration. Production commands are global.
 5. Invite the bot with the `bot` and `applications.commands` scopes and these permissions:
 
    | Purpose         | Permissions                                                                               |
    | --------------- | ----------------------------------------------------------------------------------------- |
    | Basic operation | View Channels, Send Messages, Embed Links, Read Message History, Attach Files, Send Polls |
    | Moderation      | Manage Messages, Moderate Members, Kick Members, Ban Members                              |
-   | Configuration   | Manage Channels, Manage Roles                                                             |
+   | Configuration   | Manage Channels, Manage Roles, Change Nickname                                            |
    | Community       | Add Reactions                                                                             |
    | Music           | Connect, Speak, Use Voice Activity                                                        |
 
@@ -48,7 +48,12 @@ are implemented. Final hardening and production smoke tests remain.
 6. Drag the bot's role **above** every role it must moderate or grant. Discord refuses role
    changes for roles at or above the bot's highest role.
 7. For the dashboard, add the redirect `https://<your-dashboard>/api/auth/callback` under
-   **OAuth2 → General**. The dashboard requests only the `identify` scope.
+   **OAuth2 → General**. The dashboard requests `identify guilds`; access to a server is
+   checked with Discord's owner flag and `Manage Server` permission.
+8. For premium billing, create a recurring Stripe price and a webhook pointing at
+   `https://<your-dashboard>/api/stripe/webhook`. Subscribe to `checkout.session.completed`,
+   `customer.subscription.created`, `customer.subscription.updated`,
+   `customer.subscription.deleted`, and `invoice.payment_failed`.
 
 ---
 
@@ -74,7 +79,7 @@ The bot writes a heartbeat row every 6 hours so the free project does not pause 
 silence. Free Supabase has no point-in-time recovery; take an occasional logical backup:
 
 ```powershell
-pg_dump "$env:MIGRATE_DATABASE_URL" --no-owner --no-privileges -f nervana-backup.sql
+pg_dump "$env:MIGRATE_DATABASE_URL" --no-owner --no-privileges -f veyra-backup.sql
 ```
 
 ---
@@ -86,10 +91,12 @@ pg_dump "$env:MIGRATE_DATABASE_URL" --no-owner --no-privileges -f nervana-backup
 3. Set the startup command to `node index.js`. Do not add an install or build step.
 4. Select **Node 24**. The bundle targets Node 24 and the CI uses the same version.
 5. Add the environment variables from `.env.example` in the host panel. At minimum:
-   `DISCORD_TOKEN`, `DISCORD_CLIENT_ID`, `GUILD_ID`, `DATABASE_URL`, `MIGRATE_DATABASE_URL`.
-   Keep `MUSIC_ENABLED=false` until a Lavalink node is configured.
+   `DISCORD_TOKEN`, `DISCORD_CLIENT_ID`, `DATABASE_URL`, and `MIGRATE_DATABASE_URL`.
+   Set `DASHBOARD_URL` so `/premium` can link to the dashboard. Keep `MUSIC_ENABLED=false`
+   until a Lavalink node is configured.
 6. Start the server and read the logs. A healthy first boot logs the applied migration, the
-   settings row, the target guild, and the registered command count.
+   registered command count, and each guild it joins. There is no fixed guild allowlist; the
+   bot serves every server that invites it.
 7. Renew the free server **every 4 days**. Discord's developer portal shows the exact deadline;
    set a recurring reminder.
 
@@ -152,7 +159,7 @@ The dashboard is in `apps/web` and uses the same Supabase database as the bot.
 2. Import the repository into Vercel Hobby.
 3. Root directory: repository root (not `apps/web`).
 4. Framework preset: **Next.js**.
-5. Build command: `npm run build -w @nervana/web`.
+5. Build command: `npm run build -w @veyra/web`.
 6. Output directory: `apps/web/.next`.
 7. Set **Node.js Version** to **24.x** (Project Settings → General).
 8. Add these environment variables for Production (and Preview if used):
@@ -163,13 +170,18 @@ The dashboard is in `apps/web` and uses the same Supabase database as the bot.
    | `DISCORD_CLIENT_ID`     | Application ID                                           |
    | `DISCORD_CLIENT_SECRET` | OAuth2 client secret                                     |
    | `SESSION_SECRET`        | At least 32 random bytes, e.g. `openssl rand -base64 48` |
-   | `DASHBOARD_ADMIN_IDS`   | Comma-separated Discord IDs allowed to sign in           |
-   | `DASHBOARD_URL`         | Exact public origin, e.g. `https://nervana.vercel.app`   |
+   | `DASHBOARD_URL`         | Exact public origin, e.g. `https://veyra.vercel.app`     |
+   | `DASHBOARD_ADMIN_IDS`   | Optional platform-staff Discord IDs                      |
+   | `STRIPE_SECRET_KEY`     | Stripe secret key                                        |
+   | `STRIPE_PRICE_ID`       | Recurring premium price ID (`price_...`)                 |
+   | `STRIPE_WEBHOOK_SECRET` | Signing secret for the webhook endpoint                  |
 
 9. Set the Discord OAuth redirect to `${DASHBOARD_URL}/api/auth/callback`. The scheme, host,
    and path must match exactly. No trailing slash on `DASHBOARD_URL`.
-10. Deploy, open the deployment, sign in, and confirm the allowlist rejects a second account.
-11. Hobby is non-commercial; a private community server qualifies.
+10. Deploy, open `/servers`, sign in, and confirm you only see servers where you are owner or
+    have `Manage Server`. A non-manager account should be redirected with `forbidden`.
+11. Hobby is non-commercial. Premium billing makes the project commercial, so move to Vercel
+    Pro or another host before enabling paid subscriptions in production.
 
 Notes:
 
@@ -182,10 +194,13 @@ Notes:
   the next successful login.
 - Settings writes use the same transaction and Zod validation as `/setup`. The bot polls
   `settings.updated_at` every 15 seconds.
-- Ticket transcripts are returned only to signed-in operators, with a CSP sandbox,
-  `X-Content-Type-Options: nosniff`, and `Cache-Control: no-store`.
+- Ticket transcripts are returned only to signed-in users with access to the ticket's guild,
+  with a CSP sandbox, `X-Content-Type-Options: nosniff`, and `Cache-Control: no-store`.
 - For database access the dashboard reads only `DATABASE_URL`. The Vercel deployment never
   receives `DISCORD_TOKEN`, Lavalink credentials, or `MIGRATE_DATABASE_URL`.
+- Stripe webhook events are de-duplicated in `stripe_events`, and the guild entitlement is
+  recomputed from active grants. If processing fails (for example the database is unreachable),
+  the endpoint returns `500` and Stripe retries.
 
 ---
 
@@ -288,13 +303,26 @@ node is missing the LavaSrc plugin.
 
 Dashboard smoke test:
 
-1. Open `DASHBOARD_URL`, sign in with an allowlisted account, and confirm the overview loads.
-2. Open Activity, Moderation, Members, Tickets, Settings, and Audit without console errors.
+1. Open `DASHBOARD_URL`, sign in, and confirm `/servers` lists only servers you can manage.
+2. Open Activity, Moderation, Members, Tickets, Settings, Premium, Personalizer, and Audit
+   without console errors.
 3. Save a harmless setting change (for example, toggle a leveling announcement) and confirm a
    new audit row appears.
 4. Close one ticket, open its transcript from the Tickets page, and confirm it renders in a
    sandboxed tab.
-5. Sign out and confirm `/` redirects to `/login`.
+5. Sign in with an account that lacks `Manage Server` and confirm `/servers?error=forbidden`
+   instead of another server's dashboard.
+6. Sign out and confirm `/` still renders the public site while the dashboard redirects to
+   `/login`.
+
+Premium smoke test (Stripe test mode):
+
+1. Open `/g/<guildId>/premium` as a manager and start Checkout with a Stripe test card.
+2. Confirm `checkout=success`, then verify the webhook writes `premium_subscriptions` and the
+   guild dashboard shows Premium.
+3. Replay the same Stripe event and confirm it is ignored as a duplicate.
+4. Open the billing portal, cancel, and confirm access remains until the period end.
+5. As a platform staff account, grant a manual comp and confirm the entitlement appears.
 
 ---
 
@@ -326,14 +354,16 @@ Dashboard smoke test:
 ## 8. Security boundaries
 
 - `.env` is gitignored. The repository commits only the bundle, migrations, and source.
-- The bot leaves every guild whose ID is not `GUILD_ID`.
-- Dashboard access is Discord OAuth `identify` plus a `DASHBOARD_ADMIN_IDS` allowlist; there is
-  no guild picker and no `Manage Server` requirement. OAuth state is HMAC-signed and checked
-  against a short-lived cookie.
+- The bot serves every guild it is invited to. Removing the bot marks the guild left and
+  cascades guild-scoped cleanup through the schema.
+- Dashboard access is Discord OAuth `identify guilds` plus an owner/`Manage Server` check per
+  guild. `DASHBOARD_ADMIN_IDS` is only a platform-staff bypass. OAuth state is HMAC-signed and
+  checked against a short-lived cookie.
 - Session cookies are `HttpOnly`, `SameSite=Lax`, and `Secure` on HTTPS. The database stores
   only SHA-256 hashes of session tokens.
-- Ticket transcripts are escaped when written by the bot and served to operators with a CSP
-  sandbox and `nosniff`. Do not remove those headers.
+- Ticket transcripts are escaped when written by the bot and served to authorized users with a
+  CSP sandbox and `nosniff`. Do not remove those headers.
+- Stripe secrets stay in the dashboard deployment. The bot process never receives Stripe keys.
 - Automod exemptions are for roles/channels, but members with **Manage Messages**, the server
   owner, and the bot itself are always exempt.
 - Public Lavalink nodes are trusted infrastructure. Treat the node password like a secret.

@@ -1,7 +1,7 @@
-import { commandUsage, statsDaily } from '@nervana/db';
+import { commandUsage, guilds, statsDaily } from '@veyra/db';
 import { sql } from 'drizzle-orm';
 import type { VoiceState } from 'discord.js';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 
 interface DayCounters {
   messages: number;
@@ -12,8 +12,14 @@ interface DayCounters {
   musicPlays: number;
 }
 
+interface DayBucket extends DayCounters {
+  guildId: string;
+  date: string;
+}
+
 const FLUSH_MS = 30_000;
 const RETENTION_DAYS = 90;
+const PREMIUM_RETENTION_DAYS = 365;
 const RETENTION_MS = 24 * 60 * 60 * 1000;
 
 export function utcDateKey(date: Date = new Date()): string {
@@ -29,19 +35,19 @@ function emptyCounters(): DayCounters {
 }
 
 /**
- * Keeps hot-path counters in memory and flushes them every 30 seconds. A
- * failed flush is merged back into the buffer so a brief database outage does
- * not silently lose the day's counts.
+ * Keeps hot-path counters in memory and flushes them every 30 seconds. Counts
+ * are partitioned by guild and UTC day; a failed flush is merged back into the
+ * buffer so a brief database outage does not silently lose the day's counts.
  */
 export class StatsService {
-  private readonly days = new Map<string, DayCounters>();
+  private readonly days = new Map<string, DayBucket>();
   private readonly commands = new Map<string, Map<string, number>>();
   private readonly voiceStartedAt = new Map<string, number>();
   private timer: NodeJS.Timeout | null = null;
   private retentionTimer: NodeJS.Timeout | null = null;
   private flushing = false;
 
-  constructor(private readonly client: NervanaClient) {}
+  constructor(private readonly client: VeyraClient) {}
 
   start(): void {
     if (this.timer) return;
@@ -71,41 +77,48 @@ export class StatsService {
     await this.flush();
   }
 
-  private enabled(): boolean {
-    return this.client.settings.stats.enabled;
+  private enabled(guildId: string): boolean {
+    const config = this.client.settingsCache.get(guildId)?.config;
+    return config ? config.stats.enabled : true;
   }
 
-  private day(date: Date = new Date()): DayCounters {
-    const key = utcDateKey(date);
-    let counters = this.days.get(key);
-    if (!counters) {
-      counters = emptyCounters();
-      this.days.set(key, counters);
+  private bucketKey(guildId: string, date: string): string {
+    return `${guildId}|${date}`;
+  }
+
+  private day(guildId: string, date: Date = new Date()): DayBucket {
+    const dateKey = utcDateKey(date);
+    const key = this.bucketKey(guildId, dateKey);
+    let bucket = this.days.get(key);
+    if (!bucket) {
+      bucket = { guildId, date: dateKey, ...emptyCounters() };
+      this.days.set(key, bucket);
     }
-    return counters;
+    return bucket;
   }
 
-  recordMessage(): void {
-    if (!this.enabled()) return;
-    this.day().messages += 1;
+  recordMessage(guildId: string): void {
+    if (!this.enabled(guildId)) return;
+    this.day(guildId).messages += 1;
   }
 
-  recordJoin(): void {
-    if (!this.enabled()) return;
-    this.day().joins += 1;
+  recordJoin(guildId: string): void {
+    if (!this.enabled(guildId)) return;
+    this.day(guildId).joins += 1;
   }
 
-  recordLeave(): void {
-    if (!this.enabled()) return;
-    this.day().leaves += 1;
+  recordLeave(guildId: string): void {
+    if (!this.enabled(guildId)) return;
+    this.day(guildId).leaves += 1;
   }
 
-  recordCommand(command: string): void {
-    if (!this.enabled()) return;
-    const day = this.day();
+  recordCommand(guildId: string, command: string): void {
+    if (!this.enabled(guildId)) return;
+    const day = this.day(guildId);
     day.commands += 1;
 
-    const key = utcDateKey();
+    const date = utcDateKey();
+    const key = this.bucketKey(guildId, date);
     let usage = this.commands.get(key);
     if (!usage) {
       usage = new Map();
@@ -114,56 +127,59 @@ export class StatsService {
     usage.set(command, (usage.get(command) ?? 0) + 1);
   }
 
-  recordMusicPlay(): void {
-    if (!this.enabled()) return;
-    this.day().musicPlays += 1;
+  recordMusicPlay(guildId: string): void {
+    if (!this.enabled(guildId)) return;
+    this.day(guildId).musicPlays += 1;
   }
 
-  recordVoiceSeconds(seconds: number): void {
-    if (!this.enabled()) return;
+  recordVoiceSeconds(guildId: string, seconds: number): void {
+    if (!this.enabled(guildId)) return;
     if (!Number.isFinite(seconds) || seconds <= 0) return;
-    this.day().voiceSeconds += Math.floor(seconds);
+    this.day(guildId).voiceSeconds += Math.floor(seconds);
   }
 
   /** Tracks voice sessions so time is credited to the day it was actually spent. */
   handleVoiceState(oldState: VoiceState, newState: VoiceState): void {
-    if (!this.enabled()) return;
+    const guildId = newState.guild.id;
+    if (!this.enabled(guildId)) return;
     const member = newState.member ?? oldState.member;
     if (!member || member.user.bot) return;
 
-    const userId = member.id;
+    const key = this.bucketKey(guildId, member.id);
     const wasIn = Boolean(oldState.channelId);
     const isIn = Boolean(newState.channelId);
     const now = Date.now();
 
     if (!wasIn && isIn) {
-      this.voiceStartedAt.set(userId, now);
+      this.voiceStartedAt.set(key, now);
       return;
     }
 
     if (wasIn && !isIn) {
-      this.closeVoiceSession(userId, now);
+      this.closeVoiceSession(key, guildId, now);
       return;
     }
 
     if (wasIn && isIn && oldState.channelId !== newState.channelId) {
-      this.closeVoiceSession(userId, now);
-      this.voiceStartedAt.set(userId, now);
+      this.closeVoiceSession(key, guildId, now);
+      this.voiceStartedAt.set(key, now);
     }
   }
 
-  private closeVoiceSession(userId: string, now: number): void {
-    const started = this.voiceStartedAt.get(userId);
+  private closeVoiceSession(key: string, guildId: string, now: number): void {
+    const started = this.voiceStartedAt.get(key);
     if (started === undefined) return;
-    this.voiceStartedAt.delete(userId);
-    this.recordVoiceSeconds((now - started) / 1000);
+    this.voiceStartedAt.delete(key);
+    this.recordVoiceSeconds(guildId, (now - started) / 1000);
   }
 
   private closeAllVoiceSessions(): void {
     const now = Date.now();
-    for (const userId of [...this.voiceStartedAt.keys()]) {
-      this.closeVoiceSession(userId, now);
+    for (const [key, started] of this.voiceStartedAt) {
+      const [guildId] = key.split('|');
+      if (guildId) this.recordVoiceSeconds(guildId, (now - started) / 1000);
     }
+    this.voiceStartedAt.clear();
   }
 
   async flush(): Promise<void> {
@@ -174,47 +190,49 @@ export class StatsService {
     this.flushing = true;
     const daySnapshot = new Map(this.days);
     const commandSnapshot = new Map(
-      [...this.commands.entries()].map(([date, usage]) => [date, new Map(usage)]),
+      [...this.commands.entries()].map(([key, usage]) => [key, new Map(usage)]),
     );
     this.days.clear();
     this.commands.clear();
 
     try {
-      for (const [date, counters] of daySnapshot) {
+      for (const bucket of daySnapshot.values()) {
         if (
-          counters.messages === 0 &&
-          counters.joins === 0 &&
-          counters.leaves === 0 &&
-          counters.commands === 0 &&
-          counters.voiceSeconds === 0 &&
-          counters.musicPlays === 0
+          bucket.messages === 0 &&
+          bucket.joins === 0 &&
+          bucket.leaves === 0 &&
+          bucket.commands === 0 &&
+          bucket.voiceSeconds === 0 &&
+          bucket.musicPlays === 0
         ) {
           continue;
         }
 
         await db
           .insert(statsDaily)
-          .values({ date, ...counters })
+          .values(bucket)
           .onConflictDoUpdate({
-            target: statsDaily.date,
+            target: [statsDaily.guildId, statsDaily.date],
             set: {
-              messages: sql`${statsDaily.messages} + ${counters.messages}`,
-              joins: sql`${statsDaily.joins} + ${counters.joins}`,
-              leaves: sql`${statsDaily.leaves} + ${counters.leaves}`,
-              commands: sql`${statsDaily.commands} + ${counters.commands}`,
-              voiceSeconds: sql`${statsDaily.voiceSeconds} + ${counters.voiceSeconds}`,
-              musicPlays: sql`${statsDaily.musicPlays} + ${counters.musicPlays}`,
+              messages: sql`${statsDaily.messages} + ${bucket.messages}`,
+              joins: sql`${statsDaily.joins} + ${bucket.joins}`,
+              leaves: sql`${statsDaily.leaves} + ${bucket.leaves}`,
+              commands: sql`${statsDaily.commands} + ${bucket.commands}`,
+              voiceSeconds: sql`${statsDaily.voiceSeconds} + ${bucket.voiceSeconds}`,
+              musicPlays: sql`${statsDaily.musicPlays} + ${bucket.musicPlays}`,
             },
           });
       }
 
-      for (const [date, usage] of commandSnapshot) {
+      for (const [key, usage] of commandSnapshot) {
+        const [guildId, date] = key.split('|');
+        if (!guildId || !date) continue;
         for (const [command, count] of usage) {
           await db
             .insert(commandUsage)
-            .values({ date, command, count })
+            .values({ guildId, date, command, count })
             .onConflictDoUpdate({
-              target: [commandUsage.date, commandUsage.command],
+              target: [commandUsage.guildId, commandUsage.date, commandUsage.command],
               set: { count: sql`${commandUsage.count} + ${count}` },
             });
         }
@@ -228,26 +246,26 @@ export class StatsService {
   }
 
   private mergeBack(
-    days: Map<string, DayCounters>,
+    days: Map<string, DayBucket>,
     commands: Map<string, Map<string, number>>,
   ): void {
-    for (const [date, counters] of days) {
-      const target = this.days.get(date) ?? emptyCounters();
-      target.messages += counters.messages;
-      target.joins += counters.joins;
-      target.leaves += counters.leaves;
-      target.commands += counters.commands;
-      target.voiceSeconds += counters.voiceSeconds;
-      target.musicPlays += counters.musicPlays;
-      this.days.set(date, target);
+    for (const [key, bucket] of days) {
+      const target = this.days.get(key) ?? { ...bucket, ...emptyCounters() };
+      target.messages += bucket.messages;
+      target.joins += bucket.joins;
+      target.leaves += bucket.leaves;
+      target.commands += bucket.commands;
+      target.voiceSeconds += bucket.voiceSeconds;
+      target.musicPlays += bucket.musicPlays;
+      this.days.set(key, target);
     }
 
-    for (const [date, usage] of commands) {
-      const target = this.commands.get(date) ?? new Map<string, number>();
+    for (const [key, usage] of commands) {
+      const target = this.commands.get(key) ?? new Map<string, number>();
       for (const [command, count] of usage) {
         target.set(command, (target.get(command) ?? 0) + count);
       }
-      this.commands.set(date, target);
+      this.commands.set(key, target);
     }
   }
 
@@ -255,11 +273,36 @@ export class StatsService {
     const db = this.client.db;
     if (!db) return;
 
-    const cutoff = retentionCutoff();
+    const now = new Date();
+    const freeCutoff = retentionCutoff(now, RETENTION_DAYS);
+    const premiumCutoff = retentionCutoff(now, PREMIUM_RETENTION_DAYS);
     try {
-      await db.delete(statsDaily).where(sql`${statsDaily.date} < ${cutoff}`);
-      await db.delete(commandUsage).where(sql`${commandUsage.date} < ${cutoff}`);
-      this.client.logger.info({ cutoff }, 'stats retention applied');
+      // Free servers keep 90 days. Premium servers keep a full year. The
+      // correlated NOT EXISTS keeps this a single set-based delete per table.
+      await db.execute(sql`
+        DELETE FROM ${statsDaily}
+        WHERE ${statsDaily.date} < ${freeCutoff}
+          AND NOT EXISTS (
+            SELECT 1 FROM ${guilds}
+            WHERE ${guilds.id} = ${statsDaily.guildId}
+              AND ${guilds.premiumTier} = 'premium'
+              AND (${guilds.premiumUntil} IS NULL OR ${guilds.premiumUntil} > now())
+          )
+      `);
+      await db.execute(sql`
+        DELETE FROM ${commandUsage}
+        WHERE ${commandUsage.date} < ${freeCutoff}
+          AND NOT EXISTS (
+            SELECT 1 FROM ${guilds}
+            WHERE ${guilds.id} = ${commandUsage.guildId}
+              AND ${guilds.premiumTier} = 'premium'
+              AND (${guilds.premiumUntil} IS NULL OR ${guilds.premiumUntil} > now())
+          )
+      `);
+
+      await db.delete(statsDaily).where(sql`${statsDaily.date} < ${premiumCutoff}`);
+      await db.delete(commandUsage).where(sql`${commandUsage.date} < ${premiumCutoff}`);
+      this.client.logger.info({ freeCutoff, premiumCutoff }, 'stats retention applied');
     } catch (error) {
       this.client.logger.warn({ err: error }, 'stats retention failed');
     }

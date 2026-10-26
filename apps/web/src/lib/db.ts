@@ -1,10 +1,10 @@
-import { createDatabase } from '@nervana/db';
+import { createDatabase } from '@veyra/db';
 import './load-env';
 
 type DatabaseBundle = ReturnType<typeof createDatabase>;
 
 const globalForDb = globalThis as unknown as {
-  nervanaWebDb?: DatabaseBundle;
+  veyraWebDb?: DatabaseBundle;
 };
 
 /**
@@ -17,9 +17,9 @@ export function getDb(): DatabaseBundle['db'] {
     throw new Error('DATABASE_URL is not configured for the dashboard.');
   }
 
-  if (!globalForDb.nervanaWebDb) {
-    globalForDb.nervanaWebDb = createDatabase(url, { max: 3 });
+  if (!globalForDb.veyraWebDb) {
+    globalForDb.veyraWebDb = createDatabase(url, { max: 3 });
   }
 
-  return globalForDb.nervanaWebDb.db;
+  return globalForDb.veyraWebDb.db;
 }

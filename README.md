@@ -1,12 +1,12 @@
-# Nervana
+# Veyra
 
-An all-in-one Discord bot for a **single server**: moderation, logging, utility, tickets,
-leveling, economy, community features, music, usage stats, and a Next.js dashboard.
+An all-in-one Discord bot for **any number of servers**: moderation, logging, utility, tickets,
+leveling, economy, community features, music, usage stats, premium branding, and a Next.js
+dashboard with a per-server control room.
 
-> **Status:** Phases 1–6 are implemented: configuration, moderation, automod, logging,
-> welcome, leveling, economy, community features, music, stats, utility commands, and the
-> Next.js dashboard. Final hardening and deployment validation remain. See `DEPLOY.md` for
-> the free-tier runbook.
+> **Status:** the bot, dashboard, Stripe billing, and public site are implemented. Live
+> Discord/Lavalink/Supabase/Stripe validation and production hardening remain. See
+> `DEPLOY.md` for the deployment runbook.
 
 ## Why this repository is unusual
 
@@ -29,7 +29,7 @@ No install, no build. **Do not add `index.js` or `drizzle/` to `.gitignore`.**
 | Path              | Purpose                                                    |
 | ----------------- | ---------------------------------------------------------- |
 | `apps/bot`        | discord.js v14 bot source                                  |
-| `apps/web`        | Next.js dashboard (OAuth, stats, cases, tickets, settings) |
+| `apps/web`        | Public site + per-server Next.js dashboard                 |
 | `packages/db`     | Drizzle schema, client, migration runner                   |
 | `packages/shared` | Zod config schemas, XP math, time helpers, brand constants |
 | `scripts/`        | bundle, bundle verification, local dev bootstrap           |
@@ -45,7 +45,7 @@ database and Lavalink/music respectively (see `DEPLOY.md`).
 ```powershell
 npm install
 Copy-Item .env.example .env
-# fill DISCORD_TOKEN, DISCORD_CLIENT_ID, GUILD_ID
+# fill DISCORD_TOKEN, DISCORD_CLIENT_ID (DEV_GUILD_ID is optional)
 npm run db:generate     # only when the schema changes
 npm run dev
 ```
@@ -62,19 +62,22 @@ the bot.
 The dashboard needs a database and a Discord OAuth application:
 
 1. Add `http://localhost:3000/api/auth/callback` under **OAuth2 → General → Redirects**.
-2. Fill `DISCORD_CLIENT_SECRET`, `SESSION_SECRET`, `DASHBOARD_URL`, and
-   `DASHBOARD_ADMIN_IDS` in `.env`. `DASHBOARD_URL` must be the public origin with no trailing
-   slash.
-3. Run the bot once so migrations create the tables, then `npm run dev:web` and open
-   <http://localhost:3000>.
+2. Fill `DISCORD_CLIENT_SECRET`, `SESSION_SECRET`, and `DASHBOARD_URL` in `.env`.
+   `DASHBOARD_URL` must be the public origin with no trailing slash. `DASHBOARD_ADMIN_IDS` is
+   optional and only grants platform-staff access; normal dashboard users are authorized by
+   Discord `Manage Server`.
+3. Run the bot once so migrations create the tables and the guild rows, then `npm run dev:web`
+   and open <http://localhost:3000>.
+4. For premium, set `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, and `STRIPE_WEBHOOK_SECRET`, then
+   point a Stripe webhook at `${DASHBOARD_URL}/api/stripe/webhook`.
 
 The dashboard loads the dashboard-relevant keys from the repository-root `.env` during local
 development, so the bot and dashboard share one file without exposing the bot token to the web
 process. On Vercel, set the same values as project environment variables instead.
 
 Dashboard pages are server-rendered on every request and use the transaction-pooler
-`DATABASE_URL`. The login flow requests `identify` only; sessions are opaque tokens whose
-SHA-256 hashes live in `sessions` and expire after seven days.
+`DATABASE_URL`. The login flow requests `identify guilds`, lists servers where the user is the
+owner or has `Manage Server`, and stores only hashed session tokens that expire after seven days.
 
 ### Scripts
 
@@ -96,6 +99,7 @@ SHA-256 hashes live in `sessions` and expire after seven days.
 | Command                                          | What it does                                                     |
 | ------------------------------------------------ | ---------------------------------------------------------------- |
 | `/ping`, `/help`                                 | Health check and permission-aware command list                   |
+| `/premium`                                       | Premium status, price, and dashboard link for this server        |
 | `/setup status`                                  | Overview of every module                                         |
 | `/setup logging`, `/setup modlog`                | Route log events and moderation cases                            |
 | `/setup automod`                                 | Toggle a rule and choose its action                              |
@@ -107,6 +111,7 @@ SHA-256 hashes live in `sessions` and expire after seven days.
 | `/setup welcome`, `/setup autorole`              | Join/leave messages and automatic roles                          |
 | `/setup exempt-role`, `/setup exempt-channel`    | Automod exemptions                                               |
 | `/setup tickets`                                 | Set the category, staff role, panel, log, and open limit         |
+| `/setup personalizer`                            | Premium nickname, embed colour, level-up, and panel copy         |
 | `/setup reset`                                   | Restore one module to defaults                                   |
 | `/warn`, `/warnings`, `/clearwarnings`           | Warning cases with active-warning tracking                       |
 | `/timeout`, `/untimeout`                         | Discord timeouts up to 28 days                                   |
@@ -139,24 +144,32 @@ Every configuration write is recorded in `config_audit`.
 
 ## Dashboard
 
-The dashboard is a Next.js App Router application in `apps/web`. It is single-tenant,
-server-rendered, and has no guild picker.
+The dashboard is a Next.js App Router application in `apps/web`. It has a public marketing site
+and a server-rendered, per-server control room.
 
-| Page       | What it shows                                                      |
-| ---------- | ------------------------------------------------------------------ |
-| Overview   | 30-day totals, 14-day chart, heartbeat, cases, tickets, audit tail |
-| Activity   | 30/90-day message, command, voice, join, and music totals          |
-| Moderation | Filterable case list with target, moderator, reason, expiry, state |
-| Members    | XP/level and balance leaderboards with participation totals        |
-| Tickets    | Open queue, recent closed tickets, and the transcript viewer       |
-| Settings   | Schema-validated JSON editor for every module                      |
-| Audit log  | Before/after values for the newest 50 configuration writes         |
+| Page         | What it shows                                                      |
+| ------------ | ------------------------------------------------------------------ |
+| `/servers`   | Guild picker for servers the user can manage                       |
+| Overview     | 30-day totals, 14-day chart, heartbeat, cases, tickets, audit tail |
+| Activity     | 30/90-day message, command, voice, join, and music totals          |
+| Moderation   | Filterable case list with target, moderator, reason, expiry, state |
+| Members      | XP/level and balance leaderboards with participation totals        |
+| Tickets      | Open queue, recent closed tickets, and the transcript viewer       |
+| Settings     | Schema-validated JSON editor for every module                      |
+| Premium      | Stripe Checkout, billing portal, and active grants                 |
+| Personalizer | Premium nickname, colour, footer, thumbnail, and template copy     |
+| Audit log    | Before/after values for the newest 50 configuration writes         |
 
-Access uses Discord OAuth with the `identify` scope plus the `DASHBOARD_ADMIN_IDS` allowlist.
-There is no `Manage Server` requirement, and the bot token is never available to the dashboard.
+Access uses Discord OAuth with `identify guilds`. A user can manage a server when Discord
+reports them as owner or grants `Manage Server` (`ADMINISTRATOR` also works).
+`DASHBOARD_ADMIN_IDS` is an optional platform-staff bypass for support and manual premium
+grants; it is not needed for normal users. The bot token is never available to the dashboard.
 Settings saves call the same transactional `updateModule` function as `/setup`; the bot picks
-them up within 15 seconds. Ticket transcripts are served only to signed-in operators with a
-CSP sandbox and `nosniff`.
+them up within 15 seconds. Ticket transcripts are served only to signed-in users with access to
+the ticket's guild, with a CSP sandbox and `nosniff`.
+
+Stripe webhooks are idempotent through `stripe_events`, and the guild entitlement is recomputed
+from all active grants so retries, stacked subscriptions, and manual comps converge.
 
 ## Free-tier warnings
 
@@ -165,16 +178,21 @@ CSP sandbox and `nosniff`.
 - **Supabase free** pauses after 7 days of low activity. The bot writes a heartbeat every 6 hours.
 - **Music uses a public Lavalink node.** That operator proxies the guild's voice audio and
   can observe it. Set `MUSIC_ENABLED=false` if you do not trust the node, or self-host.
-- **Vercel Hobby** is for non-commercial use. A private community server qualifies.
+- **Vercel Hobby** is for non-commercial use. Once premium subscriptions are live, move the
+  dashboard to Vercel Pro or another host that permits commercial projects.
+- **A 256 MB bot host will not scale public music.** Keep the free tier while the bot is small;
+  move the player to a dedicated host before music traffic grows.
 
 ## Security
 
 - Never commit `.env` or paste tokens into chat/issues.
-- Dashboard access uses Discord OAuth (`identify` only) plus the `DASHBOARD_ADMIN_IDS`
-  allowlist. There is no guild picker and no `Manage Server` requirement.
+- Dashboard access uses Discord OAuth (`identify guilds`) and requires owner, `Manage Server`,
+  or `Administrator` in the selected guild. `DASHBOARD_ADMIN_IDS` is only a platform-staff
+  support/comp bypass.
 - OAuth state is HMAC-signed and double-submitted through a short-lived cookie. Session
   cookies are `HttpOnly`, `SameSite=Lax`, and `Secure` on HTTPS; only token hashes are stored.
-- The bot leaves any guild that is not `GUILD_ID`.
+- The bot does not leave guilds based on an environment allowlist; it serves every guild it is
+  invited to and removes data through guild lifecycle events.
 
 ## License
 

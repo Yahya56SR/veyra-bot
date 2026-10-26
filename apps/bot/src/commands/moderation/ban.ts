@@ -1,4 +1,4 @@
-import { formatDuration, parseDuration } from '@nervana/shared';
+import { formatDuration, parseDuration } from '@veyra/shared';
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
 import { UserFacingError } from '../../core/errors.js';
@@ -58,6 +58,7 @@ export const banCommand: Command = {
     });
 
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: 'ban',
       targetId: user.id,
       moderatorId: interaction.user.id,

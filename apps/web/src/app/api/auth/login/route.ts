@@ -1,5 +1,5 @@
 import { OAUTH_STATE_COOKIE, stateCookieOptions } from '@/lib/auth';
-import { adminIds, dashboardBase, requiredEnv, sessionSecret } from '@/lib/env';
+import { dashboardBase, requiredEnv, sessionSecret } from '@/lib/env';
 import { createOAuthState } from '@/lib/oauth-state';
 import { NextResponse } from 'next/server';
 
@@ -12,9 +12,6 @@ export async function GET(request: Request): Promise<Response> {
   try {
     const clientId = requiredEnv('DISCORD_CLIENT_ID');
     const secret = sessionSecret();
-    if (adminIds().size === 0) {
-      throw new Error('DASHBOARD_ADMIN_IDS is not configured.');
-    }
     const oauth = createOAuthState(secret);
 
     const redirectUri = `${base}/api/auth/callback`;
@@ -22,7 +19,7 @@ export async function GET(request: Request): Promise<Response> {
     authorize.searchParams.set('client_id', clientId);
     authorize.searchParams.set('response_type', 'code');
     authorize.searchParams.set('redirect_uri', redirectUri);
-    authorize.searchParams.set('scope', 'identify');
+    authorize.searchParams.set('scope', 'identify guilds');
     authorize.searchParams.set('state', oauth.state);
 
     const response = NextResponse.redirect(authorize);

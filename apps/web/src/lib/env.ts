@@ -76,6 +76,5 @@ export function dashboardSetupIssues(): string[] {
   const dashboardUrl = optionalEnv('DASHBOARD_URL');
   if (!dashboardUrl) issues.push('DASHBOARD_URL');
   else if (!httpOrigin(dashboardUrl)) issues.push('DASHBOARD_URL (absolute http/https URL)');
-  if (adminIds().size === 0) issues.push('DASHBOARD_ADMIN_IDS');
   return issues;
 }

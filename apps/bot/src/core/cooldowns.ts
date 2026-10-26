@@ -4,10 +4,15 @@ const cooldowns = new Map<string, number>();
  * Returns 0 when the user may run the command, otherwise the remaining
  * cooldown in milliseconds. A successful claim records the new deadline.
  */
-export function takeCooldown(userId: string, commandName: string, seconds: number): number {
+export function takeCooldown(
+  guildId: string,
+  userId: string,
+  commandName: string,
+  seconds: number,
+): number {
   if (seconds <= 0) return 0;
 
-  const key = `${userId}:${commandName}`;
+  const key = `${guildId}:${userId}:${commandName}`;
   const now = Date.now();
   const until = cooldowns.get(key) ?? 0;
 

@@ -1,4 +1,4 @@
-import { BRAND } from '@nervana/shared';
+import { BRAND } from '@veyra/shared';
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
 import { deferPublic } from '../../core/respond.js';

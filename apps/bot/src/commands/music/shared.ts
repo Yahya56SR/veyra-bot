@@ -1,4 +1,4 @@
-import type { MusicConfig } from '@nervana/shared';
+import type { MusicConfig } from '@veyra/shared';
 import {
   ChannelType,
   PermissionFlagsBits,
@@ -6,11 +6,11 @@ import {
   type VoiceBasedChannel,
 } from 'discord.js';
 import type { Player } from 'lavalink-client';
-import type { NervanaClient } from '../../core/client.js';
+import type { VeyraClient } from '../../core/client.js';
 import { UserFacingError } from '../../core/errors.js';
 import type { MusicService } from '../../modules/music/service.js';
 
-export function musicService(client: NervanaClient): MusicService {
+export function musicService(client: VeyraClient): MusicService {
   if (!client.music) {
     throw new UserFacingError(
       'Music is not configured. Set `LAVALINK_URL` and `LAVALINK_AUTH` in the bot environment.',
@@ -19,7 +19,7 @@ export function musicService(client: NervanaClient): MusicService {
   return client.music;
 }
 
-export function requireMusicPlayer(client: NervanaClient, guildId: string): Player {
+export function requireMusicPlayer(client: VeyraClient, guildId: string): Player {
   const player = musicService(client).getPlayer(guildId);
   if (!player) throw new UserFacingError('I am not playing anything. Use `/play` first.');
   return player;

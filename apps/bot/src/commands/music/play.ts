@@ -1,4 +1,4 @@
-import { BRAND, truncate } from '@nervana/shared';
+import { BRAND, FREE_MUSIC_QUEUE, truncate } from '@veyra/shared';
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
 import { deferPublic } from '../../core/respond.js';
@@ -18,11 +18,15 @@ export const playCommand: Command = {
     ),
   category: 'music',
   cooldownSeconds: 2,
-  async execute({ client, interaction, member, settings }) {
+  async execute({ client, interaction, member, settings, premium }) {
     await deferPublic(interaction);
 
     const voice = requireVoice(member);
     assertDj(member, settings.music);
+
+    const maxQueue = premium
+      ? settings.music.maxQueue
+      : Math.min(settings.music.maxQueue, FREE_MUSIC_QUEUE);
 
     const result = await musicService(client).play({
       guildId: interaction.guildId,
@@ -30,17 +34,17 @@ export const playCommand: Command = {
       textChannelId: interaction.channelId,
       query: interaction.options.getString('query', true),
       requester: interaction.user,
-      maxQueue: settings.music.maxQueue,
+      maxQueue,
     });
 
     await interaction.editReply({
-      embeds: [buildPlayEmbed(result)],
+      embeds: [buildPlayEmbed(result, premium)],
       allowedMentions: { parse: [] },
     });
   },
 };
 
-function buildPlayEmbed(result: PlayResult): EmbedBuilder {
+function buildPlayEmbed(result: PlayResult, premium: boolean): EmbedBuilder {
   const embed = new EmbedBuilder().setColor(BRAND.color).setFooter({ text: BRAND.footer });
 
   if (result.playlist) {
@@ -68,7 +72,9 @@ function buildPlayEmbed(result: PlayResult): EmbedBuilder {
   if (result.truncated) {
     embed.addFields({
       name: 'Queue limit',
-      value: 'Only the first tracks that fit under the configured queue limit were added.',
+      value: premium
+        ? 'Only the first tracks that fit under the configured queue limit were added.'
+        : `Free servers queue up to ${FREE_MUSIC_QUEUE} tracks. Premium raises the limit to the server's configured maximum (up to 500).`,
     });
   }
 

@@ -1,6 +1,6 @@
-import { members } from '@nervana/db';
-import { BRAND, levelFromXp, truncate } from '@nervana/shared';
-import { desc } from 'drizzle-orm';
+import { members } from '@veyra/db';
+import { BRAND, levelFromXp, truncate } from '@veyra/shared';
+import { and, desc, eq } from 'drizzle-orm';
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
 import { deferPublic } from '../../core/respond.js';
@@ -23,6 +23,7 @@ export const leaderboardCommand: Command = {
     const rows = await db
       .select({ userId: members.userId, xp: members.xp })
       .from(members)
+      .where(eq(members.guildId, interaction.guildId))
       .orderBy(desc(members.xp))
       .limit(10);
 

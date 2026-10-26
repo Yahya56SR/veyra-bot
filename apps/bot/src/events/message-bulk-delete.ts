@@ -1,4 +1,4 @@
-import { BRAND, truncate } from '@nervana/shared';
+import { BRAND, truncate } from '@veyra/shared';
 import { Events } from 'discord.js';
 import type { BotEvent } from '../core/events.js';
 import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
@@ -6,8 +6,10 @@ import { isLogIgnored, logEmbed, sendLog } from '../modules/logging/service.js';
 export const messageBulkDeleteEvent: BotEvent = {
   name: Events.MessageBulkDelete,
   async execute(client, messages, channel) {
-    if (!channel.guildId || channel.guildId !== client.env.GUILD_ID) return;
-    if (isLogIgnored(client, channel.id)) return;
+    if (!channel.guildId) return;
+    const guildId = channel.guildId;
+    const config = await client.getConfig(guildId);
+    if (isLogIgnored(config.logging, channel.id)) return;
 
     const sample = [...messages.values()]
       .slice(0, 10)
@@ -23,6 +25,6 @@ export const messageBulkDeleteEvent: BotEvent = {
       { name: 'Sample', value: truncate(sample || '*No cached content*', 1024) },
     );
 
-    await sendLog(client, 'messageBulkDelete', embed);
+    await sendLog(client, guildId, 'messageBulkDelete', embed, config);
   },
 };

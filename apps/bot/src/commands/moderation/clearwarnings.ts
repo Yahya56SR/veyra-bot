@@ -1,4 +1,4 @@
-import { cases, warnings } from '@nervana/db';
+import { cases, warnings } from '@veyra/db';
 import { and, eq, inArray } from 'drizzle-orm';
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
@@ -30,7 +30,13 @@ export const clearWarningsCommand: Command = {
     const cleared = await db
       .update(warnings)
       .set({ active: false })
-      .where(and(eq(warnings.userId, user.id), eq(warnings.active, true)))
+      .where(
+        and(
+          eq(warnings.guildId, interaction.guildId),
+          eq(warnings.userId, user.id),
+          eq(warnings.active, true),
+        ),
+      )
       .returning({ caseId: warnings.caseId });
 
     if (cleared.length === 0) {
@@ -49,6 +55,7 @@ export const clearWarningsCommand: Command = {
       );
 
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: 'warn-clear',
       targetId: user.id,
       moderatorId: interaction.user.id,

@@ -11,7 +11,7 @@ import { resolve } from 'node:path';
  *   - RSS stays under the configured ceiling
  *   - the process exits cleanly
  *
- * Requires a real .env (DISCORD_TOKEN, DISCORD_CLIENT_ID, GUILD_ID).
+ * Requires a real .env (DISCORD_TOKEN, DISCORD_CLIENT_ID).
  */
 const RSS_LIMIT_MB = Number(process.env.RSS_LIMIT_MB ?? 120);
 const TIMEOUT_MS = 90_000;
@@ -30,7 +30,7 @@ if (!existsSync(envFile)) {
   console.error(
     [
       'Missing .env.',
-      'Copy .env.example to .env and fill DISCORD_TOKEN, DISCORD_CLIENT_ID, and GUILD_ID.',
+      'Copy .env.example to .env and fill DISCORD_TOKEN and DISCORD_CLIENT_ID.',
       'The bundle gate needs a live gateway connection to measure real memory.',
     ].join('\n'),
   );

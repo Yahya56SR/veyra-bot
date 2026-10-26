@@ -1,6 +1,7 @@
 import { getSessionUser } from '@/lib/auth';
 import { getDb } from '@/lib/db';
-import { tickets } from '@nervana/db';
+import { getGuildAccess } from '@/lib/guilds';
+import { tickets } from '@veyra/db';
 import { eq } from 'drizzle-orm';
 import { gunzipSync } from 'node:zlib';
 
@@ -19,6 +20,7 @@ export async function GET(
 
   const rows = await getDb()
     .select({
+      guildId: tickets.guildId,
       transcript: tickets.transcript,
       bytes: tickets.transcriptBytes,
     })
@@ -27,7 +29,11 @@ export async function GET(
     .limit(1);
 
   const row = rows[0];
-  if (!row?.transcript) return new Response('Transcript not found', { status: 404 });
+  if (!row) return new Response('Transcript not found', { status: 404 });
+  if (!(await getGuildAccess(row.guildId, user))) {
+    return new Response('Forbidden', { status: 403 });
+  }
+  if (!row.transcript) return new Response('Transcript not found', { status: 404 });
 
   let html: string;
   try {

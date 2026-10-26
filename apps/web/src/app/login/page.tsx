@@ -1,6 +1,8 @@
 import { getSessionUser } from '@/lib/auth';
+import { botInviteUrl } from '@/lib/bot';
 import { dashboardSetupIssues } from '@/lib/env';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = { title: 'Sign in' };
@@ -8,7 +10,6 @@ export const dynamic = 'force-dynamic';
 
 const ERRORS: Record<string, string> = {
   access: 'Discord sign-in was cancelled or denied.',
-  forbidden: 'That Discord account is not on the dashboard allowlist.',
   state: 'The sign-in request expired or did not match. Try again.',
   oauth: 'Discord sign-in failed. Try again in a moment.',
   config: 'The dashboard environment is incomplete. Check the setup issues below.',
@@ -20,12 +21,13 @@ export default async function LoginPage({
   searchParams: Promise<{ error?: string | string[] }>;
 }) {
   const user = await getSessionUser();
-  if (user) redirect('/');
+  if (user) redirect('/servers');
 
   const params = await searchParams;
   const code = Array.isArray(params.error) ? params.error[0] : params.error;
   const message = code ? ERRORS[code] : null;
   const issues = dashboardSetupIssues();
+  const invite = botInviteUrl();
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden p-5 sm:p-8">
@@ -33,22 +35,22 @@ export default async function LoginPage({
 
       <div className="relative grid w-full max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-[#0b0e15]/80 shadow-2xl shadow-black/40 backdrop-blur lg:grid-cols-[1.1fr_0.9fr]">
         <section className="border-b border-white/10 p-8 sm:p-10 lg:border-b-0 lg:border-r">
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <div className="grid size-10 place-items-center rounded-xl bg-linear-to-br from-violet-400 to-teal-300 text-lg font-black text-[#0b0e15]">
-              N
+              V
             </div>
             <div>
-              <p className="text-lg font-semibold tracking-tight text-white">Nervana</p>
-              <p className="text-xs text-slate-500">Single-guild control room</p>
+              <p className="text-lg font-semibold tracking-tight text-white">Veyra</p>
+              <p className="text-xs text-slate-500">Community operations, simplified</p>
             </div>
-          </div>
+          </Link>
 
           <h1 className="mt-12 max-w-md text-4xl font-semibold tracking-tight text-white sm:text-5xl">
             The quiet side of running a loud server.
           </h1>
           <p className="mt-5 max-w-md text-[15px] leading-7 text-slate-400">
-            Live activity, moderation cases, tickets, economy standings, and the exact configuration
-            the bot is using. One server, one operator allowlist, no guild picker.
+            Live activity, moderation, tickets, economy standings, and the exact configuration your
+            bot is using — for every server you manage.
           </p>
 
           <div className="mt-10 grid grid-cols-2 gap-3 text-sm">
@@ -67,12 +69,12 @@ export default async function LoginPage({
         </section>
 
         <section className="flex flex-col justify-center p-8 sm:p-10">
-          <p className="label">Operator access</p>
+          <p className="label">Server managers</p>
           <h2 className="mt-3 text-2xl font-semibold text-white">Sign in with Discord</h2>
           <p className="muted mt-3">
-            Nervana requests the <code className="text-slate-200">identify</code> scope only. Your
-            Discord account must be listed in{' '}
-            <code className="text-slate-200">DASHBOARD_ADMIN_IDS</code>.
+            Veyra requests the <code className="text-slate-200">identify</code> and{' '}
+            <code className="text-slate-200">guilds</code> scopes so it can list the servers you own
+            or can manage. Bot tokens never reach the dashboard.
           </p>
 
           {message ? (
@@ -95,6 +97,12 @@ export default async function LoginPage({
             Continue with Discord
           </a>
 
+          {invite ? (
+            <a href={invite} className="btn btn-ghost mt-3 h-11 w-full text-[15px]">
+              Invite Veyra to a server
+            </a>
+          ) : null}
+
           <p className="mt-5 text-xs leading-5 text-slate-500">
             Sessions are stored as opaque, hashed tokens in Postgres and expire after seven days.
             Logging out deletes the session immediately.
@@ -102,7 +110,7 @@ export default async function LoginPage({
 
           <div className="mt-8 flex items-center gap-2 border-t border-white/10 pt-5 text-xs text-slate-500">
             <span className="size-1.5 rounded-full bg-emerald-400" />
-            No bot token or guild permissions are exposed to this dashboard.
+            Manage access comes from Discord permissions, not a private allowlist.
           </div>
         </section>
       </div>

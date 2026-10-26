@@ -1,5 +1,5 @@
-import { cases } from '@nervana/db';
-import { formatDuration, parseDuration } from '@nervana/shared';
+import { cases } from '@veyra/db';
+import { formatDuration, parseDuration } from '@veyra/shared';
 import { and, eq } from 'drizzle-orm';
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
@@ -59,6 +59,7 @@ export const timeoutCommand: Command = {
       .where(and(eq(cases.targetId, target.id), eq(cases.type, 'timeout'), eq(cases.active, true)));
 
     const row = await finishModAction(client, {
+      guildId: interaction.guildId,
       type: 'timeout',
       targetId: target.id,
       moderatorId: interaction.user.id,

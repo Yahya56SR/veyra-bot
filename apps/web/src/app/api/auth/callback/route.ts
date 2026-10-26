@@ -6,10 +6,11 @@ import {
   stateCookieOptions,
 } from '@/lib/auth';
 import { getDb } from '@/lib/db';
-import { adminIds, dashboardBase, sessionSecret } from '@/lib/env';
-import { exchangeCode, fetchDiscordUser } from '@/lib/discord';
+import { dashboardBase, sessionSecret } from '@/lib/env';
+import { exchangeCode, fetchDiscordGuilds, fetchDiscordUser } from '@/lib/discord';
+import { syncGuildMemberships } from '@/lib/guilds';
 import { verifyOAuthState } from '@/lib/oauth-state';
-import { users } from '@nervana/db';
+import { users } from '@veyra/db';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
@@ -58,12 +59,7 @@ export async function GET(request: Request): Promise<Response> {
     const redirectUri = `${base}/api/auth/callback`;
     const accessToken = await exchangeCode(code, redirectUri);
     const discordUser = await fetchDiscordUser(accessToken);
-
-    if (!adminIds().has(discordUser.id)) {
-      const response = backToLogin(base, 'forbidden');
-      clearState(response, base);
-      return response;
-    }
+    const discordGuilds = await fetchDiscordGuilds(accessToken);
 
     const db = getDb();
     const username = discordUser.global_name?.trim() || discordUser.username;
@@ -80,8 +76,10 @@ export async function GET(request: Request): Promise<Response> {
         set: { username, avatar: discordUser.avatar },
       });
 
+    await syncGuildMemberships(db, discordUser.id, discordGuilds);
+
     const session = await createSession(discordUser.id);
-    const response = NextResponse.redirect(new URL('/', base));
+    const response = NextResponse.redirect(new URL('/servers', base));
     clearState(response, base);
     response.cookies.set(SESSION_COOKIE, session.token, {
       ...sessionCookieOptions(base),

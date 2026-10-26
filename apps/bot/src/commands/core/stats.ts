@@ -1,5 +1,5 @@
-import { cases, commandUsage, giveaways, members, statsDaily, tickets } from '@nervana/db';
-import { count, eq, gte, sql, sum } from 'drizzle-orm';
+import { cases, commandUsage, giveaways, members, statsDaily, tickets } from '@veyra/db';
+import { and, count, eq, gte, sql, sum } from 'drizzle-orm';
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '../../core/commands.js';
 import { requireDb } from '../../core/database.js';
@@ -22,18 +22,29 @@ export const statsCommand: Command = {
     await client.stats?.flush();
     const db = requireDb(client);
     const cutoff = retentionCutoff(new Date(), 7);
+    const guildId = interaction.guildId;
 
     const [memberRows, caseRows, openTicketRows, activeGiveawayRows, dayRows, commandRows] =
       await Promise.all([
-        db.select({ value: count() }).from(members),
-        db.select({ value: count() }).from(cases),
-        db.select({ value: count() }).from(tickets).where(eq(tickets.status, 'open')),
-        db.select({ value: count() }).from(giveaways).where(eq(giveaways.ended, false)),
-        db.select().from(statsDaily).where(gte(statsDaily.date, cutoff)).orderBy(statsDaily.date),
+        db.select({ value: count() }).from(members).where(eq(members.guildId, guildId)),
+        db.select({ value: count() }).from(cases).where(eq(cases.guildId, guildId)),
+        db
+          .select({ value: count() })
+          .from(tickets)
+          .where(and(eq(tickets.guildId, guildId), eq(tickets.status, 'open'))),
+        db
+          .select({ value: count() })
+          .from(giveaways)
+          .where(and(eq(giveaways.guildId, guildId), eq(giveaways.ended, false))),
+        db
+          .select()
+          .from(statsDaily)
+          .where(and(eq(statsDaily.guildId, guildId), gte(statsDaily.date, cutoff)))
+          .orderBy(statsDaily.date),
         db
           .select({ command: commandUsage.command, total: sum(commandUsage.count) })
           .from(commandUsage)
-          .where(gte(commandUsage.date, cutoff))
+          .where(and(eq(commandUsage.guildId, guildId), gte(commandUsage.date, cutoff)))
           .groupBy(commandUsage.command)
           .orderBy(sql`sum(${commandUsage.count}) DESC`)
           .limit(5),
@@ -53,7 +64,7 @@ export const statsCommand: Command = {
 
     const embed = new EmbedBuilder()
       .setColor(0x5865f2)
-      .setTitle('Nervana statistics')
+      .setTitle('Veyra statistics')
       .addFields(
         { name: 'Members tracked', value: compact(memberRows[0]?.value ?? 0), inline: true },
         { name: 'Cases', value: compact(caseRows[0]?.value ?? 0), inline: true },
