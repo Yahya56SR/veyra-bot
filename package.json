@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "dev": "npm run dev -w @nervana/bot",
+    "dev:web": "npm run dev -w @nervana/web",
     "start": "npm run start -w @nervana/bot",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "vitest run",

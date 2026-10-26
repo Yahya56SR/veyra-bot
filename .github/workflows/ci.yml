@@ -29,6 +29,11 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      - name: Build dashboard
+        run: npm run build:web
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+
       - name: Build bot bundle
         run: npm run bundle:bot
 

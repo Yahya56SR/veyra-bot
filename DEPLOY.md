@@ -18,8 +18,8 @@ node index.js
 There is no install or build step on the host. `index.js` and `drizzle/` must stay committed.
 
 Current status: core, moderation, logging, welcome, leveling, automod, utility, reminders,
-tickets, economy, community features, music, stats, and the heartbeat are implemented. The
-dashboard and final hardening remain.
+tickets, economy, community features, music, stats, the heartbeat, and the Next.js dashboard
+are implemented. Final hardening and production smoke tests remain.
 
 ---
 
@@ -47,8 +47,8 @@ dashboard and final hardening remain.
 
 6. Drag the bot's role **above** every role it must moderate or grant. Discord refuses role
    changes for roles at or above the bot's highest role.
-7. For the dashboard (Phase 6), add the redirect
-   `https://<your-dashboard>/api/auth/callback` under **OAuth2 → General**.
+7. For the dashboard, add the redirect `https://<your-dashboard>/api/auth/callback` under
+   **OAuth2 → General**. The dashboard requests only the `identify` scope.
 
 ---
 
@@ -143,18 +143,49 @@ The player leaves voice 30 seconds after the queue ends unless 24/7 mode is on. 
 
 ---
 
-## 5. Vercel dashboard (Phase 6)
+## 5. Vercel dashboard
 
-These steps are prepared but the `apps/web` workspace does not exist yet.
+The dashboard is in `apps/web` and uses the same Supabase database as the bot.
 
-- Import the repository into Vercel Hobby.
-- Root directory: repository root.
-- Build command: `npm run build -w apps/web`.
-- Output directory: `apps/web/.next`.
-- Add `DATABASE_URL`, `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `SESSION_SECRET`,
-  `DASHBOARD_ADMIN_IDS`, and `DASHBOARD_URL`.
-- Set the Discord OAuth redirect to `https://<deployment>/api/auth/callback`.
-- Hobby is non-commercial; a private community server qualifies.
+1. Run the bot once first. Startup migrations create `users`, `sessions`, and the tables the
+   dashboard reads. If the bot has not run, the dashboard shows its database error page.
+2. Import the repository into Vercel Hobby.
+3. Root directory: repository root (not `apps/web`).
+4. Framework preset: **Next.js**.
+5. Build command: `npm run build -w @nervana/web`.
+6. Output directory: `apps/web/.next`.
+7. Set **Node.js Version** to **24.x** (Project Settings → General).
+8. Add these environment variables for Production (and Preview if used):
+
+   | Variable                | Value                                                    |
+   | ----------------------- | -------------------------------------------------------- |
+   | `DATABASE_URL`          | Supabase transaction pooler, port `6543`, with TLS       |
+   | `DISCORD_CLIENT_ID`     | Application ID                                           |
+   | `DISCORD_CLIENT_SECRET` | OAuth2 client secret                                     |
+   | `SESSION_SECRET`        | At least 32 random bytes, e.g. `openssl rand -base64 48` |
+   | `DASHBOARD_ADMIN_IDS`   | Comma-separated Discord IDs allowed to sign in           |
+   | `DASHBOARD_URL`         | Exact public origin, e.g. `https://nervana.vercel.app`   |
+
+9. Set the Discord OAuth redirect to `${DASHBOARD_URL}/api/auth/callback`. The scheme, host,
+   and path must match exactly. No trailing slash on `DASHBOARD_URL`.
+10. Deploy, open the deployment, sign in, and confirm the allowlist rejects a second account.
+11. Hobby is non-commercial; a private community server qualifies.
+
+Notes:
+
+- The dashboard uses the transaction pooler with a pool of 3 per serverless instance.
+  `prepare:false` is already set by the shared database client.
+- Preview deployments need their own `DASHBOARD_URL` and matching Discord redirect URI. If you
+  only use Production, leave preview variables unset or use the same production domain
+  intentionally.
+- Sessions expire after seven days. Logging out deletes the row, and expired rows are pruned on
+  the next successful login.
+- Settings writes use the same transaction and Zod validation as `/setup`. The bot polls
+  `settings.updated_at` every 15 seconds.
+- Ticket transcripts are returned only to signed-in operators, with a CSP sandbox,
+  `X-Content-Type-Options: nosniff`, and `Cache-Control: no-store`.
+- For database access the dashboard reads only `DATABASE_URL`. The Vercel deployment never
+  receives `DISCORD_TOKEN`, Lavalink credentials, or `MIGRATE_DATABASE_URL`.
 
 ---
 
@@ -255,12 +286,24 @@ If `/play` reports that music is unconfigured, check `MUSIC_ENABLED`, `LAVALINK_
 `LAVALINK_AUTH`, and the node logs. If it reports no playable tracks for a Spotify link, the
 node is missing the LavaSrc plugin.
 
+Dashboard smoke test:
+
+1. Open `DASHBOARD_URL`, sign in with an allowlisted account, and confirm the overview loads.
+2. Open Activity, Moderation, Members, Tickets, Settings, and Audit without console errors.
+3. Save a harmless setting change (for example, toggle a leveling announcement) and confirm a
+   new audit row appears.
+4. Close one ticket, open its transcript from the Tickets page, and confirm it renders in a
+   sandboxed tab.
+5. Sign out and confirm `/` redirects to `/login`.
+
 ---
 
 ## 7. Operating notes
 
 - **Settings changes** are audited in `config_audit`. The bot polls `settings.updated_at` every
-  15 seconds; `/setup` applies changes immediately.
+  15 seconds; `/setup` and the dashboard apply changes within that window.
+- **Dashboard sessions** live in Postgres. A database restore also restores sessions until they
+  expire; delete `sessions` to force every operator to sign in again.
 - **XP buffering:** XP is flushed every 30 seconds and on shutdown. A hard crash can lose up to
   30 seconds of XP. Cooldowns are persisted in `last_xp_at`.
 - **Restarts** are safe: migrations skip applied files, the settings row is reused, and the
@@ -285,8 +328,12 @@ node is missing the LavaSrc plugin.
 - `.env` is gitignored. The repository commits only the bundle, migrations, and source.
 - The bot leaves every guild whose ID is not `GUILD_ID`.
 - Dashboard access is Discord OAuth `identify` plus a `DASHBOARD_ADMIN_IDS` allowlist; there is
-  no guild picker and no `Manage Server` requirement.
-- Transcripts and user content must be escaped before rendering in the dashboard.
+  no guild picker and no `Manage Server` requirement. OAuth state is HMAC-signed and checked
+  against a short-lived cookie.
+- Session cookies are `HttpOnly`, `SameSite=Lax`, and `Secure` on HTTPS. The database stores
+  only SHA-256 hashes of session tokens.
+- Ticket transcripts are escaped when written by the bot and served to operators with a CSP
+  sandbox and `nosniff`. Do not remove those headers.
 - Automod exemptions are for roles/channels, but members with **Manage Messages**, the server
   owner, and the bot itself are always exempt.
 - Public Lavalink nodes are trusted infrastructure. Treat the node password like a secret.
