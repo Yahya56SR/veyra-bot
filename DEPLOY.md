@@ -64,11 +64,15 @@ per-server dashboard, and Stripe billing are implemented. Final production smoke
    - **Transaction pooler**, port `6543` → `DATABASE_URL`
    - **Session pooler**, port `5432` → `MIGRATE_DATABASE_URL`
 3. Both users look like `postgres.<project-ref>`; the database is `postgres`.
-4. If the URI does not already contain `sslmode`, append `?sslmode=require`. The client also
+4. Use the **pooler** hostnames (`...pooler.supabase.com`), not the direct
+   `db.<project-ref>.supabase.co` host. Supabase direct connections resolve to IPv6 only, so
+   IPv4-only bot hosts fail with `getaddrinfo ENOTFOUND`. The pooler host is reachable over IPv4
+   and is the correct choice for both URLs.
+5. If the URI does not already contain `sslmode`, append `?sslmode=require`. The client also
    defaults remote connections to TLS, but being explicit avoids surprises.
-5. Do **not** run SQL by hand. On first boot the bot applies every committed file in
+6. Do **not** run SQL by hand. On first boot the bot applies every committed file in
    `drizzle/` inside a transaction guarded by `pg_advisory_xact_lock`.
-6. Keep `SKIP_MIGRATIONS=false` in production. Each migration is applied once and recorded in
+7. Keep `SKIP_MIGRATIONS=false` in production. Each migration is applied once and recorded in
    `schema_migrations`; already-applied files are skipped on later boots.
 
 Why two URLs: the transaction pooler cannot hold session-level state, while migrations and the
