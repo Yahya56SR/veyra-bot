@@ -21,15 +21,15 @@ export const embedCommand: Command = {
   data: new SlashCommandBuilder()
     .setName('embed')
     .setDescription('Post a custom embed.')
-    .addChannelOption((option) =>
-      option.setName('channel').setDescription('Where to post (defaults to this channel)'),
-    )
     .addStringOption((option) =>
       option
         .setName('description')
         .setDescription('Embed body')
         .setRequired(true)
         .setMaxLength(4000),
+    )
+    .addChannelOption((option) =>
+      option.setName('channel').setDescription('Where to post (defaults to this channel)'),
     )
     .addStringOption((option) =>
       option.setName('title').setDescription('Embed title').setMaxLength(256),

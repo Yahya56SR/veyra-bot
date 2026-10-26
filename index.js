@@ -126516,10 +126516,10 @@ function sendable2(channel) {
 }
 __name(sendable2, "sendable");
 var embedCommand = {
-  data: new import_discord49.SlashCommandBuilder().setName("embed").setDescription("Post a custom embed.").addChannelOption(
-    (option) => option.setName("channel").setDescription("Where to post (defaults to this channel)")
-  ).addStringOption(
+  data: new import_discord49.SlashCommandBuilder().setName("embed").setDescription("Post a custom embed.").addStringOption(
     (option) => option.setName("description").setDescription("Embed body").setRequired(true).setMaxLength(4e3)
+  ).addChannelOption(
+    (option) => option.setName("channel").setDescription("Where to post (defaults to this channel)")
   ).addStringOption(
     (option) => option.setName("title").setDescription("Embed title").setMaxLength(256)
   ).addStringOption(
