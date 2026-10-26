@@ -2,8 +2,19 @@ import type { Command } from '../core/commands.js';
 import { helpCommand } from './core/help.js';
 import { pingCommand } from './core/ping.js';
 import { setupCommand } from './core/setup.js';
+import { statsCommand } from './core/stats.js';
 import { leaderboardCommand } from './leveling/leaderboard.js';
 import { rankCommand } from './leveling/rank.js';
+import { balanceCommand } from './economy/balance.js';
+import { baltopCommand } from './economy/baltop.js';
+import { buyCommand } from './economy/buy.js';
+import { dailyCommand } from './economy/daily.js';
+import { ecoAdminCommand } from './economy/ecoadmin.js';
+import { gambleCommand } from './economy/gamble.js';
+import { inventoryCommand } from './economy/inventory.js';
+import { payCommand } from './economy/pay.js';
+import { shopCommand } from './economy/shop.js';
+import { workCommand } from './economy/work.js';
 import { banCommand } from './moderation/ban.js';
 import { caseCommand } from './moderation/case.js';
 import { casesCommand } from './moderation/cases.js';
@@ -18,6 +29,23 @@ import { untimeoutCommand } from './moderation/untimeout.js';
 import { warnCommand } from './moderation/warn.js';
 import { warningsCommand } from './moderation/warnings.js';
 import { ticketCommand } from './tickets/ticket.js';
+import { giveawayCommand } from './community/giveaway.js';
+import { reactionRoleCommand } from './community/reactionrole.js';
+import {
+  clearCommand,
+  disconnectCommand,
+  loopCommand,
+  pauseCommand,
+  removeCommand,
+  resumeCommand,
+  seekCommand,
+  shuffleCommand,
+  skipCommand,
+  stopCommand,
+  volumeCommand,
+} from './music/controls.js';
+import { nowPlayingCommand, queueCommand } from './music/nowplaying.js';
+import { playCommand } from './music/play.js';
 import { announceCommand } from './utility/announce.js';
 import { avatarCommand } from './utility/avatar.js';
 import { bannerCommand } from './utility/banner.js';
@@ -39,8 +67,19 @@ export const commands: readonly Command[] = [
   pingCommand,
   helpCommand,
   setupCommand,
+  statsCommand,
   rankCommand,
   leaderboardCommand,
+  balanceCommand,
+  baltopCommand,
+  dailyCommand,
+  workCommand,
+  payCommand,
+  gambleCommand,
+  shopCommand,
+  buyCommand,
+  inventoryCommand,
+  ecoAdminCommand,
   warnCommand,
   warningsCommand,
   clearWarningsCommand,
@@ -67,4 +106,20 @@ export const commands: readonly Command[] = [
   embedCommand,
   announceCommand,
   ticketCommand,
+  giveawayCommand,
+  reactionRoleCommand,
+  playCommand,
+  pauseCommand,
+  resumeCommand,
+  skipCommand,
+  stopCommand,
+  disconnectCommand,
+  nowPlayingCommand,
+  queueCommand,
+  volumeCommand,
+  loopCommand,
+  shuffleCommand,
+  removeCommand,
+  clearCommand,
+  seekCommand,
 ];

@@ -9,6 +9,8 @@ export const guildMemberAddEvent: BotEvent = {
   async execute(client, member) {
     if (member.guild.id !== client.env.GUILD_ID) return;
 
+    client.stats?.recordJoin();
+
     if (!isLogIgnored(client, null, member.id)) {
       const embed = logEmbed('Member joined', BRAND.success)
         .setThumbnail(member.displayAvatarURL({ size: 128 }))

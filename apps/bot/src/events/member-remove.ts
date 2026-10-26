@@ -9,6 +9,8 @@ export const guildMemberRemoveEvent: BotEvent = {
   async execute(client, member) {
     if (member.guild.id !== client.env.GUILD_ID) return;
 
+    client.stats?.recordLeave();
+
     if (!isLogIgnored(client, null, member.id)) {
       const avatar = member.user?.displayAvatarURL({ size: 128 });
       const embed = logEmbed('Member left', BRAND.danger).addFields(

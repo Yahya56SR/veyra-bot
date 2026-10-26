@@ -11,10 +11,13 @@ import { createLogger } from './core/logger.js';
 import { resolveMigrationsDir } from './db/migrations-dir.js';
 import { events } from './events/index.js';
 import { AutomodService } from './modules/automod/service.js';
+import { GiveawayScheduler } from './modules/community/giveaways.js';
 import { HeartbeatService } from './modules/heartbeat.js';
 import { LevelingService } from './modules/leveling/service.js';
 import { ModerationScheduler } from './modules/moderation/scheduler.js';
+import { MusicService } from './modules/music/service.js';
 import { ReminderService } from './modules/reminders/service.js';
+import { StatsService } from './modules/stats/service.js';
 
 async function main(): Promise<void> {
   const env = loadEnv();
@@ -35,7 +38,10 @@ async function main(): Promise<void> {
       client.heartbeat?.stop();
       client.moderation?.stop();
       client.reminders?.stop();
+      client.giveaways?.stop();
+      await client.stats?.stop();
       await client.leveling?.stop();
+      await client.music?.stop();
       stopSettingsPoller(client);
       await client.destroy().catch((error: unknown) => {
         logger.warn({ err: error }, 'client destroy failed');
@@ -130,9 +136,15 @@ async function main(): Promise<void> {
     client.heartbeat.start();
 
     client.reminders = new ReminderService(client);
+    client.giveaways = new GiveawayScheduler(client);
+    client.stats = new StatsService(client);
+    client.stats.start();
+    client.music = new MusicService(client);
 
     await client.login(env.DISCORD_TOKEN);
+    client.music.start();
     client.reminders.start();
+    client.giveaways.start();
   } catch (error) {
     logger.fatal({ err: error }, 'fatal startup error');
 
@@ -140,7 +152,10 @@ async function main(): Promise<void> {
       client.heartbeat?.stop();
       client.moderation?.stop();
       client.reminders?.stop();
+      client.giveaways?.stop();
+      await client.stats?.stop();
       await client.leveling?.stop();
+      await client.music?.stop();
       stopSettingsPoller(client);
       await client.destroy().catch(() => {});
     }

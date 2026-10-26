@@ -10,6 +10,9 @@ export const voiceUpdateEvent: BotEvent = {
 
     const member = newState.member;
     if (!member || member.user.bot) return;
+
+    client.stats?.handleVoiceState(oldState, newState);
+
     if (isLogIgnored(client, newState.channelId ?? oldState.channelId, member.id)) return;
 
     const changes: string[] = [];

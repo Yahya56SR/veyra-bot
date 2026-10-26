@@ -62,9 +62,11 @@ export async function handleChatInputCommand(
       command.cooldownSeconds ?? 1,
     );
     if (remaining > 0) {
-      await replyError(interaction, `Slow down — try again in ${(remaining / 1000).toFixed(1)}s.`);
+      await replyError(interaction, `Slow down - try again in ${(remaining / 1000).toFixed(1)}s.`);
       return;
     }
+
+    client.stats?.recordCommand(command.data.name);
 
     await command.execute({
       client,

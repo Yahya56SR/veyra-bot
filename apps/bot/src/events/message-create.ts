@@ -6,6 +6,8 @@ export const messageCreateEvent: BotEvent = {
   async execute(client, message) {
     if (message.author.bot) return;
 
+    client.stats?.recordMessage();
+
     const handled = (await client.automod?.handleMessage(message)) ?? false;
     if (handled) return;
 

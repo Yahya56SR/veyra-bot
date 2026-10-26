@@ -5,10 +5,13 @@ import type { Env } from '../config/env.js';
 import type { Command } from './commands.js';
 import type { Logger } from './logger.js';
 import type { AutomodService } from '../modules/automod/service.js';
+import type { GiveawayScheduler } from '../modules/community/giveaways.js';
 import type { HeartbeatService } from '../modules/heartbeat.js';
 import type { LevelingService } from '../modules/leveling/service.js';
 import type { ModerationScheduler } from '../modules/moderation/scheduler.js';
+import type { MusicService } from '../modules/music/service.js';
 import type { ReminderService } from '../modules/reminders/service.js';
+import type { StatsService } from '../modules/stats/service.js';
 
 /**
  * The single process-wide client. Memory is deliberately bounded because the
@@ -29,6 +32,9 @@ export class NervanaClient extends Client {
   automod: AutomodService | null = null;
   heartbeat: HeartbeatService | null = null;
   reminders: ReminderService | null = null;
+  giveaways: GiveawayScheduler | null = null;
+  stats: StatsService | null = null;
+  music: MusicService | null = null;
 
   constructor() {
     super({
@@ -39,8 +45,9 @@ export class NervanaClient extends Client {
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildMessageReactions,
       ],
-      partials: [Partials.Message, Partials.Channel, Partials.GuildMember],
+      partials: [Partials.Message, Partials.Channel, Partials.GuildMember, Partials.Reaction],
       allowedMentions: { parse: ['users'], repliedUser: false },
       makeCache: Options.cacheWithLimits({
         ...Options.DefaultMakeCacheSettings,

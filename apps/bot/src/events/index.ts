@@ -9,6 +9,8 @@ import { guildMemberUpdateEvent } from './member-update.js';
 import { messageBulkDeleteEvent } from './message-bulk-delete.js';
 import { messageCreateEvent } from './message-create.js';
 import { messageDeleteEvent } from './message-delete.js';
+import { messageReactionAddEvent } from './message-reaction-add.js';
+import { messageReactionRemoveEvent } from './message-reaction-remove.js';
 import { messageUpdateEvent } from './message-update.js';
 import { readyEvent } from './ready.js';
 import { roleUpdateEvent } from './role-update.js';
@@ -20,6 +22,8 @@ export const events: readonly BotEvent[] = [
   interactionCreateEvent,
   messageCreateEvent,
   messageDeleteEvent,
+  messageReactionAddEvent,
+  messageReactionRemoveEvent,
   messageUpdateEvent,
   messageBulkDeleteEvent,
   guildMemberAddEvent,

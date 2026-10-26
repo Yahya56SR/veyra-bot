@@ -18,8 +18,8 @@ node index.js
 There is no install or build step on the host. `index.js` and `drizzle/` must stay committed.
 
 Current status: core, moderation, logging, welcome, leveling, automod, utility, reminders,
-tickets, and the heartbeat are implemented. Economy, community, music, stats, and the dashboard
-are still being built.
+tickets, economy, community features, music, stats, and the heartbeat are implemented. The
+dashboard and final hardening remain.
 
 ---
 
@@ -41,7 +41,7 @@ are still being built.
    | Moderation      | Manage Messages, Moderate Members, Kick Members, Ban Members                              |
    | Configuration   | Manage Channels, Manage Roles                                                             |
    | Community       | Add Reactions                                                                             |
-   | Music (later)   | Connect, Speak, Use Voice Activity                                                        |
+   | Music           | Connect, Speak, Use Voice Activity                                                        |
 
    Use the OAuth2 URL generator; do not hand-build the permission integer.
 
@@ -109,26 +109,37 @@ The bundle usually idles well below 120 MB RSS. If the host reports OOM:
 
 ---
 
-## 4. Lavalink (music, later)
+## 4. Lavalink (music)
 
-Music is not wired up yet, but the node contract is ready.
+Music uses a public Lavalink v4 node, or one you self-host. The bot never runs ffmpeg or a
+voice encoder; Lavalink does the audio work.
 
-1. Pick a public Lavalink v4 node from a maintained list, or self-host.
+1. Pick a public Lavalink v4 node from a maintained list, or self-host with Java 17+.
 2. Validate it before putting the password in `.env`:
 
    ```powershell
    npm run check:lavalink -- lavalink.example.com:2333 <password>
    ```
 
-   A good node advertises `soundcloud`, `spotify`, and/or `youtube`. Prefer SoundCloud, then
-   Spotify, then YouTube.
+   A good node advertises `soundcloud`, `spotify`, and/or `youtube`. Searches prefer
+   SoundCloud, then Spotify, then YouTube as a best-effort fallback.
 
-3. Set `LAVALINK_URL` to `host:port` (no protocol), `LAVALINK_AUTH` to the password, and
-   `LAVALINK_SECURE=true` when the node uses TLS.
-4. A public node's operator proxies the guild's audio and can observe it. If that is not
-   acceptable, self-host Lavalink with Java 17+ and set `MUSIC_ENABLED=false` until it is ready.
-   Spotify requires the LavaSrc plugin; SoundCloud and YouTube work with Lavalink's built-in
-   sources.
+3. Set `MUSIC_ENABLED=true`, `LAVALINK_URL` to `host:port` (no protocol; an `https://` URL also
+   works), `LAVALINK_AUTH` to the password, and `LAVALINK_SECURE=true` when the node uses TLS.
+4. Restart the bot, then run `/setup music enabled:true`. Optional settings include the DJ role,
+   default volume, queue limit, and 24/7 mode. `/setup music` refuses to enable music when the
+   environment is incomplete.
+5. Spotify links and Spotify text search require the **LavaSrc** plugin. SoundCloud and YouTube
+   work with Lavalink's built-in sources. If a source is missing, the bot falls back or reports
+   that no playable tracks were found.
+6. A public node's operator proxies the guild's audio and can observe it. If that is not
+   acceptable, self-host Lavalink or set `MUSIC_ENABLED=false`.
+
+`MUSIC_ENABLED=false` is a hard kill switch: it overrides the database, and `/setup music`
+will not re-enable music until the environment flag is true and the bot is restarted.
+
+The player leaves voice 30 seconds after the queue ends unless 24/7 mode is on. `/stop` and
+`/disconnect` leave immediately.
 
 ---
 
@@ -160,6 +171,9 @@ These steps are prepared but the `apps/web` workspace does not exist yet.
 /setup link-allow host:youtube.com
 /setup filtered-word word:blockedword
 /setup leveling enabled:true xp-min:15 xp-max:25 cooldown:60
+/setup economy enabled:true
+/setup music enabled:true volume:60 max-queue:100
+/setup starboard channel:#starboard threshold:3
 /setup welcome kind:join channel:#welcome
 /setup autorole role:@Member
 /setup tickets category:"Tickets" staff-role:@Staff panel-channel:#open-a-ticket log-channel:#ticket-logs
@@ -210,6 +224,37 @@ Utility smoke test:
 /userinfo
 ```
 
+Economy and community smoke test:
+
+```
+/setup economy enabled:true
+/daily
+/work
+/balance
+/shop
+/setup starboard channel:#starboard threshold:3
+/giveaway start prize:"Test" duration:5m
+```
+
+Music smoke test (join a voice channel first):
+
+```
+/play query:lofi
+/nowplaying
+/queue
+/pause
+/resume
+/volume percent:50
+/loop mode:track
+/seek time:0:30
+/skip
+/stop
+```
+
+If `/play` reports that music is unconfigured, check `MUSIC_ENABLED`, `LAVALINK_URL`,
+`LAVALINK_AUTH`, and the node logs. If it reports no playable tracks for a Spotify link, the
+node is missing the LavaSrc plugin.
+
 ---
 
 ## 7. Operating notes
@@ -222,6 +267,9 @@ Utility smoke test:
   temporary-ban sweep resumes from the database.
 - **Reminders** are delivered by a 30-second database sweep. If a DM is blocked, the bot falls
   back to the channel where the reminder was created.
+- **Music** queue state is in memory and is not restored after a restart. The player leaves
+  voice 30 seconds after the queue ends unless `/setup music stay-247:true` is set. A configured
+  DJ role is only enforced while more than one human is listening.
 - **Token rotation:** reset the token in the Developer Portal, update the host secret, and
   redeploy. The old token is invalid immediately.
 - **Disabling music:** set `MUSIC_ENABLED=false`. This overrides the database and does not

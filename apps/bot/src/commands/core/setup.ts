@@ -171,6 +171,121 @@ export const setupCommand: Command = {
     )
     .addSubcommand((sub) =>
       sub
+        .setName('economy')
+        .setDescription('Configure daily/work rewards, currency, and cooldowns.')
+        .addBooleanOption((option) =>
+          option.setName('enabled').setDescription('Enable or disable the economy'),
+        )
+        .addStringOption((option) =>
+          option
+            .setName('currency')
+            .setDescription('Plural currency name, e.g. coins')
+            .setMaxLength(32),
+        )
+        .addStringOption((option) =>
+          option.setName('symbol').setDescription('Currency symbol or emoji').setMaxLength(8),
+        )
+        .addIntegerOption((option) =>
+          option
+            .setName('daily')
+            .setDescription('Base coins from /daily')
+            .setMinValue(1)
+            .setMaxValue(100_000),
+        )
+        .addIntegerOption((option) =>
+          option
+            .setName('streak-bonus')
+            .setDescription('Extra coins per daily streak day')
+            .setMinValue(0)
+            .setMaxValue(10_000),
+        )
+        .addIntegerOption((option) =>
+          option
+            .setName('work-min')
+            .setDescription('Minimum coins from /work')
+            .setMinValue(1)
+            .setMaxValue(10_000),
+        )
+        .addIntegerOption((option) =>
+          option
+            .setName('work-max')
+            .setDescription('Maximum coins from /work')
+            .setMinValue(1)
+            .setMaxValue(10_000),
+        )
+        .addIntegerOption((option) =>
+          option
+            .setName('work-cooldown')
+            .setDescription('Seconds between /work uses')
+            .setMinValue(60)
+            .setMaxValue(86_400),
+        ),
+    )
+    .addSubcommand((sub) =>
+      sub
+        .setName('music')
+        .setDescription('Configure the DJ role, volume, queue limit, and 24/7 mode.')
+        .addBooleanOption((option) =>
+          option.setName('enabled').setDescription('Enable or disable music commands'),
+        )
+        .addRoleOption((option) =>
+          option
+            .setName('dj-role')
+            .setDescription('Role required to control music in busy channels'),
+        )
+        .addBooleanOption((option) =>
+          option.setName('clear-dj').setDescription('Remove the DJ role requirement'),
+        )
+        .addIntegerOption((option) =>
+          option
+            .setName('volume')
+            .setDescription('Default volume for new players (1–100)')
+            .setMinValue(1)
+            .setMaxValue(100),
+        )
+        .addIntegerOption((option) =>
+          option
+            .setName('max-queue')
+            .setDescription('Maximum tracks in the queue (1–500)')
+            .setMinValue(1)
+            .setMaxValue(500),
+        )
+        .addBooleanOption((option) =>
+          option.setName('stay-247').setDescription('Stay in voice after the queue ends'),
+        ),
+    )
+    .addSubcommand((sub) =>
+      sub
+        .setName('starboard')
+        .setDescription('Configure the starboard channel and threshold.')
+        .addBooleanOption((option) =>
+          option.setName('enabled').setDescription('Enable or disable the starboard'),
+        )
+        .addChannelOption((option) =>
+          option
+            .setName('channel')
+            .setDescription('Channel where starred messages are posted')
+            .addChannelTypes(ChannelType.GuildText),
+        )
+        .addIntegerOption((option) =>
+          option
+            .setName('threshold')
+            .setDescription('Stars required to post')
+            .setMinValue(1)
+            .setMaxValue(50),
+        )
+        .addChannelOption((option) =>
+          option
+            .setName('ignore-channel')
+            .setDescription('Add a channel the starboard should ignore')
+            .addChannelTypes(ChannelType.GuildText),
+        )
+        .addBooleanOption((option) =>
+          option.setName('clear-ignore').setDescription('Clear the ignored-channel list'),
+        ),
+    )
+    .addSubcommand((sub) =>
+      sub
         .setName('welcome')
         .setDescription('Configure join or leave messages.')
         .addStringOption((option) =>
@@ -416,6 +531,135 @@ export const setupCommand: Command = {
 
       await interaction.editReply({
         content: `Leveling is **${enabled ? 'on' : 'off'}** · ${leveling.xpMin}–${leveling.xpMax} XP every ${leveling.cooldownSeconds}s.`,
+      });
+      return;
+    }
+
+    if (sub === 'economy') {
+      const enabled = interaction.options.getBoolean('enabled');
+      const currency = interaction.options.getString('currency')?.trim();
+      const symbol = interaction.options.getString('symbol')?.trim();
+      const daily = interaction.options.getInteger('daily');
+      const streakBonus = interaction.options.getInteger('streak-bonus');
+      const workMin = interaction.options.getInteger('work-min');
+      const workMax = interaction.options.getInteger('work-max');
+      const workCooldown = interaction.options.getInteger('work-cooldown');
+
+      const economy = structuredClone(settings.economy);
+      if (enabled !== null) economy.enabled = enabled;
+      if (currency) economy.currency = currency;
+      if (symbol) economy.currencySymbol = symbol;
+      if (daily !== null) economy.dailyAmount = daily;
+      if (streakBonus !== null) economy.dailyStreakBonus = streakBonus;
+      if (workMin !== null) economy.workMin = workMin;
+      if (workMax !== null) economy.workMax = workMax;
+      if (workCooldown !== null) economy.workCooldownSeconds = workCooldown;
+
+      if (economy.workMax < economy.workMin) {
+        throw new UserFacingError(
+          `Work max (${economy.workMax}) must be at least work min (${economy.workMin}).`,
+        );
+      }
+
+      await updateModule(client, interaction.user.id, 'economy', economy);
+
+      await interaction.editReply({
+        content: `Economy is **${economy.enabled ? 'on' : 'off'}** - ${economy.dailyAmount} ${
+          economy.currency
+        } daily, work ${economy.workMin}-${economy.workMax} every ${economy.workCooldownSeconds}s.`,
+      });
+      return;
+    }
+
+    if (sub === 'music') {
+      const enabled = interaction.options.getBoolean('enabled');
+      const djRole = interaction.options.getRole('dj-role');
+      const clearDj = interaction.options.getBoolean('clear-dj') ?? false;
+      const volume = interaction.options.getInteger('volume');
+      const maxQueue = interaction.options.getInteger('max-queue');
+      const stay247 = interaction.options.getBoolean('stay-247');
+
+      const music = structuredClone(settings.music);
+
+      if (enabled !== null) music.enabled = enabled;
+      if (clearDj) music.djRoleId = null;
+      else if (djRole) music.djRoleId = djRole.id;
+      if (volume !== null) music.defaultVolume = volume;
+      if (maxQueue !== null) music.maxQueue = maxQueue;
+      if (stay247 !== null) music.stay247 = stay247;
+
+      if (music.enabled) {
+        if (!client.env.MUSIC_ENABLED) {
+          throw new UserFacingError(
+            '`MUSIC_ENABLED` is false in the bot environment. Set it to true and restart before enabling music.',
+          );
+        }
+        if (!client.env.LAVALINK_URL || !client.env.LAVALINK_AUTH) {
+          throw new UserFacingError(
+            'Set `LAVALINK_URL` and `LAVALINK_AUTH` in the bot environment before enabling music.',
+          );
+        }
+      }
+
+      await updateModule(client, interaction.user.id, 'music', music);
+
+      const lines = [
+        `Music: **${music.enabled ? 'on' : 'off'}**`,
+        `DJ role: ${music.djRoleId ? `<@&${music.djRoleId}>` : '*everyone*'}`,
+        `Default volume: **${music.defaultVolume}%**`,
+        `Queue limit: **${music.maxQueue}** tracks`,
+        `24/7 mode: **${music.stay247 ? 'on' : 'off'}**`,
+      ];
+
+      if (music.enabled && !client.music?.available) {
+        lines.push('-# The Lavalink node is not connected yet; check the bot logs.');
+      }
+
+      await interaction.editReply({
+        content: lines.join('\n'),
+        allowedMentions: { parse: [] },
+      });
+      return;
+    }
+
+    if (sub === 'starboard') {
+      const enabled = interaction.options.getBoolean('enabled');
+      const channel = textChannel(interaction.options.getChannel('channel'));
+      const threshold = interaction.options.getInteger('threshold');
+      const ignore = interaction.options.getChannel('ignore-channel');
+      const clearIgnore = interaction.options.getBoolean('clear-ignore') ?? false;
+
+      const community = structuredClone(settings.community);
+      const starboard = community.starboard;
+
+      if (channel) {
+        starboard.channelId = channel.id;
+        starboard.enabled = true;
+      }
+      if (enabled !== null) starboard.enabled = enabled;
+      if (threshold !== null) starboard.threshold = threshold;
+
+      if (clearIgnore) starboard.ignoreChannelIds = [];
+      if (ignore) {
+        const set = new Set(starboard.ignoreChannelIds);
+        set.add(ignore.id);
+        starboard.ignoreChannelIds = [...set];
+      }
+
+      if (starboard.enabled && !starboard.channelId) {
+        throw new UserFacingError('Set a starboard channel before enabling it.');
+      }
+
+      await updateModule(client, interaction.user.id, 'community', community);
+
+      await interaction.editReply({
+        content: [
+          `Starboard: **${starboard.enabled ? 'on' : 'off'}**`,
+          `Channel: ${starboard.channelId ? `<#${starboard.channelId}>` : '*not set*'}`,
+          `Threshold: **${starboard.threshold}** ${'\u2b50'}`,
+          `Ignored channels: ${starboard.ignoreChannelIds.length}`,
+        ].join('\n'),
+        allowedMentions: { parse: [] },
       });
       return;
     }
@@ -680,10 +924,18 @@ async function showStatus(
         ].join('\n'),
       },
       {
+        name: 'Music',
+        value: [
+          `Enabled: **${settings.music.enabled ? 'on' : 'off'}**`,
+          `DJ role: ${settings.music.djRoleId ? `<@&${settings.music.djRoleId}>` : 'everyone'}`,
+          `Volume: ${settings.music.defaultVolume}% · Queue limit: ${settings.music.maxQueue}`,
+          `24/7 mode: ${settings.music.stay247 ? 'on' : 'off'}`,
+        ].join('\n'),
+      },
+      {
         name: 'Other modules',
         value: [
           `Economy: **${settings.economy.enabled ? 'on' : 'off'}**`,
-          `Music: **${settings.music.enabled ? 'on' : 'off'}**`,
           `Stats: **${settings.stats.enabled ? 'on' : 'off'}**`,
         ].join('\n'),
       },

@@ -2661,8 +2661,8 @@ var require_request = __commonJS({
 var require_dispatcher = __commonJS({
   "node_modules/undici/lib/dispatcher/dispatcher.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("node:events");
-    var Dispatcher = class extends EventEmitter {
+    var EventEmitter2 = require("node:events");
+    var Dispatcher = class extends EventEmitter2 {
       static {
         __name(this, "Dispatcher");
       }
@@ -2904,7 +2904,7 @@ var require_timers = __commonJS({
     "use strict";
     var fastNow = 0;
     var RESOLUTION_MS = 1e3;
-    var TICK_MS3 = (RESOLUTION_MS >> 1) - 1;
+    var TICK_MS4 = (RESOLUTION_MS >> 1) - 1;
     var fastNowTimeout;
     var kFastTimer = /* @__PURE__ */ Symbol("kFastTimer");
     var fastTimers = [];
@@ -2913,13 +2913,13 @@ var require_timers = __commonJS({
     var PENDING = 0;
     var ACTIVE = 1;
     function onTick() {
-      fastNow += TICK_MS3;
+      fastNow += TICK_MS4;
       let idx = 0;
       let len = fastTimers.length;
       while (idx < len) {
         const timer2 = fastTimers[idx];
         if (timer2._state === PENDING) {
-          timer2._idleStart = fastNow - TICK_MS3;
+          timer2._idleStart = fastNow - TICK_MS4;
           timer2._state = ACTIVE;
         } else if (timer2._state === ACTIVE && fastNow >= timer2._idleStart + timer2._idleTimeout) {
           timer2._state = TO_BE_CLEARED;
@@ -2946,7 +2946,7 @@ var require_timers = __commonJS({
         fastNowTimeout.refresh();
       } else {
         clearTimeout(fastNowTimeout);
-        fastNowTimeout = setTimeout(onTick, TICK_MS3);
+        fastNowTimeout = setTimeout(onTick, TICK_MS4);
         if (fastNowTimeout.unref) {
           fastNowTimeout.unref();
         }
@@ -18429,7 +18429,7 @@ var require_permessage_deflate = __commonJS({
     var tail = Buffer.from([0, 0, 255, 255]);
     var kBuffer = /* @__PURE__ */ Symbol("kBuffer");
     var kLength = /* @__PURE__ */ Symbol("kLength");
-    var PerMessageDeflate = class {
+    var PerMessageDeflate2 = class {
       static {
         __name(this, "PerMessageDeflate");
       }
@@ -18500,7 +18500,7 @@ var require_permessage_deflate = __commonJS({
         });
       }
     };
-    module2.exports = { PerMessageDeflate };
+    module2.exports = { PerMessageDeflate: PerMessageDeflate2 };
   }
 });
 
@@ -18525,7 +18525,7 @@ var require_receiver = __commonJS({
     } = require_util7();
     var { WebsocketFrameSend } = require_frame();
     var { closeWebSocketConnection } = require_connection();
-    var { PerMessageDeflate } = require_permessage_deflate();
+    var { PerMessageDeflate: PerMessageDeflate2 } = require_permessage_deflate();
     var { MessageSizeExceededError } = require_errors();
     function failWebsocketConnectionWithCode(ws, code, reason) {
       closeWebSocketConnection(ws, code, reason, Buffer.byteLength(reason));
@@ -18561,7 +18561,7 @@ var require_receiver = __commonJS({
         this.#maxFragments = options.maxFragments ?? 0;
         this.#maxPayloadSize = options.maxPayloadSize ?? 0;
         if (this.#extensions.has("permessage-deflate")) {
-          this.#extensions.set("permessage-deflate", new PerMessageDeflate(extensions, options));
+          this.#extensions.set("permessage-deflate", new PerMessageDeflate2(extensions, options));
         }
       }
       /**
@@ -19008,7 +19008,7 @@ var require_websocket = __commonJS({
     var { types: types2 } = require("node:util");
     var { ErrorEvent, CloseEvent } = require_events();
     var { SendQueue } = require_sender();
-    var WebSocket = class _WebSocket extends EventTarget {
+    var WebSocket2 = class _WebSocket extends EventTarget {
       static {
         __name(this, "WebSocket");
       }
@@ -19273,11 +19273,11 @@ var require_websocket = __commonJS({
         fireEvent("open", this);
       }
     };
-    WebSocket.CONNECTING = WebSocket.prototype.CONNECTING = states.CONNECTING;
-    WebSocket.OPEN = WebSocket.prototype.OPEN = states.OPEN;
-    WebSocket.CLOSING = WebSocket.prototype.CLOSING = states.CLOSING;
-    WebSocket.CLOSED = WebSocket.prototype.CLOSED = states.CLOSED;
-    Object.defineProperties(WebSocket.prototype, {
+    WebSocket2.CONNECTING = WebSocket2.prototype.CONNECTING = states.CONNECTING;
+    WebSocket2.OPEN = WebSocket2.prototype.OPEN = states.OPEN;
+    WebSocket2.CLOSING = WebSocket2.prototype.CLOSING = states.CLOSING;
+    WebSocket2.CLOSED = WebSocket2.prototype.CLOSED = states.CLOSED;
+    Object.defineProperties(WebSocket2.prototype, {
       CONNECTING: staticPropertyDescriptors,
       OPEN: staticPropertyDescriptors,
       CLOSING: staticPropertyDescriptors,
@@ -19301,7 +19301,7 @@ var require_websocket = __commonJS({
         configurable: true
       }
     });
-    Object.defineProperties(WebSocket, {
+    Object.defineProperties(WebSocket2, {
       CONNECTING: staticPropertyDescriptors,
       OPEN: staticPropertyDescriptors,
       CLOSING: staticPropertyDescriptors,
@@ -19367,7 +19367,7 @@ var require_websocket = __commonJS({
     }
     __name(onParserError, "onParserError");
     module2.exports = {
-      WebSocket
+      WebSocket: WebSocket2
     };
   }
 });
@@ -21045,26 +21045,26 @@ var require_channel = __commonJS({
       ForumLayoutType2[ForumLayoutType2["ListView"] = 1] = "ListView";
       ForumLayoutType2[ForumLayoutType2["GalleryView"] = 2] = "GalleryView";
     })(ForumLayoutType || (exports2.ForumLayoutType = ForumLayoutType = {}));
-    var ChannelType6;
-    (function(ChannelType7) {
-      ChannelType7[ChannelType7["GuildText"] = 0] = "GuildText";
-      ChannelType7[ChannelType7["DM"] = 1] = "DM";
-      ChannelType7[ChannelType7["GuildVoice"] = 2] = "GuildVoice";
-      ChannelType7[ChannelType7["GroupDM"] = 3] = "GroupDM";
-      ChannelType7[ChannelType7["GuildCategory"] = 4] = "GuildCategory";
-      ChannelType7[ChannelType7["GuildAnnouncement"] = 5] = "GuildAnnouncement";
-      ChannelType7[ChannelType7["AnnouncementThread"] = 10] = "AnnouncementThread";
-      ChannelType7[ChannelType7["PublicThread"] = 11] = "PublicThread";
-      ChannelType7[ChannelType7["PrivateThread"] = 12] = "PrivateThread";
-      ChannelType7[ChannelType7["GuildStageVoice"] = 13] = "GuildStageVoice";
-      ChannelType7[ChannelType7["GuildDirectory"] = 14] = "GuildDirectory";
-      ChannelType7[ChannelType7["GuildForum"] = 15] = "GuildForum";
-      ChannelType7[ChannelType7["GuildMedia"] = 16] = "GuildMedia";
-      ChannelType7[ChannelType7["GuildNews"] = 5] = "GuildNews";
-      ChannelType7[ChannelType7["GuildNewsThread"] = 10] = "GuildNewsThread";
-      ChannelType7[ChannelType7["GuildPublicThread"] = 11] = "GuildPublicThread";
-      ChannelType7[ChannelType7["GuildPrivateThread"] = 12] = "GuildPrivateThread";
-    })(ChannelType6 || (exports2.ChannelType = ChannelType6 = {}));
+    var ChannelType9;
+    (function(ChannelType10) {
+      ChannelType10[ChannelType10["GuildText"] = 0] = "GuildText";
+      ChannelType10[ChannelType10["DM"] = 1] = "DM";
+      ChannelType10[ChannelType10["GuildVoice"] = 2] = "GuildVoice";
+      ChannelType10[ChannelType10["GroupDM"] = 3] = "GroupDM";
+      ChannelType10[ChannelType10["GuildCategory"] = 4] = "GuildCategory";
+      ChannelType10[ChannelType10["GuildAnnouncement"] = 5] = "GuildAnnouncement";
+      ChannelType10[ChannelType10["AnnouncementThread"] = 10] = "AnnouncementThread";
+      ChannelType10[ChannelType10["PublicThread"] = 11] = "PublicThread";
+      ChannelType10[ChannelType10["PrivateThread"] = 12] = "PrivateThread";
+      ChannelType10[ChannelType10["GuildStageVoice"] = 13] = "GuildStageVoice";
+      ChannelType10[ChannelType10["GuildDirectory"] = 14] = "GuildDirectory";
+      ChannelType10[ChannelType10["GuildForum"] = 15] = "GuildForum";
+      ChannelType10[ChannelType10["GuildMedia"] = 16] = "GuildMedia";
+      ChannelType10[ChannelType10["GuildNews"] = 5] = "GuildNews";
+      ChannelType10[ChannelType10["GuildNewsThread"] = 10] = "GuildNewsThread";
+      ChannelType10[ChannelType10["GuildPublicThread"] = 11] = "GuildPublicThread";
+      ChannelType10[ChannelType10["GuildPrivateThread"] = 12] = "GuildPrivateThread";
+    })(ChannelType9 || (exports2.ChannelType = ChannelType9 = {}));
     var VideoQualityMode;
     (function(VideoQualityMode2) {
       VideoQualityMode2[VideoQualityMode2["Auto"] = 1] = "Auto";
@@ -21705,15 +21705,15 @@ var require_message = __commonJS({
       ComponentType2[ComponentType2["Checkbox"] = 23] = "Checkbox";
       ComponentType2[ComponentType2["SelectMenu"] = 3] = "SelectMenu";
     })(ComponentType || (exports2.ComponentType = ComponentType = {}));
-    var ButtonStyle2;
-    (function(ButtonStyle3) {
-      ButtonStyle3[ButtonStyle3["Primary"] = 1] = "Primary";
-      ButtonStyle3[ButtonStyle3["Secondary"] = 2] = "Secondary";
-      ButtonStyle3[ButtonStyle3["Success"] = 3] = "Success";
-      ButtonStyle3[ButtonStyle3["Danger"] = 4] = "Danger";
-      ButtonStyle3[ButtonStyle3["Link"] = 5] = "Link";
-      ButtonStyle3[ButtonStyle3["Premium"] = 6] = "Premium";
-    })(ButtonStyle2 || (exports2.ButtonStyle = ButtonStyle2 = {}));
+    var ButtonStyle3;
+    (function(ButtonStyle4) {
+      ButtonStyle4[ButtonStyle4["Primary"] = 1] = "Primary";
+      ButtonStyle4[ButtonStyle4["Secondary"] = 2] = "Secondary";
+      ButtonStyle4[ButtonStyle4["Success"] = 3] = "Success";
+      ButtonStyle4[ButtonStyle4["Danger"] = 4] = "Danger";
+      ButtonStyle4[ButtonStyle4["Link"] = 5] = "Link";
+      ButtonStyle4[ButtonStyle4["Premium"] = 6] = "Premium";
+    })(ButtonStyle3 || (exports2.ButtonStyle = ButtonStyle3 = {}));
     var TextInputStyle2;
     (function(TextInputStyle3) {
       TextInputStyle3[TextInputStyle3["Short"] = 1] = "Short";
@@ -29859,11 +29859,11 @@ var require_dist5 = __commonJS({
        * Stickers cannot have a `.webp` extension, so we default to a `.png`.
        * Sticker GIFs do not use the CDN base URL.
        */
-      sticker(stickerId, extension = "png") {
+      sticker(stickerId, extension2 = "png") {
         return this.makeURL(`/stickers/${stickerId}`, {
           allowedExtensions: ALLOWED_STICKER_EXTENSIONS,
-          base: extension === "gif" ? this.mediaProxy : this.cdn,
-          extension
+          base: extension2 === "gif" ? this.mediaProxy : this.cdn,
+          extension: extension2
         });
       }
       /**
@@ -29932,20 +29932,20 @@ var require_dist5 = __commonJS({
       makeURL(route, {
         allowedExtensions = ALLOWED_EXTENSIONS,
         base = this.cdn,
-        extension = "webp",
+        extension: extension2 = "webp",
         size: size2,
         animated
       } = {}) {
-        extension = String(extension).toLowerCase();
-        if (!allowedExtensions.includes(extension)) {
-          throw new RangeError(`Invalid extension provided: ${extension}
+        extension2 = String(extension2).toLowerCase();
+        if (!allowedExtensions.includes(extension2)) {
+          throw new RangeError(`Invalid extension provided: ${extension2}
 Must be one of: ${allowedExtensions.join(", ")}`);
         }
         if (size2 && !ALLOWED_SIZES.includes(size2)) {
           throw new RangeError(`Invalid size provided: ${size2}
 Must be one of: ${ALLOWED_SIZES.join(", ")}`);
         }
-        const url2 = new URL(`${base}${route}.${extension}`);
+        const url2 = new URL(`${base}${route}.${extension2}`);
         if (animated !== void 0) {
           url2.searchParams.set("animated", String(animated));
         }
@@ -32951,7 +32951,7 @@ var require_ChannelFlagsBitField = __commonJS({
 var require_Constants = __commonJS({
   "node_modules/discord.js/src/util/Constants.js"(exports2) {
     "use strict";
-    var { ChannelType: ChannelType6, MessageType, ComponentType, ImageFormat, StickerFormatType } = require_v106();
+    var { ChannelType: ChannelType9, MessageType, ComponentType, ImageFormat, StickerFormatType } = require_v106();
     exports2.MaxBulkDeletableMessageAge = 12096e5;
     exports2.SweeperKeys = [
       "autoModerationRules",
@@ -32978,18 +32978,18 @@ var require_Constants = __commonJS({
       MessageType.ContextMenuCommand
     ];
     exports2.GuildTextBasedChannelTypes = [
-      ChannelType6.GuildText,
-      ChannelType6.GuildAnnouncement,
-      ChannelType6.AnnouncementThread,
-      ChannelType6.PublicThread,
-      ChannelType6.PrivateThread,
-      ChannelType6.GuildVoice,
-      ChannelType6.GuildStageVoice
+      ChannelType9.GuildText,
+      ChannelType9.GuildAnnouncement,
+      ChannelType9.AnnouncementThread,
+      ChannelType9.PublicThread,
+      ChannelType9.PrivateThread,
+      ChannelType9.GuildVoice,
+      ChannelType9.GuildStageVoice
     ];
-    exports2.TextBasedChannelTypes = [...exports2.GuildTextBasedChannelTypes, ChannelType6.DM, ChannelType6.GroupDM];
-    exports2.SendableChannels = [...exports2.GuildTextBasedChannelTypes, ChannelType6.DM];
-    exports2.ThreadChannelTypes = [ChannelType6.AnnouncementThread, ChannelType6.PublicThread, ChannelType6.PrivateThread];
-    exports2.VoiceBasedChannelTypes = [ChannelType6.GuildVoice, ChannelType6.GuildStageVoice];
+    exports2.TextBasedChannelTypes = [...exports2.GuildTextBasedChannelTypes, ChannelType9.DM, ChannelType9.GroupDM];
+    exports2.SendableChannels = [...exports2.GuildTextBasedChannelTypes, ChannelType9.DM];
+    exports2.ThreadChannelTypes = [ChannelType9.AnnouncementThread, ChannelType9.PublicThread, ChannelType9.PrivateThread];
+    exports2.VoiceBasedChannelTypes = [ChannelType9.GuildVoice, ChannelType9.GuildStageVoice];
     exports2.SelectMenuTypes = [
       ComponentType.StringSelect,
       ComponentType.UserSelect,
@@ -33048,7 +33048,7 @@ var require_BaseChannel = __commonJS({
     "use strict";
     var { channelLink, channelMention } = require_dist7();
     var { DiscordSnowflake } = require_cjs();
-    var { ChannelType: ChannelType6, Routes: Routes2 } = require_v106();
+    var { ChannelType: ChannelType9, Routes: Routes2 } = require_v106();
     var Base = require_Base();
     var ChannelFlagsBitField = require_ChannelFlagsBitField();
     var { ThreadChannelTypes } = require_Constants();
@@ -33152,7 +33152,7 @@ var require_BaseChannel = __commonJS({
        * @returns {boolean}
        */
       isDMBased() {
-        return [ChannelType6.DM, ChannelType6.GroupDM].includes(this.type);
+        return [ChannelType9.DM, ChannelType9.GroupDM].includes(this.type);
       }
       /**
        * Indicates whether this channel is {@link BaseGuildVoiceChannel voice-based}.
@@ -33314,7 +33314,7 @@ var require_CachedManager = __commonJS({
 var require_PermissionsBitField = __commonJS({
   "node_modules/discord.js/src/util/PermissionsBitField.js"(exports2, module2) {
     "use strict";
-    var { PermissionFlagsBits: PermissionFlagsBits21 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits27 } = require_v106();
     var BitField = require_BitField();
     var PermissionsBitField4 = class extends BitField {
       static {
@@ -33326,13 +33326,13 @@ var require_PermissionsBitField = __commonJS({
        * @memberof PermissionsBitField
        * @see {@link https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags}
        */
-      static Flags = PermissionFlagsBits21;
+      static Flags = PermissionFlagsBits27;
       /**
        * Bitfield representing every permission combined
        * @type {bigint}
        * @memberof PermissionsBitField
        */
-      static All = Object.values(PermissionFlagsBits21).reduce((all, p) => all | p, 0n);
+      static All = Object.values(PermissionFlagsBits27).reduce((all, p) => all | p, 0n);
       /**
        * Bitfield representing the default permissions for users
        * @type {bigint}
@@ -33344,7 +33344,7 @@ var require_PermissionsBitField = __commonJS({
        * @type {bigint}
        * @memberof PermissionsBitField
        */
-      static StageModerator = PermissionFlagsBits21.ManageChannels | PermissionFlagsBits21.MuteMembers | PermissionFlagsBits21.MoveMembers;
+      static StageModerator = PermissionFlagsBits27.ManageChannels | PermissionFlagsBits27.MuteMembers | PermissionFlagsBits27.MoveMembers;
       /**
        * @type {bigint}
        * @memberof PermissionsBitField
@@ -33371,7 +33371,7 @@ var require_PermissionsBitField = __commonJS({
        * @returns {string[]}
        */
       missing(bits, checkAdmin = true) {
-        return checkAdmin && this.has(PermissionFlagsBits21.Administrator) ? [] : super.missing(bits);
+        return checkAdmin && this.has(PermissionFlagsBits27.Administrator) ? [] : super.missing(bits);
       }
       /**
        * Checks whether the bitfield has a permission, or any of multiple permissions.
@@ -33380,7 +33380,7 @@ var require_PermissionsBitField = __commonJS({
        * @returns {boolean}
        */
       any(permission, checkAdmin = true) {
-        return checkAdmin && super.has(PermissionFlagsBits21.Administrator) || super.any(permission);
+        return checkAdmin && super.has(PermissionFlagsBits27.Administrator) || super.any(permission);
       }
       /**
        * Checks whether the bitfield has a permission, or multiple permissions.
@@ -33389,7 +33389,7 @@ var require_PermissionsBitField = __commonJS({
        * @returns {boolean}
        */
       has(permission, checkAdmin = true) {
-        return checkAdmin && super.has(PermissionFlagsBits21.Administrator) || super.has(permission);
+        return checkAdmin && super.has(PermissionFlagsBits27.Administrator) || super.has(permission);
       }
       /**
        * Gets an {@link Array} of bitfield names based on the permissions available.
@@ -33430,7 +33430,7 @@ var require_Role = __commonJS({
     "use strict";
     var { roleMention } = require_dist7();
     var { DiscordSnowflake } = require_cjs();
-    var { PermissionFlagsBits: PermissionFlagsBits21 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits27 } = require_v106();
     var Base = require_Base();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var PermissionsBitField4 = require_PermissionsBitField();
@@ -33545,7 +33545,7 @@ var require_Role = __commonJS({
       get editable() {
         if (this.managed) return false;
         const clientMember = this.guild.members.resolve(this.client.user);
-        if (!clientMember.permissions.has(PermissionFlagsBits21.ManageRoles)) return false;
+        if (!clientMember.permissions.has(PermissionFlagsBits27.ManageRoles)) return false;
         return clientMember.roles.highest.comparePositionTo(this) > 0;
       }
       /**
@@ -34121,7 +34121,7 @@ var require_GuildChannel = __commonJS({
   "node_modules/discord.js/src/structures/GuildChannel.js"(exports2, module2) {
     "use strict";
     var { Snowflake } = require_cjs();
-    var { PermissionFlagsBits: PermissionFlagsBits21, ChannelType: ChannelType6 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits27, ChannelType: ChannelType9 } = require_v106();
     var { BaseChannel } = require_BaseChannel();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var PermissionOverwriteManager = require_PermissionOverwriteManager();
@@ -34202,7 +34202,7 @@ var require_GuildChannel = __commonJS({
        * @readonly
        */
       get position() {
-        const selfIsCategory = this.type === ChannelType6.GuildCategory;
+        const selfIsCategory = this.type === ChannelType9.GuildCategory;
         const types2 = getSortableGroupTypes(this.type);
         let count2 = 0;
         for (const channel of this.guild.channels.cache.values()) {
@@ -34265,7 +34265,7 @@ var require_GuildChannel = __commonJS({
         }
         const roles = member.roles.cache;
         const permissions = new PermissionsBitField4(roles.map((role) => role.permissions));
-        if (checkAdmin && permissions.has(PermissionFlagsBits21.Administrator)) {
+        if (checkAdmin && permissions.has(PermissionFlagsBits27.Administrator)) {
           return new PermissionsBitField4(PermissionsBitField4.All).freeze();
         }
         const overwrites = this.overwritesFor(member, true, roles);
@@ -34280,7 +34280,7 @@ var require_GuildChannel = __commonJS({
        * @private
        */
       rolePermissions(role, checkAdmin) {
-        if (checkAdmin && role.permissions.has(PermissionFlagsBits21.Administrator)) {
+        if (checkAdmin && role.permissions.has(PermissionFlagsBits27.Administrator)) {
           return new PermissionsBitField4(PermissionsBitField4.All).freeze();
         }
         const basePermissions = new PermissionsBitField4([role.permissions, role.guild.roles.everyone.permissions]);
@@ -34306,7 +34306,7 @@ var require_GuildChannel = __commonJS({
        */
       get members() {
         return this.guild.members.cache.filter(
-          (member) => this.permissionsFor(member).has(PermissionFlagsBits21.ViewChannel, false)
+          (member) => this.permissionsFor(member).has(PermissionFlagsBits27.ViewChannel, false)
         );
       }
       /**
@@ -34440,10 +34440,10 @@ var require_GuildChannel = __commonJS({
         if (this.client.user.id === this.guild.ownerId) return true;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits21.Administrator, false)) return true;
+        if (permissions.has(PermissionFlagsBits27.Administrator, false)) return true;
         if (this.guild.members.me.communicationDisabledUntilTimestamp > Date.now()) return false;
-        const baseBitfield = PermissionFlagsBits21.ViewChannel | PermissionFlagsBits21.ManageChannels;
-        const bitfield = VoiceBasedChannelTypes.includes(this.type) ? baseBitfield | PermissionFlagsBits21.Connect : baseBitfield;
+        const baseBitfield = PermissionFlagsBits27.ViewChannel | PermissionFlagsBits27.ManageChannels;
+        const bitfield = VoiceBasedChannelTypes.includes(this.type) ? baseBitfield | PermissionFlagsBits27.Connect : baseBitfield;
         return permissions.has(bitfield, false);
       }
       /**
@@ -34455,7 +34455,7 @@ var require_GuildChannel = __commonJS({
         if (this.client.user.id === this.guild.ownerId) return true;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        return permissions.has(PermissionFlagsBits21.ViewChannel, false);
+        return permissions.has(PermissionFlagsBits27.ViewChannel, false);
       }
       /**
        * Deletes this channel.
@@ -34528,7 +34528,7 @@ var require_Util = __commonJS({
     var { parse: parse4 } = require("node:path");
     var process2 = require("node:process");
     var { Collection: Collection3 } = require_dist6();
-    var { ChannelType: ChannelType6, RouteBases, Routes: Routes2 } = require_v106();
+    var { ChannelType: ChannelType9, RouteBases, Routes: Routes2 } = require_v106();
     var { fetch: fetch2 } = require_undici();
     var Colors = require_Colors();
     var { DiscordjsError: DiscordjsError2, DiscordjsRangeError: DiscordjsRangeError2, DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
@@ -34603,24 +34603,24 @@ var require_Util = __commonJS({
     }
     __name(makePlainError, "makePlainError");
     var TextSortableGroupTypes = [
-      ChannelType6.GuildText,
-      ChannelType6.GuildAnnouncement,
-      ChannelType6.GuildForum,
-      ChannelType6.GuildMedia
+      ChannelType9.GuildText,
+      ChannelType9.GuildAnnouncement,
+      ChannelType9.GuildForum,
+      ChannelType9.GuildMedia
     ];
-    var VoiceSortableGroupTypes = [ChannelType6.GuildVoice, ChannelType6.GuildStageVoice];
-    var CategorySortableGroupTypes = [ChannelType6.GuildCategory];
+    var VoiceSortableGroupTypes = [ChannelType9.GuildVoice, ChannelType9.GuildStageVoice];
+    var CategorySortableGroupTypes = [ChannelType9.GuildCategory];
     function getSortableGroupTypes(type) {
       switch (type) {
-        case ChannelType6.GuildText:
-        case ChannelType6.GuildAnnouncement:
-        case ChannelType6.GuildForum:
-        case ChannelType6.GuildMedia:
+        case ChannelType9.GuildText:
+        case ChannelType9.GuildAnnouncement:
+        case ChannelType9.GuildForum:
+        case ChannelType9.GuildMedia:
           return TextSortableGroupTypes;
-        case ChannelType6.GuildVoice:
-        case ChannelType6.GuildStageVoice:
+        case ChannelType9.GuildVoice:
+        case ChannelType9.GuildStageVoice:
           return VoiceSortableGroupTypes;
-        case ChannelType6.GuildCategory:
+        case ChannelType9.GuildCategory:
           return CategorySortableGroupTypes;
         default:
           return [type];
@@ -34702,7 +34702,7 @@ var require_Util = __commonJS({
               return user ? `@${user.displayName}` : match;
             }
             case "@&": {
-              if (channel.type === ChannelType6.DM) return match;
+              if (channel.type === ChannelType9.DM) return match;
               const role = channel.guild.roles.cache.get(id);
               return role ? `@${role.name}` : match;
             }
@@ -35251,13 +35251,13 @@ var require_Options = __commonJS({
 var require_BaseClient = __commonJS({
   "node_modules/discord.js/src/client/BaseClient.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("node:events");
+    var EventEmitter2 = require("node:events");
     var { REST } = require_dist5();
     var { Routes: Routes2 } = require_v106();
     var { DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var Options3 = require_Options();
     var { flatten } = require_Util();
-    var BaseClient2 = class extends EventEmitter {
+    var BaseClient2 = class extends EventEmitter2 {
       static {
         __name(this, "BaseClient");
       }
@@ -35442,12 +35442,12 @@ var require_Emoji = __commonJS({
 var require_Collector = __commonJS({
   "node_modules/discord.js/src/structures/interfaces/Collector.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("node:events");
+    var EventEmitter2 = require("node:events");
     var { setTimeout: setTimeout2, clearTimeout: clearTimeout2 } = require("node:timers");
     var { Collection: Collection3 } = require_dist6();
     var { DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var { flatten } = require_Util();
-    var Collector = class extends EventEmitter {
+    var Collector = class extends EventEmitter2 {
       static {
         __name(this, "Collector");
       }
@@ -35761,7 +35761,7 @@ var require_InteractionCollector = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Collector = require_Collector();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var InteractionCollector = class extends Collector {
       static {
         __name(this, "InteractionCollector");
@@ -35786,27 +35786,27 @@ var require_InteractionCollector = __commonJS({
         }, "bulkDeleteListener");
         if (this.messageId || this.messageInteractionId) {
           this._handleMessageDeletion = this._handleMessageDeletion.bind(this);
-          this.client.on(Events16.MessageDelete, this._handleMessageDeletion);
-          this.client.on(Events16.MessageBulkDelete, bulkDeleteListener);
+          this.client.on(Events19.MessageDelete, this._handleMessageDeletion);
+          this.client.on(Events19.MessageBulkDelete, bulkDeleteListener);
         }
         if (this.channelId) {
           this._handleChannelDeletion = this._handleChannelDeletion.bind(this);
           this._handleThreadDeletion = this._handleThreadDeletion.bind(this);
-          this.client.on(Events16.ChannelDelete, this._handleChannelDeletion);
-          this.client.on(Events16.ThreadDelete, this._handleThreadDeletion);
+          this.client.on(Events19.ChannelDelete, this._handleChannelDeletion);
+          this.client.on(Events19.ThreadDelete, this._handleThreadDeletion);
         }
         if (this.guildId) {
           this._handleGuildDeletion = this._handleGuildDeletion.bind(this);
-          this.client.on(Events16.GuildDelete, this._handleGuildDeletion);
+          this.client.on(Events19.GuildDelete, this._handleGuildDeletion);
         }
-        this.client.on(Events16.InteractionCreate, this.handleCollect);
+        this.client.on(Events19.InteractionCreate, this.handleCollect);
         this.once("end", () => {
-          this.client.removeListener(Events16.InteractionCreate, this.handleCollect);
-          this.client.removeListener(Events16.MessageDelete, this._handleMessageDeletion);
-          this.client.removeListener(Events16.MessageBulkDelete, bulkDeleteListener);
-          this.client.removeListener(Events16.ChannelDelete, this._handleChannelDeletion);
-          this.client.removeListener(Events16.ThreadDelete, this._handleThreadDeletion);
-          this.client.removeListener(Events16.GuildDelete, this._handleGuildDeletion);
+          this.client.removeListener(Events19.InteractionCreate, this.handleCollect);
+          this.client.removeListener(Events19.MessageDelete, this._handleMessageDeletion);
+          this.client.removeListener(Events19.MessageBulkDelete, bulkDeleteListener);
+          this.client.removeListener(Events19.ChannelDelete, this._handleChannelDeletion);
+          this.client.removeListener(Events19.ThreadDelete, this._handleThreadDeletion);
+          this.client.removeListener(Events19.GuildDelete, this._handleGuildDeletion);
           this.client.decrementMaxListeners();
         });
         this.on("collect", (interaction) => {
@@ -35924,7 +35924,7 @@ var require_MessageCollector = __commonJS({
   "node_modules/discord.js/src/structures/MessageCollector.js"(exports2, module2) {
     "use strict";
     var Collector = require_Collector();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var MessageCollector = class extends Collector {
       static {
         __name(this, "MessageCollector");
@@ -35945,19 +35945,19 @@ var require_MessageCollector = __commonJS({
         this._handleThreadDeletion = this._handleThreadDeletion.bind(this);
         this._handleGuildDeletion = this._handleGuildDeletion.bind(this);
         this.client.incrementMaxListeners();
-        this.client.on(Events16.MessageCreate, this.handleCollect);
-        this.client.on(Events16.MessageDelete, this.handleDispose);
-        this.client.on(Events16.MessageBulkDelete, bulkDeleteListener);
-        this.client.on(Events16.ChannelDelete, this._handleChannelDeletion);
-        this.client.on(Events16.ThreadDelete, this._handleThreadDeletion);
-        this.client.on(Events16.GuildDelete, this._handleGuildDeletion);
+        this.client.on(Events19.MessageCreate, this.handleCollect);
+        this.client.on(Events19.MessageDelete, this.handleDispose);
+        this.client.on(Events19.MessageBulkDelete, bulkDeleteListener);
+        this.client.on(Events19.ChannelDelete, this._handleChannelDeletion);
+        this.client.on(Events19.ThreadDelete, this._handleThreadDeletion);
+        this.client.on(Events19.GuildDelete, this._handleGuildDeletion);
         this.once("end", () => {
-          this.client.removeListener(Events16.MessageCreate, this.handleCollect);
-          this.client.removeListener(Events16.MessageDelete, this.handleDispose);
-          this.client.removeListener(Events16.MessageBulkDelete, bulkDeleteListener);
-          this.client.removeListener(Events16.ChannelDelete, this._handleChannelDeletion);
-          this.client.removeListener(Events16.ThreadDelete, this._handleThreadDeletion);
-          this.client.removeListener(Events16.GuildDelete, this._handleGuildDeletion);
+          this.client.removeListener(Events19.MessageCreate, this.handleCollect);
+          this.client.removeListener(Events19.MessageDelete, this.handleDispose);
+          this.client.removeListener(Events19.MessageBulkDelete, bulkDeleteListener);
+          this.client.removeListener(Events19.ChannelDelete, this._handleChannelDeletion);
+          this.client.removeListener(Events19.ThreadDelete, this._handleThreadDeletion);
+          this.client.removeListener(Events19.GuildDelete, this._handleGuildDeletion);
           this.client.decrementMaxListeners();
         });
       }
@@ -36895,7 +36895,7 @@ var require_InviteGuild = __commonJS({
 var require_Invite = __commonJS({
   "node_modules/discord.js/src/structures/Invite.js"(exports2, module2) {
     "use strict";
-    var { RouteBases, Routes: Routes2, PermissionFlagsBits: PermissionFlagsBits21 } = require_v106();
+    var { RouteBases, Routes: Routes2, PermissionFlagsBits: PermissionFlagsBits27 } = require_v106();
     var Base = require_Base();
     var { GuildScheduledEvent } = require_GuildScheduledEvent();
     var IntegrationApplication = require_IntegrationApplication();
@@ -37032,7 +37032,7 @@ var require_Invite = __commonJS({
         if (!guild || !this.client.guilds.cache.has(guild.id)) return false;
         if (!guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
         return Boolean(
-          this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits21.ManageChannels, false) || guild.members.me.permissions.has(PermissionFlagsBits21.ManageGuild)
+          this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits27.ManageChannels, false) || guild.members.me.permissions.has(PermissionFlagsBits27.ManageGuild)
         );
       }
       /**
@@ -37114,7 +37114,7 @@ var require_GuildTemplate = __commonJS({
     var { RouteBases, Routes: Routes2 } = require_v106();
     var Base = require_Base();
     var { resolveImage } = require_DataResolver();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildTemplate2 = class extends Base {
       static {
         __name(this, "GuildTemplate");
@@ -37183,7 +37183,7 @@ var require_GuildTemplate = __commonJS({
         if (client.guilds.cache.has(data.id)) return client.guilds.cache.get(data.id);
         return new Promise((resolve3) => {
           const resolveGuild = /* @__PURE__ */ __name((guild) => {
-            client.off(Events16.GuildCreate, handleGuild);
+            client.off(Events19.GuildCreate, handleGuild);
             client.decrementMaxListeners();
             resolve3(guild);
           }, "resolveGuild");
@@ -37194,7 +37194,7 @@ var require_GuildTemplate = __commonJS({
             }
           }, "handleGuild");
           client.incrementMaxListeners();
-          client.on(Events16.GuildCreate, handleGuild);
+          client.on(Events19.GuildCreate, handleGuild);
           const timeout = setTimeout2(() => resolveGuild(client.guilds._add(data)), 1e4).unref();
         });
       }
@@ -44783,14 +44783,14 @@ var require_dist8 = __commonJS({
     }, "__decorateClass");
     var index_exports = {};
     __export2(index_exports, {
-      ActionRowBuilder: /* @__PURE__ */ __name(() => ActionRowBuilder3, "ActionRowBuilder"),
+      ActionRowBuilder: /* @__PURE__ */ __name(() => ActionRowBuilder5, "ActionRowBuilder"),
       ApplicationCommandNumericOptionMinMaxValueMixin: /* @__PURE__ */ __name(() => ApplicationCommandNumericOptionMinMaxValueMixin, "ApplicationCommandNumericOptionMinMaxValueMixin"),
       ApplicationCommandOptionBase: /* @__PURE__ */ __name(() => ApplicationCommandOptionBase, "ApplicationCommandOptionBase"),
       ApplicationCommandOptionChannelTypesMixin: /* @__PURE__ */ __name(() => ApplicationCommandOptionChannelTypesMixin, "ApplicationCommandOptionChannelTypesMixin"),
       ApplicationCommandOptionWithAutocompleteMixin: /* @__PURE__ */ __name(() => ApplicationCommandOptionWithAutocompleteMixin, "ApplicationCommandOptionWithAutocompleteMixin"),
       ApplicationCommandOptionWithChoicesMixin: /* @__PURE__ */ __name(() => ApplicationCommandOptionWithChoicesMixin, "ApplicationCommandOptionWithChoicesMixin"),
       BaseSelectMenuBuilder: /* @__PURE__ */ __name(() => BaseSelectMenuBuilder, "BaseSelectMenuBuilder"),
-      ButtonBuilder: /* @__PURE__ */ __name(() => ButtonBuilder2, "ButtonBuilder"),
+      ButtonBuilder: /* @__PURE__ */ __name(() => ButtonBuilder3, "ButtonBuilder"),
       ChannelSelectMenuBuilder: /* @__PURE__ */ __name(() => ChannelSelectMenuBuilder, "ChannelSelectMenuBuilder"),
       CheckboxAssertions: /* @__PURE__ */ __name(() => Assertions_exports3, "CheckboxAssertions"),
       CheckboxBuilder: /* @__PURE__ */ __name(() => CheckboxBuilder, "CheckboxBuilder"),
@@ -44803,7 +44803,7 @@ var require_dist8 = __commonJS({
       ContextMenuCommandAssertions: /* @__PURE__ */ __name(() => Assertions_exports11, "ContextMenuCommandAssertions"),
       ContextMenuCommandBuilder: /* @__PURE__ */ __name(() => ContextMenuCommandBuilder, "ContextMenuCommandBuilder"),
       EmbedAssertions: /* @__PURE__ */ __name(() => Assertions_exports, "EmbedAssertions"),
-      EmbedBuilder: /* @__PURE__ */ __name(() => EmbedBuilder22, "EmbedBuilder"),
+      EmbedBuilder: /* @__PURE__ */ __name(() => EmbedBuilder34, "EmbedBuilder"),
       FileBuilder: /* @__PURE__ */ __name(() => FileBuilder, "FileBuilder"),
       FileUploadAssertions: /* @__PURE__ */ __name(() => Assertions_exports4, "FileUploadAssertions"),
       FileUploadBuilder: /* @__PURE__ */ __name(() => FileUploadBuilder, "FileUploadBuilder"),
@@ -44819,8 +44819,8 @@ var require_dist8 = __commonJS({
       RoleSelectMenuBuilder: /* @__PURE__ */ __name(() => RoleSelectMenuBuilder, "RoleSelectMenuBuilder"),
       SectionBuilder: /* @__PURE__ */ __name(() => SectionBuilder, "SectionBuilder"),
       SelectMenuAssertions: /* @__PURE__ */ __name(() => Assertions_exports6, "SelectMenuAssertions"),
-      SelectMenuBuilder: /* @__PURE__ */ __name(() => StringSelectMenuBuilder, "SelectMenuBuilder"),
-      SelectMenuOptionBuilder: /* @__PURE__ */ __name(() => StringSelectMenuOptionBuilder, "SelectMenuOptionBuilder"),
+      SelectMenuBuilder: /* @__PURE__ */ __name(() => StringSelectMenuBuilder2, "SelectMenuBuilder"),
+      SelectMenuOptionBuilder: /* @__PURE__ */ __name(() => StringSelectMenuOptionBuilder2, "SelectMenuOptionBuilder"),
       SeparatorBuilder: /* @__PURE__ */ __name(() => SeparatorBuilder, "SeparatorBuilder"),
       SharedNameAndDescription: /* @__PURE__ */ __name(() => SharedNameAndDescription, "SharedNameAndDescription"),
       SharedSlashCommand: /* @__PURE__ */ __name(() => SharedSlashCommand, "SharedSlashCommand"),
@@ -44829,7 +44829,7 @@ var require_dist8 = __commonJS({
       SlashCommandAssertions: /* @__PURE__ */ __name(() => Assertions_exports10, "SlashCommandAssertions"),
       SlashCommandAttachmentOption: /* @__PURE__ */ __name(() => SlashCommandAttachmentOption, "SlashCommandAttachmentOption"),
       SlashCommandBooleanOption: /* @__PURE__ */ __name(() => SlashCommandBooleanOption, "SlashCommandBooleanOption"),
-      SlashCommandBuilder: /* @__PURE__ */ __name(() => SlashCommandBuilder32, "SlashCommandBuilder"),
+      SlashCommandBuilder: /* @__PURE__ */ __name(() => SlashCommandBuilder48, "SlashCommandBuilder"),
       SlashCommandChannelOption: /* @__PURE__ */ __name(() => SlashCommandChannelOption, "SlashCommandChannelOption"),
       SlashCommandIntegerOption: /* @__PURE__ */ __name(() => SlashCommandIntegerOption, "SlashCommandIntegerOption"),
       SlashCommandMentionableOption: /* @__PURE__ */ __name(() => SlashCommandMentionableOption, "SlashCommandMentionableOption"),
@@ -44839,8 +44839,8 @@ var require_dist8 = __commonJS({
       SlashCommandSubcommandBuilder: /* @__PURE__ */ __name(() => SlashCommandSubcommandBuilder, "SlashCommandSubcommandBuilder"),
       SlashCommandSubcommandGroupBuilder: /* @__PURE__ */ __name(() => SlashCommandSubcommandGroupBuilder, "SlashCommandSubcommandGroupBuilder"),
       SlashCommandUserOption: /* @__PURE__ */ __name(() => SlashCommandUserOption, "SlashCommandUserOption"),
-      StringSelectMenuBuilder: /* @__PURE__ */ __name(() => StringSelectMenuBuilder, "StringSelectMenuBuilder"),
-      StringSelectMenuOptionBuilder: /* @__PURE__ */ __name(() => StringSelectMenuOptionBuilder, "StringSelectMenuOptionBuilder"),
+      StringSelectMenuBuilder: /* @__PURE__ */ __name(() => StringSelectMenuBuilder2, "StringSelectMenuBuilder"),
+      StringSelectMenuOptionBuilder: /* @__PURE__ */ __name(() => StringSelectMenuOptionBuilder2, "StringSelectMenuOptionBuilder"),
       TextDisplayBuilder: /* @__PURE__ */ __name(() => TextDisplayBuilder, "TextDisplayBuilder"),
       TextInputAssertions: /* @__PURE__ */ __name(() => Assertions_exports5, "TextInputAssertions"),
       TextInputBuilder: /* @__PURE__ */ __name(() => TextInputBuilder2, "TextInputBuilder"),
@@ -44937,7 +44937,7 @@ var require_dist8 = __commonJS({
     }
     __name(normalizeArray, "normalizeArray");
     __name2(normalizeArray, "normalizeArray");
-    var EmbedBuilder22 = class {
+    var EmbedBuilder34 = class {
       static {
         __name(this, "EmbedBuilder");
       }
@@ -45178,7 +45178,7 @@ var require_dist8 = __commonJS({
     });
     var import_shapeshift2 = require_cjs3();
     var import_v10 = require_v106();
-    var StringSelectMenuOptionBuilder = class {
+    var StringSelectMenuOptionBuilder2 = class {
       static {
         __name(this, "StringSelectMenuOptionBuilder");
       }
@@ -45285,7 +45285,7 @@ var require_dist8 = __commonJS({
       emoji: emojiValidator.optional(),
       default: import_shapeshift2.s.boolean().optional()
     }).setValidationEnabled(isValidationEnabled);
-    var optionValidator = import_shapeshift2.s.instance(StringSelectMenuOptionBuilder).setValidationEnabled(isValidationEnabled);
+    var optionValidator = import_shapeshift2.s.instance(StringSelectMenuOptionBuilder2).setValidationEnabled(isValidationEnabled);
     var optionsValidator = optionValidator.array().lengthGreaterThanOrEqual(0).setValidationEnabled(isValidationEnabled);
     var optionsLengthValidator = import_shapeshift2.s.number().int().greaterThanOrEqual(0).lessThanOrEqual(25).setValidationEnabled(isValidationEnabled);
     function validateRequiredSelectMenuParameters(options, customId) {
@@ -45373,7 +45373,7 @@ var require_dist8 = __commonJS({
     };
     var import_v1027 = require_v106();
     var import_v102 = require_v106();
-    var ButtonBuilder2 = class extends ComponentBuilder {
+    var ButtonBuilder3 = class extends ComponentBuilder {
       static {
         __name(this, "ButtonBuilder");
       }
@@ -46582,7 +46582,7 @@ var require_dist8 = __commonJS({
       }
       return import_shapeshift6.Result.ok(value);
     }).setValidationEnabled(isValidationEnabled);
-    var StringSelectMenuBuilder = class extends BaseSelectMenuBuilder {
+    var StringSelectMenuBuilder2 = class extends BaseSelectMenuBuilder {
       static {
         __name(this, "StringSelectMenuBuilder");
       }
@@ -46627,7 +46627,7 @@ var require_dist8 = __commonJS({
       constructor(data) {
         const { options, ...initData } = data ?? {};
         super({ ...initData, type: import_v1014.ComponentType.StringSelect });
-        this.options = options?.map((option) => new StringSelectMenuOptionBuilder(option)) ?? [];
+        this.options = options?.map((option) => new StringSelectMenuOptionBuilder2(option)) ?? [];
       }
       /**
        * Adds options to this select menu.
@@ -46639,7 +46639,7 @@ var require_dist8 = __commonJS({
         optionsLengthValidator.parse(this.options.length + normalizedOptions.length);
         this.options.push(
           ...normalizedOptions.map(
-            (normalizedOption) => normalizedOption instanceof StringSelectMenuOptionBuilder ? normalizedOption : new StringSelectMenuOptionBuilder(selectMenuStringOptionPredicate.parse(normalizedOption))
+            (normalizedOption) => normalizedOption instanceof StringSelectMenuOptionBuilder2 ? normalizedOption : new StringSelectMenuOptionBuilder2(selectMenuStringOptionPredicate.parse(normalizedOption))
           )
         );
         return this;
@@ -46686,7 +46686,7 @@ var require_dist8 = __commonJS({
           index2,
           deleteCount,
           ...normalizedOptions.map(
-            (normalizedOption) => normalizedOption instanceof StringSelectMenuOptionBuilder ? normalizedOption : new StringSelectMenuOptionBuilder(selectMenuStringOptionPredicate.parse(normalizedOption))
+            (normalizedOption) => normalizedOption instanceof StringSelectMenuOptionBuilder2 ? normalizedOption : new StringSelectMenuOptionBuilder2(selectMenuStringOptionPredicate.parse(normalizedOption))
           )
         );
         optionsLengthValidator.parse(clone2.length);
@@ -46993,7 +46993,7 @@ var require_dist8 = __commonJS({
        * @param input - A function that returns a component builder or an already built builder
        */
       setStringSelectMenuComponent(input2) {
-        this.data.component = resolveBuilder(input2, StringSelectMenuBuilder);
+        this.data.component = resolveBuilder(input2, StringSelectMenuBuilder2);
         return this;
       }
       /**
@@ -47204,7 +47204,7 @@ var require_dist8 = __commonJS({
     var dividerPredicate = import_shapeshift8.s.boolean();
     var spacingPredicate = import_shapeshift8.s.nativeEnum(import_v1020.SeparatorSpacingSize);
     var textDisplayContentPredicate = import_shapeshift8.s.string().lengthGreaterThanOrEqual(1).lengthLessThanOrEqual(4e3).setValidationEnabled(isValidationEnabled);
-    var accessoryPredicate = import_shapeshift8.s.instance(ButtonBuilder2).or(import_shapeshift8.s.instance(ThumbnailBuilder)).setValidationEnabled(isValidationEnabled);
+    var accessoryPredicate = import_shapeshift8.s.instance(ButtonBuilder3).or(import_shapeshift8.s.instance(ThumbnailBuilder)).setValidationEnabled(isValidationEnabled);
     var containerColorPredicate = colorPredicate.nullish();
     function assertReturnOfBuilder(input2, ExpectedInstanceOf) {
       import_shapeshift8.s.instance(ExpectedInstanceOf).setValidationEnabled(isValidationEnabled).parse(input2);
@@ -47471,7 +47471,7 @@ var require_dist8 = __commonJS({
        */
       addActionRowComponents(...components) {
         this.components.push(
-          ...normalizeArray(components).map((component) => resolveBuilder(component, ActionRowBuilder3))
+          ...normalizeArray(components).map((component) => resolveBuilder(component, ActionRowBuilder5))
         );
         return this;
       }
@@ -47802,7 +47802,7 @@ var require_dist8 = __commonJS({
        * @param accessory - The accessory to use
        */
       setButtonAccessory(accessory) {
-        Reflect.set(this, "accessory", accessoryPredicate.parse(resolveBuilder(accessory, ButtonBuilder2)));
+        Reflect.set(this, "accessory", accessoryPredicate.parse(resolveBuilder(accessory, ButtonBuilder3)));
         return this;
       }
       /**
@@ -47866,11 +47866,11 @@ var require_dist8 = __commonJS({
       }
       switch (data.type) {
         case import_v1027.ComponentType.ActionRow:
-          return new ActionRowBuilder3(data);
+          return new ActionRowBuilder5(data);
         case import_v1027.ComponentType.Button:
-          return new ButtonBuilder2(data);
+          return new ButtonBuilder3(data);
         case import_v1027.ComponentType.StringSelect:
-          return new StringSelectMenuBuilder(data);
+          return new StringSelectMenuBuilder2(data);
         case import_v1027.ComponentType.TextInput:
           return new TextInputBuilder2(data);
         case import_v1027.ComponentType.UserSelect:
@@ -47927,7 +47927,7 @@ var require_dist8 = __commonJS({
     }
     __name(resolveBuilder, "resolveBuilder");
     __name2(resolveBuilder, "resolveBuilder");
-    var ActionRowBuilder3 = class extends ComponentBuilder {
+    var ActionRowBuilder5 = class extends ComponentBuilder {
       static {
         __name(this, "ActionRowBuilder");
       }
@@ -48013,7 +48013,7 @@ var require_dist8 = __commonJS({
     });
     var import_shapeshift9 = require_cjs3();
     var titleValidator = import_shapeshift9.s.string().lengthGreaterThanOrEqual(1).lengthLessThanOrEqual(45).setValidationEnabled(isValidationEnabled);
-    var componentsValidator = import_shapeshift9.s.union([import_shapeshift9.s.instance(ActionRowBuilder3), import_shapeshift9.s.instance(LabelBuilder), import_shapeshift9.s.instance(TextDisplayBuilder)]).array().lengthGreaterThanOrEqual(1).setValidationEnabled(isValidationEnabled);
+    var componentsValidator = import_shapeshift9.s.union([import_shapeshift9.s.instance(ActionRowBuilder5), import_shapeshift9.s.instance(LabelBuilder), import_shapeshift9.s.instance(TextDisplayBuilder)]).array().lengthGreaterThanOrEqual(1).setValidationEnabled(isValidationEnabled);
     function validateRequiredParameters2(customId, title, components) {
       customIdValidator.parse(customId);
       titleValidator.parse(title);
@@ -48072,15 +48072,15 @@ var require_dist8 = __commonJS({
       addComponents(...components) {
         this.components.push(
           ...normalizeArray(components).map((component, idx) => {
-            if (component instanceof ActionRowBuilder3 || component instanceof LabelBuilder || component instanceof TextDisplayBuilder) {
+            if (component instanceof ActionRowBuilder5 || component instanceof LabelBuilder || component instanceof TextDisplayBuilder) {
               return component;
             }
             if (component instanceof TextInputBuilder2) {
-              return new ActionRowBuilder3().addComponents(component);
+              return new ActionRowBuilder5().addComponents(component);
             }
             if ("type" in component) {
               if (component.type === import_v1029.ComponentType.ActionRow) {
-                return new ActionRowBuilder3(component);
+                return new ActionRowBuilder5(component);
               }
               if (component.type === import_v1029.ComponentType.Label) {
                 return new LabelBuilder(component);
@@ -48089,7 +48089,7 @@ var require_dist8 = __commonJS({
                 return new TextDisplayBuilder(component);
               }
               if (component.type === import_v1029.ComponentType.TextInput) {
-                return new ActionRowBuilder3().addComponents(
+                return new ActionRowBuilder5().addComponents(
                   new TextInputBuilder2(component)
                 );
               }
@@ -48129,7 +48129,7 @@ var require_dist8 = __commonJS({
        */
       addActionRowComponents(...components) {
         const normalized = normalizeArray(components);
-        const resolved = normalized.map((row) => resolveBuilder(row, ActionRowBuilder3));
+        const resolved = normalized.map((row) => resolveBuilder(row, ActionRowBuilder5));
         this.components.push(...resolved);
         return this;
       }
@@ -49217,7 +49217,7 @@ var require_dist8 = __commonJS({
         return this;
       }
     };
-    var SlashCommandBuilder32 = class {
+    var SlashCommandBuilder48 = class {
       static {
         __name(this, "SlashCommandBuilder");
       }
@@ -49273,10 +49273,10 @@ var require_dist8 = __commonJS({
        */
       nsfw = void 0;
     };
-    __name2(SlashCommandBuilder32, "SlashCommandBuilder");
-    SlashCommandBuilder32 = __decorateClass([
+    __name2(SlashCommandBuilder48, "SlashCommandBuilder");
+    SlashCommandBuilder48 = __decorateClass([
       (0, import_ts_mixer6.mix)(SharedSlashCommandOptions, SharedNameAndDescription, SharedSlashCommandSubcommands, SharedSlashCommand)
-    ], SlashCommandBuilder32);
+    ], SlashCommandBuilder48);
     var Assertions_exports11 = {};
     __export2(Assertions_exports11, {
       contextsPredicate: /* @__PURE__ */ __name(() => contextsPredicate2, "contextsPredicate"),
@@ -49925,7 +49925,7 @@ var require_ReactionCollector = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Collector = require_Collector();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var ReactionCollector = class _ReactionCollector extends Collector {
       static {
         __name(this, "ReactionCollector");
@@ -49948,23 +49948,23 @@ var require_ReactionCollector = __commonJS({
           if (messages2.has(this.message.id)) this.stop("messageDelete");
         }, "bulkDeleteListener");
         this.client.incrementMaxListeners();
-        this.client.on(Events16.MessageReactionAdd, this.handleCollect);
-        this.client.on(Events16.MessageReactionRemove, this.handleDispose);
-        this.client.on(Events16.MessageReactionRemoveAll, this.empty);
-        this.client.on(Events16.MessageDelete, this._handleMessageDeletion);
-        this.client.on(Events16.MessageBulkDelete, bulkDeleteListener);
-        this.client.on(Events16.ChannelDelete, this._handleChannelDeletion);
-        this.client.on(Events16.ThreadDelete, this._handleThreadDeletion);
-        this.client.on(Events16.GuildDelete, this._handleGuildDeletion);
+        this.client.on(Events19.MessageReactionAdd, this.handleCollect);
+        this.client.on(Events19.MessageReactionRemove, this.handleDispose);
+        this.client.on(Events19.MessageReactionRemoveAll, this.empty);
+        this.client.on(Events19.MessageDelete, this._handleMessageDeletion);
+        this.client.on(Events19.MessageBulkDelete, bulkDeleteListener);
+        this.client.on(Events19.ChannelDelete, this._handleChannelDeletion);
+        this.client.on(Events19.ThreadDelete, this._handleThreadDeletion);
+        this.client.on(Events19.GuildDelete, this._handleGuildDeletion);
         this.once("end", () => {
-          this.client.removeListener(Events16.MessageReactionAdd, this.handleCollect);
-          this.client.removeListener(Events16.MessageReactionRemove, this.handleDispose);
-          this.client.removeListener(Events16.MessageReactionRemoveAll, this.empty);
-          this.client.removeListener(Events16.MessageDelete, this._handleMessageDeletion);
-          this.client.removeListener(Events16.MessageBulkDelete, bulkDeleteListener);
-          this.client.removeListener(Events16.ChannelDelete, this._handleChannelDeletion);
-          this.client.removeListener(Events16.ThreadDelete, this._handleThreadDeletion);
-          this.client.removeListener(Events16.GuildDelete, this._handleGuildDeletion);
+          this.client.removeListener(Events19.MessageReactionAdd, this.handleCollect);
+          this.client.removeListener(Events19.MessageReactionRemove, this.handleDispose);
+          this.client.removeListener(Events19.MessageReactionRemoveAll, this.empty);
+          this.client.removeListener(Events19.MessageDelete, this._handleMessageDeletion);
+          this.client.removeListener(Events19.MessageBulkDelete, bulkDeleteListener);
+          this.client.removeListener(Events19.ChannelDelete, this._handleChannelDeletion);
+          this.client.removeListener(Events19.ThreadDelete, this._handleThreadDeletion);
+          this.client.removeListener(Events19.GuildDelete, this._handleGuildDeletion);
           this.client.decrementMaxListeners();
         });
         this.on("collect", (reaction, user) => {
@@ -50411,7 +50411,7 @@ var require_GuildEmojiRoleManager = __commonJS({
 var require_GuildEmoji = __commonJS({
   "node_modules/discord.js/src/structures/GuildEmoji.js"(exports2, module2) {
     "use strict";
-    var { PermissionFlagsBits: PermissionFlagsBits21 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits27 } = require_v106();
     var BaseGuildEmoji = require_BaseGuildEmoji();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var GuildEmojiRoleManager = require_GuildEmojiRoleManager();
@@ -50447,7 +50447,7 @@ var require_GuildEmoji = __commonJS({
        */
       get deletable() {
         if (!this.guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        return !this.managed && this.guild.members.me.permissions.has(PermissionFlagsBits21.ManageGuildExpressions);
+        return !this.managed && this.guild.members.me.permissions.has(PermissionFlagsBits27.ManageGuildExpressions);
       }
       /**
        * A manager for roles this emoji is active for.
@@ -50912,7 +50912,7 @@ var require_ActionRowBuilder = __commonJS({
     var { isJSONEncodable } = require_dist();
     var { createComponentBuilder } = require_Components();
     var { toSnakeCase: toSnakeCase2 } = require_Transformers();
-    var ActionRowBuilder3 = class extends BuildersActionRow {
+    var ActionRowBuilder5 = class extends BuildersActionRow {
       static {
         __name(this, "ActionRowBuilder");
       }
@@ -50931,7 +50931,7 @@ var require_ActionRowBuilder = __commonJS({
         return new this(isJSONEncodable(other) ? other.toJSON() : other);
       }
     };
-    module2.exports = ActionRowBuilder3;
+    module2.exports = ActionRowBuilder5;
   }
 });
 
@@ -50943,7 +50943,7 @@ var require_ButtonBuilder = __commonJS({
     var { isJSONEncodable } = require_dist();
     var { toSnakeCase: toSnakeCase2 } = require_Transformers();
     var { resolvePartialEmoji } = require_Util();
-    var ButtonBuilder2 = class extends BuildersButton {
+    var ButtonBuilder3 = class extends BuildersButton {
       static {
         __name(this, "ButtonBuilder");
       }
@@ -50970,7 +50970,7 @@ var require_ButtonBuilder = __commonJS({
         return new this(isJSONEncodable(other) ? other.toJSON() : other);
       }
     };
-    module2.exports = ButtonBuilder2;
+    module2.exports = ButtonBuilder3;
   }
 });
 
@@ -51519,7 +51519,7 @@ var require_StringSelectMenuBuilder = __commonJS({
     var { isJSONEncodable } = require_dist();
     var { toSnakeCase: toSnakeCase2 } = require_Transformers();
     var { resolvePartialEmoji } = require_Util();
-    var StringSelectMenuBuilder = class _StringSelectMenuBuilder extends BuildersSelectMenu {
+    var StringSelectMenuBuilder2 = class _StringSelectMenuBuilder extends BuildersSelectMenu {
       static {
         __name(this, "StringSelectMenuBuilder");
       }
@@ -51578,7 +51578,7 @@ var require_StringSelectMenuBuilder = __commonJS({
         return new this(other);
       }
     };
-    module2.exports = StringSelectMenuBuilder;
+    module2.exports = StringSelectMenuBuilder2;
   }
 });
 
@@ -51799,8 +51799,8 @@ var require_Components = __commonJS({
     __name(findComponentByCustomId, "findComponentByCustomId");
     module2.exports = { createComponent, createComponentBuilder, findComponentByCustomId };
     var ActionRow = require_ActionRow();
-    var ActionRowBuilder3 = require_ActionRowBuilder();
-    var ButtonBuilder2 = require_ButtonBuilder();
+    var ActionRowBuilder5 = require_ActionRowBuilder();
+    var ButtonBuilder3 = require_ButtonBuilder();
     var ButtonComponent = require_ButtonComponent();
     var ChannelSelectMenuBuilder = require_ChannelSelectMenuBuilder();
     var ChannelSelectMenuComponent = require_ChannelSelectMenuComponent();
@@ -51815,7 +51815,7 @@ var require_Components = __commonJS({
     var RoleSelectMenuComponent = require_RoleSelectMenuComponent();
     var SectionComponent = require_SectionComponent();
     var SeparatorComponent = require_SeparatorComponent();
-    var StringSelectMenuBuilder = require_StringSelectMenuBuilder();
+    var StringSelectMenuBuilder2 = require_StringSelectMenuBuilder();
     var StringSelectMenuComponent = require_StringSelectMenuComponent();
     var TextDisplayComponent = require_TextDisplayComponent();
     var TextInputBuilder2 = require_TextInputBuilder();
@@ -51842,9 +51842,9 @@ var require_Components = __commonJS({
       [ComponentType.Label]: LabelComponent
     };
     var ComponentTypeToBuilder = {
-      [ComponentType.ActionRow]: ActionRowBuilder3,
-      [ComponentType.Button]: ButtonBuilder2,
-      [ComponentType.StringSelect]: StringSelectMenuBuilder,
+      [ComponentType.ActionRow]: ActionRowBuilder5,
+      [ComponentType.Button]: ButtonBuilder3,
+      [ComponentType.StringSelect]: StringSelectMenuBuilder2,
       [ComponentType.TextInput]: TextInputBuilder2,
       [ComponentType.UserSelect]: UserSelectMenuBuilder,
       [ComponentType.RoleSelect]: RoleSelectMenuBuilder,
@@ -51863,10 +51863,10 @@ var require_Message = __commonJS({
     var { DiscordSnowflake } = require_cjs();
     var {
       InteractionType,
-      ChannelType: ChannelType6,
+      ChannelType: ChannelType9,
       MessageType,
       MessageFlags: MessageFlags4,
-      PermissionFlagsBits: PermissionFlagsBits21,
+      PermissionFlagsBits: PermissionFlagsBits27,
       MessageReferenceType
     } = require_v106();
     var Attachment = require_Attachment();
@@ -52325,7 +52325,7 @@ var require_Message = __commonJS({
           if (this.channel.archived) return false;
           if (this.channel.locked) {
             const permissions = this.channel.permissionsFor(this.client.user);
-            if (!permissions?.has(PermissionFlagsBits21.ManageThreads, true)) return false;
+            if (!permissions?.has(PermissionFlagsBits27.ManageThreads, true)) return false;
           }
         }
         return precheck;
@@ -52345,8 +52345,8 @@ var require_Message = __commonJS({
         }
         const permissions = this.channel?.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits21.Administrator, false)) return true;
-        return this.type !== MessageType.AutoModerationAction && this.author.id === this.client.user.id || permissions.has(PermissionFlagsBits21.ManageMessages, false) && !this.guild.members.me.isCommunicationDisabled();
+        if (permissions.has(PermissionFlagsBits27.Administrator, false)) return true;
+        return this.type !== MessageType.AutoModerationAction && this.author.id === this.client.user.id || permissions.has(PermissionFlagsBits27.ManageMessages, false) && !this.guild.members.me.isCommunicationDisabled();
       }
       /**
        * Whether the message is bulk deletable by the client user
@@ -52357,7 +52357,7 @@ var require_Message = __commonJS({
        * channel.bulkDelete(messages.filter(message => message.bulkDeletable));
        */
       get bulkDeletable() {
-        return (this.inGuild() && Date.now() - this.createdTimestamp < MaxBulkDeletableMessageAge && this.deletable && this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits21.ManageMessages, false)) ?? false;
+        return (this.inGuild() && Date.now() - this.createdTimestamp < MaxBulkDeletableMessageAge && this.deletable && this.channel?.permissionsFor(this.client.user).has(PermissionFlagsBits27.ManageMessages, false)) ?? false;
       }
       /**
        * Whether the message is pinnable by the client user
@@ -52371,7 +52371,7 @@ var require_Message = __commonJS({
         if (!channel || channel.isVoiceBased() || !channel.viewable) return false;
         const permissions = channel?.permissionsFor(this.client.user);
         if (!permissions) return false;
-        return permissions.has(PermissionFlagsBits21.ReadMessageHistory | PermissionFlagsBits21.PinMessages);
+        return permissions.has(PermissionFlagsBits27.ReadMessageHistory | PermissionFlagsBits27.PinMessages);
       }
       /**
        * Fetches the Message this crosspost/reply/pin-add references, if available to the client
@@ -52392,10 +52392,10 @@ var require_Message = __commonJS({
        * @readonly
        */
       get crosspostable() {
-        const bitfield = PermissionFlagsBits21.SendMessages | (this.author.id === this.client.user.id ? PermissionsBitField4.DefaultBit : PermissionFlagsBits21.ManageMessages);
+        const bitfield = PermissionFlagsBits27.SendMessages | (this.author.id === this.client.user.id ? PermissionsBitField4.DefaultBit : PermissionFlagsBits27.ManageMessages);
         const { channel } = this;
         return Boolean(
-          channel?.type === ChannelType6.GuildAnnouncement && !this.flags.has(MessageFlags4.Crossposted) && this.reference?.type !== MessageReferenceType.Forward && this.type === MessageType.Default && !this.poll && channel.viewable && channel.permissionsFor(this.client.user)?.has(bitfield, false)
+          channel?.type === ChannelType9.GuildAnnouncement && !this.flags.has(MessageFlags4.Crossposted) && this.reference?.type !== MessageReferenceType.Forward && this.type === MessageType.Default && !this.poll && channel.viewable && channel.permissionsFor(this.client.user)?.has(bitfield, false)
         );
       }
       /**
@@ -52564,7 +52564,7 @@ var require_Message = __commonJS({
        */
       async startThread(options = {}) {
         if (!this.channel) throw new DiscordjsError2(ErrorCodes2.ChannelNotCached);
-        if (![ChannelType6.GuildText, ChannelType6.GuildAnnouncement].includes(this.channel.type)) {
+        if (![ChannelType9.GuildText, ChannelType9.GuildAnnouncement].includes(this.channel.type)) {
           throw new DiscordjsError2(ErrorCodes2.MessageThreadParent);
         }
         if (this.hasThread) throw new DiscordjsError2(ErrorCodes2.MessageExistingThread);
@@ -53158,7 +53158,7 @@ var require_WebhookClient = __commonJS({
 var require_VoiceState = __commonJS({
   "node_modules/discord.js/src/structures/VoiceState.js"(exports2, module2) {
     "use strict";
-    var { ChannelType: ChannelType6, Routes: Routes2 } = require_v106();
+    var { ChannelType: ChannelType9, Routes: Routes2 } = require_v106();
     var Base = require_Base();
     var { DiscordjsError: DiscordjsError2, DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var VoiceState = class extends Base {
@@ -53305,7 +53305,7 @@ var require_VoiceState = __commonJS({
        * @returns {Promise<VoiceState>}
        */
       async edit(options) {
-        if (this.channel?.type !== ChannelType6.GuildStageVoice) throw new DiscordjsError2(ErrorCodes2.VoiceNotStageChannel);
+        if (this.channel?.type !== ChannelType9.GuildStageVoice) throw new DiscordjsError2(ErrorCodes2.VoiceNotStageChannel);
         const target = this.client.user.id === this.id ? "@me" : this.id;
         if (target !== "@me" && options.requestToSpeak !== void 0) {
           throw new DiscordjsError2(ErrorCodes2.VoiceStateNotOwn);
@@ -53600,7 +53600,7 @@ var require_GuildMemberFlagsBitField = __commonJS({
 var require_GuildMember = __commonJS({
   "node_modules/discord.js/src/structures/GuildMember.js"(exports2) {
     "use strict";
-    var { PermissionFlagsBits: PermissionFlagsBits21 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits27 } = require_v106();
     var Base = require_Base();
     var VoiceState = require_VoiceState();
     var TextBasedChannel = require_TextBasedChannel();
@@ -53855,7 +53855,7 @@ var require_GuildMember = __commonJS({
        */
       get kickable() {
         if (!this.guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits21.KickMembers);
+        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits27.KickMembers);
       }
       /**
        * Whether this member is bannable by the client user
@@ -53864,7 +53864,7 @@ var require_GuildMember = __commonJS({
        */
       get bannable() {
         if (!this.guild.members.me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits21.BanMembers);
+        return this.manageable && this.guild.members.me.permissions.has(PermissionFlagsBits27.BanMembers);
       }
       /**
        * Whether this member is moderatable by the client user
@@ -53872,7 +53872,7 @@ var require_GuildMember = __commonJS({
        * @readonly
        */
       get moderatable() {
-        return !this.permissions.has(PermissionFlagsBits21.Administrator) && this.manageable && (this.guild.members.me?.permissions.has(PermissionFlagsBits21.ModerateMembers) ?? false);
+        return !this.permissions.has(PermissionFlagsBits27.Administrator) && this.manageable && (this.guild.members.me?.permissions.has(PermissionFlagsBits27.ModerateMembers) ?? false);
       }
       /**
        * Whether this member is currently timed out
@@ -55702,7 +55702,7 @@ var require_Partials = __commonJS({
 var require_Action = __commonJS({
   "node_modules/discord.js/src/client/actions/Action.js"(exports2, module2) {
     "use strict";
-    var { ChannelType: ChannelType6 } = require_v106();
+    var { ChannelType: ChannelType9 } = require_v106();
     var { Poll } = require_Poll();
     var { PollAnswer } = require_PollAnswer();
     var Partials2 = require_Partials();
@@ -55727,7 +55727,7 @@ var require_Action = __commonJS({
           if (!data.recipients.some((existingRecipient) => recipient.id === existingRecipient.id)) {
             payloadData.recipients = [...data.recipients, recipient];
           }
-        } else if (data.type === ChannelType6.DM || data.type === ChannelType6.GroupDM) {
+        } else if (data.type === ChannelType9.DM || data.type === ChannelType9.GroupDM) {
           const recipient = data.author ?? data.user ?? { id: data.user_id };
           payloadData.recipients = [recipient];
         }
@@ -55820,14 +55820,14 @@ var require_ApplicationCommandPermissionsUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/ApplicationCommandPermissionsUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var ApplicationCommandPermissionsUpdateAction = class extends Action {
       static {
         __name(this, "ApplicationCommandPermissionsUpdateAction");
       }
       handle(data) {
         const client = this.client;
-        client.emit(Events16.ApplicationCommandPermissionsUpdate, {
+        client.emit(Events19.ApplicationCommandPermissionsUpdate, {
           permissions: data.permissions,
           id: data.id,
           guildId: data.guild_id,
@@ -55904,7 +55904,7 @@ var require_AutoModerationActionExecution2 = __commonJS({
     "use strict";
     var Action = require_Action();
     var AutoModerationActionExecution = require_AutoModerationActionExecution();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var AutoModerationActionExecutionAction = class extends Action {
       static {
         __name(this, "AutoModerationActionExecutionAction");
@@ -55913,7 +55913,7 @@ var require_AutoModerationActionExecution2 = __commonJS({
         const { client } = this;
         const guild = client.guilds.cache.get(data.guild_id);
         if (guild) {
-          client.emit(Events16.AutoModerationActionExecution, new AutoModerationActionExecution(data, guild));
+          client.emit(Events19.AutoModerationActionExecution, new AutoModerationActionExecution(data, guild));
         }
         return {};
       }
@@ -55927,7 +55927,7 @@ var require_AutoModerationRuleCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/AutoModerationRuleCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var AutoModerationRuleCreateAction = class extends Action {
       static {
         __name(this, "AutoModerationRuleCreateAction");
@@ -55937,7 +55937,7 @@ var require_AutoModerationRuleCreate = __commonJS({
         const guild = client.guilds.cache.get(data.guild_id);
         if (guild) {
           const autoModerationRule = guild.autoModerationRules._add(data);
-          client.emit(Events16.AutoModerationRuleCreate, autoModerationRule);
+          client.emit(Events19.AutoModerationRuleCreate, autoModerationRule);
         }
         return {};
       }
@@ -55951,7 +55951,7 @@ var require_AutoModerationRuleDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/AutoModerationRuleDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var AutoModerationRuleDeleteAction = class extends Action {
       static {
         __name(this, "AutoModerationRuleDeleteAction");
@@ -55963,7 +55963,7 @@ var require_AutoModerationRuleDelete = __commonJS({
           const autoModerationRule = guild.autoModerationRules.cache.get(data.id);
           if (autoModerationRule) {
             guild.autoModerationRules.cache.delete(autoModerationRule.id);
-            client.emit(Events16.AutoModerationRuleDelete, autoModerationRule);
+            client.emit(Events19.AutoModerationRuleDelete, autoModerationRule);
           }
         }
         return {};
@@ -55978,7 +55978,7 @@ var require_AutoModerationRuleUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/AutoModerationRuleUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var AutoModerationRuleUpdateAction = class extends Action {
       static {
         __name(this, "AutoModerationRuleUpdateAction");
@@ -55989,7 +55989,7 @@ var require_AutoModerationRuleUpdate = __commonJS({
         if (guild) {
           const oldAutoModerationRule = guild.autoModerationRules.cache.get(data.id)?._clone() ?? null;
           const newAutoModerationRule = guild.autoModerationRules._add(data);
-          client.emit(Events16.AutoModerationRuleUpdate, oldAutoModerationRule, newAutoModerationRule);
+          client.emit(Events19.AutoModerationRuleUpdate, oldAutoModerationRule, newAutoModerationRule);
         }
         return {};
       }
@@ -56003,7 +56003,7 @@ var require_ChannelCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/ChannelCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var ChannelCreateAction = class extends Action {
       static {
         __name(this, "ChannelCreateAction");
@@ -56013,7 +56013,7 @@ var require_ChannelCreate = __commonJS({
         const existing = client.channels.cache.has(data.id);
         const channel = client.channels._add(data);
         if (!existing && channel) {
-          client.emit(Events16.ChannelCreate, channel);
+          client.emit(Events19.ChannelCreate, channel);
         }
         return { channel };
       }
@@ -56027,7 +56027,7 @@ var require_ChannelDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/ChannelDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var ChannelDeleteAction = class extends Action {
       static {
         __name(this, "ChannelDeleteAction");
@@ -56037,7 +56037,7 @@ var require_ChannelDelete = __commonJS({
         const channel = client.channels.cache.get(data.id);
         if (channel) {
           client.channels._remove(channel.id);
-          client.emit(Events16.ChannelDelete, channel);
+          client.emit(Events19.ChannelDelete, channel);
         }
       }
     };
@@ -56186,7 +56186,7 @@ var require_DMChannel = __commonJS({
   "node_modules/discord.js/src/structures/DMChannel.js"(exports2, module2) {
     "use strict";
     var { userMention } = require_dist7();
-    var { ChannelType: ChannelType6 } = require_v106();
+    var { ChannelType: ChannelType9 } = require_v106();
     var { BaseChannel } = require_BaseChannel();
     var TextBasedChannel = require_TextBasedChannel();
     var DMMessageManager = require_DMMessageManager();
@@ -56197,7 +56197,7 @@ var require_DMChannel = __commonJS({
       }
       constructor(client, data) {
         super(client, data);
-        this.type = ChannelType6.DM;
+        this.type = ChannelType9.DM;
         this.messages = new DMMessageManager(this);
       }
       _patch(data) {
@@ -56834,7 +56834,7 @@ var require_ThreadChannel = __commonJS({
     "use strict";
     var { DiscordAPIError } = require_dist5();
     var { lazy: lazy2 } = require_dist();
-    var { RESTJSONErrorCodes, ChannelFlags, ChannelType: ChannelType6, PermissionFlagsBits: PermissionFlagsBits21, Routes: Routes2 } = require_v106();
+    var { RESTJSONErrorCodes, ChannelFlags, ChannelType: ChannelType9, PermissionFlagsBits: PermissionFlagsBits27, Routes: Routes2 } = require_v106();
     var { BaseChannel } = require_BaseChannel();
     var getThreadOnlyChannel = lazy2(() => require_ThreadOnlyChannel());
     var TextBasedChannel = require_TextBasedChannel();
@@ -56871,7 +56871,7 @@ var require_ThreadChannel = __commonJS({
         }
         if ("thread_metadata" in data) {
           this.locked = data.thread_metadata.locked ?? false;
-          this.invitable = this.type === ChannelType6.PrivateThread ? data.thread_metadata.invitable ?? false : null;
+          this.invitable = this.type === ChannelType9.PrivateThread ? data.thread_metadata.invitable ?? false : null;
           this.archived = data.thread_metadata.archived;
           this.autoArchiveDuration = data.thread_metadata.auto_archive_duration;
           this.archiveTimestamp = Date.parse(data.thread_metadata.archive_timestamp);
@@ -56885,7 +56885,7 @@ var require_ThreadChannel = __commonJS({
           this.archiveTimestamp ??= null;
           this.invitable ??= null;
         }
-        this._createdTimestamp ??= this.type === ChannelType6.PrivateThread ? super.createdTimestamp : null;
+        this._createdTimestamp ??= this.type === ChannelType9.PrivateThread ? super.createdTimestamp : null;
         if ("last_message_id" in data) {
           this.lastMessageId = data.last_message_id;
         } else {
@@ -57058,7 +57058,7 @@ var require_ThreadChannel = __commonJS({
             auto_archive_duration: options.autoArchiveDuration,
             rate_limit_per_user: options.rateLimitPerUser,
             locked: options.locked,
-            invitable: this.type === ChannelType6.PrivateThread ? options.invitable : void 0,
+            invitable: this.type === ChannelType9.PrivateThread ? options.invitable : void 0,
             applied_tags: options.appliedTags,
             flags: "flags" in options ? ChannelFlagsBitField.resolve(options.flags) : void 0
           },
@@ -57105,7 +57105,7 @@ var require_ThreadChannel = __commonJS({
        * @returns {Promise<ThreadChannel>}
        */
       async setInvitable(invitable = true, reason) {
-        if (this.type !== ChannelType6.PrivateThread) {
+        if (this.type !== ChannelType9.PrivateThread) {
           throw new DiscordjsRangeError2(ErrorCodes2.ThreadInvitableType, this.type);
         }
         return this.edit({ invitable, reason });
@@ -57188,7 +57188,7 @@ var require_ThreadChannel = __commonJS({
        * @readonly
        */
       get editable() {
-        return this.ownerId === this.client.user.id && (this.type !== ChannelType6.PrivateThread || this.joined) || this.manageable;
+        return this.ownerId === this.client.user.id && (this.type !== ChannelType9.PrivateThread || this.joined) || this.manageable;
       }
       /**
        * Whether the thread is joinable by the client user
@@ -57197,7 +57197,7 @@ var require_ThreadChannel = __commonJS({
        */
       get joinable() {
         return !this.archived && !this.joined && this.permissionsFor(this.client.user)?.has(
-          this.type === ChannelType6.PrivateThread ? PermissionFlagsBits21.ManageThreads : PermissionFlagsBits21.ViewChannel,
+          this.type === ChannelType9.PrivateThread ? PermissionFlagsBits27.ManageThreads : PermissionFlagsBits27.ViewChannel,
           false
         );
       }
@@ -57209,8 +57209,8 @@ var require_ThreadChannel = __commonJS({
       get manageable() {
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits21.Administrator, false)) return true;
-        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits21.ManageThreads, false);
+        if (permissions.has(PermissionFlagsBits27.Administrator, false)) return true;
+        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits27.ManageThreads, false);
       }
       /**
        * Whether the thread is viewable by the client user
@@ -57221,7 +57221,7 @@ var require_ThreadChannel = __commonJS({
         if (this.client.user.id === this.guild.ownerId) return true;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        return permissions.has(PermissionFlagsBits21.ViewChannel, false);
+        return permissions.has(PermissionFlagsBits27.ViewChannel, false);
       }
       /**
        * Whether the client user can send messages in this thread
@@ -57231,8 +57231,8 @@ var require_ThreadChannel = __commonJS({
       get sendable() {
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits21.Administrator, false)) return true;
-        return !(this.archived && this.locked && !this.manageable) && (this.type !== ChannelType6.PrivateThread || this.joined || this.manageable) && permissions.has(PermissionFlagsBits21.SendMessagesInThreads, false) && this.guild.members.me.communicationDisabledUntilTimestamp < Date.now();
+        if (permissions.has(PermissionFlagsBits27.Administrator, false)) return true;
+        return !(this.archived && this.locked && !this.manageable) && (this.type !== ChannelType9.PrivateThread || this.joined || this.manageable) && permissions.has(PermissionFlagsBits27.SendMessagesInThreads, false) && this.guild.members.me.communicationDisabledUntilTimestamp < Date.now();
       }
       /**
        * Whether the thread is unarchivable by the client user
@@ -57458,7 +57458,7 @@ var require_ThreadManager = __commonJS({
 var require_GuildTextThreadManager = __commonJS({
   "node_modules/discord.js/src/managers/GuildTextThreadManager.js"(exports2, module2) {
     "use strict";
-    var { ChannelType: ChannelType6, Routes: Routes2 } = require_v106();
+    var { ChannelType: ChannelType9, Routes: Routes2 } = require_v106();
     var ThreadManager = require_ThreadManager();
     var { DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var GuildTextThreadManager = class extends ThreadManager {
@@ -57517,12 +57517,12 @@ var require_GuildTextThreadManager = __commonJS({
         reason,
         rateLimitPerUser
       } = {}) {
-        let resolvedType = this.channel.type === ChannelType6.GuildAnnouncement ? ChannelType6.AnnouncementThread : ChannelType6.PublicThread;
+        let resolvedType = this.channel.type === ChannelType9.GuildAnnouncement ? ChannelType9.AnnouncementThread : ChannelType9.PublicThread;
         let startMessageId;
         if (startMessage) {
           startMessageId = this.channel.messages.resolveId(startMessage);
           if (!startMessageId) throw new DiscordjsTypeError2(ErrorCodes2.InvalidType, "startMessage", "MessageResolvable");
-        } else if (this.channel.type !== ChannelType6.GuildAnnouncement) {
+        } else if (this.channel.type !== ChannelType9.GuildAnnouncement) {
           resolvedType = type ?? resolvedType;
         }
         const data = await this.client.rest.post(Routes2.threads(this.channel.id, startMessageId), {
@@ -57530,7 +57530,7 @@ var require_GuildTextThreadManager = __commonJS({
             name,
             auto_archive_duration: autoArchiveDuration,
             type: resolvedType,
-            invitable: resolvedType === ChannelType6.PrivateThread ? invitable : void 0,
+            invitable: resolvedType === ChannelType9.PrivateThread ? invitable : void 0,
             rate_limit_per_user: rateLimitPerUser
           },
           reason
@@ -57738,7 +57738,7 @@ var require_BaseGuildVoiceChannel = __commonJS({
   "node_modules/discord.js/src/structures/BaseGuildVoiceChannel.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var { PermissionFlagsBits: PermissionFlagsBits21 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits27 } = require_v106();
     var GuildChannel = require_GuildChannel();
     var TextBasedChannel = require_TextBasedChannel();
     var GuildMessageManager = require_GuildMessageManager();
@@ -57812,8 +57812,8 @@ var require_BaseGuildVoiceChannel = __commonJS({
         if (!this.viewable) return false;
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits21.Administrator, false)) return true;
-        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits21.Connect, false);
+        if (permissions.has(PermissionFlagsBits27.Administrator, false)) return true;
+        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits27.Connect, false);
       }
       /**
        * Creates an invite to this guild channel.
@@ -58003,7 +58003,7 @@ var require_TextChannel = __commonJS({
 var require_VoiceChannel = __commonJS({
   "node_modules/discord.js/src/structures/VoiceChannel.js"(exports2, module2) {
     "use strict";
-    var { PermissionFlagsBits: PermissionFlagsBits21, Routes: Routes2 } = require_v106();
+    var { PermissionFlagsBits: PermissionFlagsBits27, Routes: Routes2 } = require_v106();
     var BaseGuildVoiceChannel = require_BaseGuildVoiceChannel();
     var VoiceChannel = class extends BaseGuildVoiceChannel {
       static {
@@ -58016,7 +58016,7 @@ var require_VoiceChannel = __commonJS({
        */
       get joinable() {
         if (!super.joinable) return false;
-        if (this.full && !this.permissionsFor(this.client.user).has(PermissionFlagsBits21.MoveMembers, false)) return false;
+        if (this.full && !this.permissionsFor(this.client.user).has(PermissionFlagsBits27.MoveMembers, false)) return false;
         return true;
       }
       /**
@@ -58027,8 +58027,8 @@ var require_VoiceChannel = __commonJS({
       get speakable() {
         const permissions = this.permissionsFor(this.client.user);
         if (!permissions) return false;
-        if (permissions.has(PermissionFlagsBits21.Administrator, false)) return true;
-        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits21.Speak, false);
+        if (permissions.has(PermissionFlagsBits27.Administrator, false)) return true;
+        return this.guild.members.me.communicationDisabledUntilTimestamp < Date.now() && permissions.has(PermissionFlagsBits27.Speak, false);
       }
       /**
        * @typedef {Object} SendSoundboardSoundOptions
@@ -58227,7 +58227,7 @@ var require_Channels = __commonJS({
   "node_modules/discord.js/src/util/Channels.js"(exports2, module2) {
     "use strict";
     var { lazy: lazy2 } = require_dist();
-    var { ChannelType: ChannelType6 } = require_v106();
+    var { ChannelType: ChannelType9 } = require_v106();
     var getCategoryChannel = lazy2(() => require_CategoryChannel());
     var getDMChannel = lazy2(() => require_DMChannel());
     var getNewsChannel = lazy2(() => require_NewsChannel());
@@ -58242,49 +58242,49 @@ var require_Channels = __commonJS({
     function createChannel(client, data, guild, { allowUnknownGuild } = {}) {
       let channel;
       if (!data.guild_id && !guild) {
-        if (data.recipients && data.type !== ChannelType6.GroupDM || data.type === ChannelType6.DM) {
+        if (data.recipients && data.type !== ChannelType9.GroupDM || data.type === ChannelType9.DM) {
           channel = new (getDMChannel())(client, data);
-        } else if (data.type === ChannelType6.GroupDM) {
+        } else if (data.type === ChannelType9.GroupDM) {
           channel = new (getPartialGroupDMChannel())(client, data);
         }
       } else {
         guild ??= client.guilds.cache.get(data.guild_id);
         if (guild || allowUnknownGuild) {
           switch (data.type) {
-            case ChannelType6.GuildText: {
+            case ChannelType9.GuildText: {
               channel = new (getTextChannel())(guild, data, client);
               break;
             }
-            case ChannelType6.GuildVoice: {
+            case ChannelType9.GuildVoice: {
               channel = new (getVoiceChannel())(guild, data, client);
               break;
             }
-            case ChannelType6.GuildCategory: {
+            case ChannelType9.GuildCategory: {
               channel = new (getCategoryChannel())(guild, data, client);
               break;
             }
-            case ChannelType6.GuildAnnouncement: {
+            case ChannelType9.GuildAnnouncement: {
               channel = new (getNewsChannel())(guild, data, client);
               break;
             }
-            case ChannelType6.GuildStageVoice: {
+            case ChannelType9.GuildStageVoice: {
               channel = new (getStageChannel())(guild, data, client);
               break;
             }
-            case ChannelType6.AnnouncementThread:
-            case ChannelType6.PublicThread:
-            case ChannelType6.PrivateThread: {
+            case ChannelType9.AnnouncementThread:
+            case ChannelType9.PublicThread:
+            case ChannelType9.PrivateThread: {
               channel = new (getThreadChannel())(guild, data, client);
               if (!allowUnknownGuild) channel.parent?.threads.cache.set(channel.id, channel);
               break;
             }
-            case ChannelType6.GuildDirectory:
+            case ChannelType9.GuildDirectory:
               channel = new (getDirectoryChannel())(guild, data, client);
               break;
-            case ChannelType6.GuildForum:
+            case ChannelType9.GuildForum:
               channel = new (getForumChannel())(guild, data, client);
               break;
-            case ChannelType6.GuildMedia:
+            case ChannelType9.GuildMedia:
               channel = new (getMediaChannel())(guild, data, client);
               break;
           }
@@ -58386,7 +58386,7 @@ var require_EntitlementCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/EntitlementCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var EntitlementCreateAction = class extends Action {
       static {
         __name(this, "EntitlementCreateAction");
@@ -58394,7 +58394,7 @@ var require_EntitlementCreate = __commonJS({
       handle(data) {
         const client = this.client;
         const entitlement = client.application.entitlements._add(data);
-        client.emit(Events16.EntitlementCreate, entitlement);
+        client.emit(Events19.EntitlementCreate, entitlement);
         return {};
       }
     };
@@ -58407,7 +58407,7 @@ var require_EntitlementDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/EntitlementDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var EntitlementDeleteAction = class extends Action {
       static {
         __name(this, "EntitlementDeleteAction");
@@ -58416,7 +58416,7 @@ var require_EntitlementDelete = __commonJS({
         const client = this.client;
         const entitlement = client.application.entitlements._add(data, false);
         client.application.entitlements.cache.delete(entitlement.id);
-        client.emit(Events16.EntitlementDelete, entitlement);
+        client.emit(Events19.EntitlementDelete, entitlement);
         return {};
       }
     };
@@ -58429,7 +58429,7 @@ var require_EntitlementUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/EntitlementUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var EntitlementUpdateAction = class extends Action {
       static {
         __name(this, "EntitlementUpdateAction");
@@ -58438,7 +58438,7 @@ var require_EntitlementUpdate = __commonJS({
         const client = this.client;
         const oldEntitlement = client.application.entitlements.cache.get(data.id)?._clone() ?? null;
         const newEntitlement = client.application.entitlements._add(data);
-        client.emit(Events16.EntitlementUpdate, oldEntitlement, newEntitlement);
+        client.emit(Events19.EntitlementUpdate, oldEntitlement, newEntitlement);
         return {};
       }
     };
@@ -59312,7 +59312,7 @@ var require_GuildAuditLogEntryCreate = __commonJS({
     "use strict";
     var Action = require_Action();
     var GuildAuditLogsEntry = require_GuildAuditLogsEntry();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildAuditLogEntryCreateAction = class extends Action {
       static {
         __name(this, "GuildAuditLogEntryCreateAction");
@@ -59323,7 +59323,7 @@ var require_GuildAuditLogEntryCreate = __commonJS({
         let auditLogEntry;
         if (guild) {
           auditLogEntry = new GuildAuditLogsEntry(guild, data);
-          client.emit(Events16.GuildAuditLogEntryCreate, auditLogEntry, guild);
+          client.emit(Events19.GuildAuditLogEntryCreate, auditLogEntry, guild);
         }
         return { auditLogEntry };
       }
@@ -59337,7 +59337,7 @@ var require_GuildBanAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildBanAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildBanAdd = class extends Action {
       static {
         __name(this, "GuildBanAdd");
@@ -59345,7 +59345,7 @@ var require_GuildBanAdd = __commonJS({
       handle(data) {
         const client = this.client;
         const guild = client.guilds.cache.get(data.guild_id);
-        if (guild) client.emit(Events16.GuildBanAdd, guild.bans._add(data));
+        if (guild) client.emit(Events19.GuildBanAdd, guild.bans._add(data));
       }
     };
     module2.exports = GuildBanAdd;
@@ -59401,7 +59401,7 @@ var require_GuildBanRemove = __commonJS({
     "use strict";
     var Action = require_Action();
     var GuildBan = require_GuildBan();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildBanRemove = class extends Action {
       static {
         __name(this, "GuildBanRemove");
@@ -59412,7 +59412,7 @@ var require_GuildBanRemove = __commonJS({
         if (guild) {
           const ban = guild.bans.cache.get(data.user.id) ?? new GuildBan(client, data, guild);
           guild.bans.cache.delete(ban.user.id);
-          client.emit(Events16.GuildBanRemove, ban);
+          client.emit(Events19.GuildBanRemove, ban);
         }
       }
     };
@@ -59450,7 +59450,7 @@ var require_GuildDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildDeleteAction = class extends Action {
       static {
         __name(this, "GuildDeleteAction");
@@ -59461,13 +59461,13 @@ var require_GuildDelete = __commonJS({
         if (guild) {
           if (data.unavailable) {
             guild.available = false;
-            client.emit(Events16.GuildUnavailable, guild);
+            client.emit(Events19.GuildUnavailable, guild);
             return;
           }
           for (const channel of guild.channels.cache.values()) this.client.channels._remove(channel.id);
           client.voice.adapters.get(data.id)?.destroy();
           client.guilds.cache.delete(guild.id);
-          client.emit(Events16.GuildDelete, guild);
+          client.emit(Events19.GuildDelete, guild);
         }
       }
     };
@@ -59480,7 +59480,7 @@ var require_GuildEmojiCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildEmojiCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildEmojiCreateAction = class extends Action {
       static {
         __name(this, "GuildEmojiCreateAction");
@@ -59488,7 +59488,7 @@ var require_GuildEmojiCreate = __commonJS({
       handle(guild, createdEmoji) {
         const already = guild.emojis.cache.has(createdEmoji.id);
         const emoji3 = guild.emojis._add(createdEmoji);
-        if (!already) this.client.emit(Events16.GuildEmojiCreate, emoji3);
+        if (!already) this.client.emit(Events19.GuildEmojiCreate, emoji3);
         return { emoji: emoji3 };
       }
     };
@@ -59501,14 +59501,14 @@ var require_GuildEmojiDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildEmojiDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildEmojiDeleteAction = class extends Action {
       static {
         __name(this, "GuildEmojiDeleteAction");
       }
       handle(emoji3) {
         emoji3.guild.emojis.cache.delete(emoji3.id);
-        this.client.emit(Events16.GuildEmojiDelete, emoji3);
+        this.client.emit(Events19.GuildEmojiDelete, emoji3);
         return { emoji: emoji3 };
       }
     };
@@ -59521,14 +59521,14 @@ var require_GuildEmojiUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildEmojiUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildEmojiUpdateAction = class extends Action {
       static {
         __name(this, "GuildEmojiUpdateAction");
       }
       handle(current, data) {
         const old = current._update(data);
-        this.client.emit(Events16.GuildEmojiUpdate, old, current);
+        this.client.emit(Events19.GuildEmojiUpdate, old, current);
         return { emoji: current };
       }
     };
@@ -59574,7 +59574,7 @@ var require_GuildIntegrationsUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildIntegrationsUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildIntegrationsUpdate = class extends Action {
       static {
         __name(this, "GuildIntegrationsUpdate");
@@ -59582,7 +59582,7 @@ var require_GuildIntegrationsUpdate = __commonJS({
       handle(data) {
         const client = this.client;
         const guild = client.guilds.cache.get(data.guild_id);
-        if (guild) client.emit(Events16.GuildIntegrationsUpdate, guild);
+        if (guild) client.emit(Events19.GuildIntegrationsUpdate, guild);
       }
     };
     module2.exports = GuildIntegrationsUpdate;
@@ -59613,7 +59613,7 @@ var require_GuildMemberRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildMemberRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var Status2 = require_Status();
     var GuildMemberRemoveAction = class extends Action {
       static {
@@ -59628,7 +59628,7 @@ var require_GuildMemberRemove = __commonJS({
           guild.memberCount--;
           if (member) {
             guild.members.cache.delete(member.id);
-            if (shard.status === Status2.Ready) client.emit(Events16.GuildMemberRemove, member);
+            if (shard.status === Status2.Ready) client.emit(Events19.GuildMemberRemove, member);
           }
           guild.presences.cache.delete(data.user.id);
           guild.voiceStates.cache.delete(data.user.id);
@@ -59645,7 +59645,7 @@ var require_GuildMemberUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildMemberUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var Status2 = require_Status();
     var GuildMemberUpdateAction = class extends Action {
       static {
@@ -59666,10 +59666,10 @@ var require_GuildMemberUpdate = __commonJS({
           const member = this.getMember({ user: data.user }, guild);
           if (member) {
             const old = member._update(data);
-            if (shard.status === Status2.Ready && !member.equals(old)) client.emit(Events16.GuildMemberUpdate, old, member);
+            if (shard.status === Status2.Ready && !member.equals(old)) client.emit(Events19.GuildMemberUpdate, old, member);
           } else {
             const newMember = guild.members._add(data);
-            this.client.emit(Events16.GuildMemberAvailable, newMember);
+            this.client.emit(Events19.GuildMemberAvailable, newMember);
           }
         }
       }
@@ -59683,7 +59683,7 @@ var require_GuildRoleCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildRoleCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildRoleCreate = class extends Action {
       static {
         __name(this, "GuildRoleCreate");
@@ -59695,7 +59695,7 @@ var require_GuildRoleCreate = __commonJS({
         if (guild) {
           const already = guild.roles.cache.has(data.role.id);
           role = guild.roles._add(data.role);
-          if (!already) client.emit(Events16.GuildRoleCreate, role);
+          if (!already) client.emit(Events19.GuildRoleCreate, role);
         }
         return { role };
       }
@@ -59709,7 +59709,7 @@ var require_GuildRoleDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildRoleDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildRoleDeleteAction = class extends Action {
       static {
         __name(this, "GuildRoleDeleteAction");
@@ -59722,7 +59722,7 @@ var require_GuildRoleDelete = __commonJS({
           role = guild.roles.cache.get(data.role_id);
           if (role) {
             guild.roles.cache.delete(data.role_id);
-            client.emit(Events16.GuildRoleDelete, role);
+            client.emit(Events19.GuildRoleDelete, role);
           }
         }
         return { role };
@@ -59737,7 +59737,7 @@ var require_GuildRoleUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildRoleUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildRoleUpdateAction = class extends Action {
       static {
         __name(this, "GuildRoleUpdateAction");
@@ -59750,7 +59750,7 @@ var require_GuildRoleUpdate = __commonJS({
           const role = guild.roles.cache.get(data.role.id);
           if (role) {
             old = role._update(data.role);
-            client.emit(Events16.GuildRoleUpdate, old, role);
+            client.emit(Events19.GuildRoleUpdate, old, role);
           }
           return {
             old,
@@ -59797,7 +59797,7 @@ var require_GuildScheduledEventCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildScheduledEventCreateAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventCreateAction");
@@ -59807,7 +59807,7 @@ var require_GuildScheduledEventCreate = __commonJS({
         const guild = client.guilds.cache.get(data.guild_id);
         if (guild) {
           const guildScheduledEvent = guild.scheduledEvents._add(data);
-          client.emit(Events16.GuildScheduledEventCreate, guildScheduledEvent);
+          client.emit(Events19.GuildScheduledEventCreate, guildScheduledEvent);
           return { guildScheduledEvent };
         }
         return {};
@@ -59822,7 +59822,7 @@ var require_GuildScheduledEventDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildScheduledEventDeleteAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventDeleteAction");
@@ -59834,7 +59834,7 @@ var require_GuildScheduledEventDelete = __commonJS({
           const guildScheduledEvent = this.getScheduledEvent(data, guild);
           if (guildScheduledEvent) {
             guild.scheduledEvents.cache.delete(guildScheduledEvent.id);
-            client.emit(Events16.GuildScheduledEventDelete, guildScheduledEvent);
+            client.emit(Events19.GuildScheduledEventDelete, guildScheduledEvent);
             return { guildScheduledEvent };
           }
         }
@@ -59850,7 +59850,7 @@ var require_GuildScheduledEventUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildScheduledEventUpdateAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventUpdateAction");
@@ -59861,7 +59861,7 @@ var require_GuildScheduledEventUpdate = __commonJS({
         if (guild) {
           const oldGuildScheduledEvent = guild.scheduledEvents.cache.get(data.id)?._clone() ?? null;
           const newGuildScheduledEvent = guild.scheduledEvents._add(data);
-          client.emit(Events16.GuildScheduledEventUpdate, oldGuildScheduledEvent, newGuildScheduledEvent);
+          client.emit(Events19.GuildScheduledEventUpdate, oldGuildScheduledEvent, newGuildScheduledEvent);
           return { oldGuildScheduledEvent, newGuildScheduledEvent };
         }
         return {};
@@ -59876,7 +59876,7 @@ var require_GuildScheduledEventUserAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventUserAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildScheduledEventUserAddAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventUserAddAction");
@@ -59888,7 +59888,7 @@ var require_GuildScheduledEventUserAdd = __commonJS({
           const guildScheduledEvent = this.getScheduledEvent(data, guild);
           const user = this.getUser(data);
           if (guildScheduledEvent && user) {
-            client.emit(Events16.GuildScheduledEventUserAdd, guildScheduledEvent, user);
+            client.emit(Events19.GuildScheduledEventUserAdd, guildScheduledEvent, user);
             return { guildScheduledEvent, user };
           }
         }
@@ -59904,7 +59904,7 @@ var require_GuildScheduledEventUserRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildScheduledEventUserRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildScheduledEventUserRemoveAction = class extends Action {
       static {
         __name(this, "GuildScheduledEventUserRemoveAction");
@@ -59916,7 +59916,7 @@ var require_GuildScheduledEventUserRemove = __commonJS({
           const guildScheduledEvent = this.getScheduledEvent(data, guild);
           const user = this.getUser(data);
           if (guildScheduledEvent && user) {
-            client.emit(Events16.GuildScheduledEventUserRemove, guildScheduledEvent, user);
+            client.emit(Events19.GuildScheduledEventUserRemove, guildScheduledEvent, user);
             return { guildScheduledEvent, user };
           }
         }
@@ -59932,7 +59932,7 @@ var require_GuildSoundboardSoundDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildSoundboardSoundDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildSoundboardSoundDeleteAction = class extends Action {
       static {
         __name(this, "GuildSoundboardSoundDeleteAction");
@@ -59943,7 +59943,7 @@ var require_GuildSoundboardSoundDelete = __commonJS({
         const soundboardSound = this.getSoundboardSound(data, guild);
         if (soundboardSound) {
           guild.soundboardSounds.cache.delete(soundboardSound.soundId);
-          this.client.emit(Events16.GuildSoundboardSoundDelete, soundboardSound);
+          this.client.emit(Events19.GuildSoundboardSoundDelete, soundboardSound);
         }
         return { soundboardSound };
       }
@@ -59957,7 +59957,7 @@ var require_GuildStickerCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildStickerCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildStickerCreateAction = class extends Action {
       static {
         __name(this, "GuildStickerCreateAction");
@@ -59965,7 +59965,7 @@ var require_GuildStickerCreate = __commonJS({
       handle(guild, createdSticker) {
         const already = guild.stickers.cache.has(createdSticker.id);
         const sticker = guild.stickers._add(createdSticker);
-        if (!already) this.client.emit(Events16.GuildStickerCreate, sticker);
+        if (!already) this.client.emit(Events19.GuildStickerCreate, sticker);
         return { sticker };
       }
     };
@@ -59978,14 +59978,14 @@ var require_GuildStickerDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildStickerDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildStickerDeleteAction = class extends Action {
       static {
         __name(this, "GuildStickerDeleteAction");
       }
       handle(sticker) {
         sticker.guild.stickers.cache.delete(sticker.id);
-        this.client.emit(Events16.GuildStickerDelete, sticker);
+        this.client.emit(Events19.GuildStickerDelete, sticker);
         return { sticker };
       }
     };
@@ -59998,14 +59998,14 @@ var require_GuildStickerUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildStickerUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildStickerUpdateAction = class extends Action {
       static {
         __name(this, "GuildStickerUpdateAction");
       }
       handle(current, data) {
         const old = current._update(data);
-        this.client.emit(Events16.GuildStickerUpdate, old, current);
+        this.client.emit(Events19.GuildStickerUpdate, old, current);
         return { sticker: current };
       }
     };
@@ -60051,7 +60051,7 @@ var require_GuildUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/GuildUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var GuildUpdateAction = class extends Action {
       static {
         __name(this, "GuildUpdateAction");
@@ -60061,7 +60061,7 @@ var require_GuildUpdate = __commonJS({
         const guild = client.guilds.cache.get(data.id);
         if (guild) {
           const old = guild._update(data);
-          client.emit(Events16.GuildUpdate, old, guild);
+          client.emit(Events19.GuildUpdate, old, guild);
           return {
             old,
             updated: guild
@@ -61267,7 +61267,7 @@ var require_MentionableSelectMenuInteraction = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var MessageComponentInteraction = require_MessageComponentInteraction();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var MentionableSelectMenuInteraction = class extends MessageComponentInteraction {
       static {
         __name(this, "MentionableSelectMenuInteraction");
@@ -61285,7 +61285,7 @@ var require_MentionableSelectMenuInteraction = __commonJS({
             const user = users2[id];
             if (!user) {
               this.client.emit(
-                Events16.Debug,
+                Events19.Debug,
                 `[MentionableSelectMenuInteraction] Received a member without a user, skipping ${id}`
               );
               continue;
@@ -61848,7 +61848,7 @@ var require_UserSelectMenuInteraction = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var MessageComponentInteraction = require_MessageComponentInteraction();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var UserSelectMenuInteraction = class extends MessageComponentInteraction {
       static {
         __name(this, "UserSelectMenuInteraction");
@@ -61865,7 +61865,7 @@ var require_UserSelectMenuInteraction = __commonJS({
         for (const [id, member] of Object.entries(resolved?.members ?? {})) {
           const user = resolved.users[id];
           if (!user) {
-            this.client.emit(Events16.Debug, `[UserSelectMenuInteraction] Received a member without a user, skipping ${id}`);
+            this.client.emit(Events19.Debug, `[UserSelectMenuInteraction] Received a member without a user, skipping ${id}`);
             continue;
           }
           this.members.set(id, this.guild?.members._add({ user, ...member }) ?? { user, ...member });
@@ -61894,7 +61894,7 @@ var require_InteractionCreate = __commonJS({
     var StringSelectMenuInteraction = require_StringSelectMenuInteraction();
     var UserContextMenuCommandInteraction = require_UserContextMenuCommandInteraction();
     var UserSelectMenuInteraction = require_UserSelectMenuInteraction();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var InteractionCreateAction = class extends Action {
       static {
         __name(this, "InteractionCreateAction");
@@ -61921,7 +61921,7 @@ var require_InteractionCreate = __commonJS({
                 break;
               default:
                 client.emit(
-                  Events16.Debug,
+                  Events19.Debug,
                   `[INTERACTION] Received application command interaction with unknown type: ${data.data.type}`
                 );
                 return;
@@ -61950,7 +61950,7 @@ var require_InteractionCreate = __commonJS({
                 break;
               default:
                 client.emit(
-                  Events16.Debug,
+                  Events19.Debug,
                   `[INTERACTION] Received component interaction with unknown type: ${data.data.component_type}`
                 );
                 return;
@@ -61963,11 +61963,11 @@ var require_InteractionCreate = __commonJS({
             InteractionClass = ModalSubmitInteraction;
             break;
           default:
-            client.emit(Events16.Debug, `[INTERACTION] Received interaction with unknown type: ${data.type}`);
+            client.emit(Events19.Debug, `[INTERACTION] Received interaction with unknown type: ${data.type}`);
             return;
         }
         const interaction = new InteractionClass(client, data);
-        client.emit(Events16.InteractionCreate, interaction);
+        client.emit(Events19.InteractionCreate, interaction);
       }
     };
     module2.exports = InteractionCreateAction;
@@ -61979,7 +61979,7 @@ var require_InviteCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/InviteCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var InviteCreateAction = class extends Action {
       static {
         __name(this, "InviteCreateAction");
@@ -61991,7 +61991,7 @@ var require_InviteCreate = __commonJS({
         if (!channel) return false;
         const inviteData = Object.assign(data, { channel, guild });
         const invite = guild.invites._add(inviteData);
-        client.emit(Events16.InviteCreate, invite);
+        client.emit(Events19.InviteCreate, invite);
         return { invite };
       }
     };
@@ -62005,7 +62005,7 @@ var require_InviteDelete = __commonJS({
     "use strict";
     var Action = require_Action();
     var Invite2 = require_Invite();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var InviteDeleteAction = class extends Action {
       static {
         __name(this, "InviteDeleteAction");
@@ -62018,7 +62018,7 @@ var require_InviteDelete = __commonJS({
         const inviteData = Object.assign(data, { channel, guild });
         const invite = new Invite2(client, inviteData);
         guild.invites.cache.delete(invite.code);
-        client.emit(Events16.InviteDelete, invite);
+        client.emit(Events19.InviteDelete, invite);
         return { invite };
       }
     };
@@ -62031,7 +62031,7 @@ var require_MessageCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var MessageCreateAction = class extends Action {
       static {
         __name(this, "MessageCreateAction");
@@ -62054,7 +62054,7 @@ var require_MessageCreate = __commonJS({
           if (existing && existing.author?.id !== this.client.user.id) return { message: existing };
           const message = existing ?? channel.messages._add(data);
           channel.lastMessageId = data.id;
-          client.emit(Events16.MessageCreate, message);
+          client.emit(Events19.MessageCreate, message);
           return { message };
         }
         return {};
@@ -62069,7 +62069,7 @@ var require_MessageDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var MessageDeleteAction = class extends Action {
       static {
         __name(this, "MessageDeleteAction");
@@ -62084,7 +62084,7 @@ var require_MessageDelete = __commonJS({
           message = this.getMessage(data, channel);
           if (message) {
             channel.messages.cache.delete(message.id);
-            client.emit(Events16.MessageDelete, message);
+            client.emit(Events19.MessageDelete, message);
           }
         }
         return { message };
@@ -62100,7 +62100,7 @@ var require_MessageDeleteBulk = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var MessageDeleteBulkAction = class extends Action {
       static {
         __name(this, "MessageDeleteBulkAction");
@@ -62127,7 +62127,7 @@ var require_MessageDeleteBulk = __commonJS({
               channel.messages.cache.delete(id);
             }
           }
-          if (messages2.size > 0) client.emit(Events16.MessageBulkDelete, messages2, channel);
+          if (messages2.size > 0) client.emit(Events19.MessageBulkDelete, messages2, channel);
           return { messages: messages2 };
         }
         return {};
@@ -62142,7 +62142,7 @@ var require_MessagePollVoteAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/MessagePollVoteAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var MessagePollVoteAddAction = class extends Action {
       static {
         __name(this, "MessagePollVoteAddAction");
@@ -62161,7 +62161,7 @@ var require_MessagePollVoteAdd = __commonJS({
           answer.voters._add(user);
         }
         answer.voteCount++;
-        this.client.emit(Events16.MessagePollVoteAdd, answer, data.user_id);
+        this.client.emit(Events19.MessagePollVoteAdd, answer, data.user_id);
         return { poll: poll2 };
       }
     };
@@ -62174,7 +62174,7 @@ var require_MessagePollVoteRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/MessagePollVoteRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var MessagePollVoteRemoveAction = class extends Action {
       static {
         __name(this, "MessagePollVoteRemoveAction");
@@ -62192,7 +62192,7 @@ var require_MessagePollVoteRemove = __commonJS({
         if (answer.voteCount > 0) {
           answer.voteCount--;
         }
-        this.client.emit(Events16.MessagePollVoteRemove, answer, data.user_id);
+        this.client.emit(Events19.MessagePollVoteRemove, answer, data.user_id);
         return { poll: poll2 };
       }
     };
@@ -62205,7 +62205,7 @@ var require_MessageReactionAdd = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionAdd.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var Partials2 = require_Partials();
     var MessageReactionAdd = class extends Action {
       static {
@@ -62235,7 +62235,7 @@ var require_MessageReactionAdd = __commonJS({
         if (!reaction) return false;
         reaction._add(user, data.burst);
         if (fromStructure) return { message, reaction, user };
-        this.client.emit(Events16.MessageReactionAdd, reaction, user, { type: data.type, burst: data.burst });
+        this.client.emit(Events19.MessageReactionAdd, reaction, user, { type: data.type, burst: data.burst });
         return { message, reaction, user };
       }
     };
@@ -62248,7 +62248,7 @@ var require_MessageReactionRemove = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionRemove.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var MessageReactionRemove = class extends Action {
       static {
         __name(this, "MessageReactionRemove");
@@ -62268,7 +62268,7 @@ var require_MessageReactionRemove = __commonJS({
         const reaction = this.getReaction(data, message, user);
         if (!reaction) return false;
         reaction._remove(user, data.burst);
-        this.client.emit(Events16.MessageReactionRemove, reaction, user, { type: data.type, burst: data.burst });
+        this.client.emit(Events19.MessageReactionRemove, reaction, user, { type: data.type, burst: data.burst });
         return { message, reaction, user };
       }
     };
@@ -62281,7 +62281,7 @@ var require_MessageReactionRemoveAll = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionRemoveAll.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var MessageReactionRemoveAll = class extends Action {
       static {
         __name(this, "MessageReactionRemoveAll");
@@ -62293,7 +62293,7 @@ var require_MessageReactionRemoveAll = __commonJS({
         if (!message) return false;
         const removed = message.reactions.cache.clone();
         message.reactions.cache.clear();
-        this.client.emit(Events16.MessageReactionRemoveAll, message, removed);
+        this.client.emit(Events19.MessageReactionRemoveAll, message, removed);
         return { message };
       }
     };
@@ -62306,7 +62306,7 @@ var require_MessageReactionRemoveEmoji = __commonJS({
   "node_modules/discord.js/src/client/actions/MessageReactionRemoveEmoji.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var MessageReactionRemoveEmoji = class extends Action {
       static {
         __name(this, "MessageReactionRemoveEmoji");
@@ -62319,7 +62319,7 @@ var require_MessageReactionRemoveEmoji = __commonJS({
         const reaction = this.getReaction(data, message);
         if (!reaction) return false;
         if (!message.partial) message.reactions.cache.delete(reaction.emoji.id ?? reaction.emoji.name);
-        this.client.emit(Events16.MessageReactionRemoveEmoji, reaction);
+        this.client.emit(Events19.MessageReactionRemoveEmoji, reaction);
         return { reaction };
       }
     };
@@ -62362,7 +62362,7 @@ var require_PresenceUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/PresenceUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var Partials2 = require_Partials();
     var PresenceUpdateAction = class extends Action {
       static {
@@ -62387,11 +62387,11 @@ var require_PresenceUpdate = __commonJS({
             deaf: false,
             mute: false
           });
-          this.client.emit(Events16.GuildMemberAvailable, member);
+          this.client.emit(Events19.GuildMemberAvailable, member);
         }
         const newPresence = guild.presences._add(Object.assign(data, { guild }));
-        if (this.client.listenerCount(Events16.PresenceUpdate) && !newPresence.equals(oldPresence)) {
-          this.client.emit(Events16.PresenceUpdate, oldPresence, newPresence);
+        if (this.client.listenerCount(Events19.PresenceUpdate) && !newPresence.equals(oldPresence)) {
+          this.client.emit(Events19.PresenceUpdate, oldPresence, newPresence);
         }
       }
     };
@@ -62404,7 +62404,7 @@ var require_StageInstanceCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/StageInstanceCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var StageInstanceCreateAction = class extends Action {
       static {
         __name(this, "StageInstanceCreateAction");
@@ -62414,7 +62414,7 @@ var require_StageInstanceCreate = __commonJS({
         const channel = this.getChannel({ id: data.channel_id, guild_id: data.guild_id });
         if (channel) {
           const stageInstance = channel.guild.stageInstances._add(data);
-          client.emit(Events16.StageInstanceCreate, stageInstance);
+          client.emit(Events19.StageInstanceCreate, stageInstance);
           return { stageInstance };
         }
         return {};
@@ -62429,7 +62429,7 @@ var require_StageInstanceDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/StageInstanceDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var StageInstanceDeleteAction = class extends Action {
       static {
         __name(this, "StageInstanceDeleteAction");
@@ -62441,7 +62441,7 @@ var require_StageInstanceDelete = __commonJS({
           const stageInstance = channel.guild.stageInstances._add(data);
           if (stageInstance) {
             channel.guild.stageInstances.cache.delete(stageInstance.id);
-            client.emit(Events16.StageInstanceDelete, stageInstance);
+            client.emit(Events19.StageInstanceDelete, stageInstance);
             return { stageInstance };
           }
         }
@@ -62457,7 +62457,7 @@ var require_StageInstanceUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/StageInstanceUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var StageInstanceUpdateAction = class extends Action {
       static {
         __name(this, "StageInstanceUpdateAction");
@@ -62468,7 +62468,7 @@ var require_StageInstanceUpdate = __commonJS({
         if (channel) {
           const oldStageInstance = channel.guild.stageInstances.cache.get(data.id)?._clone() ?? null;
           const newStageInstance = channel.guild.stageInstances._add(data);
-          client.emit(Events16.StageInstanceUpdate, oldStageInstance, newStageInstance);
+          client.emit(Events19.StageInstanceUpdate, oldStageInstance, newStageInstance);
           return { oldStageInstance, newStageInstance };
         }
         return {};
@@ -62483,7 +62483,7 @@ var require_ThreadCreate = __commonJS({
   "node_modules/discord.js/src/client/actions/ThreadCreate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var ThreadCreateAction = class extends Action {
       static {
         __name(this, "ThreadCreateAction");
@@ -62493,7 +62493,7 @@ var require_ThreadCreate = __commonJS({
         const existing = client.channels.cache.has(data.id);
         const thread = client.channels._add(data);
         if (!existing && thread) {
-          client.emit(Events16.ThreadCreate, thread, data.newly_created ?? false);
+          client.emit(Events19.ThreadCreate, thread, data.newly_created ?? false);
         }
         return { thread };
       }
@@ -62507,7 +62507,7 @@ var require_ThreadDelete = __commonJS({
   "node_modules/discord.js/src/client/actions/ThreadDelete.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var ThreadDeleteAction = class extends Action {
       static {
         __name(this, "ThreadDeleteAction");
@@ -62517,7 +62517,7 @@ var require_ThreadDelete = __commonJS({
         const thread = client.channels.cache.get(data.id);
         if (thread) {
           client.channels._remove(thread.id);
-          client.emit(Events16.ThreadDelete, thread);
+          client.emit(Events19.ThreadDelete, thread);
         }
         return { thread };
       }
@@ -62532,7 +62532,7 @@ var require_ThreadListSync = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var ThreadListSyncAction = class extends Action {
       static {
         __name(this, "ThreadListSyncAction");
@@ -62561,7 +62561,7 @@ var require_ThreadListSync = __commonJS({
             thread.members._add(rawMember);
           }
         }
-        client.emit(Events16.ThreadListSync, syncedThreads, guild);
+        client.emit(Events19.ThreadListSync, syncedThreads, guild);
         return {
           syncedThreads
         };
@@ -62583,7 +62583,7 @@ var require_ThreadMemberUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/ThreadMemberUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var ThreadMemberUpdateAction = class extends Action {
       static {
         __name(this, "ThreadMemberUpdateAction");
@@ -62598,7 +62598,7 @@ var require_ThreadMemberUpdate = __commonJS({
             return { newMember };
           }
           const old = member._update(data);
-          client.emit(Events16.ThreadMemberUpdate, old, member);
+          client.emit(Events19.ThreadMemberUpdate, old, member);
         }
         return {};
       }
@@ -62613,7 +62613,7 @@ var require_ThreadMembersUpdate = __commonJS({
     "use strict";
     var { Collection: Collection3 } = require_dist6();
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var ThreadMembersUpdateAction = class extends Action {
       static {
         __name(this, "ThreadMembersUpdateAction");
@@ -62638,7 +62638,7 @@ var require_ThreadMembersUpdate = __commonJS({
           if (addedMembers.size === 0 && removedMembers.size === 0) {
             return {};
           }
-          client.emit(Events16.ThreadMembersUpdate, addedMembers, removedMembers, thread);
+          client.emit(Events19.ThreadMembersUpdate, addedMembers, removedMembers, thread);
         }
         return {};
       }
@@ -62709,7 +62709,7 @@ var require_TypingStart = __commonJS({
     "use strict";
     var Action = require_Action();
     var Typing = require_Typing();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var TypingStart = class extends Action {
       static {
         __name(this, "TypingStart");
@@ -62718,12 +62718,12 @@ var require_TypingStart = __commonJS({
         const channel = this.getChannel({ id: data.channel_id, ..."guild_id" in data && { guild_id: data.guild_id } });
         if (!channel) return;
         if (!channel.isTextBased()) {
-          this.client.emit(Events16.Warn, `Discord sent a typing packet to a ${channel.type} channel ${channel.id}`);
+          this.client.emit(Events19.Warn, `Discord sent a typing packet to a ${channel.type} channel ${channel.id}`);
           return;
         }
         const user = this.getUserFromMember(data);
         if (user) {
-          this.client.emit(Events16.TypingStart, new Typing(channel, user, data));
+          this.client.emit(Events19.TypingStart, new Typing(channel, user, data));
         }
       }
     };
@@ -62736,7 +62736,7 @@ var require_UserUpdate = __commonJS({
   "node_modules/discord.js/src/client/actions/UserUpdate.js"(exports2, module2) {
     "use strict";
     var Action = require_Action();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var UserUpdateAction = class extends Action {
       static {
         __name(this, "UserUpdateAction");
@@ -62746,7 +62746,7 @@ var require_UserUpdate = __commonJS({
         const newUser = data.id === client.user.id ? client.user : client.users.cache.get(data.id);
         const oldUser = newUser._update(data);
         if (!oldUser.equals(newUser)) {
-          client.emit(Events16.UserUpdate, oldUser, newUser);
+          client.emit(Events19.UserUpdate, oldUser, newUser);
           return {
             old: oldUser,
             updated: newUser
@@ -62768,7 +62768,7 @@ var require_VoiceStateUpdate = __commonJS({
     "use strict";
     var Action = require_Action();
     var VoiceState = require_VoiceState();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var VoiceStateUpdate = class extends Action {
       static {
         __name(this, "VoiceStateUpdate");
@@ -62786,10 +62786,10 @@ var require_VoiceStateUpdate = __commonJS({
             member = guild.members._add(data.member);
           }
           if (member?.user.id === client.user.id) {
-            client.emit(Events16.Debug, `[VOICE] received voice state update: ${JSON.stringify(data)}`);
+            client.emit(Events19.Debug, `[VOICE] received voice state update: ${JSON.stringify(data)}`);
             client.voice.onVoiceStateUpdate(data);
           }
-          client.emit(Events16.VoiceStateUpdate, oldState, newState);
+          client.emit(Events19.VoiceStateUpdate, oldState, newState);
         }
       }
     };
@@ -62916,7 +62916,7 @@ var require_ActionsManager = __commonJS({
 var require_ClientVoiceManager = __commonJS({
   "node_modules/discord.js/src/client/voice/ClientVoiceManager.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var ClientVoiceManager2 = class {
       static {
         __name(this, "ClientVoiceManager");
@@ -62924,7 +62924,7 @@ var require_ClientVoiceManager = __commonJS({
       constructor(client) {
         Object.defineProperty(this, "client", { value: client });
         this.adapters = /* @__PURE__ */ new Map();
-        client.on(Events16.ShardDisconnect, (_, shardId) => {
+        client.on(Events19.ShardDisconnect, (_, shardId) => {
           for (const [guildId, adapter] of this.adapters.entries()) {
             if (client.guilds.cache.get(guildId)?.shardId === shardId) {
               adapter.destroy();
@@ -63681,7 +63681,7 @@ var require_permessage_deflate2 = __commonJS({
     var kBuffers = /* @__PURE__ */ Symbol("buffers");
     var kError = /* @__PURE__ */ Symbol("error");
     var zlibLimiter;
-    var PerMessageDeflate = class {
+    var PerMessageDeflate2 = class {
       static {
         __name(this, "PerMessageDeflate");
       }
@@ -64022,7 +64022,7 @@ var require_permessage_deflate2 = __commonJS({
         });
       }
     };
-    module2.exports = PerMessageDeflate;
+    module2.exports = PerMessageDeflate2;
     function deflateOnData(chunk) {
       this[kBuffers].push(chunk);
       this[kTotalLength] += chunk.length;
@@ -64263,7 +64263,7 @@ var require_receiver2 = __commonJS({
   "node_modules/ws/lib/receiver.js"(exports2, module2) {
     "use strict";
     var { Writable } = require("stream");
-    var PerMessageDeflate = require_permessage_deflate2();
+    var PerMessageDeflate2 = require_permessage_deflate2();
     var {
       BINARY_TYPES,
       EMPTY_BUFFER,
@@ -64280,7 +64280,7 @@ var require_receiver2 = __commonJS({
     var GET_DATA = 4;
     var INFLATING = 5;
     var DEFER_EVENT = 6;
-    var Receiver = class extends Writable {
+    var Receiver2 = class extends Writable {
       static {
         __name(this, "Receiver");
       }
@@ -64452,7 +64452,7 @@ var require_receiver2 = __commonJS({
           return;
         }
         const compressed = (buf[0] & 64) === 64;
-        if (compressed && !this._extensions[PerMessageDeflate.extensionName]) {
+        if (compressed && !this._extensions[PerMessageDeflate2.extensionName]) {
           const error62 = this.createError(
             RangeError,
             "RSV1 must be clear",
@@ -64707,7 +64707,7 @@ var require_receiver2 = __commonJS({
        * @private
        */
       decompress(data, cb) {
-        const perMessageDeflate = this._extensions[PerMessageDeflate.extensionName];
+        const perMessageDeflate = this._extensions[PerMessageDeflate2.extensionName];
         perMessageDeflate.decompress(data, this._fin, (err, buf) => {
           if (err) return cb(err);
           if (buf.length) {
@@ -64880,7 +64880,7 @@ var require_receiver2 = __commonJS({
         return err;
       }
     };
-    module2.exports = Receiver;
+    module2.exports = Receiver2;
   }
 });
 
@@ -64893,7 +64893,7 @@ var require_sender2 = __commonJS({
     var {
       types: { isUint8Array }
     } = require("util");
-    var PerMessageDeflate = require_permessage_deflate2();
+    var PerMessageDeflate2 = require_permessage_deflate2();
     var { EMPTY_BUFFER, kWebSocket, NOOP } = require_constants6();
     var { isBlob, isValidStatusCode } = require_validation();
     var { mask: applyMask, toBuffer } = require_buffer_util();
@@ -64905,7 +64905,7 @@ var require_sender2 = __commonJS({
     var DEFAULT = 0;
     var DEFLATING = 1;
     var GET_BLOB_DATA = 2;
-    var Sender = class _Sender {
+    var Sender2 = class _Sender {
       static {
         __name(this, "Sender");
       }
@@ -65182,7 +65182,7 @@ var require_sender2 = __commonJS({
        * @public
        */
       send(data, options, cb) {
-        const perMessageDeflate = this._extensions[PerMessageDeflate.extensionName];
+        const perMessageDeflate = this._extensions[PerMessageDeflate2.extensionName];
         let opcode = options.binary ? 2 : 1;
         let rsv1 = options.compress;
         let byteLength;
@@ -65306,7 +65306,7 @@ var require_sender2 = __commonJS({
           this.sendFrame(_Sender.frame(data, options), cb);
           return;
         }
-        const perMessageDeflate = this._extensions[PerMessageDeflate.extensionName];
+        const perMessageDeflate = this._extensions[PerMessageDeflate2.extensionName];
         this._bufferedBytes += options[kByteLength];
         this._state = DEFLATING;
         perMessageDeflate.compress(data, options.fin, (_, buf) => {
@@ -65364,7 +65364,7 @@ var require_sender2 = __commonJS({
         }
       }
     };
-    module2.exports = Sender;
+    module2.exports = Sender2;
     function callCallbacks(sender, err, cb) {
       if (typeof cb === "function") cb(err);
       for (let i = 0; i < sender._queue.length; i++) {
@@ -65761,11 +65761,11 @@ var require_extension = __commonJS({
     }
     __name(parse4, "parse");
     function format(extensions) {
-      return Object.keys(extensions).map((extension) => {
-        let configurations = extensions[extension];
+      return Object.keys(extensions).map((extension2) => {
+        let configurations = extensions[extension2];
         if (!Array.isArray(configurations)) configurations = [configurations];
         return configurations.map((params) => {
-          return [extension].concat(
+          return [extension2].concat(
             Object.keys(params).map((k) => {
               let values2 = params[k];
               if (!Array.isArray(values2)) values2 = [values2];
@@ -65784,7 +65784,7 @@ var require_extension = __commonJS({
 var require_websocket2 = __commonJS({
   "node_modules/ws/lib/websocket.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("events");
+    var EventEmitter2 = require("events");
     var https = require("https");
     var http = require("http");
     var net2 = require("net");
@@ -65792,9 +65792,9 @@ var require_websocket2 = __commonJS({
     var { randomBytes, createHash } = require("crypto");
     var { Duplex, Readable } = require("stream");
     var { URL: URL2 } = require("url");
-    var PerMessageDeflate = require_permessage_deflate2();
-    var Receiver = require_receiver2();
-    var Sender = require_sender2();
+    var PerMessageDeflate2 = require_permessage_deflate2();
+    var Receiver2 = require_receiver2();
+    var Sender2 = require_sender2();
     var { isBlob } = require_validation();
     var {
       BINARY_TYPES,
@@ -65816,7 +65816,7 @@ var require_websocket2 = __commonJS({
     var protocolVersions = [8, 13];
     var readyStates = ["CONNECTING", "OPEN", "CLOSING", "CLOSED"];
     var subprotocolRegex = /^[!#$%&'*+\-.0-9A-Z^_`|a-z~]+$/;
-    var WebSocket = class _WebSocket extends EventEmitter {
+    var WebSocket2 = class _WebSocket extends EventEmitter2 {
       static {
         __name(this, "WebSocket");
       }
@@ -65976,7 +65976,7 @@ var require_websocket2 = __commonJS({
        * @private
        */
       setSocket(socket, head, options) {
-        const receiver = new Receiver({
+        const receiver = new Receiver2({
           allowSynchronousEvents: options.allowSynchronousEvents,
           binaryType: this.binaryType,
           extensions: this._extensions,
@@ -65986,7 +65986,7 @@ var require_websocket2 = __commonJS({
           maxPayload: options.maxPayload,
           skipUTF8Validation: options.skipUTF8Validation
         });
-        const sender = new Sender(socket, this._extensions, options.generateMask);
+        const sender = new Sender2(socket, this._extensions, options.generateMask);
         this._receiver = receiver;
         this._sender = sender;
         this._socket = socket;
@@ -66021,8 +66021,8 @@ var require_websocket2 = __commonJS({
           this.emit("close", this._closeCode, this._closeMessage);
           return;
         }
-        if (this._extensions[PerMessageDeflate.extensionName]) {
-          this._extensions[PerMessageDeflate.extensionName].cleanup();
+        if (this._extensions[PerMessageDeflate2.extensionName]) {
+          this._extensions[PerMessageDeflate2.extensionName].cleanup();
         }
         this._receiver.removeAllListeners();
         this._readyState = _WebSocket.CLOSED;
@@ -66184,7 +66184,7 @@ var require_websocket2 = __commonJS({
           fin: true,
           ...options
         };
-        if (!this._extensions[PerMessageDeflate.extensionName]) {
+        if (!this._extensions[PerMessageDeflate2.extensionName]) {
           opts.compress = false;
         }
         this._sender.send(data || EMPTY_BUFFER, opts, cb);
@@ -66207,35 +66207,35 @@ var require_websocket2 = __commonJS({
         }
       }
     };
-    Object.defineProperty(WebSocket, "CONNECTING", {
+    Object.defineProperty(WebSocket2, "CONNECTING", {
       enumerable: true,
       value: readyStates.indexOf("CONNECTING")
     });
-    Object.defineProperty(WebSocket.prototype, "CONNECTING", {
+    Object.defineProperty(WebSocket2.prototype, "CONNECTING", {
       enumerable: true,
       value: readyStates.indexOf("CONNECTING")
     });
-    Object.defineProperty(WebSocket, "OPEN", {
+    Object.defineProperty(WebSocket2, "OPEN", {
       enumerable: true,
       value: readyStates.indexOf("OPEN")
     });
-    Object.defineProperty(WebSocket.prototype, "OPEN", {
+    Object.defineProperty(WebSocket2.prototype, "OPEN", {
       enumerable: true,
       value: readyStates.indexOf("OPEN")
     });
-    Object.defineProperty(WebSocket, "CLOSING", {
+    Object.defineProperty(WebSocket2, "CLOSING", {
       enumerable: true,
       value: readyStates.indexOf("CLOSING")
     });
-    Object.defineProperty(WebSocket.prototype, "CLOSING", {
+    Object.defineProperty(WebSocket2.prototype, "CLOSING", {
       enumerable: true,
       value: readyStates.indexOf("CLOSING")
     });
-    Object.defineProperty(WebSocket, "CLOSED", {
+    Object.defineProperty(WebSocket2, "CLOSED", {
       enumerable: true,
       value: readyStates.indexOf("CLOSED")
     });
-    Object.defineProperty(WebSocket.prototype, "CLOSED", {
+    Object.defineProperty(WebSocket2.prototype, "CLOSED", {
       enumerable: true,
       value: readyStates.indexOf("CLOSED")
     });
@@ -66248,10 +66248,10 @@ var require_websocket2 = __commonJS({
       "readyState",
       "url"
     ].forEach((property) => {
-      Object.defineProperty(WebSocket.prototype, property, { enumerable: true });
+      Object.defineProperty(WebSocket2.prototype, property, { enumerable: true });
     });
     ["open", "error", "close", "message"].forEach((method) => {
-      Object.defineProperty(WebSocket.prototype, `on${method}`, {
+      Object.defineProperty(WebSocket2.prototype, `on${method}`, {
         enumerable: true,
         get() {
           for (const listener of this.listeners(method)) {
@@ -66273,9 +66273,9 @@ var require_websocket2 = __commonJS({
         }
       });
     });
-    WebSocket.prototype.addEventListener = addEventListener;
-    WebSocket.prototype.removeEventListener = removeEventListener;
-    module2.exports = WebSocket;
+    WebSocket2.prototype.addEventListener = addEventListener;
+    WebSocket2.prototype.removeEventListener = removeEventListener;
+    module2.exports = WebSocket2;
     function initAsClient(websocket, address, protocols, options) {
       const opts = {
         allowSynchronousEvents: true,
@@ -66361,13 +66361,13 @@ var require_websocket2 = __commonJS({
       opts.path = parsedUrl.pathname + parsedUrl.search;
       opts.timeout = opts.handshakeTimeout;
       if (opts.perMessageDeflate) {
-        perMessageDeflate = new PerMessageDeflate({
+        perMessageDeflate = new PerMessageDeflate2({
           ...opts.perMessageDeflate,
           isServer: false,
           maxPayload: opts.maxPayload
         });
         opts.headers["Sec-WebSocket-Extensions"] = format({
-          [PerMessageDeflate.extensionName]: perMessageDeflate.offer()
+          [PerMessageDeflate2.extensionName]: perMessageDeflate.offer()
         });
       }
       if (protocols.length) {
@@ -66466,7 +66466,7 @@ var require_websocket2 = __commonJS({
       });
       req.on("upgrade", (res, socket, head) => {
         websocket.emit("upgrade", res);
-        if (websocket.readyState !== WebSocket.CONNECTING) return;
+        if (websocket.readyState !== WebSocket2.CONNECTING) return;
         req = websocket._req = null;
         const upgrade = res.headers.upgrade;
         if (upgrade === void 0 || upgrade.toLowerCase() !== "websocket") {
@@ -66510,19 +66510,19 @@ var require_websocket2 = __commonJS({
             return;
           }
           const extensionNames = Object.keys(extensions);
-          if (extensionNames.length !== 1 || extensionNames[0] !== PerMessageDeflate.extensionName) {
+          if (extensionNames.length !== 1 || extensionNames[0] !== PerMessageDeflate2.extensionName) {
             const message = "Server indicated an extension that was not requested";
             abortHandshake(websocket, socket, message);
             return;
           }
           try {
-            perMessageDeflate.accept(extensions[PerMessageDeflate.extensionName]);
+            perMessageDeflate.accept(extensions[PerMessageDeflate2.extensionName]);
           } catch (err) {
             const message = "Invalid Sec-WebSocket-Extensions header";
             abortHandshake(websocket, socket, message);
             return;
           }
-          websocket._extensions[PerMessageDeflate.extensionName] = perMessageDeflate;
+          websocket._extensions[PerMessageDeflate2.extensionName] = perMessageDeflate;
         }
         websocket.setSocket(socket, head, {
           allowSynchronousEvents: opts.allowSynchronousEvents,
@@ -66541,7 +66541,7 @@ var require_websocket2 = __commonJS({
     }
     __name(initAsClient, "initAsClient");
     function emitErrorAndClose(websocket, err) {
-      websocket._readyState = WebSocket.CLOSING;
+      websocket._readyState = WebSocket2.CLOSING;
       websocket._errorEmitted = true;
       websocket.emit("error", err);
       websocket.emitClose();
@@ -66561,7 +66561,7 @@ var require_websocket2 = __commonJS({
     }
     __name(tlsConnect, "tlsConnect");
     function abortHandshake(websocket, stream, message) {
-      websocket._readyState = WebSocket.CLOSING;
+      websocket._readyState = WebSocket2.CLOSING;
       const err = new Error(message);
       Error.captureStackTrace(err, abortHandshake);
       if (stream.setHeader) {
@@ -66646,9 +66646,9 @@ var require_websocket2 = __commonJS({
     __name(resume, "resume");
     function senderOnError(err) {
       const websocket = this[kWebSocket];
-      if (websocket.readyState === WebSocket.CLOSED) return;
-      if (websocket.readyState === WebSocket.OPEN) {
-        websocket._readyState = WebSocket.CLOSING;
+      if (websocket.readyState === WebSocket2.CLOSED) return;
+      if (websocket.readyState === WebSocket2.OPEN) {
+        websocket._readyState = WebSocket2.CLOSING;
         setCloseTimer(websocket);
       }
       this._socket.end();
@@ -66670,7 +66670,7 @@ var require_websocket2 = __commonJS({
       this.removeListener("close", socketOnClose);
       this.removeListener("data", socketOnData);
       this.removeListener("end", socketOnEnd);
-      websocket._readyState = WebSocket.CLOSING;
+      websocket._readyState = WebSocket2.CLOSING;
       if (!this._readableState.endEmitted && !websocket._closeFrameReceived && !websocket._receiver._writableState.errorEmitted && this._readableState.length !== 0) {
         const chunk = this.read(this._readableState.length);
         websocket._receiver.write(chunk);
@@ -66694,7 +66694,7 @@ var require_websocket2 = __commonJS({
     __name(socketOnData, "socketOnData");
     function socketOnEnd() {
       const websocket = this[kWebSocket];
-      websocket._readyState = WebSocket.CLOSING;
+      websocket._readyState = WebSocket2.CLOSING;
       websocket._receiver.end();
       this.end();
     }
@@ -66704,7 +66704,7 @@ var require_websocket2 = __commonJS({
       this.removeListener("error", socketOnError);
       this.on("error", NOOP);
       if (websocket) {
-        websocket._readyState = WebSocket.CLOSING;
+        websocket._readyState = WebSocket2.CLOSING;
         this.destroy();
       }
     }
@@ -66716,7 +66716,7 @@ var require_websocket2 = __commonJS({
 var require_stream = __commonJS({
   "node_modules/ws/lib/stream.js"(exports2, module2) {
     "use strict";
-    var WebSocket = require_websocket2();
+    var WebSocket2 = require_websocket2();
     var { Duplex } = require("stream");
     function emitClose(stream) {
       stream.emit("close");
@@ -66736,7 +66736,7 @@ var require_stream = __commonJS({
       }
     }
     __name(duplexOnError, "duplexOnError");
-    function createWebSocketStream(ws, options) {
+    function createWebSocketStream2(ws, options) {
       let terminateOnDestroy = true;
       const duplex = new Duplex({
         ...options,
@@ -66809,8 +66809,8 @@ var require_stream = __commonJS({
       duplex.on("error", duplexOnError);
       return duplex;
     }
-    __name(createWebSocketStream, "createWebSocketStream");
-    module2.exports = createWebSocketStream;
+    __name(createWebSocketStream2, "createWebSocketStream");
+    module2.exports = createWebSocketStream2;
   }
 });
 
@@ -66864,20 +66864,20 @@ var require_subprotocol = __commonJS({
 var require_websocket_server = __commonJS({
   "node_modules/ws/lib/websocket-server.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("events");
+    var EventEmitter2 = require("events");
     var http = require("http");
     var { Duplex } = require("stream");
     var { createHash } = require("crypto");
-    var extension = require_extension();
-    var PerMessageDeflate = require_permessage_deflate2();
-    var subprotocol = require_subprotocol();
-    var WebSocket = require_websocket2();
+    var extension2 = require_extension();
+    var PerMessageDeflate2 = require_permessage_deflate2();
+    var subprotocol2 = require_subprotocol();
+    var WebSocket2 = require_websocket2();
     var { CLOSE_TIMEOUT, GUID, kWebSocket } = require_constants6();
     var keyRegex = /^[+/0-9A-Za-z]{22}==$/;
     var RUNNING = 0;
     var CLOSING = 1;
     var CLOSED = 2;
-    var WebSocketServer = class extends EventEmitter {
+    var WebSocketServer2 = class extends EventEmitter2 {
       static {
         __name(this, "WebSocketServer");
       }
@@ -66940,7 +66940,7 @@ var require_websocket_server = __commonJS({
           host: null,
           path: null,
           port: null,
-          WebSocket,
+          WebSocket: WebSocket2,
           ...options
         };
         if (options.port == null && !options.server && !options.noServer || options.port != null && (options.server || options.noServer) || options.server && options.noServer) {
@@ -67102,7 +67102,7 @@ var require_websocket_server = __commonJS({
         let protocols = /* @__PURE__ */ new Set();
         if (secWebSocketProtocol !== void 0) {
           try {
-            protocols = subprotocol.parse(secWebSocketProtocol);
+            protocols = subprotocol2.parse(secWebSocketProtocol);
           } catch (err) {
             const message = "Invalid Sec-WebSocket-Protocol header";
             abortHandshakeOrEmitwsClientError(this, req, socket, 400, message);
@@ -67112,16 +67112,16 @@ var require_websocket_server = __commonJS({
         const secWebSocketExtensions = req.headers["sec-websocket-extensions"];
         const extensions = {};
         if (this.options.perMessageDeflate && secWebSocketExtensions !== void 0) {
-          const perMessageDeflate = new PerMessageDeflate({
+          const perMessageDeflate = new PerMessageDeflate2({
             ...this.options.perMessageDeflate,
             isServer: true,
             maxPayload: this.options.maxPayload
           });
           try {
-            const offers = extension.parse(secWebSocketExtensions);
-            if (offers[PerMessageDeflate.extensionName]) {
-              perMessageDeflate.accept(offers[PerMessageDeflate.extensionName]);
-              extensions[PerMessageDeflate.extensionName] = perMessageDeflate;
+            const offers = extension2.parse(secWebSocketExtensions);
+            if (offers[PerMessageDeflate2.extensionName]) {
+              perMessageDeflate.accept(offers[PerMessageDeflate2.extensionName]);
+              extensions[PerMessageDeflate2.extensionName] = perMessageDeflate;
             }
           } catch (err) {
             const message = "Invalid or unacceptable Sec-WebSocket-Extensions header";
@@ -67192,10 +67192,10 @@ var require_websocket_server = __commonJS({
             ws._protocol = protocol;
           }
         }
-        if (extensions[PerMessageDeflate.extensionName]) {
-          const params = extensions[PerMessageDeflate.extensionName].params;
-          const value = extension.format({
-            [PerMessageDeflate.extensionName]: [params]
+        if (extensions[PerMessageDeflate2.extensionName]) {
+          const params = extensions[PerMessageDeflate2.extensionName].params;
+          const value = extension2.format({
+            [PerMessageDeflate2.extensionName]: [params]
           });
           headers.push(`Sec-WebSocket-Extensions: ${value}`);
           ws._extensions = extensions;
@@ -67222,7 +67222,7 @@ var require_websocket_server = __commonJS({
         cb(ws, req);
       }
     };
-    module2.exports = WebSocketServer;
+    module2.exports = WebSocketServer2;
     function addListeners(server, map2) {
       for (const event of Object.keys(map2)) server.on(event, map2[event]);
       return /* @__PURE__ */ __name(function removeListeners() {
@@ -67273,24 +67273,24 @@ var require_websocket_server = __commonJS({
 var require_ws = __commonJS({
   "node_modules/ws/index.js"(exports2, module2) {
     "use strict";
-    var createWebSocketStream = require_stream();
-    var extension = require_extension();
-    var PerMessageDeflate = require_permessage_deflate2();
-    var Receiver = require_receiver2();
-    var Sender = require_sender2();
-    var subprotocol = require_subprotocol();
-    var WebSocket = require_websocket2();
-    var WebSocketServer = require_websocket_server();
-    WebSocket.createWebSocketStream = createWebSocketStream;
-    WebSocket.extension = extension;
-    WebSocket.PerMessageDeflate = PerMessageDeflate;
-    WebSocket.Receiver = Receiver;
-    WebSocket.Sender = Sender;
-    WebSocket.Server = WebSocketServer;
-    WebSocket.subprotocol = subprotocol;
-    WebSocket.WebSocket = WebSocket;
-    WebSocket.WebSocketServer = WebSocketServer;
-    module2.exports = WebSocket;
+    var createWebSocketStream2 = require_stream();
+    var extension2 = require_extension();
+    var PerMessageDeflate2 = require_permessage_deflate2();
+    var Receiver2 = require_receiver2();
+    var Sender2 = require_sender2();
+    var subprotocol2 = require_subprotocol();
+    var WebSocket2 = require_websocket2();
+    var WebSocketServer2 = require_websocket_server();
+    WebSocket2.createWebSocketStream = createWebSocketStream2;
+    WebSocket2.extension = extension2;
+    WebSocket2.PerMessageDeflate = PerMessageDeflate2;
+    WebSocket2.Receiver = Receiver2;
+    WebSocket2.Sender = Sender2;
+    WebSocket2.Server = WebSocketServer2;
+    WebSocket2.subprotocol = subprotocol2;
+    WebSocket2.WebSocket = WebSocket2;
+    WebSocket2.WebSocketServer = WebSocketServer2;
+    module2.exports = WebSocket2;
   }
 });
 
@@ -67408,8 +67408,8 @@ var require_dist10 = __commonJS({
     };
     var import_node_worker_threads2 = require("worker_threads");
     var import_collection2 = require_dist9();
-    var import_node_events = require("events");
-    var import_node_path4 = require("path");
+    var import_node_events2 = require("events");
+    var import_node_path5 = require("path");
     var import_node_worker_threads = require("worker_threads");
     var import_collection = require_dist9();
     var WorkerSendPayloadOp = /* @__PURE__ */ ((WorkerSendPayloadOp2) => {
@@ -67544,7 +67544,7 @@ var require_dist10 = __commonJS({
       }
       async setupWorker(workerData2) {
         const worker = new import_node_worker_threads.Worker(this.resolveWorkerPath(), { workerData: workerData2 });
-        await (0, import_node_events.once)(worker, "online");
+        await (0, import_node_events2.once)(worker, "online");
         await this.waitForWorkerReady(worker);
         worker.on("error", (err) => {
           throw err;
@@ -67565,18 +67565,18 @@ var require_dist10 = __commonJS({
       resolveWorkerPath() {
         const path = this.options.workerPath;
         if (!path) {
-          return (0, import_node_path4.join)(__dirname, "defaultWorker.js");
+          return (0, import_node_path5.join)(__dirname, "defaultWorker.js");
         }
-        if ((0, import_node_path4.isAbsolute)(path)) {
+        if ((0, import_node_path5.isAbsolute)(path)) {
           return path;
         }
         if (/^\.\.?[/\\]/.test(path)) {
-          return (0, import_node_path4.resolve)(path);
+          return (0, import_node_path5.resolve)(path);
         }
         try {
           return require.resolve(path);
         } catch {
-          return (0, import_node_path4.resolve)(path);
+          return (0, import_node_path5.resolve)(path);
         }
       }
       async waitForWorkerReady(worker) {
@@ -67747,7 +67747,7 @@ var require_dist10 = __commonJS({
     };
     var import_collection6 = require_dist9();
     var import_node_buffer = require("buffer");
-    var import_node_events2 = require("events");
+    var import_node_events22 = require("events");
     var import_node_timers = require("timers");
     var import_promises2 = require("timers/promises");
     var import_node_url = require("url");
@@ -67758,7 +67758,7 @@ var require_dist10 = __commonJS({
     var import_async_queue2 = require_cjs2();
     var import_async_event_emitter = require_dist3();
     var import_v102 = require_v106();
-    var import_ws = require_ws();
+    var import_ws2 = require_ws();
     var import_node_process = __toESM2(require("process"));
     var import_collection4 = require_dist9();
     var import_util9 = require_dist();
@@ -67888,7 +67888,7 @@ var require_dist10 = __commonJS({
       CloseCodes2[CloseCodes2["Resuming"] = 4200] = "Resuming";
       return CloseCodes2;
     })(CloseCodes || {});
-    var WebSocketConstructor = (0, import_util22.shouldUseGlobalFetchAndWebSocket)() ? globalThis.WebSocket : import_ws.WebSocket;
+    var WebSocketConstructor = (0, import_util22.shouldUseGlobalFetchAndWebSocket)() ? globalThis.WebSocket : import_ws2.WebSocket;
     var WebSocketShard = class extends import_async_event_emitter.AsyncEventEmitter {
       static {
         __name(this, "WebSocketShard");
@@ -67928,8 +67928,8 @@ var require_dist10 = __commonJS({
         let promise2;
         if (!this.initialConnectResolved) {
           promise2 = Promise.race([
-            (0, import_node_events2.once)(this, "ready", { signal: controller.signal }),
-            (0, import_node_events2.once)(this, "resumed", { signal: controller.signal })
+            (0, import_node_events22.once)(this, "ready", { signal: controller.signal }),
+            (0, import_node_events22.once)(this, "resumed", { signal: controller.signal })
           ]);
         }
         void this.internalConnect();
@@ -68028,7 +68028,7 @@ var require_dist10 = __commonJS({
         if (this.connection) {
           this.connection.onmessage = null;
           this.connection.onclose = null;
-          const shouldClose = this.connection.readyState === import_ws.WebSocket.OPEN;
+          const shouldClose = this.connection.readyState === import_ws2.WebSocket.OPEN;
           this.debug([
             "Connection status during destroy",
             `Needs closing: ${shouldClose}`,
@@ -68062,8 +68062,8 @@ var require_dist10 = __commonJS({
         const closeController = new AbortController();
         try {
           const closed = await Promise.race([
-            (0, import_node_events2.once)(this, event, { signal: timeoutController.signal }).then(() => false),
-            (0, import_node_events2.once)(this, "closed", { signal: closeController.signal }).then(() => true)
+            (0, import_node_events22.once)(this, event, { signal: timeoutController.signal }).then(() => false),
+            (0, import_node_events22.once)(this, "closed", { signal: closeController.signal }).then(() => true)
           ]);
           return { ok: !closed };
         } catch {
@@ -68095,7 +68095,7 @@ var require_dist10 = __commonJS({
         if (this.#status !== 3 && !ImportantGatewayOpcodes.has(payload.op)) {
           this.debug(["Tried to send a non-crucial payload before the shard was ready, waiting"]);
           try {
-            await (0, import_node_events2.once)(
+            await (0, import_node_events22.once)(
               this,
               "ready"
               /* Ready */
@@ -68115,7 +68115,7 @@ var require_dist10 = __commonJS({
           const controller = new AbortController();
           const interrupted = await Promise.race([
             (0, import_promises2.setTimeout)(sleepFor).then(() => false),
-            (0, import_node_events2.once)(this, "closed", { signal: controller.signal }).then(() => true)
+            (0, import_node_events22.once)(this, "closed", { signal: controller.signal }).then(() => true)
           ]);
           if (interrupted) {
             this.debug(["Connection closed while waiting for the send rate limit to reset, re-queueing payload"]);
@@ -68845,14 +68845,14 @@ var require_WebSocketShardEvents = __commonJS({
 var require_WebSocketShard = __commonJS({
   "node_modules/discord.js/src/client/websocket/WebSocketShard.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("node:events");
+    var EventEmitter2 = require("node:events");
     var process2 = require("node:process");
     var { setTimeout: setTimeout2, clearTimeout: clearTimeout2 } = require("node:timers");
     var { GatewayIntentBits: GatewayIntentBits2 } = require_v106();
     var Status2 = require_Status();
     var WebSocketShardEvents = require_WebSocketShardEvents();
     var deprecationEmittedForImportant = false;
-    var WebSocketShard = class extends EventEmitter {
+    var WebSocketShard = class extends EventEmitter2 {
       static {
         __name(this, "WebSocketShard");
       }
@@ -69051,13 +69051,13 @@ var require_CHANNEL_DELETE = __commonJS({
 var require_CHANNEL_PINS_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/CHANNEL_PINS_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       const channel = client.channels.cache.get(data.channel_id);
       const time4 = data.last_pin_timestamp ? Date.parse(data.last_pin_timestamp) : null;
       if (channel) {
         channel.lastPinTimestamp = time4;
-        client.emit(Events16.ChannelPinsUpdate, channel, time4);
+        client.emit(Events19.ChannelPinsUpdate, channel, time4);
       }
     };
   }
@@ -69067,11 +69067,11 @@ var require_CHANNEL_PINS_UPDATE = __commonJS({
 var require_CHANNEL_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/CHANNEL_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, packet) => {
       const { old, updated } = client.actions.ChannelUpdate.handle(packet.d);
       if (old && updated) {
-        client.emit(Events16.ChannelUpdate, old, updated);
+        client.emit(Events19.ChannelUpdate, old, updated);
       }
     };
   }
@@ -69141,20 +69141,20 @@ var require_GUILD_BAN_REMOVE = __commonJS({
 var require_GUILD_CREATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_CREATE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var Status2 = require_Status();
     module2.exports = (client, { d: data }, shard) => {
       let guild = client.guilds.cache.get(data.id);
       if (guild) {
         if (!guild.available && !data.unavailable) {
           guild._patch(data);
-          client.emit(Events16.GuildAvailable, guild);
+          client.emit(Events19.GuildAvailable, guild);
         }
       } else {
         data.shardId = shard.id;
         guild = client.guilds._add(data);
         if (client.ws.status === Status2.Ready) {
-          client.emit(Events16.GuildCreate, guild);
+          client.emit(Events19.GuildCreate, guild);
         }
       }
     };
@@ -69196,7 +69196,7 @@ var require_GUILD_MEMBERS_CHUNK = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_MEMBERS_CHUNK.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
@@ -69205,7 +69205,7 @@ var require_GUILD_MEMBERS_CHUNK = __commonJS({
       if (data.presences) {
         for (const presence of data.presences) guild.presences._add(Object.assign(presence, { guild }));
       }
-      client.emit(Events16.GuildMembersChunk, members3, guild, {
+      client.emit(Events19.GuildMembersChunk, members3, guild, {
         index: data.chunk_index,
         count: data.chunk_count,
         notFound: data.not_found,
@@ -69219,7 +69219,7 @@ var require_GUILD_MEMBERS_CHUNK = __commonJS({
 var require_GUILD_MEMBER_ADD = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_MEMBER_ADD.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var Status2 = require_Status();
     module2.exports = (client, { d: data }, shard) => {
       const guild = client.guilds.cache.get(data.guild_id);
@@ -69227,7 +69227,7 @@ var require_GUILD_MEMBER_ADD = __commonJS({
         guild.memberCount++;
         const member = guild.members._add(data);
         if (shard.status === Status2.Ready) {
-          client.emit(Events16.GuildMemberAdd, member);
+          client.emit(Events19.GuildMemberAdd, member);
         }
       }
     };
@@ -69339,7 +69339,7 @@ var require_GUILD_SOUNDBOARD_SOUNDS_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_SOUNDBOARD_SOUNDS_UPDATE.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
@@ -69347,7 +69347,7 @@ var require_GUILD_SOUNDBOARD_SOUNDS_UPDATE = __commonJS({
       for (const soundboardSound of data.soundboard_sounds) {
         soundboardSounds.set(soundboardSound.sound_id, guild.soundboardSounds._add(soundboardSound));
       }
-      client.emit(Events16.GuildSoundboardSoundsUpdate, soundboardSounds, guild);
+      client.emit(Events19.GuildSoundboardSoundsUpdate, soundboardSounds, guild);
     };
   }
 });
@@ -69356,12 +69356,12 @@ var require_GUILD_SOUNDBOARD_SOUNDS_UPDATE = __commonJS({
 var require_GUILD_SOUNDBOARD_SOUND_CREATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_SOUNDBOARD_SOUND_CREATE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
       const soundboardSound = guild.soundboardSounds._add(data);
-      client.emit(Events16.GuildSoundboardSoundCreate, soundboardSound);
+      client.emit(Events19.GuildSoundboardSoundCreate, soundboardSound);
     };
   }
 });
@@ -69380,13 +69380,13 @@ var require_GUILD_SOUNDBOARD_SOUND_DELETE = __commonJS({
 var require_GUILD_SOUNDBOARD_SOUND_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/GUILD_SOUNDBOARD_SOUND_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
       const oldGuildSoundboardSound = guild.soundboardSounds.cache.get(data.sound_id)?._clone() ?? null;
       const newGuildSoundboardSound = guild.soundboardSounds._add(data);
-      client.emit(Events16.GuildSoundboardSoundUpdate, oldGuildSoundboardSound, newGuildSoundboardSound);
+      client.emit(Events19.GuildSoundboardSoundUpdate, oldGuildSoundboardSound, newGuildSoundboardSound);
     };
   }
 });
@@ -69535,11 +69535,11 @@ var require_MESSAGE_REACTION_REMOVE_EMOJI = __commonJS({
 var require_MESSAGE_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/MESSAGE_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, packet) => {
       const { old, updated } = client.actions.MessageUpdate.handle(packet.d);
       if (old && updated) {
-        client.emit(Events16.MessageUpdate, old, updated);
+        client.emit(Events19.MessageUpdate, old, updated);
       }
     };
   }
@@ -69792,10 +69792,10 @@ var require_READY = __commonJS({
 var require_RESUMED = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/RESUMED.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, packet, shard) => {
       const replayed = shard.sessionInfo.sequence - shard.closeSequence;
-      client.emit(Events16.ShardResume, shard.id, replayed);
+      client.emit(Events19.ShardResume, shard.id, replayed);
     };
   }
 });
@@ -69805,7 +69805,7 @@ var require_SOUNDBOARD_SOUNDS = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SOUNDBOARD_SOUNDS.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
@@ -69813,7 +69813,7 @@ var require_SOUNDBOARD_SOUNDS = __commonJS({
       for (const soundboardSound of data.soundboard_sounds) {
         soundboardSounds.set(soundboardSound.sound_id, guild.soundboardSounds._add(soundboardSound));
       }
-      client.emit(Events16.SoundboardSounds, soundboardSounds, guild);
+      client.emit(Events19.SoundboardSounds, soundboardSounds, guild);
     };
   }
 });
@@ -69852,10 +69852,10 @@ var require_STAGE_INSTANCE_UPDATE = __commonJS({
 var require_SUBSCRIPTION_CREATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SUBSCRIPTION_CREATE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       const subscription = client.application.subscriptions._add(data);
-      client.emit(Events16.SubscriptionCreate, subscription);
+      client.emit(Events19.SubscriptionCreate, subscription);
     };
   }
 });
@@ -69864,11 +69864,11 @@ var require_SUBSCRIPTION_CREATE = __commonJS({
 var require_SUBSCRIPTION_DELETE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SUBSCRIPTION_DELETE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       const subscription = client.application.subscriptions._add(data, false);
       client.application.subscriptions.cache.delete(subscription.id);
-      client.emit(Events16.SubscriptionDelete, subscription);
+      client.emit(Events19.SubscriptionDelete, subscription);
     };
   }
 });
@@ -69877,11 +69877,11 @@ var require_SUBSCRIPTION_DELETE = __commonJS({
 var require_SUBSCRIPTION_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/SUBSCRIPTION_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       const oldSubscription = client.application.subscriptions.cache.get(data.id)?._clone() ?? null;
       const newSubscription = client.application.subscriptions._add(data);
-      client.emit(Events16.SubscriptionUpdate, oldSubscription, newSubscription);
+      client.emit(Events19.SubscriptionUpdate, oldSubscription, newSubscription);
     };
   }
 });
@@ -69940,11 +69940,11 @@ var require_THREAD_MEMBER_UPDATE = __commonJS({
 var require_THREAD_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/THREAD_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, packet) => {
       const { old, updated } = client.actions.ChannelUpdate.handle(packet.d);
       if (old && updated) {
-        client.emit(Events16.ThreadUpdate, old, updated);
+        client.emit(Events19.ThreadUpdate, old, updated);
       }
     };
   }
@@ -70015,11 +70015,11 @@ var require_VOICE_CHANNEL_EFFECT_SEND = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/VOICE_CHANNEL_EFFECT_SEND.js"(exports2, module2) {
     "use strict";
     var VoiceChannelEffect = require_VoiceChannelEffect();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       const guild = client.guilds.cache.get(data.guild_id);
       if (!guild) return;
-      client.emit(Events16.VoiceChannelEffectSend, new VoiceChannelEffect(data, guild));
+      client.emit(Events19.VoiceChannelEffectSend, new VoiceChannelEffect(data, guild));
     };
   }
 });
@@ -70028,14 +70028,14 @@ var require_VOICE_CHANNEL_EFFECT_SEND = __commonJS({
 var require_VOICE_SERVER_UPDATE = __commonJS({
   "node_modules/discord.js/src/client/websocket/handlers/VOICE_SERVER_UPDATE.js"(exports2, module2) {
     "use strict";
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     module2.exports = (client, { d: data }) => {
       client.emit(
-        Events16.Debug,
+        Events19.Debug,
         `[VOICE] received voice server: ${JSON.stringify({ ...data, token: "*".repeat(data.token.length) })}`
       );
       client.voice.onVoiceServer(data);
-      client.emit(Events16.VoiceServerUpdate, {
+      client.emit(Events19.VoiceServerUpdate, {
         guildId: data.guild_id,
         endpoint: data.endpoint,
         token: data.token
@@ -70151,7 +70151,7 @@ var require_handlers = __commonJS({
 var require_WebSocketManager = __commonJS({
   "node_modules/discord.js/src/client/websocket/WebSocketManager.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("node:events");
+    var EventEmitter2 = require("node:events");
     var process2 = require("node:process");
     var { setImmediate: setImmediate2 } = require("node:timers");
     var { Collection: Collection3 } = require_dist6();
@@ -70165,7 +70165,7 @@ var require_WebSocketManager = __commonJS({
     var WebSocketShard = require_WebSocketShard();
     var PacketHandlers = require_handlers();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var Status2 = require_Status();
     var WebSocketShardEvents = require_WebSocketShardEvents();
     var zlib;
@@ -70195,7 +70195,7 @@ var require_WebSocketManager = __commonJS({
     var reasonIsDeprecated = "the reason property is deprecated, use the code property to determine the reason";
     var deprecationEmittedForInvalidSessionEvent = false;
     var deprecationEmittedForDestroyedEvent = false;
-    var WebSocketManager2 = class extends EventEmitter {
+    var WebSocketManager2 = class extends EventEmitter2 {
       static {
         __name(this, "WebSocketManager");
       }
@@ -70215,8 +70215,8 @@ var require_WebSocketManager = __commonJS({
        * @readonly
        */
       get ping() {
-        const sum = this.shards.reduce((a, b2) => a + b2.ping, 0);
-        return sum / this.shards.size;
+        const sum2 = this.shards.reduce((a, b2) => a + b2.ping, 0);
+        return sum2 / this.shards.size;
       }
       /**
        * Emits a debug message.
@@ -70226,7 +70226,7 @@ var require_WebSocketManager = __commonJS({
        */
       debug(messages2, shardId) {
         this.client.emit(
-          Events16.Debug,
+          Events19.Debug,
           `[WS => ${typeof shardId === "number" ? `Shard ${shardId}` : "Manager"}] ${messages2.join("\n	")}`
         );
       }
@@ -70281,7 +70281,7 @@ var require_WebSocketManager = __commonJS({
             const shard = new WebSocketShard(this, id);
             this.shards.set(id, shard);
             shard.on(WebSocketShardEvents.AllReady, (unavailableGuilds) => {
-              this.client.emit(Events16.ShardReady, shard.id, unavailableGuilds);
+              this.client.emit(Events19.ShardReady, shard.id, unavailableGuilds);
               this.checkShardsReady();
             });
             shard.status = Status2.Connecting;
@@ -70312,7 +70312,7 @@ var require_WebSocketManager = __commonJS({
       attachEvents() {
         this._ws.on(WSWebSocketShardEvents.Debug, ({ message, shardId }) => this.debug([message], shardId));
         this._ws.on(WSWebSocketShardEvents.Dispatch, ({ data, shardId }) => {
-          this.client.emit(Events16.Raw, data, shardId);
+          this.client.emit(Events19.Raw, data, shardId);
           this.emit(data.t, data.d, shardId);
           const shard = this.shards.get(shardId);
           this.handlePacket(data, shard);
@@ -70328,12 +70328,12 @@ var require_WebSocketManager = __commonJS({
           shard.emit(WebSocketShardEvents.Close, { code, reason: reasonIsDeprecated, wasClean: true });
           if (UNRECOVERABLE_CLOSE_CODES.includes(code)) {
             shard.status = Status2.Disconnected;
-            this.client.emit(Events16.ShardDisconnect, { code, reason: reasonIsDeprecated, wasClean: true }, shardId);
+            this.client.emit(Events19.ShardDisconnect, { code, reason: reasonIsDeprecated, wasClean: true }, shardId);
             this.debug([`Shard not recoverable: ${code} (${GatewayCloseCodes[code] ?? CloseCodes[code]})`], shardId);
             return;
           }
           this.shards.get(shardId).status = Status2.Connecting;
-          this.client.emit(Events16.ShardReconnecting, shardId);
+          this.client.emit(Events19.ShardReconnecting, shardId);
         });
         this._ws.on(WSWebSocketShardEvents.Hello, ({ shardId }) => {
           const shard = this.shards.get(shardId);
@@ -70356,7 +70356,7 @@ var require_WebSocketManager = __commonJS({
           shard.ping = latency;
         });
         this._ws.on(WSWebSocketShardEvents.Error, ({ error: error62, shardId }) => {
-          this.client.emit(Events16.ShardError, error62, shardId);
+          this.client.emit(Events19.ShardError, error62, shardId);
         });
       }
       /**
@@ -70428,7 +70428,7 @@ var require_WebSocketManager = __commonJS({
             "DeprecationWarning"
           );
         }
-        this.client.emit(Events16.ClientReady, this.client);
+        this.client.emit(Events19.ClientReady, this.client);
         this.handlePacket();
       }
     };
@@ -70527,7 +70527,7 @@ var require_ChannelManager = __commonJS({
     var { BaseChannel } = require_BaseChannel();
     var { createChannel } = require_Channels();
     var { ThreadChannelTypes } = require_Constants();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var cacheWarningEmitted = false;
     var ChannelManager2 = class extends CachedManager {
       static {
@@ -70561,7 +70561,7 @@ var require_ChannelManager = __commonJS({
         }
         const channel = createChannel(this.client, data, guild, { allowUnknownGuild });
         if (!channel) {
-          this.client.emit(Events16.Debug, `Failed to find guild, or unknown type for channel ${data.id} ${data.type}`);
+          this.client.emit(Events19.Debug, `Failed to find guild, or unknown type for channel ${data.id} ${data.type}`);
           return null;
         }
         if (cache && !allowUnknownGuild) this.cache.set(channel.id, channel);
@@ -70641,7 +70641,7 @@ var require_ShardClientUtil = __commonJS({
     var process2 = require("node:process");
     var { calculateShardId } = require_dist();
     var { DiscordjsError: DiscordjsError2, DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var { makeError, makePlainError } = require_Util();
     var ShardClientUtil2 = class {
       static {
@@ -70654,32 +70654,32 @@ var require_ShardClientUtil = __commonJS({
         switch (mode) {
           case "process":
             process2.on("message", this._handleMessage.bind(this));
-            client.on(Events16.ShardReady, () => {
+            client.on(Events19.ShardReady, () => {
               process2.send({ _ready: true });
             });
-            client.on(Events16.ShardDisconnect, () => {
+            client.on(Events19.ShardDisconnect, () => {
               process2.send({ _disconnect: true });
             });
-            client.on(Events16.ShardReconnecting, () => {
+            client.on(Events19.ShardReconnecting, () => {
               process2.send({ _reconnecting: true });
             });
-            client.on(Events16.ShardResume, () => {
+            client.on(Events19.ShardResume, () => {
               process2.send({ _resume: true });
             });
             break;
           case "worker":
             this.parentPort = require("node:worker_threads").parentPort;
             this.parentPort.on("message", this._handleMessage.bind(this));
-            client.on(Events16.ShardReady, () => {
+            client.on(Events19.ShardReady, () => {
               this.parentPort.postMessage({ _ready: true });
             });
-            client.on(Events16.ShardDisconnect, () => {
+            client.on(Events19.ShardDisconnect, () => {
               this.parentPort.postMessage({ _disconnect: true });
             });
-            client.on(Events16.ShardReconnecting, () => {
+            client.on(Events19.ShardReconnecting, () => {
               this.parentPort.postMessage({ _reconnecting: true });
             });
-            client.on(Events16.ShardResume, () => {
+            client.on(Events19.ShardResume, () => {
               this.parentPort.postMessage({ _resume: true });
             });
             break;
@@ -70831,7 +70831,7 @@ var require_ShardClientUtil = __commonJS({
         this.send(message).catch((err) => {
           const error62 = new Error(`Error when sending ${type} response to master process: ${err.message}`);
           error62.stack = err.stack;
-          this.client.emit(Events16.Error, error62);
+          this.client.emit(Events19.Error, error62);
         });
       }
       /**
@@ -70845,7 +70845,7 @@ var require_ShardClientUtil = __commonJS({
           this._singleton = new this(client, mode);
         } else {
           client.emit(
-            Events16.Warn,
+            Events19.Warn,
             "Multiple clients created in child process/worker; only the first will handle sharding helpers."
           );
         }
@@ -71646,7 +71646,7 @@ var require_GuildChannelManager = __commonJS({
     "use strict";
     var process2 = require("node:process");
     var { Collection: Collection3 } = require_dist6();
-    var { ChannelType: ChannelType6, Routes: Routes2 } = require_v106();
+    var { ChannelType: ChannelType9, Routes: Routes2 } = require_v106();
     var CachedManager = require_CachedManager();
     var GuildTextThreadManager = require_GuildTextThreadManager();
     var { DiscordjsError: DiscordjsError2, DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
@@ -71912,7 +71912,7 @@ var require_GuildChannelManager = __commonJS({
         if (options.lockPermissions) {
           if (parentId) {
             const newParent = this.cache.get(parentId);
-            if (newParent?.type === ChannelType6.GuildCategory) {
+            if (newParent?.type === ChannelType9.GuildCategory) {
               permission_overwrites = newParent.permissionOverwrites.cache.map(
                 (overwrite) => PermissionOverwrites.resolve(overwrite, this.guild)
               );
@@ -72118,7 +72118,7 @@ var require_GuildEmojiManager = __commonJS({
   "node_modules/discord.js/src/managers/GuildEmojiManager.js"(exports2, module2) {
     "use strict";
     var { Collection: Collection3 } = require_dist6();
-    var { Routes: Routes2, PermissionFlagsBits: PermissionFlagsBits21 } = require_v106();
+    var { Routes: Routes2, PermissionFlagsBits: PermissionFlagsBits27 } = require_v106();
     var BaseGuildEmojiManager2 = require_BaseGuildEmojiManager();
     var { DiscordjsError: DiscordjsError2, DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var { resolveImage } = require_DataResolver();
@@ -72260,7 +72260,7 @@ var require_GuildEmojiManager = __commonJS({
         }
         const { me } = this.guild.members;
         if (!me) throw new DiscordjsError2(ErrorCodes2.GuildUncachedMe);
-        if (!me.permissions.any(PermissionFlagsBits21.CreateGuildExpressions | PermissionFlagsBits21.ManageGuildExpressions)) {
+        if (!me.permissions.any(PermissionFlagsBits27.CreateGuildExpressions | PermissionFlagsBits27.ManageGuildExpressions)) {
           throw new DiscordjsError2(ErrorCodes2.MissingManageGuildExpressionsPermission, this.guild);
         }
         const data = await this.client.rest.get(Routes2.guildEmoji(this.guild.id, emoji3.id));
@@ -72480,7 +72480,7 @@ var require_GuildMemberManager = __commonJS({
     var { GuildMember } = require_GuildMember();
     var { Role } = require_Role();
     var { resolveImage } = require_DataResolver();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var { GuildMemberFlagsBitField } = require_GuildMemberFlagsBitField();
     var Partials2 = require_Partials();
     var deprecatedEmittedForEditSoleNickname = false;
@@ -72677,9 +72677,9 @@ var require_GuildMemberManager = __commonJS({
           let i = 0;
           const cleanup = /* @__PURE__ */ __name(() => {
             clearTimeout2(timeout);
-            this.client.removeListener(Events16.Raw, rateLimitHandler);
+            this.client.removeListener(Events19.Raw, rateLimitHandler);
             this.client.decrementMaxListeners();
-            this.client.removeListener(Events16.GuildMembersChunk, handler);
+            this.client.removeListener(Events19.GuildMembersChunk, handler);
             this.client.decrementMaxListeners();
           }, "cleanup");
           const timeout = setTimeout2(() => {
@@ -72713,9 +72713,9 @@ var require_GuildMemberManager = __commonJS({
             }
           }, "rateLimitHandler");
           this.client.incrementMaxListeners();
-          this.client.on(Events16.Raw, rateLimitHandler);
+          this.client.on(Events19.Raw, rateLimitHandler);
           this.client.incrementMaxListeners();
-          this.client.on(Events16.GuildMembersChunk, handler);
+          this.client.on(Events19.GuildMembersChunk, handler);
           this.guild.shard.send({
             op: GatewayOpcodes.RequestGuildMembers,
             d: requestData
@@ -74660,7 +74660,7 @@ var require_Guild = __commonJS({
     var { Collection: Collection3 } = require_dist6();
     var { makeURLSearchParams: makeURLSearchParams2 } = require_dist5();
     var { DiscordSnowflake } = require_cjs();
-    var { ChannelType: ChannelType6, GuildPremiumTier, Routes: Routes2, GuildFeature } = require_v106();
+    var { ChannelType: ChannelType9, GuildPremiumTier, Routes: Routes2, GuildFeature } = require_v106();
     var AnonymousGuild = require_AnonymousGuild();
     var GuildAuditLogs = require_GuildAuditLogs();
     var { GuildOnboarding } = require_GuildOnboarding();
@@ -75799,7 +75799,7 @@ var require_Guild = __commonJS({
        * @private
        */
       _sortedChannels(channel) {
-        const channelIsCategory = channel.type === ChannelType6.GuildCategory;
+        const channelIsCategory = channel.type === ChannelType9.GuildCategory;
         const types2 = getSortableGroupTypes(channel.type);
         return discordSort(
           this.channels.cache.filter(
@@ -75852,7 +75852,7 @@ var require_GuildManager = __commonJS({
     var OAuth2Guild = require_OAuth2Guild();
     var { Role } = require_Role();
     var { resolveImage } = require_DataResolver();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var PermissionsBitField4 = require_PermissionsBitField();
     var SystemChannelFlagsBitField = require_SystemChannelFlagsBitField();
     var { _transformAPIIncidentsData } = require_Transformers();
@@ -76041,9 +76041,9 @@ var require_GuildManager = __commonJS({
             }
           }, "handleGuild");
           this.client.incrementMaxListeners();
-          this.client.once(Events16.GuildCreate, handleGuild);
+          this.client.once(Events19.GuildCreate, handleGuild);
           const timeout = setTimeout2(() => {
-            this.client.removeListener(Events16.GuildCreate, handleGuild);
+            this.client.removeListener(Events19.GuildCreate, handleGuild);
             this.client.decrementMaxListeners();
             resolve3(this.client.guilds._add(data));
           }, 1e4).unref();
@@ -76127,18 +76127,18 @@ var require_GuildManager = __commonJS({
             remainingGuildIds.delete(guild.id);
             if (remainingGuildIds.size === 0) {
               clearTimeout2(timeout);
-              this.client.removeListener(Events16.SoundboardSounds, handler);
+              this.client.removeListener(Events19.SoundboardSounds, handler);
               this.client.decrementMaxListeners();
               resolve3(fetchedSoundboardSounds);
             }
           }, "handler");
           const timeout = setTimeout2(() => {
-            this.client.removeListener(Events16.SoundboardSounds, handler);
+            this.client.removeListener(Events19.SoundboardSounds, handler);
             this.client.decrementMaxListeners();
             reject(new DiscordjsError2(ErrorCodes2.GuildSoundboardSoundsTimeout));
           }, time4).unref();
           this.client.incrementMaxListeners();
-          this.client.on(Events16.SoundboardSounds, handler);
+          this.client.on(Events19.SoundboardSounds, handler);
         });
       }
       /**
@@ -76187,7 +76187,7 @@ var require_GuildManager = __commonJS({
 var require_UserManager = __commonJS({
   "node_modules/discord.js/src/managers/UserManager.js"(exports2, module2) {
     "use strict";
-    var { ChannelType: ChannelType6, Routes: Routes2 } = require_v106();
+    var { ChannelType: ChannelType9, Routes: Routes2 } = require_v106();
     var CachedManager = require_CachedManager();
     var { DiscordjsError: DiscordjsError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var { GuildMember } = require_GuildMember();
@@ -76225,7 +76225,7 @@ var require_UserManager = __commonJS({
       dmChannel(userId) {
         const expectedRecipientIds = [userId, this.client.user.id];
         return this.client.channels.cache.find(
-          (channel) => channel.type === ChannelType6.DM && channel.recipientId === userId && channel.recipientIds.every((id) => expectedRecipientIds.includes(id))
+          (channel) => channel.type === ChannelType9.DM && channel.recipientId === userId && channel.recipientIds.every((id) => expectedRecipientIds.includes(id))
         ) ?? null;
       }
       /**
@@ -76608,7 +76608,7 @@ var require_Sweepers = __commonJS({
     "use strict";
     var { setInterval: setInterval2, clearInterval: clearInterval2 } = require("node:timers");
     var { ThreadChannelTypes, SweeperKeys } = require_Constants();
-    var Events16 = require_Events();
+    var Events19 = require_Events();
     var { DiscordjsTypeError: DiscordjsTypeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var Sweepers2 = class {
       static {
@@ -76646,7 +76646,7 @@ var require_Sweepers = __commonJS({
         const { guilds, items: guildCommands } = this._sweepGuildDirectProp("commands", filter, { emit: false });
         const globalCommands = this.client.application?.commands.cache.sweep(filter) ?? 0;
         this.client.emit(
-          Events16.CacheSweep,
+          Events19.CacheSweep,
           `Swept ${globalCommands} global application commands and ${guildCommands} guild commands in ${guilds} guilds.`
         );
         return guildCommands + globalCommands;
@@ -76686,7 +76686,7 @@ var require_Sweepers = __commonJS({
           throw new DiscordjsTypeError2(ErrorCodes2.InvalidType, "filter", "function");
         }
         const entitlements = this.client.application.entitlements.cache.sweep(filter);
-        this.client.emit(Events16.CacheSweep, `Swept ${entitlements} entitlements.`);
+        this.client.emit(Events19.CacheSweep, `Swept ${entitlements} entitlements.`);
         return entitlements;
       }
       /**
@@ -76731,7 +76731,7 @@ var require_Sweepers = __commonJS({
           channels++;
           messages2 += channel.messages.cache.sweep(filter);
         }
-        this.client.emit(Events16.CacheSweep, `Swept ${messages2} messages in ${channels} text-based channels.`);
+        this.client.emit(Events19.CacheSweep, `Swept ${messages2} messages in ${channels} text-based channels.`);
         return messages2;
       }
       /**
@@ -76763,7 +76763,7 @@ var require_Sweepers = __commonJS({
           }
         }
         this.client.emit(
-          Events16.CacheSweep,
+          Events19.CacheSweep,
           `Swept ${reactions} reactions on ${messages2} messages in ${channels} text-based channels.`
         );
         return reactions;
@@ -76801,7 +76801,7 @@ var require_Sweepers = __commonJS({
           threads++;
           members3 += channel.members.cache.sweep(filter);
         }
-        this.client.emit(Events16.CacheSweep, `Swept ${members3} thread members in ${threads} threads.`);
+        this.client.emit(Events19.CacheSweep, `Swept ${members3} thread members in ${threads} threads.`);
         return members3;
       }
       /**
@@ -76830,7 +76830,7 @@ var require_Sweepers = __commonJS({
             this.client.channels._remove(key);
           }
         }
-        this.client.emit(Events16.CacheSweep, `Swept ${threads} threads.`);
+        this.client.emit(Events19.CacheSweep, `Swept ${threads} threads.`);
         return threads;
       }
       /**
@@ -76843,7 +76843,7 @@ var require_Sweepers = __commonJS({
           throw new DiscordjsTypeError2(ErrorCodes2.InvalidType, "filter", "function");
         }
         const users2 = this.client.users.cache.sweep(filter);
-        this.client.emit(Events16.CacheSweep, `Swept ${users2} users.`);
+        this.client.emit(Events19.CacheSweep, `Swept ${users2} users.`);
         return users2;
       }
       /**
@@ -76968,7 +76968,7 @@ var require_Sweepers = __commonJS({
           items += cache.sweep(filter);
         }
         if (emit) {
-          this.client.emit(Events16.CacheSweep, `Swept ${items} ${outputName ?? key} in ${guilds} guilds.`);
+          this.client.emit(Events19.CacheSweep, `Swept ${items} ${outputName ?? key} in ${guilds} guilds.`);
         }
         return { guilds, items };
       }
@@ -77504,7 +77504,7 @@ var require_ShardEvents = __commonJS({
 var require_Shard = __commonJS({
   "node_modules/discord.js/src/sharding/Shard.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("node:events");
+    var EventEmitter2 = require("node:events");
     var path = require("node:path");
     var process2 = require("node:process");
     var { setTimeout: setTimeout2, clearTimeout: clearTimeout2 } = require("node:timers");
@@ -77515,7 +77515,7 @@ var require_Shard = __commonJS({
     var { makeError, makePlainError } = require_Util();
     var childProcess = null;
     var Worker = null;
-    var Shard = class extends EventEmitter {
+    var Shard = class extends EventEmitter2 {
       static {
         __name(this, "Shard");
       }
@@ -77827,7 +77827,7 @@ var require_Shard = __commonJS({
 var require_ShardingManager = __commonJS({
   "node_modules/discord.js/src/sharding/ShardingManager.js"(exports2, module2) {
     "use strict";
-    var EventEmitter = require("node:events");
+    var EventEmitter2 = require("node:events");
     var fs2 = require("node:fs");
     var path = require("node:path");
     var process2 = require("node:process");
@@ -77836,7 +77836,7 @@ var require_ShardingManager = __commonJS({
     var Shard = require_Shard();
     var { DiscordjsError: DiscordjsError2, DiscordjsTypeError: DiscordjsTypeError2, DiscordjsRangeError: DiscordjsRangeError2, ErrorCodes: ErrorCodes2 } = require_errors2();
     var { fetchRecommendedShardCount } = require_Util();
-    var ShardingManager = class extends EventEmitter {
+    var ShardingManager = class extends EventEmitter2 {
       static {
         __name(this, "ShardingManager");
       }
@@ -78318,7 +78318,7 @@ var require_EmbedBuilder = __commonJS({
     var { isJSONEncodable } = require_dist();
     var { toSnakeCase: toSnakeCase2 } = require_Transformers();
     var { resolveColor } = require_Util();
-    var EmbedBuilder22 = class extends BuildersEmbed {
+    var EmbedBuilder34 = class extends BuildersEmbed {
       static {
         __name(this, "EmbedBuilder");
       }
@@ -78350,7 +78350,7 @@ var require_EmbedBuilder = __commonJS({
         return embedLength(this.data);
       }
     };
-    module2.exports = EmbedBuilder22;
+    module2.exports = EmbedBuilder34;
   }
 });
 
@@ -78514,9 +78514,9 @@ var require_SelectMenuBuilder = __commonJS({
   "node_modules/discord.js/src/structures/SelectMenuBuilder.js"(exports2, module2) {
     "use strict";
     var process2 = require("node:process");
-    var StringSelectMenuBuilder = require_StringSelectMenuBuilder();
+    var StringSelectMenuBuilder2 = require_StringSelectMenuBuilder();
     var deprecationEmitted = false;
-    var SelectMenuBuilder2 = class extends StringSelectMenuBuilder {
+    var SelectMenuBuilder2 = class extends StringSelectMenuBuilder2 {
       static {
         __name(this, "SelectMenuBuilder");
       }
@@ -78595,7 +78595,7 @@ var require_StringSelectMenuOptionBuilder = __commonJS({
     var { isJSONEncodable } = require_dist();
     var { toSnakeCase: toSnakeCase2 } = require_Transformers();
     var { resolvePartialEmoji } = require_Util();
-    var StringSelectMenuOptionBuilder = class extends BuildersSelectMenuOption {
+    var StringSelectMenuOptionBuilder2 = class extends BuildersSelectMenuOption {
       static {
         __name(this, "StringSelectMenuOptionBuilder");
       }
@@ -78627,7 +78627,7 @@ var require_StringSelectMenuOptionBuilder = __commonJS({
         return new this(isJSONEncodable(other) ? other.toJSON() : other);
       }
     };
-    module2.exports = StringSelectMenuOptionBuilder;
+    module2.exports = StringSelectMenuOptionBuilder2;
   }
 });
 
@@ -78636,9 +78636,9 @@ var require_SelectMenuOptionBuilder = __commonJS({
   "node_modules/discord.js/src/structures/SelectMenuOptionBuilder.js"(exports2, module2) {
     "use strict";
     var process2 = require("node:process");
-    var StringSelectMenuOptionBuilder = require_StringSelectMenuOptionBuilder();
+    var StringSelectMenuOptionBuilder2 = require_StringSelectMenuOptionBuilder();
     var deprecationEmitted = false;
-    var SelectMenuOptionBuilder2 = class extends StringSelectMenuOptionBuilder {
+    var SelectMenuOptionBuilder2 = class extends StringSelectMenuOptionBuilder2 {
       static {
         __name(this, "SelectMenuOptionBuilder");
       }
@@ -80117,7 +80117,7 @@ var require_sonic_boom = __commonJS({
   "node_modules/sonic-boom/index.js"(exports2, module2) {
     "use strict";
     var fs2 = require("fs");
-    var EventEmitter = require("events");
+    var EventEmitter2 = require("events");
     var inherits = require("util").inherits;
     var path = require("path");
     var sleep = require_atomic_sleep();
@@ -80359,7 +80359,7 @@ var require_sonic_boom = __commonJS({
       sonic.emit("drain");
     }
     __name(emitDrain, "emitDrain");
-    inherits(SonicBoom, EventEmitter);
+    inherits(SonicBoom, EventEmitter2);
     function mergeBuf(bufs, len) {
       if (bufs.length === 0) {
         return kEmptyBuffer;
@@ -80959,7 +80959,7 @@ var require_thread_stream = __commonJS({
   "node_modules/thread-stream/index.js"(exports2, module2) {
     "use strict";
     var { version: version3 } = require_package2();
-    var { EventEmitter } = require("events");
+    var { EventEmitter: EventEmitter2 } = require("events");
     var { Worker } = require("worker_threads");
     var { join: join2 } = require("path");
     var { pathToFileURL } = require("url");
@@ -81147,7 +81147,7 @@ var require_thread_stream = __commonJS({
       destroy(stream, code !== 0 ? new Error("the worker thread exited") : null);
     }
     __name(onWorkerExit, "onWorkerExit");
-    var ThreadStream = class extends EventEmitter {
+    var ThreadStream = class extends EventEmitter2 {
       static {
         __name(this, "ThreadStream");
       }
@@ -81507,7 +81507,7 @@ var require_transport = __commonJS({
     var { createRequire } = require("module");
     var { existsSync: existsSync3 } = require("node:fs");
     var getCallers = require_caller();
-    var { join: join2, isAbsolute, sep } = require("node:path");
+    var { join: join2, isAbsolute: isAbsolute2, sep } = require("node:path");
     var { fileURLToPath } = require("node:url");
     var sleep = require_atomic_sleep();
     var onExit = require_on_exit_leak_free();
@@ -81583,7 +81583,7 @@ var require_transport = __commonJS({
           return false;
         }
       }
-      return isAbsolute(path) && !existsSync3(path);
+      return isAbsolute2(path) && !existsSync3(path);
     }
     __name(shouldDropPreload, "shouldDropPreload");
     function stripQuotes(value) {
@@ -81716,7 +81716,7 @@ var require_transport = __commonJS({
       return stream;
       function fixTarget(origin) {
         origin = bundlerOverrides[origin] || origin;
-        if (isAbsolute(origin) || origin.indexOf("file://") === 0) {
+        if (isAbsolute2(origin) || origin.indexOf("file://") === 0) {
           return origin;
         }
         if (origin === "pino/file") {
@@ -82326,7 +82326,7 @@ var require_meta = __commonJS({
 var require_proto = __commonJS({
   "node_modules/pino/lib/proto.js"(exports2, module2) {
     "use strict";
-    var { EventEmitter } = require("node:events");
+    var { EventEmitter: EventEmitter2 } = require("node:events");
     var {
       lsCacheSym,
       levelValSym,
@@ -82410,7 +82410,7 @@ var require_proto = __commonJS({
       [getLevelSym]: getLevel,
       [setLevelSym]: setLevel
     };
-    Object.setPrototypeOf(prototype, EventEmitter.prototype);
+    Object.setPrototypeOf(prototype, EventEmitter2.prototype);
     module2.exports = function() {
       return Object.create(prototype);
     };
@@ -89915,6 +89915,10 @@ function count(expression) {
   return sql`count(${expression || sql.raw("*")})`.mapWith(Number);
 }
 __name(count, "count");
+function sum(expression) {
+  return sql`sum(${expression})`.mapWith(String);
+}
+__name(sum, "sum");
 
 // node_modules/drizzle-orm/pg-core/view-base.js
 var PgViewBase = class extends View {
@@ -96943,13 +96947,13 @@ var CC_SANITIZE = /[- ]/g;
 function isLuhnAlgo(digits) {
   let length = digits.length;
   let bit2 = 1;
-  let sum = 0;
+  let sum2 = 0;
   while (length) {
     const value = digits.charCodeAt(--length) - 48;
     bit2 ^= 1;
-    sum += bit2 ? [0, 2, 4, 6, 8, 1, 3, 5, 7, 9][value] : value;
+    sum2 += bit2 ? [0, 2, 4, 6, 8, 1, 3, 5, 7, 9][value] : value;
   }
-  return sum % 10 === 0;
+  return sum2 % 10 === 0;
 }
 __name(isLuhnAlgo, "isLuhnAlgo");
 function isValidCreditCard(input2) {
@@ -114894,6 +114898,50 @@ var setupCommand = {
       (option) => option.setName("cooldown").setDescription("Seconds between XP gains per member").setMinValue(10).setMaxValue(3600)
     )
   ).addSubcommand(
+    (sub) => sub.setName("economy").setDescription("Configure daily/work rewards, currency, and cooldowns.").addBooleanOption(
+      (option) => option.setName("enabled").setDescription("Enable or disable the economy")
+    ).addStringOption(
+      (option) => option.setName("currency").setDescription("Plural currency name, e.g. coins").setMaxLength(32)
+    ).addStringOption(
+      (option) => option.setName("symbol").setDescription("Currency symbol or emoji").setMaxLength(8)
+    ).addIntegerOption(
+      (option) => option.setName("daily").setDescription("Base coins from /daily").setMinValue(1).setMaxValue(1e5)
+    ).addIntegerOption(
+      (option) => option.setName("streak-bonus").setDescription("Extra coins per daily streak day").setMinValue(0).setMaxValue(1e4)
+    ).addIntegerOption(
+      (option) => option.setName("work-min").setDescription("Minimum coins from /work").setMinValue(1).setMaxValue(1e4)
+    ).addIntegerOption(
+      (option) => option.setName("work-max").setDescription("Maximum coins from /work").setMinValue(1).setMaxValue(1e4)
+    ).addIntegerOption(
+      (option) => option.setName("work-cooldown").setDescription("Seconds between /work uses").setMinValue(60).setMaxValue(86400)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("music").setDescription("Configure the DJ role, volume, queue limit, and 24/7 mode.").addBooleanOption(
+      (option) => option.setName("enabled").setDescription("Enable or disable music commands")
+    ).addRoleOption(
+      (option) => option.setName("dj-role").setDescription("Role required to control music in busy channels")
+    ).addBooleanOption(
+      (option) => option.setName("clear-dj").setDescription("Remove the DJ role requirement")
+    ).addIntegerOption(
+      (option) => option.setName("volume").setDescription("Default volume for new players (1\u2013100)").setMinValue(1).setMaxValue(100)
+    ).addIntegerOption(
+      (option) => option.setName("max-queue").setDescription("Maximum tracks in the queue (1\u2013500)").setMinValue(1).setMaxValue(500)
+    ).addBooleanOption(
+      (option) => option.setName("stay-247").setDescription("Stay in voice after the queue ends")
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("starboard").setDescription("Configure the starboard channel and threshold.").addBooleanOption(
+      (option) => option.setName("enabled").setDescription("Enable or disable the starboard")
+    ).addChannelOption(
+      (option) => option.setName("channel").setDescription("Channel where starred messages are posted").addChannelTypes(import_discord4.ChannelType.GuildText)
+    ).addIntegerOption(
+      (option) => option.setName("threshold").setDescription("Stars required to post").setMinValue(1).setMaxValue(50)
+    ).addChannelOption(
+      (option) => option.setName("ignore-channel").setDescription("Add a channel the starboard should ignore").addChannelTypes(import_discord4.ChannelType.GuildText)
+    ).addBooleanOption(
+      (option) => option.setName("clear-ignore").setDescription("Clear the ignored-channel list")
+    )
+  ).addSubcommand(
     (sub) => sub.setName("welcome").setDescription("Configure join or leave messages.").addStringOption(
       (option) => option.setName("kind").setDescription("Join or leave").setRequired(true).addChoices({ name: "Join", value: "join" }, { name: "Leave", value: "leave" })
     ).addChannelOption(
@@ -115042,6 +115090,113 @@ var setupCommand = {
       await updateModule2(client, interaction.user.id, "leveling", leveling);
       await interaction.editReply({
         content: `Leveling is **${enabled ? "on" : "off"}** \xB7 ${leveling.xpMin}\u2013${leveling.xpMax} XP every ${leveling.cooldownSeconds}s.`
+      });
+      return;
+    }
+    if (sub === "economy") {
+      const enabled = interaction.options.getBoolean("enabled");
+      const currency = interaction.options.getString("currency")?.trim();
+      const symbol2 = interaction.options.getString("symbol")?.trim();
+      const daily = interaction.options.getInteger("daily");
+      const streakBonus = interaction.options.getInteger("streak-bonus");
+      const workMin = interaction.options.getInteger("work-min");
+      const workMax = interaction.options.getInteger("work-max");
+      const workCooldown = interaction.options.getInteger("work-cooldown");
+      const economy = structuredClone(settings2.economy);
+      if (enabled !== null) economy.enabled = enabled;
+      if (currency) economy.currency = currency;
+      if (symbol2) economy.currencySymbol = symbol2;
+      if (daily !== null) economy.dailyAmount = daily;
+      if (streakBonus !== null) economy.dailyStreakBonus = streakBonus;
+      if (workMin !== null) economy.workMin = workMin;
+      if (workMax !== null) economy.workMax = workMax;
+      if (workCooldown !== null) economy.workCooldownSeconds = workCooldown;
+      if (economy.workMax < economy.workMin) {
+        throw new UserFacingError(
+          `Work max (${economy.workMax}) must be at least work min (${economy.workMin}).`
+        );
+      }
+      await updateModule2(client, interaction.user.id, "economy", economy);
+      await interaction.editReply({
+        content: `Economy is **${economy.enabled ? "on" : "off"}** - ${economy.dailyAmount} ${economy.currency} daily, work ${economy.workMin}-${economy.workMax} every ${economy.workCooldownSeconds}s.`
+      });
+      return;
+    }
+    if (sub === "music") {
+      const enabled = interaction.options.getBoolean("enabled");
+      const djRole = interaction.options.getRole("dj-role");
+      const clearDj = interaction.options.getBoolean("clear-dj") ?? false;
+      const volume = interaction.options.getInteger("volume");
+      const maxQueue = interaction.options.getInteger("max-queue");
+      const stay247 = interaction.options.getBoolean("stay-247");
+      const music = structuredClone(settings2.music);
+      if (enabled !== null) music.enabled = enabled;
+      if (clearDj) music.djRoleId = null;
+      else if (djRole) music.djRoleId = djRole.id;
+      if (volume !== null) music.defaultVolume = volume;
+      if (maxQueue !== null) music.maxQueue = maxQueue;
+      if (stay247 !== null) music.stay247 = stay247;
+      if (music.enabled) {
+        if (!client.env.MUSIC_ENABLED) {
+          throw new UserFacingError(
+            "`MUSIC_ENABLED` is false in the bot environment. Set it to true and restart before enabling music."
+          );
+        }
+        if (!client.env.LAVALINK_URL || !client.env.LAVALINK_AUTH) {
+          throw new UserFacingError(
+            "Set `LAVALINK_URL` and `LAVALINK_AUTH` in the bot environment before enabling music."
+          );
+        }
+      }
+      await updateModule2(client, interaction.user.id, "music", music);
+      const lines = [
+        `Music: **${music.enabled ? "on" : "off"}**`,
+        `DJ role: ${music.djRoleId ? `<@&${music.djRoleId}>` : "*everyone*"}`,
+        `Default volume: **${music.defaultVolume}%**`,
+        `Queue limit: **${music.maxQueue}** tracks`,
+        `24/7 mode: **${music.stay247 ? "on" : "off"}**`
+      ];
+      if (music.enabled && !client.music?.available) {
+        lines.push("-# The Lavalink node is not connected yet; check the bot logs.");
+      }
+      await interaction.editReply({
+        content: lines.join("\n"),
+        allowedMentions: { parse: [] }
+      });
+      return;
+    }
+    if (sub === "starboard") {
+      const enabled = interaction.options.getBoolean("enabled");
+      const channel = textChannel(interaction.options.getChannel("channel"));
+      const threshold = interaction.options.getInteger("threshold");
+      const ignore = interaction.options.getChannel("ignore-channel");
+      const clearIgnore = interaction.options.getBoolean("clear-ignore") ?? false;
+      const community = structuredClone(settings2.community);
+      const starboard = community.starboard;
+      if (channel) {
+        starboard.channelId = channel.id;
+        starboard.enabled = true;
+      }
+      if (enabled !== null) starboard.enabled = enabled;
+      if (threshold !== null) starboard.threshold = threshold;
+      if (clearIgnore) starboard.ignoreChannelIds = [];
+      if (ignore) {
+        const set2 = new Set(starboard.ignoreChannelIds);
+        set2.add(ignore.id);
+        starboard.ignoreChannelIds = [...set2];
+      }
+      if (starboard.enabled && !starboard.channelId) {
+        throw new UserFacingError("Set a starboard channel before enabling it.");
+      }
+      await updateModule2(client, interaction.user.id, "community", community);
+      await interaction.editReply({
+        content: [
+          `Starboard: **${starboard.enabled ? "on" : "off"}**`,
+          `Channel: ${starboard.channelId ? `<#${starboard.channelId}>` : "*not set*"}`,
+          `Threshold: **${starboard.threshold}** ${"\u2B50"}`,
+          `Ignored channels: ${starboard.ignoreChannelIds.length}`
+        ].join("\n"),
+        allowedMentions: { parse: [] }
       });
       return;
     }
@@ -115240,10 +115395,18 @@ async function showStatus(interaction, settings2) {
       ].join("\n")
     },
     {
+      name: "Music",
+      value: [
+        `Enabled: **${settings2.music.enabled ? "on" : "off"}**`,
+        `DJ role: ${settings2.music.djRoleId ? `<@&${settings2.music.djRoleId}>` : "everyone"}`,
+        `Volume: ${settings2.music.defaultVolume}% \xB7 Queue limit: ${settings2.music.maxQueue}`,
+        `24/7 mode: ${settings2.music.stay247 ? "on" : "off"}`
+      ].join("\n")
+    },
+    {
       name: "Other modules",
       value: [
         `Economy: **${settings2.economy.enabled ? "on" : "off"}**`,
-        `Music: **${settings2.music.enabled ? "on" : "off"}**`,
         `Stats: **${settings2.stats.enabled ? "on" : "off"}**`
       ].join("\n")
     }
@@ -115252,10 +115415,305 @@ async function showStatus(interaction, settings2) {
 }
 __name(showStatus, "showStatus");
 
-// apps/bot/src/commands/leveling/leaderboard.ts
+// apps/bot/src/commands/core/stats.ts
 var import_discord5 = __toESM(require_src(), 1);
+
+// apps/bot/src/core/database.ts
+function requireDb(client) {
+  if (!client.db) throw new UserFacingError("The database is not configured.");
+  return client.db;
+}
+__name(requireDb, "requireDb");
+
+// apps/bot/src/modules/stats/service.ts
+var FLUSH_MS = 3e4;
+var RETENTION_DAYS = 90;
+var RETENTION_MS = 24 * 60 * 60 * 1e3;
+function utcDateKey(date6 = /* @__PURE__ */ new Date()) {
+  return date6.toISOString().slice(0, 10);
+}
+__name(utcDateKey, "utcDateKey");
+function retentionCutoff(now = /* @__PURE__ */ new Date(), days = RETENTION_DAYS) {
+  return utcDateKey(new Date(now.getTime() - days * 24 * 60 * 60 * 1e3));
+}
+__name(retentionCutoff, "retentionCutoff");
+function emptyCounters() {
+  return { messages: 0, joins: 0, leaves: 0, commands: 0, voiceSeconds: 0, musicPlays: 0 };
+}
+__name(emptyCounters, "emptyCounters");
+var StatsService = class {
+  constructor(client) {
+    this.client = client;
+  }
+  client;
+  static {
+    __name(this, "StatsService");
+  }
+  days = /* @__PURE__ */ new Map();
+  commands = /* @__PURE__ */ new Map();
+  voiceStartedAt = /* @__PURE__ */ new Map();
+  timer = null;
+  retentionTimer = null;
+  flushing = false;
+  start() {
+    if (this.timer) return;
+    this.timer = setInterval(() => {
+      void this.flush();
+    }, FLUSH_MS);
+    this.timer.unref();
+    this.retentionTimer = setInterval(() => {
+      void this.prune();
+    }, RETENTION_MS);
+    this.retentionTimer.unref();
+    void this.prune();
+  }
+  async stop() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+    if (this.retentionTimer) {
+      clearInterval(this.retentionTimer);
+      this.retentionTimer = null;
+    }
+    this.closeAllVoiceSessions();
+    await this.flush();
+  }
+  enabled() {
+    return this.client.settings.stats.enabled;
+  }
+  day(date6 = /* @__PURE__ */ new Date()) {
+    const key = utcDateKey(date6);
+    let counters = this.days.get(key);
+    if (!counters) {
+      counters = emptyCounters();
+      this.days.set(key, counters);
+    }
+    return counters;
+  }
+  recordMessage() {
+    if (!this.enabled()) return;
+    this.day().messages += 1;
+  }
+  recordJoin() {
+    if (!this.enabled()) return;
+    this.day().joins += 1;
+  }
+  recordLeave() {
+    if (!this.enabled()) return;
+    this.day().leaves += 1;
+  }
+  recordCommand(command) {
+    if (!this.enabled()) return;
+    const day = this.day();
+    day.commands += 1;
+    const key = utcDateKey();
+    let usage = this.commands.get(key);
+    if (!usage) {
+      usage = /* @__PURE__ */ new Map();
+      this.commands.set(key, usage);
+    }
+    usage.set(command, (usage.get(command) ?? 0) + 1);
+  }
+  recordMusicPlay() {
+    if (!this.enabled()) return;
+    this.day().musicPlays += 1;
+  }
+  recordVoiceSeconds(seconds) {
+    if (!this.enabled()) return;
+    if (!Number.isFinite(seconds) || seconds <= 0) return;
+    this.day().voiceSeconds += Math.floor(seconds);
+  }
+  /** Tracks voice sessions so time is credited to the day it was actually spent. */
+  handleVoiceState(oldState, newState) {
+    if (!this.enabled()) return;
+    const member = newState.member ?? oldState.member;
+    if (!member || member.user.bot) return;
+    const userId = member.id;
+    const wasIn = Boolean(oldState.channelId);
+    const isIn = Boolean(newState.channelId);
+    const now = Date.now();
+    if (!wasIn && isIn) {
+      this.voiceStartedAt.set(userId, now);
+      return;
+    }
+    if (wasIn && !isIn) {
+      this.closeVoiceSession(userId, now);
+      return;
+    }
+    if (wasIn && isIn && oldState.channelId !== newState.channelId) {
+      this.closeVoiceSession(userId, now);
+      this.voiceStartedAt.set(userId, now);
+    }
+  }
+  closeVoiceSession(userId, now) {
+    const started = this.voiceStartedAt.get(userId);
+    if (started === void 0) return;
+    this.voiceStartedAt.delete(userId);
+    this.recordVoiceSeconds((now - started) / 1e3);
+  }
+  closeAllVoiceSessions() {
+    const now = Date.now();
+    for (const userId of [...this.voiceStartedAt.keys()]) {
+      this.closeVoiceSession(userId, now);
+    }
+  }
+  async flush() {
+    const db = this.client.db;
+    if (!db || this.flushing) return;
+    if (this.days.size === 0 && this.commands.size === 0) return;
+    this.flushing = true;
+    const daySnapshot = new Map(this.days);
+    const commandSnapshot = new Map(
+      [...this.commands.entries()].map(([date6, usage]) => [date6, new Map(usage)])
+    );
+    this.days.clear();
+    this.commands.clear();
+    try {
+      for (const [date6, counters] of daySnapshot) {
+        if (counters.messages === 0 && counters.joins === 0 && counters.leaves === 0 && counters.commands === 0 && counters.voiceSeconds === 0 && counters.musicPlays === 0) {
+          continue;
+        }
+        await db.insert(statsDaily).values({ date: date6, ...counters }).onConflictDoUpdate({
+          target: statsDaily.date,
+          set: {
+            messages: sql`${statsDaily.messages} + ${counters.messages}`,
+            joins: sql`${statsDaily.joins} + ${counters.joins}`,
+            leaves: sql`${statsDaily.leaves} + ${counters.leaves}`,
+            commands: sql`${statsDaily.commands} + ${counters.commands}`,
+            voiceSeconds: sql`${statsDaily.voiceSeconds} + ${counters.voiceSeconds}`,
+            musicPlays: sql`${statsDaily.musicPlays} + ${counters.musicPlays}`
+          }
+        });
+      }
+      for (const [date6, usage] of commandSnapshot) {
+        for (const [command, count2] of usage) {
+          await db.insert(commandUsage).values({ date: date6, command, count: count2 }).onConflictDoUpdate({
+            target: [commandUsage.date, commandUsage.command],
+            set: { count: sql`${commandUsage.count} + ${count2}` }
+          });
+        }
+      }
+    } catch (error62) {
+      this.mergeBack(daySnapshot, commandSnapshot);
+      this.client.logger.warn({ err: error62 }, "stats flush failed - counters restored");
+    } finally {
+      this.flushing = false;
+    }
+  }
+  mergeBack(days, commands2) {
+    for (const [date6, counters] of days) {
+      const target = this.days.get(date6) ?? emptyCounters();
+      target.messages += counters.messages;
+      target.joins += counters.joins;
+      target.leaves += counters.leaves;
+      target.commands += counters.commands;
+      target.voiceSeconds += counters.voiceSeconds;
+      target.musicPlays += counters.musicPlays;
+      this.days.set(date6, target);
+    }
+    for (const [date6, usage] of commands2) {
+      const target = this.commands.get(date6) ?? /* @__PURE__ */ new Map();
+      for (const [command, count2] of usage) {
+        target.set(command, (target.get(command) ?? 0) + count2);
+      }
+      this.commands.set(date6, target);
+    }
+  }
+  async prune() {
+    const db = this.client.db;
+    if (!db) return;
+    const cutoff = retentionCutoff();
+    try {
+      await db.delete(statsDaily).where(sql`${statsDaily.date} < ${cutoff}`);
+      await db.delete(commandUsage).where(sql`${commandUsage.date} < ${cutoff}`);
+      this.client.logger.info({ cutoff }, "stats retention applied");
+    } catch (error62) {
+      this.client.logger.warn({ err: error62 }, "stats retention failed");
+    }
+  }
+};
+
+// apps/bot/src/commands/core/stats.ts
+function compact(value) {
+  return value.toLocaleString();
+}
+__name(compact, "compact");
+var statsCommand = {
+  data: new import_discord5.SlashCommandBuilder().setName("stats").setDescription("Show server and bot statistics."),
+  category: "stats",
+  cooldownSeconds: 5,
+  async execute({ client, interaction }) {
+    await deferPublic(interaction);
+    await client.stats?.flush();
+    const db = requireDb(client);
+    const cutoff = retentionCutoff(/* @__PURE__ */ new Date(), 7);
+    const [memberRows, caseRows, openTicketRows, activeGiveawayRows, dayRows, commandRows] = await Promise.all([
+      db.select({ value: count() }).from(members),
+      db.select({ value: count() }).from(cases),
+      db.select({ value: count() }).from(tickets).where(eq(tickets.status, "open")),
+      db.select({ value: count() }).from(giveaways).where(eq(giveaways.ended, false)),
+      db.select().from(statsDaily).where(gte(statsDaily.date, cutoff)).orderBy(statsDaily.date),
+      db.select({ command: commandUsage.command, total: sum(commandUsage.count) }).from(commandUsage).where(gte(commandUsage.date, cutoff)).groupBy(commandUsage.command).orderBy(sql`sum(${commandUsage.count}) DESC`).limit(5)
+    ]);
+    const total = dayRows.reduce(
+      (accumulator, row) => ({
+        messages: accumulator.messages + row.messages,
+        joins: accumulator.joins + row.joins,
+        leaves: accumulator.leaves + row.leaves,
+        commands: accumulator.commands + row.commands,
+        voiceSeconds: accumulator.voiceSeconds + row.voiceSeconds,
+        musicPlays: accumulator.musicPlays + row.musicPlays
+      }),
+      { messages: 0, joins: 0, leaves: 0, commands: 0, voiceSeconds: 0, musicPlays: 0 }
+    );
+    const embed = new import_discord5.EmbedBuilder().setColor(5793266).setTitle("Nervana statistics").addFields(
+      { name: "Members tracked", value: compact(memberRows[0]?.value ?? 0), inline: true },
+      { name: "Cases", value: compact(caseRows[0]?.value ?? 0), inline: true },
+      { name: "Open tickets", value: compact(openTicketRows[0]?.value ?? 0), inline: true },
+      {
+        name: "Active giveaways",
+        value: compact(activeGiveawayRows[0]?.value ?? 0),
+        inline: true
+      },
+      { name: "Messages (7d)", value: compact(total.messages), inline: true },
+      { name: "Commands (7d)", value: compact(total.commands), inline: true },
+      {
+        name: "Joins / leaves (7d)",
+        value: `${compact(total.joins)} / ${compact(total.leaves)}`,
+        inline: true
+      },
+      {
+        name: "Voice minutes (7d)",
+        value: compact(Math.round(total.voiceSeconds / 60)),
+        inline: true
+      },
+      { name: "Music plays (7d)", value: compact(total.musicPlays), inline: true }
+    ).setFooter({ text: "Retention: 90 days" });
+    if (dayRows.length > 0) {
+      embed.addFields({
+        name: "Daily activity",
+        value: dayRows.slice(-7).map(
+          (row) => `\`${row.date}\` \xB7 ${compact(row.messages)} msg \xB7 ${compact(
+            row.commands
+          )} cmd \xB7 ${Math.round(row.voiceSeconds / 60)}m voice`
+        ).join("\n").slice(0, 1024)
+      });
+    }
+    if (commandRows.length > 0) {
+      embed.addFields({
+        name: "Top commands (7d)",
+        value: commandRows.map((row) => `**/${row.command}** \xB7 ${compact(Number(row.total ?? 0))}`).join("\n").slice(0, 1024)
+      });
+    }
+    await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
+  }
+};
+
+// apps/bot/src/commands/leveling/leaderboard.ts
+var import_discord6 = __toESM(require_src(), 1);
 var leaderboardCommand = {
-  data: new import_discord5.SlashCommandBuilder().setName("leaderboard").setDescription("Show the top 10 members by XP."),
+  data: new import_discord6.SlashCommandBuilder().setName("leaderboard").setDescription("Show the top 10 members by XP."),
   category: "leveling",
   cooldownSeconds: 5,
   async execute({ client, interaction }) {
@@ -115274,15 +115732,15 @@ var leaderboardCommand = {
       const level = levelFromXp(row.xp).level;
       return `**#${index2 + 1}** <@${row.userId}> \u2014 level ${level} \xB7 ${row.xp.toLocaleString()} XP`;
     });
-    const embed = new import_discord5.EmbedBuilder().setColor(BRAND.color).setTitle("XP leaderboard").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: BRAND.footer });
+    const embed = new import_discord6.EmbedBuilder().setColor(BRAND.color).setTitle("XP leaderboard").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: BRAND.footer });
     await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
   }
 };
 
 // apps/bot/src/commands/leveling/rank.ts
-var import_discord6 = __toESM(require_src(), 1);
+var import_discord7 = __toESM(require_src(), 1);
 var rankCommand = {
-  data: new import_discord6.SlashCommandBuilder().setName("rank").setDescription("Show a member\u2019s level and XP progress.").addUserOption(
+  data: new import_discord7.SlashCommandBuilder().setName("rank").setDescription("Show a member\u2019s level and XP progress.").addUserOption(
     (option) => option.setName("user").setDescription("Member to look up (defaults to you)")
   ),
   category: "leveling",
@@ -115300,7 +115758,7 @@ var rankCommand = {
     const progress = levelFromXp(xp);
     const rankRows = await db.select({ value: count() }).from(members).where(gt(members.xp, xp));
     const rank = (rankRows[0]?.value ?? 0) + 1;
-    const embed = new import_discord6.EmbedBuilder().setColor(BRAND.color).setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ size: 128 }) }).setTitle(`Level ${progress.level}`).setDescription(
+    const embed = new import_discord7.EmbedBuilder().setColor(BRAND.color).setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ size: 128 }) }).setTitle(`Level ${progress.level}`).setDescription(
       `${progressBar(progress.current, progress.needed, 14)}
 ${progress.current.toLocaleString()} / ${progress.needed.toLocaleString()} XP to level ${progress.level + 1}`
     ).addFields(
@@ -115312,8 +115770,656 @@ ${progress.current.toLocaleString()} / ${progress.needed.toLocaleString()} XP to
   }
 };
 
-// apps/bot/src/commands/moderation/ban.ts
+// apps/bot/src/commands/economy/balance.ts
 var import_discord8 = __toESM(require_src(), 1);
+
+// apps/bot/src/modules/economy/service.ts
+var DAILY_INTERVAL_MS = 24 * 60 * 60 * 1e3;
+var DAILY_STREAK_WINDOW_MS = 48 * 60 * 60 * 1e3;
+function formatCurrency(amount, config2) {
+  return `${config2.currencySymbol}${amount.toLocaleString()} ${config2.currency}`;
+}
+__name(formatCurrency, "formatCurrency");
+function parseAmount(raw) {
+  if (!Number.isSafeInteger(raw) || raw <= 0) {
+    throw new UserFacingError("The amount must be a positive whole number.");
+  }
+  if (raw > 1e9) {
+    throw new UserFacingError("That amount is too large.");
+  }
+  return raw;
+}
+__name(parseAmount, "parseAmount");
+function nextDailyStreak(lastDaily, currentStreak, now) {
+  if (!lastDaily) return 1;
+  const elapsed = now - lastDaily.getTime();
+  return elapsed < DAILY_STREAK_WINDOW_MS ? currentStreak + 1 : 1;
+}
+__name(nextDailyStreak, "nextDailyStreak");
+async function ensureMember(db, userId) {
+  await db.insert(members).values({ userId }).onConflictDoNothing();
+  const rows = await db.select().from(members).where(eq(members.userId, userId)).limit(1);
+  const row = rows[0];
+  if (!row) throw new UserFacingError("Could not load that member.");
+  return row;
+}
+__name(ensureMember, "ensureMember");
+async function getBalance(db, userId) {
+  return ensureMember(db, userId);
+}
+__name(getBalance, "getBalance");
+async function claimDaily(db, userId, config2, now = Date.now()) {
+  return db.transaction(async (tx) => {
+    await tx.insert(members).values({ userId }).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for("update");
+    const member = locked[0];
+    if (!member) throw new UserFacingError("Could not load that member.");
+    const last = member.lastDaily?.getTime() ?? 0;
+    if (last > 0 && now - last < DAILY_INTERVAL_MS) {
+      throw new UserFacingError(
+        `Your daily is available in ${formatDuration(DAILY_INTERVAL_MS - (now - last))}.`
+      );
+    }
+    const streak = nextDailyStreak(member.lastDaily, member.dailyStreak, now);
+    const bonus = Math.max(0, streak - 1) * config2.dailyStreakBonus;
+    const payout = config2.dailyAmount + bonus;
+    const updated = await tx.update(members).set({
+      balance: sql`${members.balance} + ${payout}`,
+      lastDaily: new Date(now),
+      dailyStreak: streak,
+      updatedAt: new Date(now)
+    }).where(eq(members.userId, userId)).returning({ balance: members.balance });
+    return {
+      payout,
+      streak,
+      bonus,
+      balance: updated[0]?.balance ?? member.balance + payout
+    };
+  });
+}
+__name(claimDaily, "claimDaily");
+async function work(db, userId, config2, now = Date.now()) {
+  return db.transaction(async (tx) => {
+    await tx.insert(members).values({ userId }).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for("update");
+    const member = locked[0];
+    if (!member) throw new UserFacingError("Could not load that member.");
+    const cooldownMs = config2.workCooldownSeconds * 1e3;
+    const last = member.lastWork?.getTime() ?? 0;
+    if (last > 0 && now - last < cooldownMs) {
+      throw new UserFacingError(
+        `You can work again in ${formatDuration(cooldownMs - (now - last))}.`
+      );
+    }
+    const payout = randomInt(config2.workMin, config2.workMax);
+    const nextAt = new Date(now + cooldownMs);
+    const updated = await tx.update(members).set({
+      balance: sql`${members.balance} + ${payout}`,
+      lastWork: new Date(now),
+      updatedAt: new Date(now)
+    }).where(eq(members.userId, userId)).returning({ balance: members.balance });
+    return {
+      payout,
+      balance: updated[0]?.balance ?? member.balance + payout,
+      nextAt
+    };
+  });
+}
+__name(work, "work");
+async function transferBalance(db, senderId, receiverId, amount) {
+  const value = parseAmount(amount);
+  if (senderId === receiverId) {
+    throw new UserFacingError("You cannot pay yourself.");
+  }
+  const ids = [senderId, receiverId].sort();
+  return db.transaction(async (tx) => {
+    await tx.insert(members).values(ids.map((userId) => ({ userId }))).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(inArray(members.userId, ids)).orderBy(asc(members.userId)).for("update");
+    const sender = locked.find((row) => row.userId === senderId);
+    const receiver = locked.find((row) => row.userId === receiverId);
+    if (!sender || !receiver) throw new UserFacingError("Could not load both members.");
+    if (sender.balance < value) throw new UserFacingError("You do not have enough coins.");
+    const senderRows = await tx.update(members).set({
+      balance: sql`${members.balance} - ${value}`,
+      updatedAt: /* @__PURE__ */ new Date()
+    }).where(and(eq(members.userId, senderId), gte(members.balance, value))).returning({ balance: members.balance });
+    if (!senderRows[0]) throw new UserFacingError("You do not have enough coins.");
+    const receiverRows = await tx.update(members).set({
+      balance: sql`${members.balance} + ${value}`,
+      updatedAt: /* @__PURE__ */ new Date()
+    }).where(eq(members.userId, receiverId)).returning({ balance: members.balance });
+    return {
+      amount: value,
+      senderBalance: senderRows[0].balance,
+      receiverBalance: receiverRows[0]?.balance ?? receiver.balance + value
+    };
+  });
+}
+__name(transferBalance, "transferBalance");
+async function gamble(db, userId, amount) {
+  const value = parseAmount(amount);
+  return db.transaction(async (tx) => {
+    await tx.insert(members).values({ userId }).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for("update");
+    const member = locked[0];
+    if (!member) throw new UserFacingError("Could not load that member.");
+    if (member.balance < value) throw new UserFacingError("You do not have enough coins.");
+    const won = randomInt(0, 1) === 1;
+    const delta = won ? value : -value;
+    const updated = await tx.update(members).set({
+      balance: sql`${members.balance} + ${delta}`,
+      updatedAt: /* @__PURE__ */ new Date()
+    }).where(eq(members.userId, userId)).returning({ balance: members.balance });
+    return {
+      won,
+      amount: value,
+      balance: updated[0]?.balance ?? member.balance + delta
+    };
+  });
+}
+__name(gamble, "gamble");
+async function listShop(db) {
+  return db.select().from(shopItems).orderBy(asc(shopItems.price), asc(shopItems.id));
+}
+__name(listShop, "listShop");
+async function findShopItem(db, query) {
+  const trimmed = query.trim();
+  if (!trimmed) return null;
+  if (/^\d+$/.test(trimmed)) {
+    const rows2 = await db.select().from(shopItems).where(eq(shopItems.id, Number(trimmed))).limit(1);
+    if (rows2[0]) return rows2[0];
+  }
+  const rows = await db.select().from(shopItems).where(eq(shopItems.name, trimmed)).limit(1);
+  return rows[0] ?? null;
+}
+__name(findShopItem, "findShopItem");
+async function purchaseItem(db, userId, itemId) {
+  const result = await db.transaction(async (tx) => {
+    const items = await tx.select().from(shopItems).where(eq(shopItems.id, itemId)).for("update");
+    const item = items[0];
+    if (!item) throw new UserFacingError("That shop item no longer exists.");
+    if (item.stock !== null && item.stock <= 0) throw new UserFacingError("That item is sold out.");
+    await tx.insert(members).values({ userId }).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for("update");
+    const member = locked[0];
+    if (!member) throw new UserFacingError("Could not load that member.");
+    if (member.balance < item.price) throw new UserFacingError("You do not have enough coins.");
+    const memberRows = await tx.update(members).set({
+      balance: sql`${members.balance} - ${item.price}`,
+      updatedAt: /* @__PURE__ */ new Date()
+    }).where(and(eq(members.userId, userId), gte(members.balance, item.price))).returning({ balance: members.balance });
+    if (!memberRows[0]) throw new UserFacingError("You do not have enough coins.");
+    const itemRows = await tx.update(shopItems).set({ stock: item.stock === null ? null : item.stock - 1 }).where(eq(shopItems.id, item.id)).returning({ stock: shopItems.stock });
+    return {
+      item,
+      balance: memberRows[0].balance,
+      stock: itemRows[0]?.stock ?? null
+    };
+  });
+  return result;
+}
+__name(purchaseItem, "purchaseItem");
+async function refundPurchase(db, userId, item) {
+  await db.transaction(async (tx) => {
+    await tx.update(members).set({
+      balance: sql`${members.balance} + ${item.price}`,
+      updatedAt: /* @__PURE__ */ new Date()
+    }).where(eq(members.userId, userId));
+    if (item.stock !== null) {
+      await tx.update(shopItems).set({ stock: sql`${shopItems.stock} + 1` }).where(eq(shopItems.id, item.id));
+    }
+  });
+}
+__name(refundPurchase, "refundPurchase");
+async function inventoryForRoleIds(db, roleIds) {
+  if (roleIds.length === 0) return [];
+  return db.select().from(shopItems).where(inArray(shopItems.roleId, [...roleIds])).orderBy(asc(shopItems.price));
+}
+__name(inventoryForRoleIds, "inventoryForRoleIds");
+async function topBalances(db, limit = 10) {
+  return db.select({ userId: members.userId, balance: members.balance }).from(members).orderBy(sql`${members.balance} DESC`).limit(limit);
+}
+__name(topBalances, "topBalances");
+async function adjustBalance(db, userId, delta) {
+  if (!Number.isSafeInteger(delta)) throw new UserFacingError("Use a whole number.");
+  return db.transaction(async (tx) => {
+    await tx.insert(members).values({ userId }).onConflictDoNothing();
+    const locked = await tx.select().from(members).where(eq(members.userId, userId)).for("update");
+    const member = locked[0];
+    if (!member) throw new UserFacingError("Could not load that member.");
+    if (delta < 0 && member.balance + delta < 0) {
+      throw new UserFacingError("That would make the balance negative.");
+    }
+    const updated = await tx.update(members).set({
+      balance: member.balance + delta,
+      updatedAt: /* @__PURE__ */ new Date()
+    }).where(eq(members.userId, userId)).returning({ balance: members.balance });
+    return { balance: updated[0]?.balance ?? member.balance + delta };
+  });
+}
+__name(adjustBalance, "adjustBalance");
+async function setBalance(db, userId, amount) {
+  if (!Number.isSafeInteger(amount) || amount < 0) {
+    throw new UserFacingError("Use a non-negative whole number.");
+  }
+  return db.transaction(async (tx) => {
+    await tx.insert(members).values({ userId }).onConflictDoNothing();
+    const updated = await tx.update(members).set({ balance: amount, updatedAt: /* @__PURE__ */ new Date() }).where(eq(members.userId, userId)).returning({ balance: members.balance });
+    return { balance: updated[0]?.balance ?? amount };
+  });
+}
+__name(setBalance, "setBalance");
+
+// apps/bot/src/commands/economy/balance.ts
+var balanceCommand = {
+  data: new import_discord8.SlashCommandBuilder().setName("balance").setDescription("Show a member\u2019s balance.").addUserOption(
+    (option) => option.setName("user").setDescription("Member to inspect (defaults to you)")
+  ),
+  category: "economy",
+  cooldownSeconds: 2,
+  async execute({ client, interaction }) {
+    await deferPublic(interaction);
+    const target = interaction.options.getUser("user") ?? interaction.user;
+    const member = await getBalance(requireDb(client), target.id);
+    const config2 = client.settings.economy;
+    await interaction.editReply({
+      content: `${target} has ${formatCurrency(member.balance, config2)}.
+Daily streak: **${member.dailyStreak}** day(s).`,
+      allowedMentions: { parse: [] }
+    });
+  }
+};
+
+// apps/bot/src/commands/economy/baltop.ts
+var import_discord9 = __toESM(require_src(), 1);
+var baltopCommand = {
+  data: new import_discord9.SlashCommandBuilder().setName("baltop").setDescription("Show the top 10 members by balance."),
+  category: "economy",
+  cooldownSeconds: 5,
+  async execute({ client, interaction }) {
+    await deferPublic(interaction);
+    const rows = await topBalances(requireDb(client));
+    if (rows.length === 0) {
+      await interaction.editReply({ content: "Nobody has coins yet." });
+      return;
+    }
+    const config2 = client.settings.economy;
+    const embed = new import_discord9.EmbedBuilder().setColor(5793266).setTitle("Richest members").setDescription(
+      rows.map(
+        (row, index2) => `**#${index2 + 1}** <@${row.userId}> \u2014 ${formatCurrency(row.balance, config2)}`
+      ).join("\n")
+    ).setFooter({ text: "Nervana economy" });
+    await interaction.editReply({
+      embeds: [embed],
+      allowedMentions: { parse: [] }
+    });
+  }
+};
+
+// apps/bot/src/commands/economy/buy.ts
+var import_discord10 = __toESM(require_src(), 1);
+var buyCommand = {
+  data: new import_discord10.SlashCommandBuilder().setName("buy").setDescription("Buy an item from the coin shop.").addStringOption(
+    (option) => option.setName("item").setDescription("Item name or ID from /shop").setRequired(true).setMaxLength(64)
+  ),
+  category: "economy",
+  cooldownSeconds: 3,
+  async execute({ client, interaction, guild, member }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const query = interaction.options.getString("item", true);
+    const item = await findShopItem(db, query);
+    if (!item) throw new UserFacingError("That item is not in the shop.");
+    if (item.stock !== null && item.stock <= 0) throw new UserFacingError("That item is sold out.");
+    const config2 = client.settings.economy;
+    const role = item.roleId ? await guild.roles.fetch(item.roleId).catch(() => null) : null;
+    if (item.roleId && !role) {
+      throw new UserFacingError(
+        "That item\u2019s role no longer exists. Ask an administrator to fix it."
+      );
+    }
+    if (role) {
+      if (role.id === guild.id) throw new UserFacingError("That item is misconfigured.");
+      if (role.managed) throw new UserFacingError("That role is managed by an integration.");
+      if (member.roles.cache.has(role.id)) {
+        throw new UserFacingError("You already have that role.");
+      }
+      const me = guild.members.me;
+      if (!me?.permissions.has(import_discord10.PermissionFlagsBits.ManageRoles)) {
+        throw new UserFacingError("I need Manage Roles to deliver that item.");
+      }
+      if (role.position >= me.roles.highest.position) {
+        throw new UserFacingError("That role is above my highest role, so I cannot grant it.");
+      }
+    }
+    const purchase = await purchaseItem(db, interaction.user.id, item.id);
+    if (role) {
+      try {
+        await member.roles.add(role.id, `Shop purchase: ${item.name}`);
+      } catch (error62) {
+        await refundPurchase(db, interaction.user.id, item).catch((refundError) => {
+          client.logger.error(
+            { err: refundError, itemId: item.id, userId: interaction.user.id },
+            "shop refund failed after role grant error"
+          );
+        });
+        client.logger.warn(
+          { err: error62, itemId: item.id, userId: interaction.user.id },
+          "shop role grant failed - refunded"
+        );
+        throw new UserFacingError("I could not grant that role. Your coins were refunded.");
+      }
+    }
+    await interaction.editReply({
+      content: `Bought **${item.name}** for ${formatCurrency(
+        item.price,
+        config2
+      )}.
+Balance: ${formatCurrency(purchase.balance, config2)}`
+    });
+  }
+};
+
+// apps/bot/src/commands/economy/daily.ts
+var import_discord11 = __toESM(require_src(), 1);
+var dailyCommand = {
+  data: new import_discord11.SlashCommandBuilder().setName("daily").setDescription("Claim your daily coins."),
+  category: "economy",
+  cooldownSeconds: 3,
+  async execute({ client, interaction }) {
+    await deferEphemeral(interaction);
+    const config2 = client.settings.economy;
+    const result = await claimDaily(requireDb(client), interaction.user.id, config2);
+    const embed = new import_discord11.EmbedBuilder().setColor(5763719).setTitle("Daily claimed").addFields(
+      { name: "Base", value: formatCurrency(config2.dailyAmount, config2), inline: true },
+      { name: "Streak bonus", value: formatCurrency(result.bonus, config2), inline: true },
+      { name: "Streak", value: `**${result.streak}** day(s)`, inline: true },
+      { name: "Balance", value: formatCurrency(result.balance, config2), inline: true }
+    ).setFooter({ text: "Come back in 24 hours to keep the streak alive." });
+    await interaction.editReply({ embeds: [embed] });
+  }
+};
+
+// apps/bot/src/commands/economy/ecoadmin.ts
+var import_discord12 = __toESM(require_src(), 1);
+function assertAssignableRole(member, roleId) {
+  const role = member.guild.roles.cache.get(roleId);
+  if (!role) throw new UserFacingError("That role no longer exists.");
+  if (role.id === member.guild.id) throw new UserFacingError("Pick a real role, not @everyone.");
+  if (role.managed) throw new UserFacingError("That role is managed by an integration.");
+  const me = member.guild.members.me;
+  if (!me?.permissions.has(import_discord12.PermissionFlagsBits.ManageRoles)) {
+    throw new UserFacingError("I need Manage Roles to sell that role.");
+  }
+  if (role.position >= me.roles.highest.position) {
+    throw new UserFacingError("That role is above my highest role.");
+  }
+}
+__name(assertAssignableRole, "assertAssignableRole");
+var ecoAdminCommand = {
+  data: new import_discord12.SlashCommandBuilder().setName("ecoadmin").setDescription("Administrator tools for the economy and shop.").addSubcommand(
+    (sub) => sub.setName("grant").setDescription("Give coins to a member.").addUserOption(
+      (option) => option.setName("user").setDescription("Member").setRequired(true)
+    ).addIntegerOption(
+      (option) => option.setName("amount").setDescription("Coins to add").setRequired(true).setMinValue(1).setMaxValue(1e9)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("take").setDescription("Remove coins from a member.").addUserOption(
+      (option) => option.setName("user").setDescription("Member").setRequired(true)
+    ).addIntegerOption(
+      (option) => option.setName("amount").setDescription("Coins to remove").setRequired(true).setMinValue(1).setMaxValue(1e9)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("set").setDescription("Set a member\u2019s exact balance.").addUserOption(
+      (option) => option.setName("user").setDescription("Member").setRequired(true)
+    ).addIntegerOption(
+      (option) => option.setName("amount").setDescription("New balance").setRequired(true).setMinValue(0).setMaxValue(1e9)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("shop-add").setDescription("Add a role item to the shop.").addStringOption(
+      (option) => option.setName("name").setDescription("Item name").setRequired(true).setMaxLength(64)
+    ).addIntegerOption(
+      (option) => option.setName("price").setDescription("Price in coins").setRequired(true).setMinValue(1).setMaxValue(1e9)
+    ).addRoleOption(
+      (option) => option.setName("role").setDescription("Role granted on purchase")
+    ).addIntegerOption(
+      (option) => option.setName("stock").setDescription("How many are available (omit for unlimited)").setMinValue(0).setMaxValue(1e9)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("shop-remove").setDescription("Remove a shop item.").addStringOption(
+      (option) => option.setName("item").setDescription("Item name or ID").setRequired(true).setMaxLength(64)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("shop-stock").setDescription("Change an item\u2019s stock.").addStringOption(
+      (option) => option.setName("item").setDescription("Item name or ID").setRequired(true).setMaxLength(64)
+    ).addIntegerOption(
+      (option) => option.setName("stock").setDescription("New stock (mutually exclusive with unlimited)").setMinValue(0).setMaxValue(1e9)
+    ).addBooleanOption(
+      (option) => option.setName("unlimited").setDescription("Make the stock unlimited")
+    )
+  ).addSubcommand((sub) => sub.setName("shop-list").setDescription("List every shop item.")),
+  category: "economy",
+  allowWhenDisabled: true,
+  userPermissions: [import_discord12.PermissionFlagsBits.ManageGuild],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild, member }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const config2 = client.settings.economy;
+    const sub = interaction.options.getSubcommand(true);
+    if (sub === "grant" || sub === "take" || sub === "set") {
+      const target = interaction.options.getUser("user", true);
+      const amount = interaction.options.getInteger("amount", true);
+      if (target.bot) throw new UserFacingError("Bots do not have wallets.");
+      const result = sub === "set" ? await setBalance(db, target.id, amount) : await adjustBalance(db, target.id, sub === "grant" ? amount : -amount);
+      await interaction.editReply({
+        content: `${target} now has ${formatCurrency(result.balance, config2)}.`,
+        allowedMentions: { parse: [] }
+      });
+      return;
+    }
+    if (sub === "shop-add") {
+      const name = interaction.options.getString("name", true).trim();
+      const price = interaction.options.getInteger("price", true);
+      const role = interaction.options.getRole("role");
+      const stock = interaction.options.getInteger("stock");
+      if (role) {
+        if (role.id === guild.id) throw new UserFacingError("Pick a real role, not @everyone.");
+        assertAssignableRole(member, role.id);
+      }
+      const rows = await db.insert(shopItems).values({
+        name,
+        price,
+        roleId: role?.id ?? null,
+        stock: stock ?? null
+      }).returning();
+      const item = rows[0];
+      if (!item) throw new UserFacingError("Could not create that item.");
+      await interaction.editReply({
+        content: `Added **#${item.id} ${item.name}** for ${formatCurrency(
+          item.price,
+          config2
+        )}${item.stock === null ? " with unlimited stock" : ` with ${item.stock} in stock`}.`
+      });
+      return;
+    }
+    if (sub === "shop-remove") {
+      const item = await findShopItem(db, interaction.options.getString("item", true));
+      if (!item) throw new UserFacingError("That item does not exist.");
+      await db.delete(shopItems).where(eq(shopItems.id, item.id));
+      await interaction.editReply({ content: `Removed **${item.name}** from the shop.` });
+      return;
+    }
+    if (sub === "shop-stock") {
+      const item = await findShopItem(db, interaction.options.getString("item", true));
+      if (!item) throw new UserFacingError("That item does not exist.");
+      const unlimited = interaction.options.getBoolean("unlimited") ?? false;
+      const stock = interaction.options.getInteger("stock");
+      if (unlimited && stock !== null) {
+        throw new UserFacingError("Choose either a stock number or unlimited, not both.");
+      }
+      if (!unlimited && stock === null) {
+        throw new UserFacingError("Provide a stock number or set unlimited:true.");
+      }
+      await db.update(shopItems).set({ stock: unlimited ? null : stock }).where(eq(shopItems.id, item.id));
+      await interaction.editReply({
+        content: `**${item.name}** now has ${unlimited ? "unlimited stock" : `${stock} in stock`}.`
+      });
+      return;
+    }
+    const items = await listShop(db);
+    if (items.length === 0) {
+      await interaction.editReply({ content: "The shop is empty." });
+      return;
+    }
+    const embed = new import_discord12.EmbedBuilder().setColor(5793266).setTitle("Shop items").setDescription(
+      items.map(
+        (item) => `**#${item.id}** ${item.name} \u2014 ${formatCurrency(item.price, config2)} \xB7 ${item.stock === null ? "unlimited" : `${item.stock} left`}${item.roleId ? ` \xB7 <@&${item.roleId}>` : ""}`
+      ).join("\n").slice(0, 4e3)
+    );
+    await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
+  }
+};
+
+// apps/bot/src/commands/economy/gamble.ts
+var import_discord13 = __toESM(require_src(), 1);
+var gambleCommand = {
+  data: new import_discord13.SlashCommandBuilder().setName("gamble").setDescription("Bet coins on a 50/50 flip.").addIntegerOption(
+    (option) => option.setName("amount").setDescription("How many coins to bet").setRequired(true).setMinValue(1).setMaxValue(1e9)
+  ),
+  category: "economy",
+  cooldownSeconds: 5,
+  async execute({ client, interaction }) {
+    await deferEphemeral(interaction);
+    const amount = interaction.options.getInteger("amount", true);
+    const config2 = client.settings.economy;
+    const result = await gamble(requireDb(client), interaction.user.id, amount);
+    await interaction.editReply({
+      content: result.won ? `You won ${formatCurrency(result.amount, config2)}.
+Balance: ${formatCurrency(
+        result.balance,
+        config2
+      )}` : `You lost ${formatCurrency(result.amount, config2)}.
+Balance: ${formatCurrency(
+        result.balance,
+        config2
+      )}`
+    });
+  }
+};
+
+// apps/bot/src/commands/economy/inventory.ts
+var import_discord14 = __toESM(require_src(), 1);
+var inventoryCommand = {
+  data: new import_discord14.SlashCommandBuilder().setName("inventory").setDescription("Show the role items you own from the shop."),
+  category: "economy",
+  cooldownSeconds: 3,
+  async execute({ client, interaction, member }) {
+    await deferPublic(interaction);
+    const db = requireDb(client);
+    const config2 = client.settings.economy;
+    const [balance, items] = await Promise.all([
+      getBalance(db, interaction.user.id),
+      inventoryForRoleIds(db, [...member.roles.cache.keys()])
+    ]);
+    const embed = new import_discord14.EmbedBuilder().setColor(5793266).setTitle("Your inventory").addFields({ name: "Balance", value: formatCurrency(balance.balance, config2) }).setFooter({ text: "Role items appear here while you own their role." });
+    if (items.length > 0) {
+      embed.addFields({
+        name: "Owned items",
+        value: items.map((item) => `**${item.name}** \xB7 <@&${item.roleId}>`).join("\n").slice(0, 4e3)
+      });
+    }
+    await interaction.editReply({
+      embeds: [embed],
+      allowedMentions: { parse: [] }
+    });
+  }
+};
+
+// apps/bot/src/commands/economy/pay.ts
+var import_discord15 = __toESM(require_src(), 1);
+var payCommand = {
+  data: new import_discord15.SlashCommandBuilder().setName("pay").setDescription("Send coins to another member.").addUserOption(
+    (option) => option.setName("user").setDescription("Who to pay").setRequired(true)
+  ).addIntegerOption(
+    (option) => option.setName("amount").setDescription("How many coins").setRequired(true).setMinValue(1).setMaxValue(1e9)
+  ),
+  category: "economy",
+  cooldownSeconds: 3,
+  async execute({ client, interaction }) {
+    await deferEphemeral(interaction);
+    const target = interaction.options.getUser("user", true);
+    const amount = interaction.options.getInteger("amount", true);
+    if (target.bot) throw new UserFacingError("Bots do not have wallets.");
+    if (target.id === interaction.user.id) throw new UserFacingError("You cannot pay yourself.");
+    const config2 = client.settings.economy;
+    const result = await transferBalance(requireDb(client), interaction.user.id, target.id, amount);
+    await interaction.editReply({
+      content: `Sent ${formatCurrency(result.amount, config2)} to ${target}.
+Your balance: ${formatCurrency(
+        result.senderBalance,
+        config2
+      )}`,
+      allowedMentions: { parse: [] }
+    });
+  }
+};
+
+// apps/bot/src/commands/economy/shop.ts
+var import_discord16 = __toESM(require_src(), 1);
+var shopCommand = {
+  data: new import_discord16.SlashCommandBuilder().setName("shop").setDescription("Browse the coin shop."),
+  category: "economy",
+  cooldownSeconds: 3,
+  async execute({ client, interaction }) {
+    await deferPublic(interaction);
+    const items = await listShop(requireDb(client));
+    const config2 = client.settings.economy;
+    if (items.length === 0) {
+      await interaction.editReply({
+        content: "The shop is empty. An administrator can add items with `/ecoadmin shop-add`."
+      });
+      return;
+    }
+    const embed = new import_discord16.EmbedBuilder().setColor(5793266).setTitle("Coin shop").setDescription(
+      items.map((item) => {
+        const stock = item.stock === null ? "unlimited" : `${item.stock} left`;
+        const role = item.roleId ? ` \xB7 <@&${item.roleId}>` : "";
+        return `**#${item.id}** ${item.name} \u2014 ${formatCurrency(
+          item.price,
+          config2
+        )} \xB7 ${stock}${role}`;
+      }).join("\n").slice(0, 4e3)
+    ).setFooter({ text: "Buy with /buy item:<name or id>" });
+    await interaction.editReply({
+      embeds: [embed],
+      allowedMentions: { parse: [] }
+    });
+  }
+};
+
+// apps/bot/src/commands/economy/work.ts
+var import_discord17 = __toESM(require_src(), 1);
+var workCommand = {
+  data: new import_discord17.SlashCommandBuilder().setName("work").setDescription("Work for some coins."),
+  category: "economy",
+  cooldownSeconds: 3,
+  async execute({ client, interaction }) {
+    await deferEphemeral(interaction);
+    const config2 = client.settings.economy;
+    const result = await work(requireDb(client), interaction.user.id, config2);
+    await interaction.editReply({
+      content: `You earned ${formatCurrency(result.payout, config2)}.
+Balance: ${formatCurrency(
+        result.balance,
+        config2
+      )} \xB7 Next shift <t:${Math.floor(result.nextAt.getTime() / 1e3)}:R>.`
+    });
+  }
+};
+
+// apps/bot/src/commands/moderation/ban.ts
+var import_discord19 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/moderation/guards.ts
 function assertModeratable(guild, actor, target) {
@@ -115348,16 +116454,7 @@ async function fetchMember(guild, userId) {
 __name(fetchMember, "fetchMember");
 
 // apps/bot/src/modules/moderation/service.ts
-var import_discord7 = __toESM(require_src(), 1);
-
-// apps/bot/src/core/database.ts
-function requireDb(client) {
-  if (!client.db) throw new UserFacingError("The database is not configured.");
-  return client.db;
-}
-__name(requireDb, "requireDb");
-
-// apps/bot/src/modules/moderation/service.ts
+var import_discord18 = __toESM(require_src(), 1);
 var ACTIVE_CASE_TYPES = /* @__PURE__ */ new Set(["warn", "timeout", "ban", "slowmode"]);
 var CASE_LABELS = {
   warn: "Warning",
@@ -115439,7 +116536,7 @@ async function sendModLogEmbed(client, embed) {
 __name(sendModLogEmbed, "sendModLogEmbed");
 async function sendModLog(client, row) {
   const type = row.type;
-  const embed = new import_discord7.EmbedBuilder().setColor(CASE_COLORS[type] ?? BRAND.muted).setTitle(`Case #${row.id} \xB7 ${caseLabel(row.type)}`).addFields(
+  const embed = new import_discord18.EmbedBuilder().setColor(CASE_COLORS[type] ?? BRAND.muted).setTitle(`Case #${row.id} \xB7 ${caseLabel(row.type)}`).addFields(
     {
       name: "Target",
       value: `${targetMention(row.type, row.targetId)}
@@ -115496,7 +116593,7 @@ If you believe this was a mistake, contact the server staff.`
 __name(dmTarget, "dmTarget");
 function caseEmbed(row) {
   const type = row.type;
-  const embed = new import_discord7.EmbedBuilder().setColor(CASE_COLORS[type] ?? BRAND.muted).setTitle(`Case #${row.id} \xB7 ${caseLabel(row.type)}`).addFields(
+  const embed = new import_discord18.EmbedBuilder().setColor(CASE_COLORS[type] ?? BRAND.muted).setTitle(`Case #${row.id} \xB7 ${caseLabel(row.type)}`).addFields(
     {
       name: "Target",
       value: `${targetMention(row.type, row.targetId)} \`${row.targetId}\``,
@@ -115532,16 +116629,16 @@ __name(readDuration, "readDuration");
 
 // apps/bot/src/commands/moderation/ban.ts
 var banCommand = {
-  data: new import_discord8.SlashCommandBuilder().setName("ban").setDescription("Ban a user, optionally for a limited time.").addUserOption(
+  data: new import_discord19.SlashCommandBuilder().setName("ban").setDescription("Ban a user, optionally for a limited time.").addUserOption(
     (option) => option.setName("user").setDescription("User to ban").setRequired(true)
   ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).addStringOption(
     (option) => option.setName("duration").setDescription("Optional: 7d, 12h, 30m (max 365d)")
   ).addIntegerOption(
     (option) => option.setName("delete-days").setDescription("Delete this many days of their recent messages (0\u20137)").setMinValue(0).setMaxValue(7)
-  ).setDefaultMemberPermissions(import_discord8.PermissionFlagsBits.BanMembers),
+  ).setDefaultMemberPermissions(import_discord19.PermissionFlagsBits.BanMembers),
   category: "moderation",
-  userPermissions: [import_discord8.PermissionFlagsBits.BanMembers],
-  botPermissions: [import_discord8.PermissionFlagsBits.BanMembers],
+  userPermissions: [import_discord19.PermissionFlagsBits.BanMembers],
+  botPermissions: [import_discord19.PermissionFlagsBits.BanMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -115574,13 +116671,13 @@ var banCommand = {
 };
 
 // apps/bot/src/commands/moderation/case.ts
-var import_discord9 = __toESM(require_src(), 1);
+var import_discord20 = __toESM(require_src(), 1);
 var caseCommand = {
-  data: new import_discord9.SlashCommandBuilder().setName("case").setDescription("Show a moderation case by number.").addIntegerOption(
+  data: new import_discord20.SlashCommandBuilder().setName("case").setDescription("Show a moderation case by number.").addIntegerOption(
     (option) => option.setName("id").setDescription("Case number").setRequired(true).setMinValue(1)
-  ).setDefaultMemberPermissions(import_discord9.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord20.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord9.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord20.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction }) {
     await deferEphemeral(interaction);
@@ -115597,7 +116694,7 @@ var caseCommand = {
 };
 
 // apps/bot/src/commands/moderation/cases.ts
-var import_discord10 = __toESM(require_src(), 1);
+var import_discord21 = __toESM(require_src(), 1);
 var TYPES = [
   "warn",
   "warn-clear",
@@ -115611,11 +116708,11 @@ var TYPES = [
   "slowmode"
 ];
 var casesCommand = {
-  data: new import_discord10.SlashCommandBuilder().setName("cases").setDescription("List recent moderation cases.").addUserOption((option) => option.setName("user").setDescription("Filter by member")).addStringOption(
+  data: new import_discord21.SlashCommandBuilder().setName("cases").setDescription("List recent moderation cases.").addUserOption((option) => option.setName("user").setDescription("Filter by member")).addStringOption(
     (option) => option.setName("type").setDescription("Filter by case type").addChoices(...TYPES.map((type) => ({ name: caseLabel(type), value: type })))
-  ).setDefaultMemberPermissions(import_discord10.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord21.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord10.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord21.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 3,
   async execute({ client, interaction }) {
     await deferEphemeral(interaction);
@@ -115634,19 +116731,19 @@ var casesCommand = {
       const at = `<t:${Math.floor(row.createdAt.getTime() / 1e3)}:R>`;
       return `**#${row.id}** \xB7 ${caseLabel(row.type)} \xB7 ${targetMention(row.type, row.targetId)} \xB7 ${at}`;
     });
-    const embed = new import_discord10.EmbedBuilder().setColor(BRAND.info).setTitle("Recent cases").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: `${rows.length} result${rows.length === 1 ? "" : "s"}` });
+    const embed = new import_discord21.EmbedBuilder().setColor(BRAND.info).setTitle("Recent cases").setDescription(truncate(lines.join("\n"), 4e3)).setFooter({ text: `${rows.length} result${rows.length === 1 ? "" : "s"}` });
     await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
   }
 };
 
 // apps/bot/src/commands/moderation/clearwarnings.ts
-var import_discord11 = __toESM(require_src(), 1);
+var import_discord22 = __toESM(require_src(), 1);
 var clearWarningsCommand = {
-  data: new import_discord11.SlashCommandBuilder().setName("clearwarnings").setDescription("Clear all active warnings for a member.").addUserOption(
+  data: new import_discord22.SlashCommandBuilder().setName("clearwarnings").setDescription("Clear all active warnings for a member.").addUserOption(
     (option) => option.setName("user").setDescription("Member to clear").setRequired(true)
-  ).setDefaultMemberPermissions(import_discord11.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord22.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord11.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord22.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild }) {
     await deferEphemeral(interaction);
@@ -115678,14 +116775,14 @@ var clearWarningsCommand = {
 };
 
 // apps/bot/src/commands/moderation/kick.ts
-var import_discord12 = __toESM(require_src(), 1);
+var import_discord23 = __toESM(require_src(), 1);
 var kickCommand = {
-  data: new import_discord12.SlashCommandBuilder().setName("kick").setDescription("Kick a member.").addUserOption(
+  data: new import_discord23.SlashCommandBuilder().setName("kick").setDescription("Kick a member.").addUserOption(
     (option) => option.setName("user").setDescription("Member to kick").setRequired(true)
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord12.PermissionFlagsBits.KickMembers),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord23.PermissionFlagsBits.KickMembers),
   category: "moderation",
-  userPermissions: [import_discord12.PermissionFlagsBits.KickMembers],
-  botPermissions: [import_discord12.PermissionFlagsBits.KickMembers],
+  userPermissions: [import_discord23.PermissionFlagsBits.KickMembers],
+  botPermissions: [import_discord23.PermissionFlagsBits.KickMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -115706,16 +116803,16 @@ var kickCommand = {
 };
 
 // apps/bot/src/commands/moderation/purge.ts
-var import_discord13 = __toESM(require_src(), 1);
+var import_discord24 = __toESM(require_src(), 1);
 var purgeCommand = {
-  data: new import_discord13.SlashCommandBuilder().setName("purge").setDescription("Bulk-delete recent messages in this channel.").addIntegerOption(
+  data: new import_discord24.SlashCommandBuilder().setName("purge").setDescription("Bulk-delete recent messages in this channel.").addIntegerOption(
     (option) => option.setName("count").setDescription("How many messages (1\u2013100)").setRequired(true).setMinValue(1).setMaxValue(100)
   ).addUserOption(
     (option) => option.setName("user").setDescription("Only delete messages from this member")
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord13.PermissionFlagsBits.ManageMessages),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord24.PermissionFlagsBits.ManageMessages),
   category: "moderation",
-  userPermissions: [import_discord13.PermissionFlagsBits.ManageMessages],
-  botPermissions: [import_discord13.PermissionFlagsBits.ManageMessages, import_discord13.PermissionFlagsBits.ReadMessageHistory],
+  userPermissions: [import_discord24.PermissionFlagsBits.ManageMessages],
+  botPermissions: [import_discord24.PermissionFlagsBits.ManageMessages, import_discord24.PermissionFlagsBits.ReadMessageHistory],
   cooldownSeconds: 5,
   async execute({ client, interaction }) {
     await deferEphemeral(interaction);
@@ -115747,16 +116844,16 @@ var purgeCommand = {
 };
 
 // apps/bot/src/commands/moderation/slowmode.ts
-var import_discord14 = __toESM(require_src(), 1);
+var import_discord25 = __toESM(require_src(), 1);
 var slowmodeCommand = {
-  data: new import_discord14.SlashCommandBuilder().setName("slowmode").setDescription("Set a channel\u2019s slowmode (0 disables it).").addIntegerOption(
+  data: new import_discord25.SlashCommandBuilder().setName("slowmode").setDescription("Set a channel\u2019s slowmode (0 disables it).").addIntegerOption(
     (option) => option.setName("seconds").setDescription("Seconds between messages (0\u201321600)").setRequired(true).setMinValue(0).setMaxValue(21600)
   ).addChannelOption(
     (option) => option.setName("channel").setDescription("Defaults to the current channel")
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord14.PermissionFlagsBits.ManageChannels),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord25.PermissionFlagsBits.ManageChannels),
   category: "moderation",
-  userPermissions: [import_discord14.PermissionFlagsBits.ManageChannels],
-  botPermissions: [import_discord14.PermissionFlagsBits.ManageChannels],
+  userPermissions: [import_discord25.PermissionFlagsBits.ManageChannels],
+  botPermissions: [import_discord25.PermissionFlagsBits.ManageChannels],
   cooldownSeconds: 3,
   async execute({ client, interaction }) {
     await deferEphemeral(interaction);
@@ -115782,16 +116879,16 @@ var slowmodeCommand = {
 };
 
 // apps/bot/src/commands/moderation/softban.ts
-var import_discord15 = __toESM(require_src(), 1);
+var import_discord26 = __toESM(require_src(), 1);
 var softbanCommand = {
-  data: new import_discord15.SlashCommandBuilder().setName("softban").setDescription("Ban and immediately unban a user to delete recent messages.").addUserOption(
+  data: new import_discord26.SlashCommandBuilder().setName("softban").setDescription("Ban and immediately unban a user to delete recent messages.").addUserOption(
     (option) => option.setName("user").setDescription("User to softban").setRequired(true)
   ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).addIntegerOption(
     (option) => option.setName("delete-days").setDescription("Delete this many days of recent messages (default 7)").setMinValue(0).setMaxValue(7)
-  ).setDefaultMemberPermissions(import_discord15.PermissionFlagsBits.BanMembers),
+  ).setDefaultMemberPermissions(import_discord26.PermissionFlagsBits.BanMembers),
   category: "moderation",
-  userPermissions: [import_discord15.PermissionFlagsBits.BanMembers],
-  botPermissions: [import_discord15.PermissionFlagsBits.BanMembers],
+  userPermissions: [import_discord26.PermissionFlagsBits.BanMembers],
+  botPermissions: [import_discord26.PermissionFlagsBits.BanMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -115819,17 +116916,17 @@ var softbanCommand = {
 };
 
 // apps/bot/src/commands/moderation/timeout.ts
-var import_discord16 = __toESM(require_src(), 1);
+var import_discord27 = __toESM(require_src(), 1);
 var MAX_TIMEOUT_MS = 28 * 864e5;
 var timeoutCommand = {
-  data: new import_discord16.SlashCommandBuilder().setName("timeout").setDescription("Time out a member for a duration.").addUserOption(
+  data: new import_discord27.SlashCommandBuilder().setName("timeout").setDescription("Time out a member for a duration.").addUserOption(
     (option) => option.setName("user").setDescription("Member to time out").setRequired(true)
   ).addStringOption(
     (option) => option.setName("duration").setDescription("Examples: 10m, 2h, 7d (max 28d)").setRequired(true)
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord16.PermissionFlagsBits.ModerateMembers),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord27.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord16.PermissionFlagsBits.ModerateMembers],
-  botPermissions: [import_discord16.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord27.PermissionFlagsBits.ModerateMembers],
+  botPermissions: [import_discord27.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -115864,14 +116961,14 @@ var timeoutCommand = {
 };
 
 // apps/bot/src/commands/moderation/unban.ts
-var import_discord17 = __toESM(require_src(), 1);
+var import_discord28 = __toESM(require_src(), 1);
 var unbanCommand = {
-  data: new import_discord17.SlashCommandBuilder().setName("unban").setDescription("Unban a user by ID.").addStringOption(
+  data: new import_discord28.SlashCommandBuilder().setName("unban").setDescription("Unban a user by ID.").addStringOption(
     (option) => option.setName("user-id").setDescription("The banned user\u2019s ID (17\u201320 digits)").setRequired(true).setMinLength(17).setMaxLength(20)
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord17.PermissionFlagsBits.BanMembers),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord28.PermissionFlagsBits.BanMembers),
   category: "moderation",
-  userPermissions: [import_discord17.PermissionFlagsBits.BanMembers],
-  botPermissions: [import_discord17.PermissionFlagsBits.BanMembers],
+  userPermissions: [import_discord28.PermissionFlagsBits.BanMembers],
+  botPermissions: [import_discord28.PermissionFlagsBits.BanMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild }) {
     await deferEphemeral(interaction);
@@ -115899,14 +116996,14 @@ var unbanCommand = {
 };
 
 // apps/bot/src/commands/moderation/untimeout.ts
-var import_discord18 = __toESM(require_src(), 1);
+var import_discord29 = __toESM(require_src(), 1);
 var untimeoutCommand = {
-  data: new import_discord18.SlashCommandBuilder().setName("untimeout").setDescription("Remove a member\u2019s timeout.").addUserOption(
+  data: new import_discord29.SlashCommandBuilder().setName("untimeout").setDescription("Remove a member\u2019s timeout.").addUserOption(
     (option) => option.setName("user").setDescription("Member to un-timeout").setRequired(true)
-  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord18.PermissionFlagsBits.ModerateMembers),
+  ).addStringOption((option) => option.setName("reason").setDescription("Why").setMaxLength(1e3)).setDefaultMemberPermissions(import_discord29.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord18.PermissionFlagsBits.ModerateMembers],
-  botPermissions: [import_discord18.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord29.PermissionFlagsBits.ModerateMembers],
+  botPermissions: [import_discord29.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -115934,15 +117031,15 @@ var untimeoutCommand = {
 };
 
 // apps/bot/src/commands/moderation/warn.ts
-var import_discord19 = __toESM(require_src(), 1);
+var import_discord30 = __toESM(require_src(), 1);
 var warnCommand = {
-  data: new import_discord19.SlashCommandBuilder().setName("warn").setDescription("Warn a member and record a case.").addUserOption(
+  data: new import_discord30.SlashCommandBuilder().setName("warn").setDescription("Warn a member and record a case.").addUserOption(
     (option) => option.setName("user").setDescription("Member to warn").setRequired(true)
   ).addStringOption(
     (option) => option.setName("reason").setDescription("Why").setRequired(true).setMaxLength(1e3)
-  ).setDefaultMemberPermissions(import_discord19.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord30.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord19.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord30.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction, guild, member }) {
     await deferEphemeral(interaction);
@@ -115962,13 +117059,13 @@ var warnCommand = {
 };
 
 // apps/bot/src/commands/moderation/warnings.ts
-var import_discord20 = __toESM(require_src(), 1);
+var import_discord31 = __toESM(require_src(), 1);
 var warningsCommand = {
-  data: new import_discord20.SlashCommandBuilder().setName("warnings").setDescription("List a member\u2019s active warnings.").addUserOption(
+  data: new import_discord31.SlashCommandBuilder().setName("warnings").setDescription("List a member\u2019s active warnings.").addUserOption(
     (option) => option.setName("user").setDescription("Member to inspect").setRequired(true)
-  ).setDefaultMemberPermissions(import_discord20.PermissionFlagsBits.ModerateMembers),
+  ).setDefaultMemberPermissions(import_discord31.PermissionFlagsBits.ModerateMembers),
   category: "moderation",
-  userPermissions: [import_discord20.PermissionFlagsBits.ModerateMembers],
+  userPermissions: [import_discord31.PermissionFlagsBits.ModerateMembers],
   cooldownSeconds: 2,
   async execute({ client, interaction }) {
     await deferEphemeral(interaction);
@@ -115989,16 +117086,16 @@ var warningsCommand = {
       return `**#${row.caseId}** ${at} \xB7 <@${row.moderatorId}>
 ${truncate(row.reason, 180)}`;
     });
-    const embed = new import_discord20.EmbedBuilder().setColor(BRAND.warning).setTitle(`Active warnings \xB7 ${user.username}`).setDescription(truncate(lines.join("\n\n"), 4e3)).setFooter({ text: `${rows.length} active warning${rows.length === 1 ? "" : "s"}` });
+    const embed = new import_discord31.EmbedBuilder().setColor(BRAND.warning).setTitle(`Active warnings \xB7 ${user.username}`).setDescription(truncate(lines.join("\n\n"), 4e3)).setFooter({ text: `${rows.length} active warning${rows.length === 1 ? "" : "s"}` });
     await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
   }
 };
 
 // apps/bot/src/commands/tickets/ticket.ts
-var import_discord22 = __toESM(require_src(), 1);
+var import_discord33 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/tickets/service.ts
-var import_discord21 = __toESM(require_src(), 1);
+var import_discord32 = __toESM(require_src(), 1);
 var import_node_zlib = require("node:zlib");
 
 // apps/bot/src/modules/tickets/transcript.ts
@@ -116095,7 +117192,7 @@ var MAX_TRANSCRIPT_MESSAGES = 1e3;
 var TRANSCRIPT_PAGE = 100;
 function isTicketStaff(client, member) {
   const staffRoleId = client.settings.tickets.staffRoleId;
-  return member.permissions.has(import_discord21.PermissionFlagsBits.ManageChannels) || staffRoleId !== null && member.roles.cache.has(staffRoleId);
+  return member.permissions.has(import_discord32.PermissionFlagsBits.ManageChannels) || staffRoleId !== null && member.roles.cache.has(staffRoleId);
 }
 __name(isTicketStaff, "isTicketStaff");
 function requiredTicketStaff(client, member) {
@@ -116151,11 +117248,11 @@ async function openTicket(client, guild, member, categoryId) {
   }
   const me = botMember(guild);
   if (!me) throw new UserFacingError("I could not resolve my own server member.");
-  if (!me.permissions.has(import_discord21.PermissionFlagsBits.ManageChannels) || !me.permissions.has(import_discord21.PermissionFlagsBits.ManageRoles)) {
+  if (!me.permissions.has(import_discord32.PermissionFlagsBits.ManageChannels) || !me.permissions.has(import_discord32.PermissionFlagsBits.ManageRoles)) {
     throw new UserFacingError("I need Manage Channels and Manage Roles to open ticket channels.");
   }
   const parent = await guild.channels.fetch(config2.categoryId).catch(() => null);
-  if (!parent || parent.type !== import_discord21.ChannelType.GuildCategory) {
+  if (!parent || parent.type !== import_discord32.ChannelType.GuildCategory) {
     throw new UserFacingError(
       "The configured ticket category is missing. Ask staff to fix `/setup tickets`."
     );
@@ -116169,41 +117266,41 @@ async function openTicket(client, guild, member, categoryId) {
   const base = member.user.username.toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "").slice(0, 80);
   const channel = await guild.channels.create({
     name: `ticket-${base || "user"}`,
-    type: import_discord21.ChannelType.GuildText,
+    type: import_discord32.ChannelType.GuildText,
     parent: parent.id,
     permissionOverwrites: [
-      { id: guild.id, deny: [import_discord21.PermissionFlagsBits.ViewChannel] },
+      { id: guild.id, deny: [import_discord32.PermissionFlagsBits.ViewChannel] },
       {
         id: member.id,
         allow: [
-          import_discord21.PermissionFlagsBits.ViewChannel,
-          import_discord21.PermissionFlagsBits.SendMessages,
-          import_discord21.PermissionFlagsBits.ReadMessageHistory,
-          import_discord21.PermissionFlagsBits.AttachFiles,
-          import_discord21.PermissionFlagsBits.EmbedLinks
+          import_discord32.PermissionFlagsBits.ViewChannel,
+          import_discord32.PermissionFlagsBits.SendMessages,
+          import_discord32.PermissionFlagsBits.ReadMessageHistory,
+          import_discord32.PermissionFlagsBits.AttachFiles,
+          import_discord32.PermissionFlagsBits.EmbedLinks
         ]
       },
       {
         id: staffRole.id,
         allow: [
-          import_discord21.PermissionFlagsBits.ViewChannel,
-          import_discord21.PermissionFlagsBits.SendMessages,
-          import_discord21.PermissionFlagsBits.ReadMessageHistory,
-          import_discord21.PermissionFlagsBits.AttachFiles,
-          import_discord21.PermissionFlagsBits.EmbedLinks,
-          import_discord21.PermissionFlagsBits.ManageMessages
+          import_discord32.PermissionFlagsBits.ViewChannel,
+          import_discord32.PermissionFlagsBits.SendMessages,
+          import_discord32.PermissionFlagsBits.ReadMessageHistory,
+          import_discord32.PermissionFlagsBits.AttachFiles,
+          import_discord32.PermissionFlagsBits.EmbedLinks,
+          import_discord32.PermissionFlagsBits.ManageMessages
         ]
       },
       {
         id: me.id,
         allow: [
-          import_discord21.PermissionFlagsBits.ViewChannel,
-          import_discord21.PermissionFlagsBits.SendMessages,
-          import_discord21.PermissionFlagsBits.ReadMessageHistory,
-          import_discord21.PermissionFlagsBits.AttachFiles,
-          import_discord21.PermissionFlagsBits.EmbedLinks,
-          import_discord21.PermissionFlagsBits.ManageMessages,
-          import_discord21.PermissionFlagsBits.ManageChannels
+          import_discord32.PermissionFlagsBits.ViewChannel,
+          import_discord32.PermissionFlagsBits.SendMessages,
+          import_discord32.PermissionFlagsBits.ReadMessageHistory,
+          import_discord32.PermissionFlagsBits.AttachFiles,
+          import_discord32.PermissionFlagsBits.EmbedLinks,
+          import_discord32.PermissionFlagsBits.ManageMessages,
+          import_discord32.PermissionFlagsBits.ManageChannels
         ]
       }
     ]
@@ -116228,7 +117325,7 @@ async function openTicket(client, guild, member, categoryId) {
   });
   await channel.setTopic(ticketTopic(row, member, category.label), `Ticket #${row.id}`).catch(() => {
   });
-  const embed = new import_discord21.EmbedBuilder().setColor(BRAND.color).setTitle(`Ticket #${paddedId}`).setDescription(
+  const embed = new import_discord32.EmbedBuilder().setColor(BRAND.color).setTitle(`Ticket #${paddedId}`).setDescription(
     `Thanks for opening a ticket, ${member}.
 
 **Category:** ${category.label}
@@ -116237,9 +117334,9 @@ Please describe your issue and a staff member will help you.`
     { name: "Opened by", value: `${member}`, inline: true },
     { name: "Opened", value: `<t:${Math.floor(row.openedAt.getTime() / 1e3)}:R>`, inline: true }
   ).setFooter({ text: "Use the buttons below to close or claim this ticket." });
-  const buttons = new import_discord21.ActionRowBuilder().addComponents(
-    new import_discord21.ButtonBuilder().setCustomId("ticket:close").setLabel("Close").setStyle(import_discord21.ButtonStyle.Danger),
-    new import_discord21.ButtonBuilder().setCustomId("ticket:claim").setLabel("Claim").setStyle(import_discord21.ButtonStyle.Secondary)
+  const buttons = new import_discord32.ActionRowBuilder().addComponents(
+    new import_discord32.ButtonBuilder().setCustomId("ticket:close").setLabel("Close").setStyle(import_discord32.ButtonStyle.Danger),
+    new import_discord32.ButtonBuilder().setCustomId("ticket:claim").setLabel("Claim").setStyle(import_discord32.ButtonStyle.Secondary)
   );
   const roleMention = staffRole.id === guild.id ? "" : `${staffRole}`;
   await channel.send({
@@ -116313,7 +117410,7 @@ async function closeTicket(client, guild, channel, actor, reason) {
   };
   const logChannel = config2.logChannelId ? await guild.channels.fetch(config2.logChannelId).catch(() => null) : null;
   if (logChannel?.isSendable()) {
-    const logEmbed2 = new import_discord21.EmbedBuilder().setColor(BRAND.muted).setTitle(`Ticket #${String(ticket.id).padStart(4, "0")} closed`).addFields(
+    const logEmbed2 = new import_discord32.EmbedBuilder().setColor(BRAND.muted).setTitle(`Ticket #${String(ticket.id).padStart(4, "0")} closed`).addFields(
       { name: "Opened by", value: `<@${ticket.userId}>`, inline: true },
       { name: "Closed by", value: `${actor}`, inline: true },
       { name: "Category", value: label2, inline: true },
@@ -116322,7 +117419,7 @@ async function closeTicket(client, guild, channel, actor, reason) {
     await logChannel.send({
       embeds: [logEmbed2],
       files: [
-        new import_discord21.AttachmentBuilder(gzipped, {
+        new import_discord32.AttachmentBuilder(gzipped, {
           name: `ticket-${String(ticket.id).padStart(4, "0")}.html.gz`
         })
       ],
@@ -116375,7 +117472,7 @@ async function addTicketMember(client, guild, channel, actor, target) {
   const targetMember = await guild.members.fetch(target.id).catch(() => null);
   if (!targetMember) throw new UserFacingError("That user is not a member of this server.");
   const me = botMember(guild);
-  if (!me?.permissions.has(import_discord21.PermissionFlagsBits.ManageRoles)) {
+  if (!me?.permissions.has(import_discord32.PermissionFlagsBits.ManageRoles)) {
     throw new UserFacingError("I need Manage Roles to update ticket permissions.");
   }
   await channel.permissionOverwrites.edit(
@@ -116406,7 +117503,7 @@ async function removeTicketMember(client, guild, channel, actor, target) {
     throw new UserFacingError("I cannot remove myself from a ticket.");
   }
   const me = botMember(guild);
-  if (!me?.permissions.has(import_discord21.PermissionFlagsBits.ManageRoles)) {
+  if (!me?.permissions.has(import_discord32.PermissionFlagsBits.ManageRoles)) {
     throw new UserFacingError("I need Manage Roles to update ticket permissions.");
   }
   await channel.permissionOverwrites.delete(target.id, `Removed from ticket by ${actor.user.tag}`);
@@ -116419,7 +117516,7 @@ async function removeTicketMember(client, guild, channel, actor, target) {
 __name(removeTicketMember, "removeTicketMember");
 function buildTicketPanel(config2) {
   const categories = config2.categories;
-  const embed = new import_discord21.EmbedBuilder().setColor(BRAND.color).setTitle("Support tickets").setDescription(
+  const embed = new import_discord32.EmbedBuilder().setColor(BRAND.color).setTitle("Support tickets").setDescription(
     "Choose a category below to open a private channel with staff.\n\nPlease do not open a ticket for something you can ask in a public channel."
   ).addFields(
     categories.map((category) => ({
@@ -116430,9 +117527,9 @@ function buildTicketPanel(config2) {
   ).setFooter({ text: `Up to ${config2.maxOpenPerUser} open ticket(s) per member` });
   const components = [];
   for (let index2 = 0; index2 < categories.length; index2 += 5) {
-    const row = new import_discord21.ActionRowBuilder();
+    const row = new import_discord32.ActionRowBuilder();
     for (const category of categories.slice(index2, index2 + 5)) {
-      const button = new import_discord21.ButtonBuilder().setCustomId(`ticket:open:${category.id}`).setLabel(category.label).setStyle(import_discord21.ButtonStyle.Primary);
+      const button = new import_discord32.ButtonBuilder().setCustomId(`ticket:open:${category.id}`).setLabel(category.label).setStyle(import_discord32.ButtonStyle.Primary);
       if (category.emoji) {
         try {
           button.setEmoji(category.emoji);
@@ -116479,14 +117576,14 @@ __name(postTicketPanel, "postTicketPanel");
 // apps/bot/src/commands/tickets/ticket.ts
 function currentTicketChannel(interaction) {
   const channel = interaction.channel;
-  if (!channel || channel.type !== import_discord22.ChannelType.GuildText) {
+  if (!channel || channel.type !== import_discord33.ChannelType.GuildText) {
     throw new UserFacingError("Run this command inside a ticket channel.");
   }
   return channel;
 }
 __name(currentTicketChannel, "currentTicketChannel");
 var ticketCommand = {
-  data: new import_discord22.SlashCommandBuilder().setName("ticket").setDescription("Open, close, and manage support tickets.").addSubcommand(
+  data: new import_discord33.SlashCommandBuilder().setName("ticket").setDescription("Open, close, and manage support tickets.").addSubcommand(
     (sub) => sub.setName("panel").setDescription("Publish the ticket panel in the configured channel.")
   ).addSubcommand(
     (sub) => sub.setName("close").setDescription("Close the current ticket.").addStringOption(
@@ -116508,7 +117605,7 @@ var ticketCommand = {
     await deferEphemeral(interaction);
     const sub = interaction.options.getSubcommand(true);
     if (sub === "panel") {
-      if (!interaction.memberPermissions?.has(import_discord22.PermissionFlagsBits.ManageGuild)) {
+      if (!interaction.memberPermissions?.has(import_discord33.PermissionFlagsBits.ManageGuild)) {
         throw new UserFacingError("You need Manage Server to publish the ticket panel.");
       }
       const message = await postTicketPanel(client, guild, interaction.user.id);
@@ -116542,8 +117639,8219 @@ var ticketCommand = {
   }
 };
 
+// apps/bot/src/commands/community/giveaway.ts
+var import_discord35 = __toESM(require_src(), 1);
+
+// apps/bot/src/modules/community/giveaways.ts
+var import_discord34 = __toESM(require_src(), 1);
+var import_node_crypto2 = require("node:crypto");
+function pickWinners(entries, count2) {
+  if (entries.length === 0 || count2 <= 0) return [];
+  const pool = [...entries];
+  const winners = [];
+  const target = Math.min(count2, pool.length);
+  while (winners.length < target) {
+    const index2 = randomInt(0, pool.length - 1);
+    const [entry] = pool.splice(index2, 1);
+    if (entry) winners.push(entry);
+  }
+  return winners;
+}
+__name(pickWinners, "pickWinners");
+function requirementLabel(requirements) {
+  if (!requirements) return "None";
+  const parts = [];
+  if (requirements.level) parts.push(`Level ${requirements.level}+`);
+  if (requirements.roleId) parts.push(`<@&${requirements.roleId}>`);
+  return parts.length > 0 ? parts.join(" and ") : "None";
+}
+__name(requirementLabel, "requirementLabel");
+function giveawayEmbed(giveaway, ended = false, entryCount) {
+  const unix = Math.floor(giveaway.endsAt.getTime() / 1e3);
+  const embed = new import_discord34.EmbedBuilder().setColor(ended ? 10070709 : 16705372).setTitle(ended ? `Giveaway ended: ${giveaway.prize}` : `Giveaway: ${giveaway.prize}`).setDescription(
+    ended ? "The giveaway has ended. Winners are announced below." : `Click **Enter** for a chance to win.
+
+Ends <t:${unix}:F> (<t:${unix}:R>)`
+  ).addFields(
+    { name: "Winners", value: `**${giveaway.winnerCount}**`, inline: true },
+    {
+      name: "Requirements",
+      value: requirementLabel(giveaway.requirements),
+      inline: true
+    },
+    ...entryCount !== void 0 ? [{ name: "Entries", value: `**${entryCount}**`, inline: true }] : []
+  ).setFooter({ text: `Giveaway #${giveaway.id}` });
+  return embed;
+}
+__name(giveawayEmbed, "giveawayEmbed");
+function giveawayComponents(id, disabled = false) {
+  return [
+    new import_discord34.ActionRowBuilder().addComponents(
+      new import_discord34.ButtonBuilder().setCustomId(`giveaway:enter:${id}`).setLabel(disabled ? "Ended" : "Enter").setStyle(disabled ? import_discord34.ButtonStyle.Secondary : import_discord34.ButtonStyle.Success).setDisabled(disabled)
+    )
+  ];
+}
+__name(giveawayComponents, "giveawayComponents");
+async function createGiveaway(client, channel, prize, durationMs, winnerCount, requirements) {
+  const db = requireDb(client);
+  const endsAt = new Date(Date.now() + durationMs);
+  const inserted = await db.insert(giveaways).values({
+    channelId: channel.id,
+    messageId: `pending-${(0, import_node_crypto2.randomUUID)()}`,
+    prize,
+    winnerCount,
+    requirements,
+    endsAt,
+    ended: false
+  }).returning();
+  const giveaway = inserted[0];
+  if (!giveaway) throw new UserFacingError("Could not create that giveaway.");
+  try {
+    const message = await channel.send({
+      embeds: [giveawayEmbed(giveaway)],
+      components: giveawayComponents(giveaway.id),
+      allowedMentions: { parse: [] }
+    });
+    await db.update(giveaways).set({ messageId: message.id }).where(eq(giveaways.id, giveaway.id));
+    return {
+      message,
+      giveaway: { ...giveaway, messageId: message.id }
+    };
+  } catch (error62) {
+    await db.delete(giveaways).where(eq(giveaways.id, giveaway.id)).catch(() => {
+    });
+    throw error62;
+  }
+}
+__name(createGiveaway, "createGiveaway");
+async function findGiveaway(db, messageId) {
+  const rows = await db.select().from(giveaways).where(eq(giveaways.messageId, messageId)).limit(1);
+  return rows[0] ?? null;
+}
+__name(findGiveaway, "findGiveaway");
+async function entryBlockedReason(client, guild, userId, requirements) {
+  if (!requirements) return null;
+  if (requirements.level) {
+    const rows = await requireDb(client).select({ level: members.level }).from(members).where(eq(members.userId, userId)).limit(1);
+    const level = rows[0]?.level ?? 0;
+    if (level < requirements.level) {
+      return `You need level **${requirements.level}** or higher to enter.`;
+    }
+  }
+  if (requirements.roleId) {
+    const member = await guild.members.fetch(userId).catch(() => null);
+    if (!member?.roles.cache.has(requirements.roleId)) {
+      return `You need <@&${requirements.roleId}> to enter.`;
+    }
+  }
+  return null;
+}
+__name(entryBlockedReason, "entryBlockedReason");
+async function enterGiveaway(client, guild, user, giveawayId) {
+  if (user.bot) throw new UserFacingError("Bots cannot enter giveaways.");
+  const db = requireDb(client);
+  const rows = await db.select().from(giveaways).where(eq(giveaways.id, giveawayId)).limit(1);
+  const giveaway = rows[0];
+  if (!giveaway) throw new UserFacingError("That giveaway no longer exists.");
+  if (giveaway.ended || giveaway.endsAt.getTime() <= Date.now()) {
+    throw new UserFacingError("That giveaway has already ended.");
+  }
+  if (giveaway.messageId.startsWith("pending-")) {
+    throw new UserFacingError("That giveaway is still being set up.");
+  }
+  const blocked = await entryBlockedReason(client, guild, user.id, giveaway.requirements);
+  if (blocked) throw new UserFacingError(blocked);
+  const inserted = await db.insert(giveawayEntries).values({ giveawayId, userId: user.id }).onConflictDoNothing().returning({ userId: giveawayEntries.userId });
+  return { giveaway, alreadyEntered: inserted.length === 0 };
+}
+__name(enterGiveaway, "enterGiveaway");
+async function endGiveaway(client, giveaway, reason) {
+  const db = requireDb(client);
+  const claimed = await db.update(giveaways).set({ ended: true }).where(and(eq(giveaways.id, giveaway.id), eq(giveaways.ended, false))).returning();
+  if (claimed.length === 0) {
+    throw new UserFacingError("That giveaway was already ended.");
+  }
+  const entries = await db.select().from(giveawayEntries).where(eq(giveawayEntries.giveawayId, giveaway.id));
+  const winners = pickWinners(entries, giveaway.winnerCount);
+  const channel = await client.channels.fetch(giveaway.channelId).catch(() => null);
+  if (!channel?.isTextBased() || !channel.isSendable()) {
+    client.logger.warn({ giveawayId: giveaway.id }, "giveaway channel is unavailable");
+    return { winners, message: null };
+  }
+  const message = await channel.messages.fetch(giveaway.messageId).catch(() => null);
+  if (message) {
+    await message.edit({
+      embeds: [giveawayEmbed({ ...giveaway, ended: true }, true, entries.length)],
+      components: giveawayComponents(giveaway.id, true)
+    }).catch((error62) => {
+      client.logger.warn({ err: error62, giveawayId: giveaway.id }, "giveaway message edit failed");
+    });
+  }
+  const winnerText = winners.length > 0 ? winners.map((winner) => `<@${winner.userId}>`).join(", ") : "No valid entries.";
+  await channel.send({
+    content: `**Giveaway ended (${reason})**: ${giveaway.prize}
+Winners: ${winnerText}`,
+    allowedMentions: winners.length > 0 ? { users: winners.map((winner) => winner.userId) } : { parse: [] }
+  }).catch((error62) => {
+    client.logger.warn({ err: error62, giveawayId: giveaway.id }, "giveaway winner message failed");
+  });
+  return { winners, message };
+}
+__name(endGiveaway, "endGiveaway");
+async function rerollGiveaway(client, giveaway, winnerCount) {
+  if (!giveaway.ended) throw new UserFacingError("End that giveaway before rerolling it.");
+  const entries = await requireDb(client).select().from(giveawayEntries).where(eq(giveawayEntries.giveawayId, giveaway.id));
+  const winners = pickWinners(entries, winnerCount);
+  const channel = await client.channels.fetch(giveaway.channelId).catch(() => null);
+  if (!channel?.isTextBased() || !channel.isSendable()) {
+    throw new UserFacingError("The giveaway channel is unavailable.");
+  }
+  await channel.send({
+    content: winners.length > 0 ? `**Giveaway reroll**: ${giveaway.prize}
+New winners: ${winners.map((winner) => `<@${winner.userId}>`).join(", ")}` : `**Giveaway reroll**: ${giveaway.prize}
+No valid entries.`,
+    allowedMentions: winners.length > 0 ? { users: winners.map((winner) => winner.userId) } : { parse: [] }
+  });
+  return winners;
+}
+__name(rerollGiveaway, "rerollGiveaway");
+var TICK_MS = 1e4;
+var GiveawayScheduler = class {
+  constructor(client) {
+    this.client = client;
+  }
+  client;
+  static {
+    __name(this, "GiveawayScheduler");
+  }
+  timer = null;
+  running = false;
+  start() {
+    if (this.timer || !this.client.isReady()) return;
+    this.timer = setInterval(() => {
+      void this.tick();
+    }, TICK_MS);
+    this.timer.unref();
+    void this.tick();
+  }
+  stop() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+  async tick() {
+    const db = this.client.db;
+    if (!db || !this.client.isReady() || this.running) return;
+    this.running = true;
+    try {
+      const due = await db.select().from(giveaways).where(and(eq(giveaways.ended, false), lte(giveaways.endsAt, /* @__PURE__ */ new Date()))).limit(10);
+      for (const giveaway of due) {
+        await endGiveaway(this.client, giveaway, "automatic").catch((error62) => {
+          this.client.logger.error({ err: error62, giveawayId: giveaway.id }, "giveaway end failed");
+        });
+      }
+    } catch (error62) {
+      this.client.logger.error({ err: error62 }, "giveaway sweep failed");
+    } finally {
+      this.running = false;
+    }
+  }
+};
+
+// apps/bot/src/commands/community/giveaway.ts
+var MIN_DURATION_MS = 1e4;
+var MAX_DURATION_MS2 = 30 * 24 * 60 * 60 * 1e3;
+var giveawayCommand = {
+  data: new import_discord35.SlashCommandBuilder().setName("giveaway").setDescription("Run persistent button giveaways.").addSubcommand(
+    (sub) => sub.setName("start").setDescription("Start a giveaway.").addChannelOption(
+      (option) => option.setName("channel").setDescription("Channel for the giveaway").setRequired(true).addChannelTypes(import_discord35.ChannelType.GuildText)
+    ).addStringOption(
+      (option) => option.setName("prize").setDescription("What are you giving away?").setRequired(true).setMaxLength(256)
+    ).addStringOption(
+      (option) => option.setName("duration").setDescription("How long: 10m, 2h, 3d").setRequired(true).setMaxLength(32)
+    ).addIntegerOption(
+      (option) => option.setName("winners").setDescription("Number of winners").setMinValue(1).setMaxValue(20)
+    ).addIntegerOption(
+      (option) => option.setName("level").setDescription("Minimum level required to enter").setMinValue(1).setMaxValue(1e3)
+    ).addRoleOption((option) => option.setName("role").setDescription("Role required to enter"))
+  ).addSubcommand(
+    (sub) => sub.setName("end").setDescription("End a giveaway early.").addStringOption(
+      (option) => option.setName("message-id").setDescription("Giveaway message ID").setRequired(true)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("reroll").setDescription("Pick new winners for an ended giveaway.").addStringOption(
+      (option) => option.setName("message-id").setDescription("Giveaway message ID").setRequired(true)
+    ).addIntegerOption(
+      (option) => option.setName("winners").setDescription("How many winners to draw").setMinValue(1).setMaxValue(20)
+    )
+  ).addSubcommand((sub) => sub.setName("list").setDescription("List active giveaways.")),
+  category: "community",
+  userPermissions: [import_discord35.PermissionFlagsBits.ManageGuild],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const sub = interaction.options.getSubcommand(true);
+    if (sub === "start") {
+      const channel = interaction.options.getChannel("channel", true);
+      if (channel.type !== import_discord35.ChannelType.GuildText) {
+        throw new UserFacingError("Pick a standard text channel.");
+      }
+      const prize = interaction.options.getString("prize", true).trim();
+      const duration3 = parseDuration(interaction.options.getString("duration", true));
+      if (duration3 === null || duration3 < MIN_DURATION_MS || duration3 > MAX_DURATION_MS2) {
+        throw new UserFacingError(
+          "Use a duration between 10 seconds and 30 days (`10m`, `2h`, `3d`)."
+        );
+      }
+      const winnerCount = interaction.options.getInteger("winners") ?? client.settings.community.giveaways.defaultWinners;
+      const level = interaction.options.getInteger("level");
+      const role = interaction.options.getRole("role");
+      if (role?.id === guild.id) throw new UserFacingError("Pick a real role, not @everyone.");
+      const requirements = level || role ? { ...level ? { level } : {}, ...role ? { roleId: role.id } : {} } : null;
+      const { message, giveaway: giveaway2 } = await createGiveaway(
+        client,
+        channel,
+        prize,
+        duration3,
+        winnerCount,
+        requirements
+      );
+      await interaction.editReply({
+        content: `Giveaway **#${giveaway2.id}** started in ${channel} for ${formatDuration(
+          duration3
+        )}: ${message.url}`,
+        allowedMentions: { parse: [] }
+      });
+      return;
+    }
+    const messageId = interaction.options.getString("message-id", true).trim();
+    const giveaway = await findGiveaway(db, messageId);
+    if (!giveaway) throw new UserFacingError("No giveaway matches that message ID.");
+    if (sub === "end") {
+      const result = await endGiveaway(client, giveaway, "manual");
+      await interaction.editReply({
+        content: `Ended **#${giveaway.id}** with ${result.winners.length} winner(s).`
+      });
+      return;
+    }
+    if (sub === "reroll") {
+      const winners = interaction.options.getInteger("winners") ?? giveaway.winnerCount;
+      const picked = await rerollGiveaway(client, giveaway, winners);
+      await interaction.editReply({
+        content: `Rerolled **#${giveaway.id}** with ${picked.length} winner(s).`
+      });
+      return;
+    }
+    const active = await db.select({
+      id: giveaways.id,
+      prize: giveaways.prize,
+      channelId: giveaways.channelId,
+      endsAt: giveaways.endsAt,
+      winnerCount: giveaways.winnerCount
+    }).from(giveaways).where(eq(giveaways.ended, false)).limit(10);
+    if (active.length === 0) {
+      await interaction.editReply({ content: "No active giveaways." });
+      return;
+    }
+    const embed = new import_discord35.EmbedBuilder().setColor(16705372).setTitle("Active giveaways").setDescription(
+      active.map(
+        (row) => `**#${row.id}** ${row.prize} \xB7 <#${row.channelId}> \xB7 ends <t:${Math.floor(
+          row.endsAt.getTime() / 1e3
+        )}:R> \xB7 ${row.winnerCount} winner(s)`
+      ).join("\n")
+    );
+    await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
+  }
+};
+
+// apps/bot/src/commands/community/reactionrole.ts
+var import_discord37 = __toESM(require_src(), 1);
+
+// apps/bot/src/modules/community/reaction-roles.ts
+var import_discord36 = __toESM(require_src(), 1);
+function normalizeEmoji(value) {
+  return value.trim();
+}
+__name(normalizeEmoji, "normalizeEmoji");
+function isSelectRow(row) {
+  return row.mode === "select" || row.emoji.startsWith("select:");
+}
+__name(isSelectRow, "isSelectRow");
+function canManageRole(client, member, roleId) {
+  const guild = member.guild;
+  const role = guild.roles.cache.get(roleId);
+  const me = guild.members.me;
+  if (!role || !me) return false;
+  if (role.id === guild.id || role.managed) return false;
+  if (!me.permissions.has(import_discord36.PermissionFlagsBits.ManageRoles)) return false;
+  return role.position < me.roles.highest.position;
+}
+__name(canManageRole, "canManageRole");
+async function applyRole(client, member, roleId, add) {
+  if (!canManageRole(client, member, roleId)) {
+    client.logger.warn({ roleId, userId: member.id }, "reaction role is not manageable");
+    return false;
+  }
+  try {
+    if (add) await member.roles.add(roleId, "Reaction role");
+    else await member.roles.remove(roleId, "Reaction role removed");
+    return true;
+  } catch (error62) {
+    client.logger.warn({ err: error62, roleId, userId: member.id }, "reaction role update failed");
+    return false;
+  }
+}
+__name(applyRole, "applyRole");
+async function rowsForReaction(client, messageId, emoji3) {
+  return requireDb(client).select().from(reactionRoles).where(and(eq(reactionRoles.messageId, messageId), eq(reactionRoles.emoji, emoji3)));
+}
+__name(rowsForReaction, "rowsForReaction");
+async function removeGroupRoles(client, member, row) {
+  if (row.mode !== "unique") return;
+  const db = requireDb(client);
+  const siblings = row.groupKey ? await db.select().from(reactionRoles).where(
+    and(eq(reactionRoles.messageId, row.messageId), eq(reactionRoles.groupKey, row.groupKey))
+  ) : await db.select().from(reactionRoles).where(eq(reactionRoles.messageId, row.messageId));
+  for (const sibling of siblings) {
+    if (sibling.roleId !== row.roleId && member.roles.cache.has(sibling.roleId)) {
+      await applyRole(client, member, sibling.roleId, false);
+    }
+  }
+}
+__name(removeGroupRoles, "removeGroupRoles");
+async function handleReactionRoleAdd(client, reaction, user) {
+  if (user.bot) return;
+  if (!reaction.message.inGuild()) return;
+  if (reaction.message.guildId !== client.env.GUILD_ID) return;
+  if (reaction.partial) await reaction.fetch().catch(() => null);
+  if (reaction.message.partial) await reaction.message.fetch().catch(() => null);
+  const emoji3 = normalizeEmoji(reaction.emoji.toString());
+  const rows = await rowsForReaction(client, reaction.message.id, emoji3);
+  if (rows.length === 0) return;
+  const member = await reaction.message.guild?.members.fetch(user.id).catch(() => null);
+  if (!member) return;
+  for (const row of rows) {
+    if (isSelectRow(row)) continue;
+    await removeGroupRoles(client, member, row);
+    await applyRole(client, member, row.roleId, true);
+  }
+}
+__name(handleReactionRoleAdd, "handleReactionRoleAdd");
+async function handleReactionRoleRemove(client, reaction, user) {
+  if (user.bot) return;
+  if (!reaction.message.inGuild()) return;
+  if (reaction.message.guildId !== client.env.GUILD_ID) return;
+  if (reaction.partial) await reaction.fetch().catch(() => null);
+  if (reaction.message.partial) await reaction.message.fetch().catch(() => null);
+  const emoji3 = normalizeEmoji(reaction.emoji.toString());
+  const rows = await rowsForReaction(client, reaction.message.id, emoji3);
+  if (rows.length === 0) return;
+  const member = await reaction.message.guild?.members.fetch(user.id).catch(() => null);
+  if (!member) return;
+  for (const row of rows) {
+    if (!isSelectRow(row)) await applyRole(client, member, row.roleId, false);
+  }
+}
+__name(handleReactionRoleRemove, "handleReactionRoleRemove");
+async function applySelectRoles(client, member, messageId, selectedRoleIds) {
+  const rows = await requireDb(client).select().from(reactionRoles).where(and(eq(reactionRoles.messageId, messageId), eq(reactionRoles.mode, "select")));
+  if (rows.length === 0) {
+    throw new UserFacingError("That reaction-role panel no longer exists.");
+  }
+  const allowed = new Set(rows.map((row) => row.roleId));
+  for (const roleId of selectedRoleIds) {
+    if (!allowed.has(roleId)) {
+      throw new UserFacingError("That panel does not offer the selected role.");
+    }
+  }
+  const selected = new Set(selectedRoleIds);
+  let added = 0;
+  let removed = 0;
+  for (const row of rows) {
+    const shouldHave = selected.has(row.roleId);
+    const has = member.roles.cache.has(row.roleId);
+    if (shouldHave && !has) {
+      if (await applyRole(client, member, row.roleId, true)) added += 1;
+    } else if (!shouldHave && has) {
+      if (await applyRole(client, member, row.roleId, false)) removed += 1;
+    }
+  }
+  return { added, removed };
+}
+__name(applySelectRoles, "applySelectRoles");
+
+// apps/bot/src/commands/community/reactionrole.ts
+var SNOWFLAKE = /^\d{17,20}$/;
+function parsePanelEntries(raw) {
+  const parts = raw.split("|").map((part) => part.trim()).filter(Boolean);
+  const entries = [];
+  for (const part of parts) {
+    const match = /^(.*?)=(\d{17,20})$/.exec(part);
+    if (match?.[1] !== void 0 && match[2]) {
+      entries.push({ label: match[1].trim().slice(0, 100) || match[2], roleId: match[2] });
+      continue;
+    }
+    const mention = /^<@&(\d{17,20})>$/.exec(part);
+    const roleId = mention?.[1] ?? (SNOWFLAKE.test(part) ? part : null);
+    if (roleId) entries.push({ label: roleId, roleId });
+  }
+  return entries;
+}
+__name(parsePanelEntries, "parsePanelEntries");
+var reactionRoleCommand = {
+  data: new import_discord37.SlashCommandBuilder().setName("reactionrole").setDescription("Create reaction roles and select-menu role panels.").addSubcommand(
+    (sub) => sub.setName("add").setDescription("Bind one emoji on a message to a role.").addStringOption(
+      (option) => option.setName("message-id").setDescription("Message ID").setRequired(true)
+    ).addStringOption(
+      (option) => option.setName("emoji").setDescription("Emoji to react with").setRequired(true)
+    ).addRoleOption(
+      (option) => option.setName("role").setDescription("Role to grant").setRequired(true)
+    ).addStringOption(
+      (option) => option.setName("mode").setDescription("Toggle or pick-one").addChoices({ name: "Toggle", value: "toggle" }, { name: "Unique", value: "unique" })
+    ).addStringOption(
+      (option) => option.setName("group").setDescription("Group name for unique role sets").setMaxLength(32)
+    ).addChannelOption(
+      (option) => option.setName("channel").setDescription("Channel containing the message (defaults to here)").addChannelTypes(import_discord37.ChannelType.GuildText)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("remove").setDescription("Remove an emoji reaction-role binding.").addStringOption(
+      (option) => option.setName("message-id").setDescription("Message ID").setRequired(true)
+    ).addStringOption(
+      (option) => option.setName("emoji").setDescription("Emoji to remove").setRequired(true)
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("list").setDescription("List reaction-role bindings.").addStringOption(
+      (option) => option.setName("message-id").setDescription("Filter to one message")
+    )
+  ).addSubcommand(
+    (sub) => sub.setName("panel").setDescription("Post a select-menu role panel.").addChannelOption(
+      (option) => option.setName("channel").setDescription("Where to post the panel").setRequired(true).addChannelTypes(import_discord37.ChannelType.GuildText)
+    ).addStringOption(
+      (option) => option.setName("title").setDescription("Panel title").setRequired(true).setMaxLength(256)
+    ).addStringOption(
+      (option) => option.setName("roles").setDescription("label=roleId|label=roleId (or just roleId)").setRequired(true).setMaxLength(3500)
+    ).addStringOption(
+      (option) => option.setName("description").setDescription("Optional panel description").setMaxLength(2e3)
+    )
+  ),
+  category: "community",
+  userPermissions: [import_discord37.PermissionFlagsBits.ManageGuild],
+  cooldownSeconds: 2,
+  async execute({ client, interaction, guild }) {
+    await deferEphemeral(interaction);
+    const db = requireDb(client);
+    const sub = interaction.options.getSubcommand(true);
+    if (sub === "add") {
+      const messageId = interaction.options.getString("message-id", true).trim();
+      const emoji3 = normalizeEmoji(interaction.options.getString("emoji", true));
+      const role = interaction.options.getRole("role", true);
+      const mode = interaction.options.getString("mode") ?? "toggle";
+      const group = interaction.options.getString("group")?.trim() || null;
+      const channelOption = interaction.options.getChannel("channel");
+      const channel2 = channelOption ?? interaction.channel;
+      if (!channel2?.isTextBased()) throw new UserFacingError("Pick a text channel.");
+      if (!SNOWFLAKE.test(messageId)) throw new UserFacingError("That message ID is invalid.");
+      if (role.id === guild.id) throw new UserFacingError("Pick a real role, not @everyone.");
+      if (role.managed) throw new UserFacingError("That role is managed by an integration.");
+      const me = guild.members.me;
+      if (!me?.permissions.has(import_discord37.PermissionFlagsBits.ManageRoles)) {
+        throw new UserFacingError("I need Manage Roles to create reaction roles.");
+      }
+      if (role.position >= me.roles.highest.position) {
+        throw new UserFacingError("That role is above my highest role.");
+      }
+      const message2 = await channel2.messages.fetch(messageId).catch(() => null);
+      if (!message2) throw new UserFacingError("I could not find that message in the channel.");
+      try {
+        await message2.react(emoji3);
+      } catch {
+        throw new UserFacingError(
+          "Discord rejected that emoji. Use a unicode emoji or one I can use."
+        );
+      }
+      await db.insert(reactionRoles).values({
+        messageId,
+        emoji: emoji3,
+        roleId: role.id,
+        mode,
+        groupKey: group
+      }).onConflictDoNothing();
+      await interaction.editReply({
+        content: `Bound ${emoji3} on [that message](${message2.url}) to ${role}.`,
+        allowedMentions: { parse: [] }
+      });
+      return;
+    }
+    if (sub === "remove") {
+      const messageId = interaction.options.getString("message-id", true).trim();
+      const emoji3 = normalizeEmoji(interaction.options.getString("emoji", true));
+      const rows = await db.delete(reactionRoles).where(and(eq(reactionRoles.messageId, messageId), eq(reactionRoles.emoji, emoji3))).returning({ id: reactionRoles.id });
+      await interaction.editReply({
+        content: rows.length > 0 ? `Removed ${rows.length} binding(s) for ${emoji3}.` : "No binding matched that message and emoji."
+      });
+      return;
+    }
+    if (sub === "list") {
+      const messageId = interaction.options.getString("message-id")?.trim();
+      const rows = await db.select().from(reactionRoles).where(messageId ? eq(reactionRoles.messageId, messageId) : void 0).orderBy(asc(reactionRoles.messageId), asc(reactionRoles.id)).limit(40);
+      if (rows.length === 0) {
+        await interaction.editReply({ content: "No reaction roles configured." });
+        return;
+      }
+      const embed2 = new import_discord37.EmbedBuilder().setColor(5793266).setTitle("Reaction roles").setDescription(
+        rows.map(
+          (row) => `${row.mode === "select" ? "Select" : row.emoji} \u2192 <@&${row.roleId}> \xB7 \`${row.messageId}\`${row.mode === "unique" ? ` \xB7 group: ${row.groupKey ?? "all"}` : ""}`
+        ).join("\n").slice(0, 4e3)
+      ).setFooter({ text: "Select rows are generated by /reactionrole panel" });
+      await interaction.editReply({ embeds: [embed2], allowedMentions: { parse: [] } });
+      return;
+    }
+    const channel = interaction.options.getChannel("channel", true);
+    if (!channel.isTextBased()) throw new UserFacingError("Pick a text channel.");
+    const title = interaction.options.getString("title", true).trim();
+    const description = interaction.options.getString("description")?.trim() || null;
+    const entries = parsePanelEntries(interaction.options.getString("roles", true)).slice(0, 25);
+    if (entries.length === 0) {
+      throw new UserFacingError("Provide at least one `label=roleId` entry.");
+    }
+    const resolved = [];
+    for (const entry of entries) {
+      const role = guild.roles.cache.get(entry.roleId) ?? await guild.roles.fetch(entry.roleId).catch(() => null);
+      if (!role) throw new UserFacingError(`Role ${entry.roleId} does not exist.`);
+      if (role.id === guild.id) throw new UserFacingError("Do not add @everyone to a panel.");
+      if (role.managed) throw new UserFacingError(`${role.name} is managed by an integration.`);
+      const me = guild.members.me;
+      if (!me?.permissions.has(import_discord37.PermissionFlagsBits.ManageRoles)) {
+        throw new UserFacingError("I need Manage Roles to create reaction roles.");
+      }
+      if (role.position >= me.roles.highest.position) {
+        throw new UserFacingError(`${role.name} is above my highest role.`);
+      }
+      if (resolved.some((item) => item.roleId === role.id)) continue;
+      resolved.push({
+        label: entry.label === entry.roleId ? role.name.slice(0, 100) : entry.label,
+        roleId: role.id
+      });
+    }
+    if (resolved.length === 0) throw new UserFacingError("No unique roles were left in the panel.");
+    const select2 = new import_discord37.StringSelectMenuBuilder().setCustomId("rr:select").setPlaceholder("Choose your roles").setMinValues(0).setMaxValues(resolved.length).addOptions(
+      resolved.map(
+        (entry) => new import_discord37.StringSelectMenuOptionBuilder().setLabel(entry.label).setValue(entry.roleId).setDescription("Toggle this role")
+      )
+    );
+    const embed = new import_discord37.EmbedBuilder().setColor(5793266).setTitle(title.slice(0, 256)).setFooter({ text: "Pick roles below. Selecting none removes them." });
+    if (description) embed.setDescription(description.slice(0, 4e3));
+    const message = await channel.send({
+      embeds: [embed],
+      components: [new import_discord37.ActionRowBuilder().addComponents(select2)],
+      allowedMentions: { parse: [] }
+    });
+    try {
+      await db.insert(reactionRoles).values(
+        resolved.map((entry) => ({
+          messageId: message.id,
+          emoji: `select:${entry.roleId}`,
+          roleId: entry.roleId,
+          mode: "select",
+          groupKey: null
+        }))
+      );
+    } catch (error62) {
+      await message.delete().catch(() => {
+      });
+      throw error62;
+    }
+    await interaction.editReply({ content: `Reaction-role panel posted: ${message.url}` });
+  }
+};
+
+// apps/bot/src/commands/music/controls.ts
+var import_discord40 = __toESM(require_src(), 1);
+
+// apps/bot/src/modules/music/helpers.ts
+var DEFAULT_LAVALINK_PORT = 2333;
+function parseLavalinkUrl(raw, secure = false) {
+  const value = raw.trim();
+  if (!value) return null;
+  const withScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(value) ? value : `http://${value}`;
+  let url2;
+  try {
+    url2 = new URL(withScheme);
+  } catch {
+    return null;
+  }
+  const host = url2.hostname.replace(/^\[|\]$/g, "");
+  if (!host) return null;
+  const port = url2.port ? Number(url2.port) : url2.protocol === "https:" ? 443 : DEFAULT_LAVALINK_PORT;
+  if (!Number.isInteger(port) || port < 1 || port > 65535) return null;
+  return {
+    host,
+    port,
+    secure: secure || url2.protocol === "https:"
+  };
+}
+__name(parseLavalinkUrl, "parseLavalinkUrl");
+function buildSearchSources(sourceManagers) {
+  const available = new Set(sourceManagers.map((source) => source.toLowerCase()));
+  const sources = [];
+  const add = /* @__PURE__ */ __name((source) => {
+    if (!sources.includes(source)) sources.push(source);
+  }, "add");
+  if (available.has("soundcloud")) add("scsearch");
+  if (available.has("spotify")) add("spsearch");
+  if (available.has("youtube")) {
+    add("ytmsearch");
+    add("ytsearch");
+  }
+  if (sources.length === 0) {
+    add("scsearch");
+    add("ytsearch");
+  }
+  return sources;
+}
+__name(buildSearchSources, "buildSearchSources");
+function isUrlQuery(query) {
+  return /^https?:\/\//i.test(query.trim());
+}
+__name(isUrlQuery, "isUrlQuery");
+function parseSeek(input2) {
+  const value = input2.trim();
+  if (!value) return null;
+  const clock = /^(\d{1,4}):([0-5]?\d)(?::([0-5]?\d))?$/.exec(value);
+  if (clock) {
+    const first = Number(clock[1]);
+    const second = Number(clock[2]);
+    const third = clock[3] === void 0 ? null : Number(clock[3]);
+    const seconds = third === null ? first * 60 + second : first * 3600 + second * 60 + third;
+    return seconds > 0 ? seconds * 1e3 : null;
+  }
+  const duration3 = parseDuration(value);
+  return duration3 !== null && duration3 > 0 ? duration3 : null;
+}
+__name(parseSeek, "parseSeek");
+function progressBar2(position, duration3, length = 15) {
+  if (!Number.isFinite(duration3) || duration3 <= 0) return "\u{1F534} LIVE";
+  const size2 = Math.max(5, Math.floor(length));
+  const ratio = Math.min(1, Math.max(0, position / duration3));
+  const index2 = Math.min(size2 - 1, Math.floor(ratio * size2));
+  return `${"\u25AC".repeat(index2)}\u{1F518}${"\u25AC".repeat(size2 - index2 - 1)}`;
+}
+__name(progressBar2, "progressBar");
+
+// apps/bot/src/modules/music/service.ts
+var import_discord38 = __toESM(require_src(), 1);
+
+// node_modules/lavalink-client/dist/index.mjs
+var import_node_events = require("node:events");
+var import_node_path2 = require("node:path");
+
+// node_modules/ws/wrapper.mjs
+var import_stream3 = __toESM(require_stream(), 1);
+var import_extension = __toESM(require_extension(), 1);
+var import_permessage_deflate = __toESM(require_permessage_deflate2(), 1);
+var import_receiver = __toESM(require_receiver2(), 1);
+var import_sender = __toESM(require_sender2(), 1);
+var import_subprotocol = __toESM(require_subprotocol(), 1);
+var import_websocket = __toESM(require_websocket2(), 1);
+var import_websocket_server = __toESM(require_websocket_server(), 1);
+var wrapper_default = import_websocket.default;
+
+// node_modules/lavalink-client/dist/index.mjs
+var import_types3 = require("node:util/types");
+var validSponsorBlocks = [
+  "sponsor",
+  "selfpromo",
+  "interaction",
+  "intro",
+  "outro",
+  "preview",
+  "music_offtopic",
+  "filler"
+];
+var audioOutputsData = {
+  mono: {
+    leftToLeft: 0.5,
+    leftToRight: 0.5,
+    rightToLeft: 0.5,
+    rightToRight: 0.5
+  },
+  stereo: {
+    leftToLeft: 1,
+    leftToRight: 0,
+    rightToLeft: 0,
+    rightToRight: 1
+  },
+  left: {
+    leftToLeft: 1,
+    leftToRight: 0,
+    rightToLeft: 1,
+    rightToRight: 0
+  },
+  right: {
+    leftToLeft: 0,
+    leftToRight: 1,
+    rightToLeft: 0,
+    rightToRight: 1
+  }
+};
+var EQList = {
+  /** A Bassboost Equalizer, so high it distorts the audio */
+  BassboostEarrape: [
+    {
+      band: 0,
+      gain: 0.6 * 0.375
+    },
+    {
+      band: 1,
+      gain: 0.67 * 0.375
+    },
+    {
+      band: 2,
+      gain: 0.67 * 0.375
+    },
+    {
+      band: 3,
+      gain: 0.4 * 0.375
+    },
+    {
+      band: 4,
+      gain: -0.1875
+    },
+    {
+      band: 5,
+      gain: 0.15 * 0.375
+    },
+    {
+      band: 6,
+      gain: -0.16875
+    },
+    {
+      band: 7,
+      gain: 0.23 * 0.375
+    },
+    {
+      band: 8,
+      gain: 0.35 * 0.375
+    },
+    {
+      band: 9,
+      gain: 0.16875
+    },
+    {
+      band: 10,
+      gain: 0.55 * 0.375
+    },
+    {
+      band: 11,
+      gain: -0.6 * 0.375
+    },
+    {
+      band: 12,
+      gain: 0.55 * 0.375
+    },
+    {
+      band: 13,
+      gain: -0.1875
+    },
+    {
+      band: 14,
+      gain: -0.28125
+    }
+  ],
+  /** A High and decent Bassboost Equalizer */
+  BassboostHigh: [
+    {
+      band: 0,
+      gain: 0.15
+    },
+    {
+      band: 1,
+      gain: 0.1675
+    },
+    {
+      band: 2,
+      gain: 0.1675
+    },
+    {
+      band: 3,
+      gain: 0.1
+    },
+    {
+      band: 4,
+      gain: -0.125
+    },
+    {
+      band: 5,
+      gain: 0.0375
+    },
+    {
+      band: 6,
+      gain: -0.1125
+    },
+    {
+      band: 7,
+      gain: 0.0575
+    },
+    {
+      band: 8,
+      gain: 0.0875
+    },
+    {
+      band: 9,
+      gain: 0.1125
+    },
+    {
+      band: 10,
+      gain: 0.1375
+    },
+    {
+      band: 11,
+      gain: -0.15
+    },
+    {
+      band: 12,
+      gain: 0.1375
+    },
+    {
+      band: 13,
+      gain: -0.125
+    },
+    {
+      band: 14,
+      gain: -0.1875
+    }
+  ],
+  /** A decent Bassboost Equalizer */
+  BassboostMedium: [
+    {
+      band: 0,
+      gain: 0.6 * 0.1875
+    },
+    {
+      band: 1,
+      gain: 0.67 * 0.1875
+    },
+    {
+      band: 2,
+      gain: 0.67 * 0.1875
+    },
+    {
+      band: 3,
+      gain: 0.4 * 0.1875
+    },
+    {
+      band: 4,
+      gain: -0.09375
+    },
+    {
+      band: 5,
+      gain: 0.15 * 0.1875
+    },
+    {
+      band: 6,
+      gain: -0.084375
+    },
+    {
+      band: 7,
+      gain: 0.23 * 0.1875
+    },
+    {
+      band: 8,
+      gain: 0.35 * 0.1875
+    },
+    {
+      band: 9,
+      gain: 0.084375
+    },
+    {
+      band: 10,
+      gain: 0.55 * 0.1875
+    },
+    {
+      band: 11,
+      gain: -0.6 * 0.1875
+    },
+    {
+      band: 12,
+      gain: 0.55 * 0.1875
+    },
+    {
+      band: 13,
+      gain: -0.09375
+    },
+    {
+      band: 14,
+      gain: -0.140625
+    }
+  ],
+  /** A slight Bassboost Equalizer */
+  BassboostLow: [
+    {
+      band: 0,
+      gain: 0.075
+    },
+    {
+      band: 1,
+      gain: 0.08375
+    },
+    {
+      band: 2,
+      gain: 0.08375
+    },
+    {
+      band: 3,
+      gain: 0.05
+    },
+    {
+      band: 4,
+      gain: -0.0625
+    },
+    {
+      band: 5,
+      gain: 0.01875
+    },
+    {
+      band: 6,
+      gain: -0.05625
+    },
+    {
+      band: 7,
+      gain: 0.02875
+    },
+    {
+      band: 8,
+      gain: 0.04375
+    },
+    {
+      band: 9,
+      gain: 0.05625
+    },
+    {
+      band: 10,
+      gain: 0.06875
+    },
+    {
+      band: 11,
+      gain: -0.075
+    },
+    {
+      band: 12,
+      gain: 0.06875
+    },
+    {
+      band: 13,
+      gain: -0.0625
+    },
+    {
+      band: 14,
+      gain: -0.09375
+    }
+  ],
+  /** Makes the Music slightly "better" */
+  BetterMusic: [
+    {
+      band: 0,
+      gain: 0.25
+    },
+    {
+      band: 1,
+      gain: 0.025
+    },
+    {
+      band: 2,
+      gain: 0.0125
+    },
+    {
+      band: 3,
+      gain: 0
+    },
+    {
+      band: 4,
+      gain: 0
+    },
+    {
+      band: 5,
+      gain: -0.0125
+    },
+    {
+      band: 6,
+      gain: -0.025
+    },
+    {
+      band: 7,
+      gain: -0.0175
+    },
+    {
+      band: 8,
+      gain: 0
+    },
+    {
+      band: 9,
+      gain: 0
+    },
+    {
+      band: 10,
+      gain: 0.0125
+    },
+    {
+      band: 11,
+      gain: 0.025
+    },
+    {
+      band: 12,
+      gain: 0.25
+    },
+    {
+      band: 13,
+      gain: 0.125
+    },
+    {
+      band: 14,
+      gain: 0.125
+    }
+  ],
+  /** Makes the Music sound like rock music / sound rock music better */
+  Rock: [
+    {
+      band: 0,
+      gain: 0.3
+    },
+    {
+      band: 1,
+      gain: 0.25
+    },
+    {
+      band: 2,
+      gain: 0.2
+    },
+    {
+      band: 3,
+      gain: 0.1
+    },
+    {
+      band: 4,
+      gain: 0.05
+    },
+    {
+      band: 5,
+      gain: -0.05
+    },
+    {
+      band: 6,
+      gain: -0.15
+    },
+    {
+      band: 7,
+      gain: -0.2
+    },
+    {
+      band: 8,
+      gain: -0.1
+    },
+    {
+      band: 9,
+      gain: -0.05
+    },
+    {
+      band: 10,
+      gain: 0.05
+    },
+    {
+      band: 11,
+      gain: 0.1
+    },
+    {
+      band: 12,
+      gain: 0.2
+    },
+    {
+      band: 13,
+      gain: 0.25
+    },
+    {
+      band: 14,
+      gain: 0.3
+    }
+  ],
+  /** Makes the Music sound like Classic music / sound Classic music better */
+  Classic: [
+    {
+      band: 0,
+      gain: 0.375
+    },
+    {
+      band: 1,
+      gain: 0.35
+    },
+    {
+      band: 2,
+      gain: 0.125
+    },
+    {
+      band: 3,
+      gain: 0
+    },
+    {
+      band: 4,
+      gain: 0
+    },
+    {
+      band: 5,
+      gain: 0.125
+    },
+    {
+      band: 6,
+      gain: 0.55
+    },
+    {
+      band: 7,
+      gain: 0.05
+    },
+    {
+      band: 8,
+      gain: 0.125
+    },
+    {
+      band: 9,
+      gain: 0.25
+    },
+    {
+      band: 10,
+      gain: 0.2
+    },
+    {
+      band: 11,
+      gain: 0.25
+    },
+    {
+      band: 12,
+      gain: 0.3
+    },
+    {
+      band: 13,
+      gain: 0.25
+    },
+    {
+      band: 14,
+      gain: 0.3
+    }
+  ],
+  /** Makes the Music sound like Pop music / sound Pop music better */
+  Pop: [
+    {
+      band: 0,
+      gain: 0.2635
+    },
+    {
+      band: 1,
+      gain: 0.22141
+    },
+    {
+      band: 2,
+      gain: -0.21141
+    },
+    {
+      band: 3,
+      gain: -0.1851
+    },
+    {
+      band: 4,
+      gain: -0.155
+    },
+    {
+      band: 5,
+      gain: 0.21141
+    },
+    {
+      band: 6,
+      gain: 0.22456
+    },
+    {
+      band: 7,
+      gain: 0.237
+    },
+    {
+      band: 8,
+      gain: 0.237
+    },
+    {
+      band: 9,
+      gain: 0.237
+    },
+    {
+      band: 10,
+      gain: -0.05
+    },
+    {
+      band: 11,
+      gain: -0.116
+    },
+    {
+      band: 12,
+      gain: 0.192
+    },
+    {
+      band: 13,
+      gain: 0
+    }
+  ],
+  /** Makes the Music sound like Electronic music / sound Electronic music better */
+  Electronic: [
+    {
+      band: 0,
+      gain: 0.375
+    },
+    {
+      band: 1,
+      gain: 0.35
+    },
+    {
+      band: 2,
+      gain: 0.125
+    },
+    {
+      band: 3,
+      gain: 0
+    },
+    {
+      band: 4,
+      gain: 0
+    },
+    {
+      band: 5,
+      gain: -0.125
+    },
+    {
+      band: 6,
+      gain: -0.125
+    },
+    {
+      band: 7,
+      gain: 0
+    },
+    {
+      band: 8,
+      gain: 0.25
+    },
+    {
+      band: 9,
+      gain: 0.125
+    },
+    {
+      band: 10,
+      gain: 0.15
+    },
+    {
+      band: 11,
+      gain: 0.2
+    },
+    {
+      band: 12,
+      gain: 0.25
+    },
+    {
+      band: 13,
+      gain: 0.35
+    },
+    {
+      band: 14,
+      gain: 0.4
+    }
+  ],
+  /** Boosts all Bands slightly for louder and fuller sound */
+  FullSound: [
+    {
+      band: 0,
+      gain: 0.625
+    },
+    {
+      band: 1,
+      gain: 0.275
+    },
+    {
+      band: 2,
+      gain: 0.2625
+    },
+    {
+      band: 3,
+      gain: 0.25
+    },
+    {
+      band: 4,
+      gain: 0.25
+    },
+    {
+      band: 5,
+      gain: 0.2375
+    },
+    {
+      band: 6,
+      gain: 0.225
+    },
+    {
+      band: 7,
+      gain: 0.25 + -0.0175
+    },
+    {
+      band: 8,
+      gain: 0.25
+    },
+    {
+      band: 9,
+      gain: 0.25
+    },
+    {
+      band: 10,
+      gain: 0.2625
+    },
+    {
+      band: 11,
+      gain: 0.275
+    },
+    {
+      band: 12,
+      gain: 0.625
+    },
+    {
+      band: 13,
+      gain: 0.375
+    },
+    {
+      band: 14,
+      gain: 0.375
+    }
+  ],
+  /** Boosts basses + lower highs for a pro gaming sound */
+  Gaming: [
+    {
+      band: 0,
+      gain: 0.35
+    },
+    {
+      band: 1,
+      gain: 0.3
+    },
+    {
+      band: 2,
+      gain: 0.25
+    },
+    {
+      band: 3,
+      gain: 0.2
+    },
+    {
+      band: 4,
+      gain: 0.15
+    },
+    {
+      band: 5,
+      gain: 0.1
+    },
+    {
+      band: 6,
+      gain: 0.05
+    },
+    {
+      band: 7,
+      gain: -0
+    },
+    {
+      band: 8,
+      gain: -0.05
+    },
+    {
+      band: 9,
+      gain: -0.1
+    },
+    {
+      band: 10,
+      gain: -0.15
+    },
+    {
+      band: 11,
+      gain: -0.2
+    },
+    {
+      band: 12,
+      gain: -0.25
+    },
+    {
+      band: 13,
+      gain: -0.3
+    },
+    {
+      band: 14,
+      gain: -0.35
+    }
+  ]
+};
+var RecommendationsStrings = {
+  highCPULoad: /* @__PURE__ */ __name((cpuLoad) => `High CPU load (${(cpuLoad * 100).toFixed(1)}%). Consider reducing player count or upgrading CPU.`, "highCPULoad"),
+  highSystemLoad: /* @__PURE__ */ __name((systemLoad) => `High system load (${(systemLoad * 100).toFixed(1)}%). Check other processes on the server.`, "highSystemLoad"),
+  highMemoryUsage: /* @__PURE__ */ __name((memoryUsagePercent) => `High memory usage (${memoryUsagePercent.toFixed(1)}%). Consider increasing allocated memory or reducing player count.`, "highMemoryUsage"),
+  frameDeficit: /* @__PURE__ */ __name((frameDeficit) => `Frame deficit detected (${frameDeficit}). Audio quality may be affected. Check network and CPU.`, "frameDeficit"),
+  highLatency: /* @__PURE__ */ __name((ping) => `High latency (${ping}ms). Check network connection to the node.`, "highLatency"),
+  nodeRestart: "Node restart recommended to clear memory and reset connections.",
+  highPlayercount: /* @__PURE__ */ __name((players) => `High player count (${players}). Consider load balancing across multiple nodes.`, "highPlayercount"),
+  nodeOffline: "Node is offline or disconnected",
+  checkConnectivity: "Check node connectivity and restart if needed"
+};
+var NodeLinkExclusiveEvents = [
+  "PlayerCreatedEvent",
+  "PlayerDestroyedEvent",
+  "PlayerConnectedEvent",
+  "PlayerReconnectingEvent",
+  "VolumeChangedEvent",
+  "FiltersChangedEvent",
+  "SeekEvent",
+  "PauseEvent",
+  "ConnectionStatusEvent",
+  "MixStartedEvent",
+  "MixEndedEvent",
+  "LyricsFoundEvent",
+  "LyricsLineEvent",
+  "LyricsNotFoundEvent"
+];
+var NodeType = /* @__PURE__ */ (function(NodeType2) {
+  NodeType2["Lavalink"] = "Lavalink";
+  NodeType2["NodeLink"] = "NodeLink";
+  return NodeType2;
+})({});
+var DefaultSources = {
+  "youtube music": "ytmsearch",
+  youtubemusic: "ytmsearch",
+  ytmsearch: "ytmsearch",
+  ytm: "ytmsearch",
+  musicyoutube: "ytmsearch",
+  "music youtube": "ytmsearch",
+  youtube: "ytsearch",
+  yt: "ytsearch",
+  ytsearch: "ytsearch",
+  soundcloud: "scsearch",
+  scsearch: "scsearch",
+  sc: "scsearch",
+  "apple music": "amsearch",
+  apple: "amsearch",
+  applemusic: "amsearch",
+  amsearch: "amsearch",
+  am: "amsearch",
+  musicapple: "amsearch",
+  "music apple": "amsearch",
+  spotify: "spsearch",
+  spsearch: "spsearch",
+  sp: "spsearch",
+  "spotify.com": "spsearch",
+  spotifycom: "spsearch",
+  sprec: "sprec",
+  spsuggestion: "sprec",
+  deezer: "dzsearch",
+  dz: "dzsearch",
+  dzsearch: "dzsearch",
+  dzisrc: "dzisrc",
+  dzrec: "dzrec",
+  "yandex music": "ymsearch",
+  yandexmusic: "ymsearch",
+  yandex: "ymsearch",
+  ymsearch: "ymsearch",
+  ymrec: "ymrec",
+  vksearch: "vksearch",
+  vkmusic: "vksearch",
+  "vk music": "vksearch",
+  vkrec: "vkrec",
+  vk: "vksearch",
+  qbsearch: "qbsearch",
+  qobuz: "qbsearch",
+  qbisrc: "qbisrc",
+  qbrec: "qbrec",
+  pandora: "pdsearch",
+  pd: "pdsearch",
+  pdsearch: "pdsearch",
+  "pandora music": "pdsearch",
+  pandoramusic: "pdsearch",
+  speak: "speak",
+  tts: "tts",
+  ftts: "ftts",
+  flowery: "ftts",
+  "flowery.tts": "ftts",
+  flowerytts: "ftts",
+  bandcamp: "bcsearch",
+  bc: "bcsearch",
+  bcsearch: "bcsearch",
+  phsearch: "phsearch",
+  pornhub: "phsearch",
+  porn: "phsearch",
+  local: "local",
+  http: "http",
+  https: "https",
+  link: "link",
+  uri: "uri",
+  tidal: "tdsearch",
+  td: "tdsearch",
+  "tidal music": "tdsearch",
+  tdsearch: "tdsearch",
+  tdrec: "tdrec",
+  jiosaavn: "jssearch",
+  js: "jssearch",
+  jssearch: "jssearch",
+  jsrec: "jsrec",
+  amzsearch: "amzsearch",
+  admsearch: "admsearch",
+  gnsearch: "gnsearch",
+  szsearch: "szsearch"
+};
+var LavalinkPlugins = {
+  DuncteBot_Plugin: "DuncteBot-plugin",
+  LavaSrc: "lavasrc-plugin",
+  GoogleCloudTTS: "tts-plugin",
+  LavaSearch: "lavasearch-plugin",
+  Jiosaavn_Plugin: "jiosaavn-plugin",
+  LavalinkFilterPlugin: "lavalink-filter-plugin",
+  JavaTimedLyricsPlugin: "java-lyrics-plugin",
+  PulseLinkPlugin: "pulselink-plugin"
+};
+var SourceLinksRegexes = {
+  /** DEFAULT SUPPORTED BY LAVALINK */
+  YoutubeRegex: /https?:\/\/?(?:www\.)?(?:(m|www)\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts|playlist\?|watch\?v=|watch\?.+(?:&|&#38;);v=))([a-zA-Z0-9\-_]{11})?(?:(?:\?|&|&#38;)index=((?:\d){1,3}))?(?:(?:\?|&|&#38;)?list=([a-zA-Z\-_0-9]{34}))?(?:\S+)?/,
+  YoutubeMusicRegex: /https?:\/\/?(?:www\.)?(?:(music|m|www)\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts|playlist\?|watch\?v=|watch\?.+(?:&|&#38;);v=))([a-zA-Z0-9\-_]{11})?(?:(?:\?|&|&#38;)index=((?:\d){1,3}))?(?:(?:\?|&|&#38;)?list=([a-zA-Z\-_0-9]{34}))?(?:\S+)?/,
+  SoundCloudRegex: /https?:\/\/(?:on\.)?soundcloud\.com\//,
+  SoundCloudMobileRegex: /https?:\/\/(soundcloud\.app\.goo\.gl)\/(\S+)/,
+  bandcamp: /https?:\/\/?(?:www\.)?([\d|\w]+)\.bandcamp\.com\/(\S+)/,
+  TwitchTv: /https?:\/\/?(?:www\.)?twitch\.tv\/\w+/,
+  vimeo: /https?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^/]*)\/videos\/|)(\d+)(?:|\/\?)/,
+  mp3Url: /(https?|ftp|file):\/\/(www.)?(.*?)\.(mp3)$/,
+  m3uUrl: /(https?|ftp|file):\/\/(www.)?(.*?)\.(m3u)$/,
+  m3u8Url: /(https?|ftp|file):\/\/(www.)?(.*?)\.(m3u8)$/,
+  mp4Url: /(https?|ftp|file):\/\/(www.)?(.*?)\.(mp4)$/,
+  m4aUrl: /(https?|ftp|file):\/\/(www.)?(.*?)\.(m4a)$/,
+  wavUrl: /(https?|ftp|file):\/\/(www.)?(.*?)\.(wav)$/,
+  aacpUrl: /(https?|ftp|file):\/\/(www.)?(.*?)\.(aacp)$/,
+  /** FROM LAVA SOURCE */
+  DeezerTrackRegex: /(https?:\/\/|)?(?:www\.)?deezer\.com\/(?:\w{2}\/)?track\/(\d+)/,
+  DeezerPageLinkRegex: /(https?:\/\/|)?(?:www\.)?deezer\.page\.link\/(\S+)/,
+  DeezerPlaylistRegex: /(https?:\/\/|)?(?:www\.)?deezer\.com\/(?:\w{2}\/)?playlist\/(\d+)/,
+  DeezerAlbumRegex: /(https?:\/\/|)?(?:www\.)?deezer\.com\/(?:\w{2}\/)?album\/(\d+)/,
+  DeezerArtistRegex: /(https?:\/\/|)?(?:www\.)?deezer\.com\/(?:\w{2}\/)?artist\/(\d+)/,
+  DeezerMixesRegex: /(https?:\/\/|)?(?:www\.)?deezer\.com\/(?:\w{2}\/)?mixes\/genre\/(\d+)/,
+  DeezerEpisodeRegex: /(https?:\/\/|)?(?:www\.)?deezer\.com\/(?:\w{2}\/)?episode\/(\d+)/,
+  AllDeezerRegexWithoutPageLink: /(https?:\/\/|)?(?:www\.)?deezer\.com\/(?:\w{2}\/)?(track|playlist|album|artist|mixes\/genre|episode)\/(\d+)/,
+  AllDeezerRegex: /((https?:\/\/|)?(?:www\.)?deezer\.com\/(?:\w{2}\/)?(track|playlist|album|artist|mixes\/genre|episode)\/(\d+)|(https?:\/\/|)?(?:www\.)?deezer\.page\.link\/(\S+))/,
+  SpotifySongRegex: /(https?:\/\/)(www\.)?open\.spotify\.com\/((?<region>[a-zA-Z-]+)\/)?(user\/(?<user>[a-zA-Z0-9-_]+)\/)?track\/(?<identifier>[a-zA-Z0-9-_]+)/,
+  SpotifyPlaylistRegex: /(https?:\/\/)(www\.)?open\.spotify\.com\/((?<region>[a-zA-Z-]+)\/)?(user\/(?<user>[a-zA-Z0-9-_]+)\/)?playlist\/(?<identifier>[a-zA-Z0-9-_]+)/,
+  SpotifyArtistRegex: /(https?:\/\/)(www\.)?open\.spotify\.com\/((?<region>[a-zA-Z-]+)\/)?(user\/(?<user>[a-zA-Z0-9-_]+)\/)?artist\/(?<identifier>[a-zA-Z0-9-_]+)/,
+  SpotifyEpisodeRegex: /(https?:\/\/)(www\.)?open\.spotify\.com\/((?<region>[a-zA-Z-]+)\/)?(user\/(?<user>[a-zA-Z0-9-_]+)\/)?episode\/(?<identifier>[a-zA-Z0-9-_]+)/,
+  SpotifyShowRegex: /(https?:\/\/)(www\.)?open\.spotify\.com\/((?<region>[a-zA-Z-]+)\/)?(user\/(?<user>[a-zA-Z0-9-_]+)\/)?show\/(?<identifier>[a-zA-Z0-9-_]+)/,
+  SpotifyAlbumRegex: /(https?:\/\/)(www\.)?open\.spotify\.com\/((?<region>[a-zA-Z-]+)\/)?(user\/(?<user>[a-zA-Z0-9-_]+)\/)?album\/(?<identifier>[a-zA-Z0-9-_]+)/,
+  AllSpotifyRegex: /(https?:\/\/)(www\.)?open\.spotify\.com\/((?<region>[a-zA-Z-]+)\/)?(user\/(?<user>[a-zA-Z0-9-_]+)\/)?(?<type>track|album|playlist|artist|episode|show)\/(?<identifier>[a-zA-Z0-9-_]+)/,
+  appleMusic: /https?:\/\/?(?:www\.)?music\.apple\.com\/(\S+)/,
+  /** From tidal */
+  tidal: /https?:\/\/?(?:www\.)?(?:tidal|listen)\.tidal\.com\/(?<type>track|album|playlist|artist)\/(?<identifier>[a-zA-Z0-9-_]+)/,
+  /** From jiosaavn-plugin */
+  jiosaavn: /(https?:\/\/)(www\.)?jiosaavn\.com\/(?<type>song|album|featured|artist)\/([a-zA-Z0-9-_/,]+)/,
+  /** From pandora */
+  PandoraTrackRegex: /^@?(?:https?:\/\/)?(?:www\.)?pandora\.com\/artist\/[\w-]+(?:\/[\w-]+)*\/(?<identifier>TR[A-Za-z0-9]+)(?:[?#].*)?$/,
+  PandoraAlbumRegex: /^@?(?:https?:\/\/)?(?:www\.)?pandora\.com\/artist\/[\w-]+(?:\/[\w-]+)*\/(?<identifier>AL[A-Za-z0-9]+)(?:[?#].*)?$/,
+  PandoraArtistRegex: /^@?(?:https?:\/\/)?(?:www\.)?pandora\.com\/artist\/[\w-]+\/(?<identifier>AR[A-Za-z0-9]+)(?:[?#].*)?$/,
+  PandoraPlaylistRegex: /^@?(?:https?:\/\/)?(?:www\.)?pandora\.com\/playlist\/(?<identifier>PL:[\d:]+)(?:[?#].*)?$/,
+  AllPandoraRegex: /^@?(?:https?:\/\/)?(?:www\.)?pandora\.com\/(?:playlist\/(?<playlistId>PL:[\d:]+)|artist\/[\w-]+(?:\/[\w-]+)*\/(?<identifier>(?:TR|AL|AR)[A-Za-z0-9]+))(?:[?#].*)?$/,
+  /** FROM DUNCTE BOT PLUGIN */
+  tiktok: /https:\/\/www\.tiktok\.com\//,
+  mixcloud: /https:\/\/www\.mixcloud\.com\//,
+  musicYandex: /https:\/\/music\.yandex\.ru\//,
+  radiohost: /https?:\/\/[^.\s]+\.radiohost\.de\/(\S+)/
+};
+var TrackSymbol = /* @__PURE__ */ Symbol("LC-Track");
+var UnresolvedTrackSymbol = /* @__PURE__ */ Symbol("LC-Track-Unresolved");
+var QueueSymbol = /* @__PURE__ */ Symbol("LC-Queue");
+var NodeSymbol = /* @__PURE__ */ Symbol("LC-Node");
+var escapeRegExp = /* @__PURE__ */ __name((str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "escapeRegExp");
+var ManagerUtils = class {
+  static {
+    __name(this, "ManagerUtils");
+  }
+  LavalinkManager = void 0;
+  /** Override this with your custom sources record if you want to use custom sources for your node */
+  SourcesRecord = DefaultSources;
+  constructor(LavalinkManager3) {
+    this.LavalinkManager = LavalinkManager3;
+  }
+  /**
+  * Builds a pluginInfo object based on the provided data, extracting relevant information from the data and clientData parameters. This function is used to construct the pluginInfo property for tracks, allowing for consistent handling of plugin-related information across different track sources and formats.
+  * @param data
+  * @param clientData
+  * @returns
+  */
+  buildPluginInfo(data, clientData = {}) {
+    return {
+      clientData,
+      ...data.pluginInfo || data.plugin
+    };
+  }
+  /**
+  * Builds a Track object from the provided data and requester information. It validates the presence of required properties in the data, transforms the requester using a custom transformer function if provided, and constructs a Track object with the appropriate properties and plugin information. The function also includes error handling to ensure that the input data is valid and provides debug information if track building fails.
+  * @param data
+  * @param requester
+  * @returns
+  */
+  buildTrack(data, requester) {
+    if (!data?.encoded || typeof data.encoded !== "string") throw new RangeError("Argument 'data.encoded' must be present.");
+    if (!data.info) throw new RangeError("Argument 'data.info' must be present.");
+    try {
+      let transformedRequester = typeof requester === "object" ? this.getTransformedRequester(requester) : void 0;
+      if (!transformedRequester && typeof data?.userData?.requester === "object" && data.userData.requester !== null) transformedRequester = this.getTransformedRequester(data.userData.requester);
+      const r = {
+        encoded: data.encoded,
+        info: {
+          identifier: data.info.identifier,
+          title: data.info.title,
+          author: data.info.author,
+          duration: data.info?.duration || data.info?.length,
+          artworkUrl: data.info.artworkUrl || data.pluginInfo?.artworkUrl || data.plugin?.artworkUrl,
+          uri: data.info.uri,
+          sourceName: data.info.sourceName,
+          isSeekable: data.info.isSeekable,
+          isStream: data.info.isStream,
+          isrc: data.info.isrc
+        },
+        userData: {
+          ...data.userData,
+          requester: transformedRequester
+        },
+        pluginInfo: this.buildPluginInfo(data, "clientData" in data ? data.clientData : {}),
+        requester: transformedRequester || this.getTransformedRequester(this.LavalinkManager?.options?.client)
+      };
+      Object.defineProperty(r, TrackSymbol, {
+        configurable: true,
+        value: true
+      });
+      return r;
+    } catch (error62) {
+      if (this.LavalinkManager?.options?.advancedOptions?.enableDebugEvents) this.LavalinkManager?.emit("debug", "BuildTrackError", {
+        error: error62,
+        functionLayer: "ManagerUtils > buildTrack()",
+        message: "Error while building track",
+        state: "error"
+      });
+      throw new RangeError(`Argument "data" is not a valid track: ${error62.message}`);
+    }
+  }
+  /**
+  * Builds a UnresolvedTrack to be resolved before being played  .
+  * @param query
+  * @param requester
+  */
+  buildUnresolvedTrack(query, requester) {
+    if (typeof query === "undefined") throw new RangeError('Argument "query" must be present.');
+    const unresolvedTrack = {
+      encoded: query.encoded || void 0,
+      info: query.info ? query.info : query.title ? query : void 0,
+      pluginInfo: this.buildPluginInfo(query),
+      requester: this.getTransformedRequester(requester),
+      async resolve(player) {
+        const closest = await getClosestTrack(this, player);
+        if (!closest) throw new SyntaxError("No closest Track found");
+        for (const prop of Object.getOwnPropertyNames(this)) delete this[prop];
+        delete this[UnresolvedTrackSymbol];
+        Object.defineProperty(this, TrackSymbol, {
+          configurable: true,
+          value: true
+        });
+        return Object.assign(this, closest);
+      }
+    };
+    if (!this.isUnresolvedTrack(unresolvedTrack)) throw SyntaxError("Could not build Unresolved Track");
+    Object.defineProperty(unresolvedTrack, UnresolvedTrackSymbol, {
+      configurable: true,
+      value: true
+    });
+    return unresolvedTrack;
+  }
+  /**
+  * Validate if a data is equal to a node
+  * @param data
+  */
+  isNode(data) {
+    if (!data) return false;
+    const keys = Object.getOwnPropertyNames(Object.getPrototypeOf(data));
+    if (!keys.includes("constructor")) return false;
+    if (!keys.length) return false;
+    if (![
+      "connect",
+      "destroy",
+      "destroyPlayer",
+      "fetchAllPlayers",
+      "fetchInfo",
+      "fetchPlayer",
+      "fetchStats",
+      "fetchVersion",
+      "request",
+      "updatePlayer",
+      "updateSession"
+    ].every((v) => keys.includes(v))) return false;
+    return true;
+  }
+  /**
+  * Gets the transformed requester based on the LavalinkManager options. If a custom requester transformer function is provided in the player options, it applies that function to the requester; otherwise, it returns the requester as is. The function also includes error handling to catch any exceptions that may occur during the transformation process and emits a debug event if the transformation fails.
+  * @param requester
+  * @returns
+  */
+  getTransformedRequester(requester) {
+    try {
+      return typeof this.LavalinkManager?.options?.playerOptions?.requesterTransformer === "function" ? this.LavalinkManager?.options?.playerOptions?.requesterTransformer(requester) : requester;
+    } catch (e) {
+      if (this.LavalinkManager?.options?.advancedOptions?.enableDebugEvents) this.LavalinkManager?.emit("debug", "TransformRequesterFunctionFailed", {
+        error: e,
+        functionLayer: "ManagerUtils > getTransformedRequester()",
+        message: "Your custom transformRequesterFunction failed to execute, please check your function for errors.",
+        state: "error"
+      });
+      return requester;
+    }
+  }
+  /**
+  * Validate if a data is equal to node options
+  * @param data
+  */
+  isNodeOptions(data) {
+    if (!data || typeof data !== "object" || Array.isArray(data)) return false;
+    if (typeof data.host !== "string" || !data.host.length) return false;
+    if (typeof data.port !== "number" || isNaN(data.port) || data.port < 0 || data.port > 65535) return false;
+    if (typeof data.authorization !== "string" || !data.authorization.length) return false;
+    if ("secure" in data && typeof data.secure !== "boolean" && data.secure !== void 0) return false;
+    if ("sessionId" in data && typeof data.sessionId !== "string" && data.sessionId !== void 0) return false;
+    if ("id" in data && typeof data.id !== "string" && data.id !== void 0) return false;
+    if ("regions" in data && (!Array.isArray(data.regions) || !data.regions.every((v) => typeof v === "string") && data.regions !== void 0)) return false;
+    if ("poolOptions" in data && typeof data.poolOptions !== "object" && data.poolOptions !== void 0) return false;
+    if ("retryAmount" in data && (typeof data.retryAmount !== "number" || isNaN(data.retryAmount) || data.retryAmount <= 0 && data.retryAmount !== void 0)) return false;
+    if ("retryDelay" in data && (typeof data.retryDelay !== "number" || isNaN(data.retryDelay) || data.retryDelay <= 0 && data.retryDelay !== void 0)) return false;
+    if ("requestTimeout" in data && (typeof data.requestTimeout !== "number" || isNaN(data.requestTimeout) || data.requestTimeout <= 0 && data.requestTimeout !== void 0)) return false;
+    return true;
+  }
+  /**
+  * Validate tracks based on duration whether they are playble or broken tracks.
+  * most tracks should be longer than 30s, so you can put a minDuration of 29e3 (cause preview tracks are exactly 30s) or put 0.
+  * This check is not done automatically, you need to check it yourself by doing:
+  * @example
+  * ```ts
+  * const res = await player.search("Adele");
+  *
+  * // short hand:
+  * const validTracks = res.tracks.filter(client.lavalink.utils.isNotBrokenTrack)
+  * // or with options:
+  * const validTracks = res.tracks.filter(t => client.lavalink.utils.isNotBrokenTrack(t, 29e3));
+  *
+  * // then you can add it to the queue.
+  * await player.queue.add(validTracks);
+  * ```
+  */
+  isNotBrokenTrack(data, minDuration = 29e3) {
+    if (typeof data?.info?.duration !== "number" || isNaN(data?.info?.duration)) return false;
+    if (data.info.duration <= Math.max(minDuration, 0)) return false;
+    if (!data.info) return false;
+    return this.isTrack(data);
+  }
+  /**
+  * Validate if a data is equal to a track
+  * @param data the Track to validate
+  * @returns
+  */
+  isTrack(data) {
+    if (!data) return false;
+    if (data[TrackSymbol] === true) return true;
+    return typeof data?.encoded === "string" && typeof data?.info === "object" && !("resolve" in data);
+  }
+  /**
+  * Checks if the provided argument is a valid UnresolvedTrack.
+  * @param track
+  */
+  isUnresolvedTrack(data) {
+    if (!data) return false;
+    if (data[UnresolvedTrackSymbol] === true) return true;
+    return typeof data === "object" && ("info" in data && typeof data.info.title === "string" || typeof data.encoded === "string") && "resolve" in data && typeof data.resolve === "function";
+  }
+  /**
+  * Checks if the provided argument is a valid UnresolvedTrack.
+  * @param track
+  */
+  isUnresolvedTrackQuery(data) {
+    return typeof data === "object" && !("info" in data) && typeof data.title === "string";
+  }
+  /**
+  * Gets the closest track by resolving the provided UnresolvedTrack using the getClosestTrack function. It includes error handling to catch any exceptions that may occur during the resolution process and emits a debug event if the resolution fails. The function returns a Promise that resolves to a Track object if successful, or undefined if no closest track is found.
+  * @param data
+  * @param player
+  * @returns
+  */
+  async getClosestTrack(data, player) {
+    try {
+      return getClosestTrack(data, player);
+    } catch (e) {
+      if (this.LavalinkManager?.options?.advancedOptions?.enableDebugEvents) this.LavalinkManager?.emit("debug", "GetClosestTrackFailed", {
+        error: e,
+        functionLayer: "ManagerUtils > getClosestTrack()",
+        message: "Failed to resolve track because the getClosestTrack function failed.",
+        state: "error"
+      });
+      throw e;
+    }
+  }
+  /**
+  * Validates the query string against various criteria, including checking for empty strings, length limits for specific sources, blacklisted links or words, and ensuring that the Lavalink node has the necessary source managers enabled for the provided query. The function also includes debug event emissions to assist with troubleshooting and understanding the validation process.
+  * @param node
+  * @param queryString
+  * @param sourceString
+  * @returns
+  */
+  validateQueryString(node2, queryString, sourceString) {
+    if (!node2.info) throw new Error("No Lavalink Node was provided");
+    if (node2._checkForSources && !node2.info.sourceManagers?.length) throw new Error("Lavalink Node, has no sourceManagers enabled");
+    if (!queryString.trim().length) throw new Error(`Query string is empty, please provide a valid query string.`);
+    if (sourceString === "speak" && queryString.length > 100) throw new Error(`Query is speak, which is limited to 100 characters.`);
+    if (this.LavalinkManager.options?.linksBlacklist?.length > 0) {
+      if (this.LavalinkManager.options?.advancedOptions?.enableDebugEvents) this.LavalinkManager.emit("debug", "ValidatingBlacklistLinks", {
+        state: "log",
+        message: `Validating Query against LavalinkManager.options.linksBlacklist, query: "${queryString}"`,
+        functionLayer: "(LavalinkNode > node | player) > search() > validateQueryString()"
+      });
+      if (this.LavalinkManager.options?.linksBlacklist.some((v) => typeof v === "string" && queryString.toLowerCase().includes(v.toLowerCase()) || (0, import_types3.isRegExp)(v) && v.test(queryString))) throw new Error(`Query string contains a link / word which is blacklisted.`);
+    }
+    if (!/^https?:\/\//.test(queryString)) return;
+    else if (this.LavalinkManager.options?.linksAllowed === false) throw new Error("Using links to make a request is not allowed.");
+    if (this.LavalinkManager.options?.linksWhitelist?.length > 0) {
+      if (this.LavalinkManager.options?.advancedOptions?.enableDebugEvents) this.LavalinkManager.emit("debug", "ValidatingWhitelistLinks", {
+        state: "log",
+        message: `Link was provided to the Query, validating against LavalinkManager.options.linksWhitelist, query: "${queryString}"`,
+        functionLayer: "(LavalinkNode > node | player) > search() > validateQueryString()"
+      });
+      if (!this.LavalinkManager.options?.linksWhitelist.some((v) => typeof v === "string" && queryString.toLowerCase().includes(v.toLowerCase()) || (0, import_types3.isRegExp)(v) && v.test(queryString))) throw new Error(`Query string contains a link / word which isn't whitelisted.`);
+    }
+    if (!node2._checkForSources) return;
+    if ((SourceLinksRegexes.YoutubeMusicRegex.test(queryString) || SourceLinksRegexes.YoutubeRegex.test(queryString)) && !node2.info?.sourceManagers?.includes("youtube")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'youtube' enabled");
+    if ((SourceLinksRegexes.SoundCloudMobileRegex.test(queryString) || SourceLinksRegexes.SoundCloudRegex.test(queryString)) && !node2.info?.sourceManagers?.includes("soundcloud")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'soundcloud' enabled");
+    if (SourceLinksRegexes.bandcamp.test(queryString) && !node2.info?.sourceManagers?.includes("bandcamp")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'bandcamp' enabled (introduced with lavaplayer 2.2.0 or lavalink 4.0.6)");
+    if (SourceLinksRegexes.TwitchTv.test(queryString) && !node2.info?.sourceManagers?.includes("twitch")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'twitch' enabled");
+    if (SourceLinksRegexes.vimeo.test(queryString) && !node2.info?.sourceManagers?.includes("vimeo")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'vimeo' enabled");
+    if (SourceLinksRegexes.tiktok.test(queryString) && !node2.info?.sourceManagers?.includes("tiktok")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'tiktok' enabled");
+    if (SourceLinksRegexes.mixcloud.test(queryString) && !node2.info?.sourceManagers?.includes("mixcloud")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'mixcloud' enabled");
+    if (SourceLinksRegexes.AllSpotifyRegex.test(queryString) && !node2.info?.sourceManagers?.includes("spotify")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'spotify' enabled");
+    if (SourceLinksRegexes.appleMusic.test(queryString) && !node2.info?.sourceManagers?.includes("applemusic")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'applemusic' enabled");
+    if (SourceLinksRegexes.AllDeezerRegex.test(queryString) && !node2.info?.sourceManagers?.includes("deezer")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'deezer' enabled");
+    if (SourceLinksRegexes.musicYandex.test(queryString) && !node2.info?.sourceManagers?.includes("yandexmusic")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'yandexmusic' enabled");
+    if (SourceLinksRegexes.jiosaavn.test(queryString) && !node2.info?.sourceManagers?.includes("jiosaavn")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'jiosaavn' (via jiosaavn-plugin) enabled");
+    if (SourceLinksRegexes.tidal.test(queryString) && !node2.info?.sourceManagers?.includes("tidal")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'tidal' enabled");
+    if (SourceLinksRegexes.AllPandoraRegex.test(queryString) && !node2.info?.sourceManagers?.includes("pandora")) throw new Error("Query / Link Provided for this Source but Lavalink Node has not 'pandora' enabled");
+  }
+  /**
+  * Finds the source of a query string by checking if it starts with a valid source prefix defined in the Default Sources object. If a valid source prefix is found, it returns the corresponding SearchPlatform; otherwise, it returns null. This function is useful for determining the intended search platform for a given query string, allowing for more accurate search results when the user specifies a source (e.g., "ytsearch:Never Gonna Give You Up" would indicate that the search should be performed on YouTube).
+  * @param queryString
+  * @returns
+  */
+  findSourceOfQuery(queryString) {
+    const foundSource = Object.keys(this.SourcesRecord).find((source) => queryString?.toLowerCase?.()?.startsWith(`${source}:`.toLowerCase()))?.trim?.()?.toLowerCase?.();
+    if (foundSource && !["https", "http"].includes(foundSource) && this.SourcesRecord[foundSource]) return foundSource;
+    return null;
+  }
+  /**
+  * Extracts the source from the query if it starts with a valid source prefix (e.g., "ytsearch:") and updates the searchQuery object accordingly.
+  * @param searchQuery
+  * @returns The updated searchQuery object with the extracted source and modified query string.
+  */
+  extractSourceOfQuery(searchQuery) {
+    const foundSource = this.findSourceOfQuery(searchQuery.query);
+    if (foundSource) {
+      searchQuery.source = this.SourcesRecord[foundSource];
+      searchQuery.query = searchQuery.query.slice(`${foundSource}:`.length, searchQuery.query.length);
+    }
+    return searchQuery;
+  }
+  /**
+  * Converts a string to lowercase if the input is a string, otherwise returns the input as is. This is useful for ensuring that search platform identifiers are case-insensitive while allowing other types of input to pass through unchanged.
+  * @param input
+  * @returns
+  */
+  typedLowerCase(input2) {
+    if (!input2) return input2;
+    if (typeof input2 === "string") return input2.toLowerCase();
+    return input2;
+  }
+  /**
+  * Transforms a search query by determining the appropriate search platform based on the query string and the default search platform specified in the LavalinkManager options. It checks if the query string starts with a valid source prefix and extracts it if present. The function returns an object containing the modified query string, any extra URL parameters, and the determined search platform to be used for the search operation.
+  * @param query
+  * @returns
+  */
+  transformQuery(query) {
+    const typedDefault = this.typedLowerCase(this.LavalinkManager?.options?.playerOptions?.defaultSearchPlatform);
+    if (typeof query === "string") {
+      const Query2 = {
+        query,
+        extraQueryUrlParams: void 0,
+        source: typedDefault
+      };
+      return this.extractSourceOfQuery(Query2);
+    }
+    const providedSource = query?.source?.trim?.()?.toLowerCase?.();
+    const validSourceExtracted = this.SourcesRecord[providedSource ?? typedDefault];
+    return this.extractSourceOfQuery({
+      query: query.query,
+      extraQueryUrlParams: query.extraQueryUrlParams,
+      source: validSourceExtracted ?? providedSource ?? typedDefault
+    });
+  }
+  /**
+  * Transforms a LavaSearchQuery by determining the appropriate search platform based on the query string and the default search platform specified in the LavalinkManager options. It checks if the query string starts with a valid source prefix and extracts it if present. The function returns an object containing the modified query string, any extra URL parameters, the determined search platform to be used for the search operation, and the types of search (track, playlist, artist, album, text) to be performed.
+  * @param query
+  * @returns
+  */
+  transformLavaSearchQuery(query) {
+    const typedDefault = this.typedLowerCase(this.LavalinkManager?.options?.playerOptions?.defaultSearchPlatform);
+    if (typeof query === "string") {
+      const Query3 = {
+        query,
+        types: [],
+        extraQueryUrlParams: void 0,
+        source: typedDefault
+      };
+      return this.extractSourceOfQuery(Query3);
+    }
+    const providedSource = query?.source?.trim?.()?.toLowerCase?.();
+    const validSourceExtracted = this.SourcesRecord[providedSource ?? typedDefault];
+    const Query2 = {
+      query: query.query,
+      types: query.types ? [
+        "track",
+        "playlist",
+        "artist",
+        "album",
+        "text"
+      ].filter((v) => query.types?.find((x) => x.toLowerCase().startsWith(v))) : [
+        "track",
+        "playlist",
+        "artist",
+        "album"
+      ],
+      source: validSourceExtracted ?? providedSource ?? typedDefault
+    };
+    return this.extractSourceOfQuery(Query2);
+  }
+  /**
+  * Validates the provided source string against the capabilities of the Lavalink node. It checks if the source string is supported by the node's enabled source managers and plugins, throwing errors if any required sources or plugins are missing for the specified search platform. This ensures that search queries are only executed with compatible sources based on the node's configuration.
+  * @param node
+  * @param sourceString
+  * @returns
+  */
+  validateSourceString(node2, sourceString) {
+    if (!sourceString) throw new Error(`No SourceString was provided`);
+    const source = this.SourcesRecord[sourceString.toLowerCase().trim()];
+    if (!source && !!this.LavalinkManager.options.playerOptions.allowCustomSources) throw new Error(`Lavalink-Client does not support SearchQuerySource: '${sourceString}'. You can disable this check by setting 'ManagerOptions.PlayerOptions.allowCustomSources' to true`);
+    if (!node2.info) throw new Error("Lavalink Node does not have any info cached yet, not ready yet!");
+    if (!node2._checkForSources) return;
+    if (source === "amsearch" && !node2.info?.sourceManagers?.includes("applemusic")) throw new Error("Lavalink Node has not 'applemusic' enabled, which is required to have 'amsearch' work");
+    if (source === "dzisrc" && !node2.info?.sourceManagers?.includes("deezer")) throw new Error("Lavalink Node has not 'deezer' enabled, which is required to have 'dzisrc' work");
+    if (source === "dzsearch" && !node2.info?.sourceManagers?.includes("deezer")) throw new Error("Lavalink Node has not 'deezer' enabled, which is required to have 'dzsearch' work");
+    if (source === "dzisrc" && node2.info?.sourceManagers?.includes("deezer") && !node2.info?.sourceManagers?.includes("http")) throw new Error("Lavalink Node has not 'http' enabled, which is required to have 'dzisrc' to work");
+    if (source === "jsrec" && !node2.info?.sourceManagers?.includes("jiosaavn")) throw new Error("Lavalink Node has not 'jiosaavn' (via jiosaavn-plugin) enabled, which is required to have 'jsrec' to work");
+    if (source === "jssearch" && !node2.info?.sourceManagers?.includes("jiosaavn")) throw new Error("Lavalink Node has not 'jiosaavn' (via jiosaavn-plugin) enabled, which is required to have 'jssearch' to work");
+    if (source === "scsearch" && !node2.info?.sourceManagers?.includes("soundcloud")) throw new Error("Lavalink Node has not 'soundcloud' enabled, which is required to have 'scsearch' work");
+    if (source === "speak" && node2._checkForPlugins && !node2.info?.plugins?.find((c) => c.name.toLowerCase().includes(LavalinkPlugins.DuncteBot_Plugin.toLowerCase()))) throw new Error("Lavalink Node has not 'speak' enabled, which is required to have 'speak' work");
+    if (source === "tdsearch" && !node2.info?.sourceManagers?.includes("tidal")) throw new Error("Lavalink Node has not 'tidal' enabled, which is required to have 'tdsearch' work");
+    if (source === "tdrec" && !node2.info?.sourceManagers?.includes("tidal")) throw new Error("Lavalink Node has not 'tidal' enabled, which is required to have 'tdrec' work");
+    if (source === "tts" && node2._checkForPlugins && !node2.info?.plugins?.find((c) => c.name.toLowerCase().includes(LavalinkPlugins.GoogleCloudTTS.toLowerCase()))) throw new Error("Lavalink Node has not 'tts' enabled, which is required to have 'tts' work");
+    if (source === "ftts" && !(node2.info?.sourceManagers?.includes("ftts") || node2.info?.sourceManagers?.includes("flowery-tts") || node2.info?.sourceManagers?.includes("flowerytts"))) throw new Error("Lavalink Node has not 'flowery-tts' enabled, which is required to have 'ftts' work");
+    if (source === "ymsearch" && !node2.info?.sourceManagers?.includes("yandexmusic")) throw new Error("Lavalink Node has not 'yandexmusic' enabled, which is required to have 'ymsearch' work");
+    if (source === "ytmsearch" && !node2.info?.sourceManagers?.includes("youtube")) throw new Error("Lavalink Node has not 'youtube' enabled, which is required to have 'ytmsearch' work");
+    if (source === "ytsearch" && !node2.info?.sourceManagers?.includes("youtube")) throw new Error("Lavalink Node has not 'youtube' enabled, which is required to have 'ytsearch' work");
+    if (source === "vksearch" && !node2.info?.sourceManagers?.includes("vkmusic")) throw new Error("Lavalink Node has not 'vkmusic' enabled, which is required to have 'vksearch' work");
+    if (source === "vkrec" && !node2.info?.sourceManagers?.includes("vkmusic")) throw new Error("Lavalink Node has not 'vkmusic' enabled, which is required to have 'vkrec' work");
+    if (source === "qbsearch" && !node2.info?.sourceManagers?.includes("qobuz")) throw new Error("Lavalink Node has not 'qobuz' enabled, which is required to have 'qbsearch' work");
+    if (source === "qbisrc" && !node2.info?.sourceManagers?.includes("qobuz")) throw new Error("Lavalink Node has not 'qobuz' enabled, which is required to have 'qbisrc' work");
+    if (source === "qbrec" && !node2.info?.sourceManagers?.includes("qobuz")) throw new Error("Lavalink Node has not 'qobuz' enabled, which is required to have 'qbrec' work");
+    if ([
+      "pdsearch",
+      "pdisrc",
+      "pdrec"
+    ].includes(source) && !node2.info?.sourceManagers?.includes("pandora")) throw new Error("Lavalink Node has not 'pandora' enabled, which is required to have '" + source + "' work");
+    if (source === "amzsearch" && !node2.info?.sourceManagers?.includes("amazonmusic")) throw new Error("Lavalink Node has not 'amazonmusic' enabled, which is required to have 'amzsearch' work");
+    if (source === "admsearch" && !node2.info?.sourceManagers?.includes("audiomack")) throw new Error("Lavalink Node has not 'audiomack' enabled, which is required to have 'admsearch' work");
+    if (source === "gnsearch" && !node2.info?.sourceManagers?.includes("gaana")) throw new Error("Lavalink Node has not 'gaana' enabled, which is required to have 'gnsearch' work");
+    if (source === "szsearch" && !node2.info?.sourceManagers?.includes("shazam")) throw new Error("Lavalink Node has not 'shazam' enabled, which is required to have 'szsearch' work");
+  }
+};
+var MiniMap = class extends Map {
+  static {
+    __name(this, "MiniMap");
+  }
+  constructor(data = []) {
+    super(data);
+  }
+  filter(fn, thisArg) {
+    if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
+    const results = new this.constructor[Symbol.species]();
+    for (const [key, val] of this) if (fn(val, key, this)) results.set(key, val);
+    return results;
+  }
+  toJSON() {
+    return [...this.entries()];
+  }
+  map(fn, thisArg) {
+    if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
+    const iter = this.entries();
+    return Array.from({ length: this.size }, () => {
+      const [key, value] = iter.next().value;
+      return fn(value, key, this);
+    });
+  }
+};
+async function queueTrackEnd(player, dontShiftQueue = false) {
+  if (player.queue.current && !player.queue.current?.pluginInfo?.clientData?.previousTrack) {
+    player.queue.previous.unshift(player.queue.current);
+    if (player.queue.previous.length > player.queue.options.maxPreviousTracks) player.queue.previous.splice(player.queue.options.maxPreviousTracks, player.queue.previous.length);
+    await player.queue.utils.save();
+  }
+  if (player.repeatMode === "queue" && player.queue.current) player.queue.tracks.push(player.queue.current);
+  const nextSong = dontShiftQueue ? null : player.queue.tracks.shift();
+  try {
+    if (nextSong && player.LavalinkManager.utils.isUnresolvedTrack(nextSong)) await nextSong.resolve(player);
+    player.queue.current = nextSong || null;
+    await player.queue.utils.save();
+  } catch (error62) {
+    if (player.LavalinkManager.options?.advancedOptions?.enableDebugEvents) player.LavalinkManager.emit("debug", "PlayerPlayUnresolvedTrackFailed", {
+      state: "error",
+      error: error62,
+      message: `queueTrackEnd Util was called, tried to resolve the next track, but failed to find the closest matching song`,
+      functionLayer: "Player > play() > resolve currentTrack"
+    });
+    player.LavalinkManager.emit("trackError", player, player.queue.current, error62);
+    if (!dontShiftQueue && player.LavalinkManager.options?.autoSkipOnResolveError === true && player.queue.tracks[0]) return queueTrackEnd(player);
+  }
+  return player.queue.current;
+}
+__name(queueTrackEnd, "queueTrackEnd");
+async function applyUnresolvedData(resTrack, data, utils) {
+  if (!resTrack?.info || !data?.info) return;
+  if (data.info.uri) resTrack.info.uri = data.info.uri;
+  if (utils?.LavalinkManager?.options?.playerOptions?.useUnresolvedData === true) {
+    if (data.info.artworkUrl?.length) resTrack.info.artworkUrl = data.info.artworkUrl;
+    if (data.info.title?.length) resTrack.info.title = data.info.title;
+    if (data.info.author?.length) resTrack.info.author = data.info.author;
+  } else {
+    if ((resTrack.info.title === "Unknown title" || resTrack.info.title === "Unspecified description") && resTrack.info.title != data.info.title) resTrack.info.title = data.info.title;
+    if (resTrack.info.author !== data.info.author) resTrack.info.author = data.info.author;
+    if (resTrack.info.artworkUrl !== data.info.artworkUrl) resTrack.info.artworkUrl = data.info.artworkUrl;
+  }
+  for (const key of Object.keys(data.info)) if (typeof resTrack.info[key] === "undefined" && key !== "resolve" && data.info[key]) resTrack.info[key] = data.info[key];
+  return resTrack;
+}
+__name(applyUnresolvedData, "applyUnresolvedData");
+async function getClosestTrack(data, player) {
+  if (!player || !player.node) throw new RangeError("No player with a lavalink node was provided");
+  if (player.LavalinkManager.utils.isTrack(data)) return player.LavalinkManager.utils.buildTrack(data, data.requester);
+  if (!player.LavalinkManager.utils.isUnresolvedTrack(data)) throw new RangeError("Track is not an unresolved Track");
+  if (!data?.info?.title && typeof data.encoded !== "string" && !data.info.uri) throw new SyntaxError("the track uri / title / encoded Base64 string is required for unresolved tracks");
+  if (!data.requester) throw new SyntaxError("The requester is required");
+  if (typeof data.encoded === "string") {
+    const r = await player.node.decode.singleTrack(data.encoded, data.requester);
+    if (r) return applyUnresolvedData(r, data, player.LavalinkManager.utils);
+  }
+  if (typeof data.info.uri === "string") {
+    const r = await player.search({ query: data?.info?.uri }, data.requester).then((v) => v.tracks?.[0]);
+    if (r) return applyUnresolvedData(r, data, player.LavalinkManager.utils);
+  }
+  const query = [data.info?.title, data.info?.author].filter((str) => !!str).join(" by ");
+  const sourceName = data.info?.sourceName;
+  return await player.search({
+    query,
+    source: sourceName !== "twitch" && sourceName !== "flowery-tts" ? sourceName : player.LavalinkManager.options?.playerOptions?.defaultSearchPlatform
+  }, data.requester).then((res) => {
+    let trackToUse = null;
+    if ((data.info?.title || data.info?.author) && !trackToUse) trackToUse = res.tracks.find((track) => [data.info?.author || "", `${data.info?.author} - Topic`].some((name) => new RegExp(`^${escapeRegExp(name)}$`, "i").test(track.info?.author)) || new RegExp(`^${escapeRegExp(data.info?.title)}$`, "i").test(track.info?.title));
+    if (data.info?.isrc && !trackToUse) trackToUse = res.tracks.find((track) => track.info?.isrc === data.info?.isrc);
+    if (data.info?.duration && !trackToUse) trackToUse = res.tracks.find((track) => track.info?.duration >= data.info?.duration - 1500 && track?.info.duration <= data.info?.duration + 1500);
+    return applyUnresolvedData(trackToUse || res.tracks[0], data, player.LavalinkManager.utils);
+  });
+}
+__name(getClosestTrack, "getClosestTrack");
+function safeStringify(obj, padding = 0) {
+  const seen = /* @__PURE__ */ new WeakSet();
+  return JSON.stringify(obj, (key, value) => {
+    if (typeof value === "function") return void 0;
+    if (typeof value === "symbol") return void 0;
+    if (typeof value === "bigint") return value.toString();
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) return "[Circular]";
+      seen.add(value);
+    }
+    return value;
+  }, padding);
+}
+__name(safeStringify, "safeStringify");
+var normalizeInt = /* @__PURE__ */ __name((value, fallback, min, max) => {
+  const parsed = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(max, Math.max(min, Math.floor(parsed)));
+}, "normalizeInt");
+var LavalinkNode = class LavalinkNode2 {
+  static {
+    __name(this, "LavalinkNode");
+  }
+  heartBeatPingTimestamp = 0;
+  heartBeatPongTimestamp = 0;
+  heartBeatInterval;
+  pingTimeout;
+  nodeType = "Lavalink";
+  isAlive = false;
+  static _NodeLinkClass = null;
+  /** The provided Options of the Node */
+  options;
+  /** The amount of rest calls the node has made. */
+  calls = 0;
+  /** Stats from lavalink, will be updated via an interval by lavalink. */
+  stats = {
+    players: 0,
+    playingPlayers: 0,
+    cpu: {
+      cores: 0,
+      lavalinkLoad: 0,
+      systemLoad: 0
+    },
+    memory: {
+      allocated: 0,
+      free: 0,
+      reservable: 0,
+      used: 0
+    },
+    uptime: 0,
+    /** something from nodeLink https://nodelink.js.org/docs/differences#detailed-statistics */
+    detailedStats: {
+      api: {
+        requests: {},
+        errors: {}
+      },
+      sources: {},
+      playback: { events: {} }
+    },
+    frameStats: {
+      deficit: 0,
+      nulled: 0,
+      sent: 0
+    }
+  };
+  /** The current sessionId, only present when connected */
+  sessionId = null;
+  /** Wether the node resuming is enabled or not */
+  resuming = {
+    enabled: true,
+    timeout: null
+  };
+  /** Actual Lavalink Information of the Node */
+  info = null;
+  /** current state of the Reconnections */
+  reconnectionState = "IDLE";
+  /** The Node Manager of this Node */
+  NodeManager = null;
+  /** The Reconnection Timeout */
+  reconnectTimeout = void 0;
+  /** The Reconnection Attempt counter (array of datetimes when it tried it.) */
+  reconnectAttempts = [];
+  /** The Socket of the Lavalink */
+  socket = null;
+  /** Version of what the Lavalink Server should be */
+  version = "v4";
+  /**
+  * Returns the LavalinkManager of the Node
+  */
+  get _LManager() {
+    return this.NodeManager.LavalinkManager;
+  }
+  /**
+  * Returns the Heartbeat Ping of the Node
+  */
+  get heartBeatPing() {
+    return this.heartBeatPongTimestamp - this.heartBeatPingTimestamp;
+  }
+  /**
+  * Returns wether the plugin validations are enabled or not
+  */
+  get _checkForPlugins() {
+    if (this.nodeType === "NodeLink") return false;
+    return !!this.options?.autoChecks?.pluginValidations;
+  }
+  /**
+  * Returns wether the source validations are enabled or not
+  */
+  get _checkForSources() {
+    return !!this.options?.autoChecks?.sourcesValidations;
+  }
+  /**
+  * Emits a debug event to the LavalinkManager
+  * @param name name of the event
+  * @param eventData event data
+  */
+  _emitDebugEvent(name, eventData) {
+    if (!this._LManager.options?.advancedOptions?.enableDebugEvents) return;
+    this._LManager.emit("debug", name, eventData);
+  }
+  /**
+  * Returns if connected to the Node.
+  *
+  * @example
+  * ```ts
+  * const isConnected = player.node.connected;
+  * console.log("node is connected: ", isConnected ? "yes" : "no")
+  * ```
+  */
+  get connected() {
+    return this.socket && this.socket.readyState === wrapper_default.OPEN;
+  }
+  /**
+  * Returns the current ConnectionStatus
+  *
+  * @example
+  * ```ts
+  * try {
+  *     const statusOfConnection = player.node.connectionStatus;
+  *     console.log("node's connection status is:", statusOfConnection)
+  * } catch (error) {
+  *     console.error("no socket available?", error)
+  * }
+  * ```
+  */
+  get connectionStatus() {
+    if (!this.socket) throw new Error("no websocket was initialized yet");
+    return [
+      "CONNECTING",
+      "OPEN",
+      "CLOSING",
+      "CLOSED"
+    ][this.socket.readyState] || "UNKNOWN";
+  }
+  /**
+  * Create a new Node
+  * @param options Lavalink Node Options
+  * @param manager Node Manager
+  *
+  *
+  * @example
+  * ```ts
+  * // don't create a node manually, instead use:
+  *
+  * client.lavalink.nodeManager.createNode(options)
+  * ```
+  */
+  constructor(options, manager) {
+    this.options = {
+      secure: false,
+      retryAmount: 5,
+      retryDelay: 1e4,
+      retryTimespan: -1,
+      requestSignalTimeoutMS: 1e4,
+      heartBeatInterval: 3e4,
+      enablePingOnStatsCheck: true,
+      closeOnError: true,
+      nodeType: "Lavalink",
+      ...options,
+      autoChecks: {
+        sourcesValidations: options?.autoChecks?.sourcesValidations ?? true,
+        pluginValidations: options?.autoChecks?.pluginValidations ?? true
+      }
+    };
+    if (this.options.nodeType === "NodeLink" && this.constructor.name === "LavalinkNode" && LavalinkNode2._NodeLinkClass) return new LavalinkNode2._NodeLinkClass(options, manager);
+    this.nodeType = this.options.nodeType;
+    this.NodeManager = manager;
+    this.validate();
+    if (this.options.secure && this.options.port !== 443) throw new SyntaxError("If secure is true, then the port must be 443");
+    this.options.regions = (this.options.regions || []).map((a) => a.toLowerCase());
+    Object.defineProperty(this, NodeSymbol, {
+      configurable: true,
+      value: true
+    });
+  }
+  /**
+  * Raw Request util function
+  * @param endpoint endpoint string
+  * @param modify modify the request
+  * @param extraQueryUrlParams UrlSearchParams to use in a encodedURI, useful for example for flowertts
+  * @returns object containing request and option information
+  *
+  * @example
+  * ```ts
+  * player.node.rawRequest(`/loadtracks?identifier=Never gonna give you up`, (options) => options.method = "GET");
+  * ```
+  */
+  async rawRequest(endpoint, modify) {
+    const options = {
+      path: `/${this.version}/${endpoint.startsWith("/") ? endpoint.slice(1) : endpoint}`,
+      method: "GET",
+      headers: {
+        Authorization: this.options.authorization,
+        ...this.NodeManager.LavalinkManager?.options?.httpHeaders
+      },
+      signal: this.options.requestSignalTimeoutMS && this.options.requestSignalTimeoutMS > 0 ? AbortSignal.timeout(this.options.requestSignalTimeoutMS) : void 0
+    };
+    modify?.(options);
+    const url2 = new URL(`${this.restAddress}${options.path}`);
+    url2.searchParams.append("trace", "true");
+    if (options.extraQueryUrlParams && options.extraQueryUrlParams?.size > 0) for (const [paramKey, paramValue] of options.extraQueryUrlParams.entries()) url2.searchParams.append(paramKey, paramValue);
+    const urlToUse = url2.toString();
+    const { path, extraQueryUrlParams, ...fetchOptions } = options;
+    const response = await fetch(urlToUse, fetchOptions);
+    this.calls++;
+    return {
+      response,
+      options
+    };
+  }
+  async request(endpoint, modify, parseAsText) {
+    if (!this.connected) throw new Error("The node is not connected to the Lavalink Server!, Please call node.connect() first!");
+    const { response, options } = await this.rawRequest(endpoint, modify);
+    if (["DELETE", "PUT"].includes(options.method)) return;
+    if (response.status === 204) return;
+    if (response.status === 404) throw new Error(`Node Request resulted into an error, request-PATH: ${options.path} | headers: ${safeStringify(response.headers)}`);
+    return parseAsText ? await response.text() : await response.json();
+  }
+  /**
+  * Search something raw on the node, please note only add tracks to players of that node
+  * @param query SearchQuery Object
+  * @param requestUser Request User for creating the player(s)
+  * @param throwOnEmpty Wether to throw on an empty result or not
+  * @returns Searchresult
+  *
+  * @example
+  * ```ts
+  * // use player.search() instead
+  * player.node.search({ query: "Never gonna give you up by Rick Astley", source: "soundcloud" }, interaction.user);
+  * player.node.search({ query: "https://deezer.com/track/123456789" }, interaction.user);
+  * ```
+  */
+  async search(query, requestUser, throwOnEmpty = false) {
+    const Query2 = this._LManager.utils.transformQuery(query);
+    this._LManager.utils.validateQueryString(this, Query2.query, Query2.source);
+    if (Query2.source) this._LManager.utils.validateSourceString(this, Query2.source);
+    if (["bcsearch", "bandcamp"].includes(Query2.source) && this._checkForSources && !this.info.sourceManagers.includes("bandcamp")) throw new Error("Bandcamp Search only works on the player (lavaplayer version < 2.2.0!");
+    const requestUrl = new URL(`${this.restAddress}/loadtracks`);
+    if (/^https?:\/\//.test(Query2.query) || [
+      "http",
+      "https",
+      "link",
+      "uri"
+    ].includes(Query2.source)) requestUrl.searchParams.append("identifier", Query2.query);
+    else {
+      const fttsPrefix = Query2.source === "ftts" ? "//" : "";
+      const prefix = Query2.source !== "local" ? `${Query2.source}:${fttsPrefix}` : "";
+      requestUrl.searchParams.append("identifier", `${prefix}${Query2.query}`);
+    }
+    const requestPathAndSearch = requestUrl.pathname + requestUrl.search;
+    const res = await this.request(requestPathAndSearch, (options) => {
+      if (typeof query === "object" && typeof query.extraQueryUrlParams?.size === "number" && query.extraQueryUrlParams?.size > 0) options.extraQueryUrlParams = query.extraQueryUrlParams;
+    });
+    const resTracks = res.loadType === "playlist" ? res.data?.tracks : res.loadType === "track" ? [res.data] : res.loadType === "search" ? Array.isArray(res.data) ? res.data : [res.data] : [];
+    if (throwOnEmpty === true && (res.loadType === "empty" || !resTracks.length)) {
+      this._emitDebugEvent("SearchNothingFound", {
+        state: "warn",
+        message: `Search found nothing for Request: "${Query2.source ? `${Query2.source}:` : ""}${Query2.query}"`,
+        functionLayer: "(LavalinkNode > node | player) > search()"
+      });
+      throw new Error("Nothing found");
+    }
+    return {
+      loadType: res.loadType,
+      exception: res.loadType === "error" ? res.data : null,
+      pluginInfo: res.pluginInfo || {},
+      playlist: res.loadType === "playlist" ? {
+        name: res.data.info?.name || res.data.pluginInfo?.name || null,
+        title: res.data.info?.name || res.data.pluginInfo?.name || null,
+        author: res.data.info?.author || res.data.pluginInfo?.author || null,
+        thumbnail: res.data.info?.artworkUrl || res.data.pluginInfo?.artworkUrl || (typeof res.data?.info?.selectedTrack !== "number" || res.data?.info?.selectedTrack === -1 ? null : resTracks[res.data?.info?.selectedTrack] ? resTracks[res.data?.info?.selectedTrack]?.info?.artworkUrl || resTracks[res.data?.info?.selectedTrack]?.info?.pluginInfo?.artworkUrl : null) || null,
+        uri: res.data.info?.url || res.data.info?.uri || res.data.info?.link || res.data.pluginInfo?.url || res.data.pluginInfo?.uri || res.data.pluginInfo?.link || null,
+        selectedTrack: typeof res.data?.info?.selectedTrack !== "number" || res.data?.info?.selectedTrack === -1 ? null : resTracks[res.data?.info?.selectedTrack] ? this._LManager.utils.buildTrack(resTracks[res.data?.info?.selectedTrack], requestUser) : null,
+        duration: resTracks.length ? resTracks.reduce((acc, cur) => acc + (cur?.info?.duration || cur?.info?.length || 0), 0) : 0
+      } : null,
+      tracks: resTracks.length ? resTracks.map((t) => this._LManager.utils.buildTrack(t, requestUser)) : []
+    };
+  }
+  /**
+  * Search something using the lavaSearchPlugin (filtered searches by types)
+  * @param query LavaSearchQuery Object
+  * @param requestUser Request User for creating the player(s)
+  * @param throwOnEmpty Wether to throw on an empty result or not
+  * @returns LavaSearchresult (SearchResult if link is provided)
+  *
+  * @example
+  * ```ts
+  * // use player.search() instead
+  * player.node.lavaSearch({ types: ["playlist", "album"], query: "Rick Astley", source: "spotify" }, interaction.user);
+  * ```
+  */
+  async lavaSearch(query, requestUser, throwOnEmpty = false) {
+    const Query2 = this._LManager.utils.transformLavaSearchQuery(query);
+    if (Query2.source) this._LManager.utils.validateSourceString(this, Query2.source);
+    if (/^https?:\/\//.test(Query2.query)) return this.search({
+      query: Query2.query,
+      source: Query2.source
+    }, requestUser);
+    if (!this.isLavaSrcSource(Query2.source)) throw new SyntaxError(`Query.source must be an available source from LavaSrc`);
+    if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "lavasearch-plugin")) throw new RangeError(`there is no lavasearch-plugin available in the lavalink node: ${this.id}`);
+    if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "lavasrc-plugin")) throw new RangeError(`there is no lavasrc-plugin available in the lavalink node: ${this.id}`);
+    const { response } = await this.rawRequest(`/loadsearch?query=${Query2.source ? `${Query2.source}:` : ""}${encodeURIComponent(Query2.query)}${Query2.types?.length ? `&types=${Query2.types.join(",")}` : ""}`);
+    const res = response.status === 204 ? {} : await response.json();
+    if (throwOnEmpty === true && !Object.entries(res).flat().filter(Boolean).length) {
+      this._emitDebugEvent("LavaSearchNothingFound", {
+        state: "warn",
+        message: `LavaSearch found nothing for Request: "${Query2.source ? `${Query2.source}:` : ""}${Query2.query}"`,
+        functionLayer: "(LavalinkNode > node | player) > lavaSearch()"
+      });
+      throw new Error("Nothing found");
+    }
+    return {
+      tracks: res.tracks?.map((v) => this._LManager.utils.buildTrack(v, requestUser)) || [],
+      albums: res.albums?.map((v) => ({
+        info: v.info,
+        pluginInfo: v?.plugin || v.pluginInfo,
+        tracks: v.tracks.map((v2) => this._LManager.utils.buildTrack(v2, requestUser))
+      })) || [],
+      artists: res.artists?.map((v) => ({
+        info: v.info,
+        pluginInfo: v?.plugin || v.pluginInfo,
+        tracks: v.tracks.map((v2) => this._LManager.utils.buildTrack(v2, requestUser))
+      })) || [],
+      playlists: res.playlists?.map((v) => ({
+        info: v.info,
+        pluginInfo: v?.plugin || v.pluginInfo,
+        tracks: v.tracks.map((v2) => this._LManager.utils.buildTrack(v2, requestUser))
+      })) || [],
+      texts: res.texts?.map((v) => ({
+        text: v.text,
+        pluginInfo: v?.plugin || v.pluginInfo
+      })) || [],
+      pluginInfo: res.pluginInfo || res?.plugin
+    };
+  }
+  /**
+  * Update the Player State on the Lavalink Server
+  * @param data data to send to lavalink and sync locally
+  * @returns result from lavalink
+  *
+  * @example
+  * ```ts
+  * // use player.search() instead
+  * player.node.updatePlayer({ guildId: player.guildId, playerOptions: { paused: true } }); // example to pause it
+  * ```
+  */
+  async updatePlayer(data) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    this.syncPlayerData(data);
+    const res = await this.request(`/sessions/${this.sessionId}/players/${data.guildId}`, (r) => {
+      r.method = "PATCH";
+      r.headers["Content-Type"] = "application/json";
+      r.body = safeStringify(data.playerOptions);
+      if (data.noReplace) {
+        const url2 = new URL(`${this.restAddress}${r.path}`);
+        url2.searchParams.append("noReplace", data.noReplace === true && typeof data.noReplace === "boolean" ? "true" : "false");
+        r.path = url2.pathname + url2.search;
+      }
+    });
+    this._emitDebugEvent("PlayerUpdateSuccess", {
+      state: "log",
+      message: `Player get's updated with following payload :: ${safeStringify(data.playerOptions, 3)}`,
+      functionLayer: "LavalinkNode > node > updatePlayer()"
+    });
+    this.syncPlayerData({}, res);
+    return res;
+  }
+  /**
+  * Destroys the Player on the Lavalink Server
+  * @param guildId
+  * @returns request result
+  *
+  * @example
+  * ```ts
+  * // use player.destroy() instead
+  * player.node.destroyPlayer(player.guildId);
+  * ```
+  */
+  async destroyPlayer(guildId) {
+    if (!this.sessionId) throw new Error("The Lavalink-Node is either not ready, or not up to date!");
+    return this.request(`/sessions/${this.sessionId}/players/${guildId}`, (r) => {
+      r.method = "DELETE";
+    });
+  }
+  /**
+  * Connect to the Lavalink Node
+  * @param sessionId Provide the Session Id of the previous connection, to resume the node and it's player(s)
+  * @returns void
+  *
+  * @example
+  * ```ts
+  * player.node.connect(); // if provided on bootup in managerOptions#nodes, this will be called automatically when doing lavalink.init()
+  *
+  * // or connect from a resuming session:
+  * player.node.connect("sessionId");
+  * ```
+  */
+  connect(sessionId) {
+    if (this.connected) {
+      this._emitDebugEvent("TryingConnectWhileConnected", {
+        state: "warn",
+        message: `Tryed to connect to node, but it's already connected!`,
+        functionLayer: "LavalinkNode > node > connect()"
+      });
+      return;
+    }
+    const headers = {
+      Authorization: this.options.authorization,
+      "User-Id": this._LManager.options.client.id,
+      "Client-Name": String(this._LManager.options.client.username || "Lavalink-Client").replace(/[^\x20-\x7E]/g, ""),
+      ...this.NodeManager.LavalinkManager.options?.httpHeaders
+    };
+    if (typeof this.options.sessionId === "string" || typeof sessionId === "string") {
+      headers["Session-Id"] = this.options.sessionId || sessionId;
+      this.sessionId = this.options.sessionId || sessionId;
+    }
+    this.socket = new wrapper_default(`ws${this.options.secure ? "s" : ""}://${this.options.host}:${this.options.port}/v4/websocket`, { headers });
+    this.socket.on("open", this.open.bind(this));
+    this.socket.on("close", (code, reason) => void this.close(code, reason?.toString()).catch((error62) => {
+      this.NodeManager.emit("error", this, error62);
+    }));
+    this.socket.on("message", this.message.bind(this));
+    this.socket.on("error", this.error.bind(this));
+  }
+  heartBeat() {
+    if (this.nodeType !== "Lavalink") return;
+    this._emitDebugEvent("HeartBeatTriggered", {
+      state: "log",
+      message: `Node Socket Heartbeat triggered, resetting old Timeout to 65000ms (should happen every 60s due to /stats event)`,
+      functionLayer: "LavalinkNode > nodeEvent > stats > heartBeat()"
+    });
+    this.resetAckTimeouts(false, true);
+    this.pingTimeout = setTimeout(() => {
+      this.pingTimeout = null;
+      if (!this.socket) return this._emitDebugEvent("NoSocketOnDestroy", {
+        state: "error",
+        message: `Heartbeat registered a disconnect, but socket didn't exist therefore can't terminate`,
+        functionLayer: "LavalinkNode > nodeEvent > stats > heartBeat() > timeoutHit"
+      });
+      this._emitDebugEvent("SocketTerminateHeartBeatTimeout", {
+        state: "warn",
+        message: `Heartbeat registered a disconnect, because timeout wasn't resetted in time. Terminating Web-Socket`,
+        functionLayer: "LavalinkNode > nodeEvent > stats > heartBeat() > timeoutHit"
+      });
+      this.isAlive = false;
+      this.socket.terminate();
+    }, 65e3);
+  }
+  /**
+  * Get the id of the node
+  *
+  * @example
+  * ```ts
+  * const nodeId = player.node.id;
+  * console.log("node id is: ", nodeId)
+  * ```
+  */
+  get id() {
+    return this.options.id || `${this.options.host}:${this.options.port}`;
+  }
+  /**
+  * Destroys the Node-Connection (Websocket) and all player's of the node
+  * @param destroyReason Destroy Reason to use when destroying the players
+  * @param deleteNode wether to delete the nodte from the nodes list too, if false it will emit a disconnect. @default true
+  * @param movePlayers whether to movePlayers to different eligible connected node. If false players won't be moved @default false
+  * @returns void
+  *
+  * @example
+  * Destroys node and its players
+  * ```ts
+  * player.node.destroy("custom Player Destroy Reason", true);
+  * ```
+  * destroys only the node and moves its players to different connected node.
+  * ```ts
+  * player.node.destroy("custom Player Destroy Reason", true, true);
+  * ```
+  */
+  destroy(destroyReason, deleteNode = true, movePlayers = false) {
+    this.reconnectionState = "IDLE";
+    const players = this._LManager.players.filter((p) => p.node.id === this.id);
+    if (!players?.size) {
+      this.socket?.close(1e3, "Node-Destroy");
+      this.socket?.removeAllListeners();
+      this.socket = null;
+      this.resetReconnectionAttempts();
+      if (!deleteNode) return void this.NodeManager.emit("disconnect", this, {
+        code: 1e3,
+        reason: destroyReason
+      });
+      this.NodeManager.emit("destroy", this, destroyReason);
+      this.NodeManager.nodes.delete(this.id);
+      this.resetAckTimeouts(true, true);
+      return;
+    }
+    const handlePlayerOperations = /* @__PURE__ */ __name(() => {
+      if (!movePlayers) return Promise.allSettled(Array.from(players.values()).map((player) => player.destroy(destroyReason || "NodeDestroy").catch((error62) => {
+        this._emitDebugEvent("PlayerDestroyFail", {
+          state: "error",
+          message: `Failed to destroy player ${player.guildId}: ${error62.message}`,
+          error: error62,
+          functionLayer: "Node > destroy() > movePlayers"
+        });
+      })));
+      return this.movePlayersToReplacementNode(Array.from(players.values()), "destroy");
+    }, "handlePlayerOperations");
+    handlePlayerOperations().finally(() => {
+      this.socket?.close(1e3, "Node-Destroy");
+      this.socket?.removeAllListeners();
+      this.socket = null;
+      this.resetReconnectionAttempts();
+      if (!deleteNode) return void this.NodeManager.emit("disconnect", this, {
+        code: 1e3,
+        reason: destroyReason
+      });
+      this.NodeManager.emit("destroy", this, destroyReason);
+      this.NodeManager.nodes.delete(this.id);
+      this.resetAckTimeouts(true, true);
+    });
+  }
+  /**
+  * Disconnects the Node-Connection (Websocket)
+  * @param disconnectReason Disconnect Reason to use when disconnecting Node
+  * @returns void
+  *
+  * Also the node will not get re-connected again.
+  *
+  * @example
+  * ```ts
+  * player.node.disconnect("Forcefully disconnect the connection to the node.");
+  * ```
+  */
+  disconnect(disconnectReason) {
+    if (!this.connected) return;
+    this.socket?.close(1e3, "Node-Disconnect");
+    this.socket?.removeAllListeners();
+    this.socket = null;
+    this.reconnectionState = "IDLE";
+    this.resetReconnectionAttempts();
+    this.NodeManager.emit("disconnect", this, {
+      code: 1e3,
+      reason: disconnectReason
+    });
+  }
+  /**
+  * Pick the best ready node to move players to.
+  * A node must be connected and have a sessionId before a player can be migrated to it.
+  */
+  getReadyMigrationNode(excludeNodeId) {
+    return this.selectMigrationTarget(/* @__PURE__ */ new Set([excludeNodeId]), Number.MAX_SAFE_INTEGER);
+  }
+  getMigrationErrorMessage(error62) {
+    if (error62 instanceof Error) return error62.message;
+    if (typeof error62 === "string") return error62;
+    try {
+      return safeStringify(error62);
+    } catch {
+      return String(error62);
+    }
+  }
+  getMigrationConfig() {
+    const migration = this._LManager.options?.advancedOptions?.playerMigration;
+    return {
+      concurrency: normalizeInt(migration?.concurrency, 5, 1, 32),
+      perTargetConcurrency: normalizeInt(migration?.perTargetConcurrency, 2, 1, 8),
+      backpressureDelayMs: normalizeInt(migration?.backpressureDelayMs, 50, 0, 1e3)
+    };
+  }
+  getMigrationReservationCount(nodeId) {
+    return this.NodeManager.playerMigration.reservations.get(nodeId) || 0;
+  }
+  reserveMigrationTarget(nodeId) {
+    this.NodeManager.playerMigration.reservations.set(nodeId, this.getMigrationReservationCount(nodeId) + 1);
+  }
+  releaseMigrationTarget(nodeId) {
+    const current = this.getMigrationReservationCount(nodeId);
+    if (current <= 1) this.NodeManager.playerMigration.reservations.delete(nodeId);
+    else this.NodeManager.playerMigration.reservations.set(nodeId, current - 1);
+    this.NodeManager.signalPlayerMigrationCapacityChange();
+  }
+  getEffectiveMigrationLoad(node2) {
+    return (node2.stats?.players || 0) + this.getMigrationReservationCount(node2.id);
+  }
+  selectMigrationTarget(excludeNodeIds, perTargetConcurrency) {
+    let selectedNode = null;
+    let selectedEffectiveLoad = Number.POSITIVE_INFINITY;
+    let selectedLiveLoad = Number.POSITIVE_INFINITY;
+    for (const node2 of this.NodeManager.nodes.values()) {
+      if (!node2.connected || !node2.sessionId) continue;
+      if (excludeNodeIds.has(node2.id)) continue;
+      if (this.getMigrationReservationCount(node2.id) >= perTargetConcurrency) continue;
+      const liveLoad = node2.stats?.players || 0;
+      const effectiveLoad = this.getEffectiveMigrationLoad(node2);
+      if (!selectedNode || effectiveLoad < selectedEffectiveLoad || effectiveLoad === selectedEffectiveLoad && (liveLoad < selectedLiveLoad || liveLoad === selectedLiveLoad && node2.id.localeCompare(selectedNode.id) < 0)) {
+        selectedNode = node2;
+        selectedEffectiveLoad = effectiveLoad;
+        selectedLiveLoad = liveLoad;
+      }
+    }
+    return selectedNode;
+  }
+  hasAnyHealthyMigrationNode(excludeNodeIds) {
+    for (const node2 of this.NodeManager.nodes.values()) {
+      if (!node2.connected || !node2.sessionId) continue;
+      if (excludeNodeIds.has(node2.id)) continue;
+      return true;
+    }
+    return false;
+  }
+  isMigrationNodeHealthy(nodeId) {
+    const node2 = this.NodeManager.nodes.get(nodeId);
+    return !!node2?.connected && !!node2.sessionId;
+  }
+  async waitForMigrationCapacity(excludeNodeIds, perTargetConcurrency, timeoutMs) {
+    if (this.selectMigrationTarget(excludeNodeIds, perTargetConcurrency)) return;
+    if (timeoutMs <= 0) {
+      await new Promise((resolve3) => setImmediate(resolve3));
+      return;
+    }
+    await new Promise((resolve3) => {
+      let settled = false;
+      let timer2;
+      const onSignal = /* @__PURE__ */ __name(() => {
+        if (settled) return;
+        settled = true;
+        if (timer2) clearTimeout(timer2);
+        this.NodeManager.playerMigration.capacityWaiters.delete(onSignal);
+        resolve3();
+      }, "onSignal");
+      timer2 = setTimeout(() => {
+        if (settled) return;
+        settled = true;
+        this.NodeManager.playerMigration.capacityWaiters.delete(onSignal);
+        resolve3();
+      }, timeoutMs);
+      this.NodeManager.playerMigration.capacityWaiters.add(onSignal);
+    });
+  }
+  /**
+  * Move a batch of players to a ready node with bounded concurrency.
+  * This keeps migration responsive without flooding the replacement node with requests.
+  */
+  async movePlayersToReplacementNode(players, onNoEligibleNode) {
+    const migrationQueue = players.filter((player) => {
+      if (player.getData("internal_nodeMigrating") === true) return false;
+      if (player.getData("internal_destroystatus") === true) return false;
+      player.setData("internal_nodeMigrating", true);
+      return true;
+    });
+    const { concurrency, perTargetConcurrency, backpressureDelayMs } = this.getMigrationConfig();
+    let nextQueueIndex = 0;
+    const workerCount = Math.min(concurrency, migrationQueue.length);
+    const migratePlayer = /* @__PURE__ */ __name(async (player) => {
+      const excludedNodes = /* @__PURE__ */ new Set();
+      try {
+        for (let attempt = 0; attempt < 2; attempt++) {
+          if (player.getData("internal_destroystatus") === true) return;
+          if (player.node?.options?.id !== this.id) return;
+          let targetNode = null;
+          while (!(targetNode = this.selectMigrationTarget(excludedNodes, perTargetConcurrency))) {
+            if (!this.hasAnyHealthyMigrationNode(excludedNodes)) {
+              this._emitDebugEvent("PlayerChangeNodeFailNoEligibleNode", {
+                state: "warn",
+                message: `No eligible ready node was available for player ${player.guildId}`,
+                functionLayer: "Node > movePlayersToReplacementNode()"
+              });
+              if (onNoEligibleNode === "destroy") await player.destroy("PlayerChangeNodeFailNoEligibleNode").catch((destroyError) => {
+                this._emitDebugEvent("PlayerDestroyFail", {
+                  state: "error",
+                  message: `Failed to destroy player ${player.guildId}: ${this.getMigrationErrorMessage(destroyError)}`,
+                  error: destroyError,
+                  functionLayer: "Node > movePlayersToReplacementNode()"
+                });
+              });
+              else player.playing = false;
+              return;
+            }
+            await this.waitForMigrationCapacity(excludedNodes, perTargetConcurrency, backpressureDelayMs);
+          }
+          const targetNodeId = targetNode.id;
+          if (player.getData("internal_destroystatus") === true) return;
+          if (player.node?.options?.id !== this.id) return;
+          this.reserveMigrationTarget(targetNodeId);
+          try {
+            await player.changeNode(targetNodeId);
+            return;
+          } catch (error62) {
+            const errorMessage = this.getMigrationErrorMessage(error62);
+            this._emitDebugEvent("PlayerChangeNodeFail", {
+              state: "error",
+              message: `Failed to move player ${player.guildId}: ${errorMessage}`,
+              error: error62,
+              functionLayer: "Node > movePlayersToReplacementNode()"
+            });
+            const targetStillHealthy = this.isMigrationNodeHealthy(targetNodeId);
+            excludedNodes.add(targetNodeId);
+            if (attempt === 0 && !targetStillHealthy) {
+              this._emitDebugEvent("PlayerChangeNodeFail", {
+                state: "warn",
+                message: `Migration target ${targetNodeId} became unavailable while moving player ${player.guildId}; retrying on another ready node`,
+                error: error62,
+                functionLayer: "Node > movePlayersToReplacementNode()"
+              });
+              if (player.node?.options?.id === targetNodeId) player.node = this;
+              continue;
+            }
+            if (attempt === 0 && this.hasAnyHealthyMigrationNode(excludedNodes)) {
+              this._emitDebugEvent("PlayerChangeNodeFail", {
+                state: "warn",
+                message: `Retrying migration for player ${player.guildId} on a different ready node`,
+                error: error62,
+                functionLayer: "Node > movePlayersToReplacementNode()"
+              });
+              if (player.node?.options?.id === targetNodeId) player.node = this;
+              continue;
+            }
+            if (onNoEligibleNode === "destroy") await player.destroy("PlayerChangeNodeFail").catch((destroyError) => {
+              this._emitDebugEvent("PlayerDestroyFail", {
+                state: "error",
+                message: `Failed to destroy player ${player.guildId} after unexpected migration failure: ${this.getMigrationErrorMessage(destroyError)}`,
+                error: destroyError,
+                functionLayer: "Node > movePlayersToReplacementNode()"
+              });
+            });
+            else player.playing = false;
+            return;
+          } finally {
+            this.releaseMigrationTarget(targetNodeId);
+          }
+        }
+      } catch (error62) {
+        this._emitDebugEvent("PlayerChangeNodeFail", {
+          state: "error",
+          message: `Unexpected error while migrating player ${player.guildId}: ${this.getMigrationErrorMessage(error62)}`,
+          error: error62,
+          functionLayer: "Node > movePlayersToReplacementNode()"
+        });
+        if (onNoEligibleNode === "destroy") await player.destroy("PlayerChangeNodeFail").catch((destroyError) => {
+          this._emitDebugEvent("PlayerDestroyFail", {
+            state: "error",
+            message: `Failed to destroy player ${player.guildId} after unexpected migration failure: ${this.getMigrationErrorMessage(destroyError)}`,
+            error: destroyError,
+            functionLayer: "Node > movePlayersToReplacementNode()"
+          });
+        });
+        else player.playing = false;
+      }
+    }, "migratePlayer");
+    const workers = Array.from({ length: workerCount }, async () => {
+      while (true) {
+        const queueIndex = nextQueueIndex++;
+        if (queueIndex >= migrationQueue.length) return;
+        const player = migrationQueue[queueIndex];
+        if (!player) continue;
+        try {
+          if (player.getData("internal_nodeMigrating") !== true) player.setData("internal_nodeMigrating", true);
+          if (player.getData("internal_destroystatus") === true) continue;
+          if (player.node?.options?.id !== this.id) continue;
+          await migratePlayer(player);
+        } catch (error62) {
+          this._emitDebugEvent("PlayerChangeNodeFail", {
+            state: "error",
+            message: `Unexpected worker error while migrating player ${player.guildId}: ${this.getMigrationErrorMessage(error62)}`,
+            error: error62,
+            functionLayer: "Node > movePlayersToReplacementNode()"
+          });
+        } finally {
+          player.setData("internal_nodeMigrating", void 0);
+        }
+      }
+    });
+    await Promise.all(workers);
+  }
+  /**
+  * Gets all Players of a Node
+  * @returns array of players inside of lavalink
+  *
+  * @example
+  * ```ts
+  * const node = lavalink.nodes.get("NODEID");
+  * const playersOfLavalink = await node?.fetchAllPlayers();
+  * ```
+  */
+  async fetchAllPlayers() {
+    if (!this.sessionId) throw new Error("The Lavalink-Node is either not ready, or not up to date!");
+    return this.request(`/sessions/${this.sessionId}/players`) || [];
+  }
+  /**
+  * Gets specific Player Information
+  * @returns lavalink player object if player exists on lavalink
+  *
+  * @example
+  * ```ts
+  * const node = lavalink.nodes.get("NODEID");
+  * const playerInformation = await node?.fetchPlayer("guildId");
+  * ```
+  */
+  async fetchPlayer(guildId) {
+    if (!this.sessionId) throw new Error("The Lavalink-Node is either not ready, or not up to date!");
+    return this.request(`/sessions/${this.sessionId}/players/${guildId}`);
+  }
+  /**
+  * Updates the session with and enables/disables resuming and timeout
+  * @param resuming Whether resuming is enabled for this session or not
+  * @param timeout The timeout in seconds (default is 60s)
+  * @returns the result of the request
+  *
+  * @example
+  * ```ts
+  * const node = player.node || lavalink.nodes.get("NODEID");
+  * await node?.updateSession(true, 180e3); // will enable resuming for 180seconds
+  * ```
+  */
+  async updateSession(resuming, timeout) {
+    if (!this.sessionId) throw new Error("the Lavalink-Node is either not ready, or not up to date!");
+    const data = {};
+    if (typeof resuming === "boolean") data.resuming = resuming;
+    if (typeof timeout === "number" && timeout > 0) data.timeout = timeout;
+    this.resuming = {
+      enabled: typeof resuming === "boolean" ? resuming : false,
+      timeout: typeof resuming === "boolean" && resuming === true ? timeout : null
+    };
+    return this.request(`/sessions/${this.sessionId}`, (r) => {
+      r.method = "PATCH";
+      r.headers = {
+        Authorization: this.options.authorization,
+        "Content-Type": "application/json"
+      };
+      r.body = safeStringify(data);
+    });
+  }
+  /**
+  * Decode Track or Tracks
+  */
+  decode = {
+    /**
+    * Decode a single track into its info
+    * @param encoded valid encoded base64 string from a track
+    * @param requester the requesteruser for building the track
+    * @returns decoded track from lavalink
+    *
+    * @example
+    * ```ts
+    * const encodedBase64 = 'QAACDgMACk5vIERpZ2dpdHkAC0JsYWNrc3RyZWV0AAAAAAAEo4AABjkxNjQ5NgABAB9odHRwczovL2RlZXplci5jb20vdHJhY2svOTE2NDk2AQBpaHR0cHM6Ly9lLWNkbnMtaW1hZ2VzLmR6Y2RuLm5ldC9pbWFnZXMvY292ZXIvZGFlN2EyNjViNzlmYjcxMjc4Y2RlMjUwNDg0OWQ2ZjcvMTAwMHgxMDAwLTAwMDAwMC04MC0wLTAuanBnAQAMVVNJUjE5NjAwOTc4AAZkZWV6ZXIBAChObyBEaWdnaXR5OiBUaGUgVmVyeSBCZXN0IE9mIEJsYWNrc3RyZWV0AQAjaHR0cHM6Ly93d3cuZGVlemVyLmNvbS9hbGJ1bS8xMDMyNTQBACJodHRwczovL3d3dy5kZWV6ZXIuY29tL2FydGlzdC8xODYxAQBqaHR0cHM6Ly9lLWNkbnMtaW1hZ2VzLmR6Y2RuLm5ldC9pbWFnZXMvYXJ0aXN0L2YxNmNhYzM2ZmVjMzkxZjczN2I3ZDQ4MmY1YWM3M2UzLzEwMDB4MTAwMC0wMDAwMDAtODAtMC0wLmpwZwEAT2h0dHBzOi8vY2RuLXByZXZpZXctYS5kemNkbi5uZXQvc3RyZWFtL2MtYTE1Yjg1NzFhYTYyMDBjMDQ0YmY1OWM3NmVkOTEyN2MtNi5tcDMAAAAAAAAAAAA=';
+    * const track = await player.node.decode.singleTrack(encodedBase64, interaction.user);
+    * ```
+    */
+    singleTrack: /* @__PURE__ */ __name(async (encoded, requester) => {
+      if (!encoded) throw new SyntaxError("No encoded (Base64 string) was provided");
+      return this._LManager.utils?.buildTrack(await this.request(`/decodetrack?encodedTrack=${encodeURIComponent(encoded.replace(/\s/g, ""))}`), requester);
+    }, "singleTrack"),
+    /**
+    * Decodes multiple tracks into their info
+    * @param encodeds valid encoded base64 string array from all tracks
+    * @param requester the requesteruser for building the tracks
+    * @returns array of all tracks you decoded
+    *
+    * @example
+    * ```ts
+    * const encodedBase64_1 = 'QAACDgMACk5vIERpZ2dpdHkAC0JsYWNrc3RyZWV0AAAAAAAEo4AABjkxNjQ5NgABAB9odHRwczovL2RlZXplci5jb20vdHJhY2svOTE2NDk2AQBpaHR0cHM6Ly9lLWNkbnMtaW1hZ2VzLmR6Y2RuLm5ldC9pbWFnZXMvY292ZXIvZGFlN2EyNjViNzlmYjcxMjc4Y2RlMjUwNDg0OWQ2ZjcvMTAwMHgxMDAwLTAwMDAwMC04MC0wLTAuanBnAQAMVVNJUjE5NjAwOTc4AAZkZWV6ZXIBAChObyBEaWdnaXR5OiBUaGUgVmVyeSBCZXN0IE9mIEJsYWNrc3RyZWV0AQAjaHR0cHM6Ly93d3cuZGVlemVyLmNvbS9hbGJ1bS8xMDMyNTQBACJodHRwczovL3d3dy5kZWV6ZXIuY29tL2FydGlzdC8xODYxAQBqaHR0cHM6Ly9lLWNkbnMtaW1hZ2VzLmR6Y2RuLm5ldC9pbWFnZXMvYXJ0aXN0L2YxNmNhYzM2ZmVjMzkxZjczN2I3ZDQ4MmY1YWM3M2UzLzEwMDB4MTAwMC0wMDAwMDAtODAtMC0wLmpwZwEAT2h0dHBzOi8vY2RuLXByZXZpZXctYS5kemNkbi5uZXQvc3RyZWFtL2MtYTE1Yjg1NzFhYTYyMDBjMDQ0YmY1OWM3NmVkOTEyN2MtNi5tcDMAAAAAAAAAAAA=';
+    * const encodedBase64_2 = 'QAABJAMAClRhbGsgYSBMb3QACjQwNHZpbmNlbnQAAAAAAAHr1gBxTzpodHRwczovL2FwaS12Mi5zb3VuZGNsb3VkLmNvbS9tZWRpYS9zb3VuZGNsb3VkOnRyYWNrczo4NTE0MjEwNzYvMzUyYTRiOTAtNzYxOS00M2E5LWJiOGItMjIxMzE0YzFjNjNhL3N0cmVhbS9obHMAAQAsaHR0cHM6Ly9zb3VuZGNsb3VkLmNvbS80MDR2aW5jZW50L3RhbGstYS1sb3QBADpodHRwczovL2kxLnNuZGNkbi5jb20vYXJ0d29ya3MtRTN1ek5Gc0Y4QzBXLTAtb3JpZ2luYWwuanBnAQAMUVpITkExOTg1Nzg0AApzb3VuZGNsb3VkAAAAAAAAAAA=';
+    * const tracks = await player.node.decode.multipleTracks([encodedBase64_1, encodedBase64_2], interaction.user);
+    * ```
+    */
+    multipleTracks: /* @__PURE__ */ __name(async (encodeds, requester) => {
+      if (!Array.isArray(encodeds) || !encodeds.every((v) => typeof v === "string" && v.length > 1)) throw new SyntaxError("You need to provide encodeds, which is an array of base64 strings");
+      return await this.request(`/decodetracks`, (r) => {
+        r.method = "POST";
+        r.body = safeStringify(encodeds);
+        r.headers["Content-Type"] = "application/json";
+      }).then((r) => r.map((track) => this._LManager.utils.buildTrack(track, requester)));
+    }, "multipleTracks")
+  };
+  lyrics = {
+    /**
+    * Get the lyrics of a track
+    * @param track the track to get the lyrics for
+    * @param skipTrackSource wether to skip the track source or not
+    * @returns the lyrics of the track
+    * @example
+    *
+    * ```ts
+    * const lyrics = await player.node.lyrics.get(track, true);
+    * // use it of player instead:
+    * // const lyrics = await player.getLyrics(track, true);
+    * ```
+    */
+    get: /* @__PURE__ */ __name(async (track, skipTrackSource = false) => {
+      if (!this.sessionId) throw new Error("the Lavalink-Node is either not ready, or not up to date!");
+      if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "lavalyrics-plugin")) throw new RangeError(`there is no lavalyrics-plugin available in the lavalink node (required for lyrics): ${this.id}`);
+      if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "lavasrc-plugin") && this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "java-lyrics-plugin")) throw new RangeError(`there is no lyrics source (via lavasrc-plugin / java-lyrics-plugin) available in the lavalink node (required for lyrics): ${this.id}`);
+      let url2 = `/lyrics?track=${track.encoded}&skipTrackSource=${skipTrackSource}`;
+      if (this.nodeType === "NodeLink") url2 = `/loadlyrics?encodedTrack=${track.encoded}`;
+      return await this.request(url2);
+    }, "get"),
+    /**
+    * Get the lyrics of the current playing track
+    *
+    * @param guildId the guild id of the player
+    * @param skipTrackSource wether to skip the track source or not
+    * @returns the lyrics of the current playing track
+    * @example
+    * ```ts
+    * const lyrics = await player.node.lyrics.getCurrent(guildId);
+    * // use it of player instead:
+    * // const lyrics = await player.getCurrentLyrics();
+    * ```
+    */
+    getCurrent: /* @__PURE__ */ __name(async (guildId, skipTrackSource = false) => {
+      if (!this.sessionId) throw new Error("the Lavalink-Node is either not ready, or not up to date!");
+      if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "lavalyrics-plugin")) throw new RangeError(`there is no lavalyrics-plugin available in the lavalink node (required for lyrics): ${this.id}`);
+      if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "lavasrc-plugin") && this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "java-lyrics-plugin")) throw new RangeError(`there is no lyrics source (via lavasrc-plugin / java-lyrics-plugin) available in the lavalink node (required for lyrics): ${this.id}`);
+      let url2 = `/sessions/${this.sessionId}/players/${guildId}/track/lyrics?skipTrackSource=${skipTrackSource}`;
+      if (this.nodeType === "NodeLink") url2 = `/loadlyrics?encodedTrack=${this._LManager.getPlayer(guildId)?.queue.current?.encoded}`;
+      return await this.request(url2);
+    }, "getCurrent"),
+    /**
+    * subscribe to lyrics updates for a guild
+    * @param guildId the guild id of the player
+    * @param skipTrackSource wether to skip the track source or not
+    * @returns request data of the request
+    *
+    * @example
+    * ```ts
+    * await player.node.lyrics.subscribe(guildId);
+    * // use it of player instead:
+    * // const lyrics = await player.subscribeLyrics();
+    * ```
+    */
+    subscribe: /* @__PURE__ */ __name(async (guildId, skipTrackSource) => {
+      if (!this.sessionId) throw new Error("the Lavalink-Node is either not ready, or not up to date!");
+      if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "lavalyrics-plugin")) throw new RangeError(`there is no lavalyrics-plugin available in the lavalink node (required for lyrics): ${this.id}`);
+      return await this.request(`/sessions/${this.sessionId}/players/${guildId}/lyrics/subscribe?skipTrackSource=${skipTrackSource ?? false}`, (options) => {
+        options.method = "POST";
+      });
+    }, "subscribe"),
+    /**
+    * unsubscribe from lyrics updates for a guild
+    * @param guildId the guild id of the player
+    * @returns request data of the request
+    *
+    * @example
+    * ```ts
+    * await player.node.lyrics.unsubscribe(guildId);
+    * // use it of player instead:
+    * // const lyrics = await player.unsubscribeLyrics();
+    * ```
+    */
+    unsubscribe: /* @__PURE__ */ __name(async (guildId) => {
+      if (!this.sessionId) throw new Error("the Lavalink-Node is either not ready, or not up to date!");
+      if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "lavalyrics-plugin")) throw new RangeError(`there is no lavalyrics-plugin available in the lavalink node (required for lyrics): ${this.id}`);
+      return await this.request(`/sessions/${this.sessionId}/players/${guildId}/lyrics/subscribe`, (options) => {
+        options.method = "DELETE";
+      });
+    }, "unsubscribe")
+  };
+  /**
+  * Request Lavalink statistics.
+  * @returns the lavalink node stats
+  *
+  * @example
+  * ```ts
+  * const lavalinkStats = await player.node.fetchStats();
+  * ```
+  */
+  async fetchStats() {
+    return await this.request(`/stats`);
+  }
+  /**
+  * Request NodeLink connection metrics. https://nodelink.js.org/docs/differences#connection-metrics
+  * @returns the connection metrics of the node
+  *
+  * @example
+  * ```ts
+  * const connectionMetrics = await player.node.fetchConnectionMetrics();
+  * ```
+  */
+  async fetchConnectionMetrics() {
+    if (this.info && !this.info.isNodelink) throw new Error("There is no Information about wether you are using NodeLink instead of Lavalink, so this function won't work");
+    return await this.request(`/connection`);
+  }
+  /**
+  * Request Lavalink version.
+  * @returns the current used lavalink version
+  *
+  * @example
+  * ```ts
+  * const lavalinkVersion = await player.node.fetchVersion();
+  * ```
+  */
+  async fetchVersion() {
+    return await this.request(`/version`, (r) => {
+      r.path = "/version";
+    }, true);
+  }
+  /**
+  * Request Lavalink information.
+  * @returns lavalink info object
+  *
+  * @example
+  * ```ts
+  * const lavalinkInfo = await player.node.fetchInfo();
+  * const availablePlugins:string[] = lavalinkInfo.plugins.map(plugin => plugin.name);
+  * const availableSources:string[] = lavalinkInfo.sourceManagers;
+  * ```
+  */
+  async fetchInfo() {
+    return await this.request(`/info`);
+  }
+  /**
+  * Returns the metric summary of the node
+  * @returns the metric summary of the node
+  */
+  nodeMetricSummary() {
+    if (!this.connected || !this.isAlive) return {
+      systemLoad: 0,
+      cpuLoad: 0,
+      memoryUsage: 0,
+      players: 0,
+      playingPlayers: 0,
+      uptime: 0,
+      ping: 0,
+      frameDeficit: 0
+    };
+    const _memoryUsed = this.stats.memory.used;
+    const _memoryAllocated = this.stats.memory.allocated;
+    return {
+      systemLoad: this.stats.cpu.systemLoad,
+      cpuLoad: this.stats.cpu.lavalinkLoad,
+      memoryUsage: _memoryAllocated > 0 ? _memoryUsed / _memoryAllocated * 100 : 0,
+      players: this.stats.players,
+      playingPlayers: this.stats.playingPlayers,
+      uptime: this.stats.uptime,
+      ping: this.heartBeatPing,
+      frameDeficit: this.stats.frameStats?.deficit || 0
+    };
+  }
+  /**
+  * Get the node's health status with performance assessment.
+  * @returns Object containing health status, performance rating, load balancing info, and recommendations
+  *
+  * @example
+  * ```ts
+  * const health = node.getHealthStatus();
+  * console.log(`Node Status: ${health.status}`); // "healthy" | "degraded" | "critical" | "offline"
+  * console.log(`Performance: ${health.performance}`); // "excellent" | "good" | "fair" | "poor"
+  * console.log(`Penalty Score: ${health.penaltyScore}`); // Lower is better for load balancing
+  * console.log(`Estimated Capacity: ${health.estimatedRemainingCapacity} more players`);
+  * console.log(`Overloaded: ${health.isOverloaded}`);
+  * console.log(`Needs Restart: ${health.needsRestart}`);
+  * if (health.recommendations.length) {
+  *   console.log("Recommendations:", health.recommendations);
+  * }
+  * ```
+  */
+  getHealthStatus(thresholds) {
+    const cpuThresholds = {
+      excellent: 0.3,
+      good: 0.5,
+      fair: 0.7,
+      poor: 0.85,
+      ...thresholds?.cpu
+    };
+    const memoryThresholds = {
+      excellent: 60,
+      good: 75,
+      fair: 85,
+      poor: 95,
+      ...thresholds?.memory
+    };
+    const pingThresholds = {
+      excellent: 50,
+      good: 100,
+      fair: 200,
+      poor: 300,
+      ...thresholds?.ping
+    };
+    const recommendations = [];
+    const metrics = this.nodeMetricSummary();
+    if (!this.connected || !this.isAlive) return {
+      status: "offline",
+      performance: "poor",
+      isOverloaded: false,
+      needsRestart: true,
+      penaltyScore: 999999,
+      estimatedRemainingCapacity: 0,
+      recommendations: [RecommendationsStrings.nodeOffline, RecommendationsStrings.checkConnectivity],
+      metrics
+    };
+    let cpuScore = 0;
+    if (metrics.cpuLoad < cpuThresholds.excellent) cpuScore = 4;
+    else if (metrics.cpuLoad < cpuThresholds.good) cpuScore = 3;
+    else if (metrics.cpuLoad < cpuThresholds.fair) cpuScore = 2;
+    else if (metrics.cpuLoad < cpuThresholds.poor) cpuScore = 1;
+    let memoryScore = 0;
+    if (metrics.memoryUsage < memoryThresholds.excellent) memoryScore = 4;
+    else if (metrics.memoryUsage < memoryThresholds.good) memoryScore = 3;
+    else if (metrics.memoryUsage < memoryThresholds.fair) memoryScore = 2;
+    else if (metrics.memoryUsage < memoryThresholds.poor) memoryScore = 1;
+    let pingScore = 0;
+    if (metrics.ping < pingThresholds.excellent) pingScore = 4;
+    else if (metrics.ping < pingThresholds.good) pingScore = 3;
+    else if (metrics.ping < pingThresholds.fair) pingScore = 2;
+    else if (metrics.ping < pingThresholds.poor) pingScore = 1;
+    const avgScore = (cpuScore + memoryScore + pingScore) / 3;
+    let performance3 = "poor";
+    if (avgScore >= 3.5) performance3 = "excellent";
+    else if (avgScore >= 2.5) performance3 = "good";
+    else if (avgScore >= 1.5) performance3 = "fair";
+    const isOverloaded = metrics.cpuLoad > cpuThresholds.fair || metrics.memoryUsage > memoryThresholds.fair || metrics.frameDeficit > 100;
+    const status = metrics.cpuLoad > cpuThresholds.poor || metrics.memoryUsage > memoryThresholds.poor || metrics.frameDeficit > 500 ? "critical" : isOverloaded ? "degraded" : "healthy";
+    const needsRestart = status === "critical" || isOverloaded && metrics.memoryUsage > 90 || metrics.frameDeficit > 1e3 || this.reconnectionAttemptCount > 0 && this.reconnectionAttemptCount >= this.options.retryAmount / 2;
+    if (metrics.cpuLoad > cpuThresholds.fair) recommendations.push(RecommendationsStrings.highCPULoad(metrics.cpuLoad));
+    if (metrics.systemLoad > 0.8) recommendations.push(RecommendationsStrings.highSystemLoad(metrics.systemLoad));
+    if (metrics.memoryUsage > memoryThresholds.fair) recommendations.push(RecommendationsStrings.highMemoryUsage(metrics.memoryUsage));
+    if (metrics.frameDeficit > 100) recommendations.push(RecommendationsStrings.frameDeficit(metrics.frameDeficit));
+    if (metrics.ping > pingThresholds.fair) recommendations.push(RecommendationsStrings.highLatency(metrics.ping));
+    if (needsRestart) recommendations.push(RecommendationsStrings.nodeRestart);
+    if (metrics.players > 500) recommendations.push(RecommendationsStrings.highPlayercount(metrics.players));
+    const nullFrames = this.stats.frameStats?.nulled || 0;
+    let penaltyScore = metrics.players + Math.pow(metrics.cpuLoad * 100, 2) + Math.pow(metrics.memoryUsage, 1.5) + metrics.ping * 2 + metrics.frameDeficit * 10 + nullFrames * 5;
+    if (status === "critical") penaltyScore += 1e4;
+    else if (status === "degraded") penaltyScore += 5e3;
+    if (this.reconnectionAttemptCount > 0) penaltyScore += this.reconnectionAttemptCount * 1e3;
+    penaltyScore = Math.round(penaltyScore);
+    let estimatedRemainingCapacity = 0;
+    if (status !== "critical") {
+      const cpuCapacity = metrics.players === 0 ? 200 : metrics.cpuLoad > 0 ? Math.max(0, Math.floor((cpuThresholds.fair - metrics.cpuLoad) / metrics.cpuLoad * metrics.players)) : 200;
+      const memoryCapacity = metrics.players === 0 ? 200 : metrics.memoryUsage > 0 ? Math.max(0, Math.floor((memoryThresholds.fair - metrics.memoryUsage) / metrics.memoryUsage * metrics.players)) : 200;
+      estimatedRemainingCapacity = Math.min(Math.min(cpuCapacity, memoryCapacity), 500);
+      if (isOverloaded) estimatedRemainingCapacity = 0;
+    }
+    return {
+      status,
+      performance: performance3,
+      isOverloaded,
+      needsRestart,
+      penaltyScore,
+      estimatedRemainingCapacity,
+      recommendations,
+      metrics
+    };
+  }
+  /**
+  * Lavalink's Route Planner Api
+  */
+  routePlannerApi = {
+    /**
+    * Get routplanner Info from Lavalink for ip rotation
+    * @returns the status of the routeplanner
+    *
+    * @example
+    * ```ts
+    * const routePlannerStatus = await player.node.routePlannerApi.getStatus();
+    * const usedBlock = routePlannerStatus.details?.ipBlock;
+    * const currentIp = routePlannerStatus.currentAddress;
+    * ```
+    */
+    getStatus: /* @__PURE__ */ __name(async () => {
+      if (!this.sessionId) throw new Error("the Lavalink-Node is either not ready, or not up to date!");
+      return await this.request(`/routeplanner/status`);
+    }, "getStatus"),
+    /**
+    * Release blacklisted IP address into pool of IPs for ip rotation
+    * @param address IP address
+    * @returns request data of the request
+    *
+    * @example
+    * ```ts
+    * await player.node.routePlannerApi.unmarkFailedAddress("ipv6address");
+    * ```
+    */
+    unmarkFailedAddress: /* @__PURE__ */ __name(async (address) => {
+      if (!this.sessionId) throw new Error("the Lavalink-Node is either not ready, or not up to date!");
+      return await this.request(`/routeplanner/free/address`, (r) => {
+        r.method = "POST";
+        r.headers["Content-Type"] = "application/json";
+        r.body = safeStringify({ address });
+      });
+    }, "unmarkFailedAddress"),
+    /**
+    * Release all blacklisted IP addresses into pool of IPs
+    * @returns request data of the request
+    *
+    * @example
+    * ```ts
+    * await player.node.routePlannerApi.unmarkAllFailedAddresses();
+    * ```
+    */
+    unmarkAllFailedAddresses: /* @__PURE__ */ __name(async () => {
+      if (!this.sessionId) throw new Error("the Lavalink-Node is either not ready, or not up to date!");
+      return await this.request(`/routeplanner/free/all`, (r) => {
+        r.method = "POST";
+        r.headers["Content-Type"] = "application/json";
+      });
+    }, "unmarkAllFailedAddresses")
+  };
+  /** @private Utils for validating the */
+  validate() {
+    if (!this.options.authorization) throw new SyntaxError("LavalinkNode requires 'authorization'");
+    if (!this.options.host) throw new SyntaxError("LavalinkNode requires 'host'");
+    if (!this.options.port) throw new SyntaxError("LavalinkNode requires 'port'");
+    if (typeof this.options.port !== "number" || this.options.port < 1 || this.options.port > 65535) throw new SyntaxError("LavalinkNode.port must be a number within 1 and 65535");
+    if (this.options.closeOnError !== void 0 && typeof this.options.closeOnError !== "boolean") throw new SyntaxError("LavalinkNode.closeOnError must be either false | true aka boolean");
+    if (this.options.retryDelay !== void 0 && typeof this.options.retryDelay !== "number") throw new SyntaxError("LavalinkNodeOptions.retryDelay must be a number");
+    if (this.options.retryAmount !== void 0 && typeof this.options.retryAmount !== "number") throw new SyntaxError("LavalinkNodeOptions.retryAmount must be a number");
+    if (this.options.retryTimespan !== void 0 && typeof this.options.retryTimespan !== "number") throw new SyntaxError("LavalinkNodeOptions.retryTimespan must be a number");
+    if (this.options.requestSignalTimeoutMS !== void 0 && typeof this.options.requestSignalTimeoutMS !== "number") throw new SyntaxError("LavalinkNodeOptions.requestSignalTimeoutMS must be a number");
+    if (this.options.heartBeatInterval !== void 0 && typeof this.options.heartBeatInterval !== "number") throw new SyntaxError("LavalinkNodeOptions.heartBeatInterval must be a number");
+    if (this.options.enablePingOnStatsCheck !== void 0 && typeof this.options.enablePingOnStatsCheck !== "boolean") throw new SyntaxError("LavalinkNodeOptions.enablePingOnStatsCheck must be either false | true aka boolean");
+    if (this.options.autoChecks !== void 0 && typeof this.options.autoChecks !== "object") throw new SyntaxError("LavalinkNode.autoChecks must be an object");
+    if (this.options?.autoChecks?.sourcesValidations !== void 0 && typeof this.options?.autoChecks?.sourcesValidations !== "boolean") throw new SyntaxError("LavalinkNode.autoChecks.sourcesValidations must be either false | true aka boolean");
+    if (this.options?.autoChecks?.pluginValidations !== void 0 && typeof this.options?.autoChecks?.pluginValidations !== "boolean") throw new SyntaxError("LavalinkNode.autoChecks.pluginValidations must be either false | true aka boolean");
+    if (this.options.regions !== void 0 && (!Array.isArray(this.options.regions) || !this.options.regions.every((r) => typeof r === "string"))) throw new SyntaxError("LavalinkNode.regions must be an Array of strings");
+    if (this.options.nodeType && !NodeType[this.options.nodeType]) throw new SyntaxError("LavalinkNode.nodeType must be a valid NodeType enum value");
+  }
+  /**
+  * Checks if the node is a NodeLink node
+  * @returns true if the node is a NodeLink node
+  */
+  isNodeLink() {
+    return this.nodeType === "NodeLink";
+  }
+  /**
+  * Checks if the node is a Lavalink node
+  * @returns true if the node is a Lavalink node
+  */
+  isLavalinkNode() {
+    return this.nodeType === "Lavalink";
+  }
+  /**
+  * Sync the data of the player you make an action to lavalink to
+  * @param data data to use to update the player
+  * @param res result data from lavalink, to override, if available
+  * @returns boolean
+  */
+  syncPlayerData(data, res) {
+    if (typeof data === "object" && typeof data?.guildId === "string" && typeof data.playerOptions === "object" && Object.keys(data.playerOptions).length > 0) {
+      const player = this._LManager.getPlayer(data.guildId);
+      if (!player) return;
+      if (typeof data.playerOptions.paused !== "undefined") {
+        player.paused = data.playerOptions.paused;
+        player.playing = !data.playerOptions.paused;
+      }
+      if (typeof data.playerOptions.position === "number") {
+        player.lastPosition = data.playerOptions.position;
+        player.lastPositionChange = Date.now();
+      }
+      if (typeof data.playerOptions.voice !== "undefined") player.voice = data.playerOptions.voice;
+      if (typeof data.playerOptions.volume !== "undefined") {
+        if (this._LManager.options.playerOptions.volumeDecrementer) {
+          player.volume = Math.round(data.playerOptions.volume / this._LManager.options.playerOptions.volumeDecrementer);
+          player.lavalinkVolume = Math.round(data.playerOptions.volume);
+        } else {
+          player.volume = Math.round(data.playerOptions.volume);
+          player.lavalinkVolume = Math.round(data.playerOptions.volume);
+        }
+      }
+      if (typeof data.playerOptions.filters !== "undefined") {
+        const oldFilterTimescale = { ...player.filterManager.data.timescale };
+        Object.freeze(oldFilterTimescale);
+        if (data.playerOptions.filters.timescale) player.filterManager.data.timescale = data.playerOptions.filters.timescale;
+        if (data.playerOptions.filters.distortion) player.filterManager.data.distortion = data.playerOptions.filters.distortion;
+        if (data.playerOptions.filters.pluginFilters) player.filterManager.data.pluginFilters = data.playerOptions.filters.pluginFilters;
+        if (data.playerOptions.filters.vibrato) player.filterManager.data.vibrato = data.playerOptions.filters.vibrato;
+        if (data.playerOptions.filters.volume) player.filterManager.data.volume = data.playerOptions.filters.volume;
+        if (data.playerOptions.filters.equalizer) player.filterManager.equalizerBands = data.playerOptions.filters.equalizer;
+        if (data.playerOptions.filters.karaoke) player.filterManager.data.karaoke = data.playerOptions.filters.karaoke;
+        if (data.playerOptions.filters.lowPass) player.filterManager.data.lowPass = data.playerOptions.filters.lowPass;
+        if (data.playerOptions.filters.rotation) player.filterManager.data.rotation = data.playerOptions.filters.rotation;
+        if (data.playerOptions.filters.tremolo) player.filterManager.data.tremolo = data.playerOptions.filters.tremolo;
+        player.filterManager.checkFiltersState(oldFilterTimescale);
+      }
+    }
+    if (typeof res?.guildId === "string" && typeof res?.voice !== "undefined") {
+      const player = this._LManager.getPlayer(data.guildId);
+      if (!player) return;
+      if (typeof res?.voice?.connected === "boolean" && res.voice.connected === false) {
+        player.destroy("LavalinkNoVoice");
+        return;
+      }
+      player.ping.ws = res?.voice?.ping || player?.ping.ws;
+    }
+  }
+  /**
+  * Get the rest Adress for making requests
+  */
+  get restAddress() {
+    return `http${this.options.secure ? "s" : ""}://${this.options.host}:${this.options.port}`;
+  }
+  /**
+  * If already trying to reconnect or pending, return
+  */
+  get isNodeReconnecting() {
+    return this.reconnectionState !== "IDLE";
+  }
+  /**
+  * Reconnect to the lavalink node
+  * @param force @default false Wether to instantly try to reconnect (force it)
+  * @returns void
+  *
+  * @example
+  * ```ts
+  * await player.node.reconnect(true); //true forcefully trys the reconnect
+  * ```
+  */
+  reconnect(force = false) {
+    if (this.isNodeReconnecting) return;
+    this.reconnectionState = "PENDING";
+    this.NodeManager.emit("reconnectinprogress", this);
+    if (force) {
+      this.executeReconnect();
+      return;
+    }
+    if (this.reconnectTimeout) clearTimeout(this.reconnectTimeout);
+    this.reconnectTimeout = setTimeout(() => {
+      this.reconnectTimeout = null;
+      this.executeReconnect();
+    }, this.options.retryDelay || 1e3);
+  }
+  get reconnectionAttemptCount() {
+    const maxAllowedTimestan = this.options.retryTimespan || -1;
+    if (maxAllowedTimestan <= 0) return this.reconnectAttempts.length;
+    return this.reconnectAttempts.filter((timestamp2) => Date.now() - timestamp2 <= maxAllowedTimestan).length;
+  }
+  /**
+  * Private Utility function to execute the reconnection
+  */
+  executeReconnect() {
+    if (this.reconnectionAttemptCount >= this.options.retryAmount) {
+      const error62 = /* @__PURE__ */ new Error(`Unable to connect after ${this.options.retryAmount} attempts.`);
+      this.reconnectionState = "DESTROYING";
+      this.NodeManager.emit("error", this, error62);
+      this.destroy("NodeReconnectFail");
+      return;
+    }
+    const MAX_RECONNECT_ATTEMPTS = 1e3;
+    this.reconnectAttempts.push(Date.now());
+    if (this.reconnectAttempts.length > MAX_RECONNECT_ATTEMPTS) this.reconnectAttempts = this.reconnectAttempts.slice(-1e3);
+    this.reconnectionState = "RECONNECTING";
+    this.NodeManager.emit("reconnecting", this);
+    this.connect();
+  }
+  /**
+  * Private function to reset the reconnection attempts
+  * @returns
+  */
+  resetReconnectionAttempts() {
+    this.reconnectionState = "IDLE";
+    this.reconnectAttempts = [];
+    clearTimeout(this.reconnectTimeout);
+    this.reconnectTimeout = null;
+  }
+  /**
+  * Private function to reset timeouts/intervals for heartbeating/pinging
+  * @param heartbeat
+  * @param ping
+  * @returns
+  */
+  resetAckTimeouts(heartbeat2 = true, ping = true) {
+    if (ping) {
+      if (this.pingTimeout) clearTimeout(this.pingTimeout);
+      this.pingTimeout = null;
+    }
+    if (heartbeat2) {
+      if (this.heartBeatInterval) clearInterval(this.heartBeatInterval);
+      this.heartBeatInterval = null;
+    }
+  }
+  /** @private util function for handling opening events from websocket */
+  async open() {
+    this.isAlive = true;
+    this.resetReconnectionAttempts();
+    if (this.nodeType === "Lavalink") {
+      if (this.options.enablePingOnStatsCheck) this.heartBeat();
+      if (this.heartBeatInterval) clearInterval(this.heartBeatInterval);
+      if (this.options.heartBeatInterval > 0) {
+        this.socket.on("pong", () => {
+          this.heartBeatPongTimestamp = performance.now();
+          this.isAlive = true;
+        });
+        this.heartBeatInterval = setInterval(() => {
+          if (!this.socket) return console.error("Node-Heartbeat-Interval - Socket not available - maybe reconnecting?");
+          if (!this.isAlive) return this.close(500, "Node-Heartbeat-Timeout");
+          this.isAlive = false;
+          this.heartBeatPingTimestamp = performance.now();
+          this.socket?.ping?.();
+        }, this.options.heartBeatInterval || 3e4);
+      }
+    }
+    this.info = await this.fetchInfo().catch((e) => (console.error(e, "ON-OPEN-FETCH"), null));
+    if (!this.info && ["v3", "v4"].includes(this.version)) {
+      const errorString = `Lavalink Node (${this.restAddress}) does not provide any /${this.version}/info`;
+      throw new Error(errorString);
+    }
+    this.info.isNodelink = !!this.info.isNodelink;
+    this.NodeManager.emit("connect", this);
+    this.NodeManager.signalPlayerMigrationCapacityChange();
+  }
+  /** @private util function for handling closing events from websocket */
+  async close(code, reason) {
+    this.resetAckTimeouts(true, true);
+    try {
+      if (this.socket) {
+        this.socket.removeAllListeners();
+        this.socket = null;
+      }
+    } catch (e) {
+      if (this.NodeManager?.LavalinkManager?.options?.advancedOptions?.enableDebugEvents) this._LManager.emit("debug", "SocketCleanupError", {
+        state: "warn",
+        message: `An error occurred during socket cleanup in close() (likely a race condition): ${e.message}`,
+        functionLayer: "LavalinkNode > close()"
+      });
+    }
+    this.isAlive = false;
+    if (code === 1006 && !reason) reason = "Socket got terminated due to no ping connection";
+    if (code === 1e3 && reason === "Node-Disconnect") return;
+    const players = Array.from(this._LManager.players.filter((p) => p?.node?.options?.id === this?.options?.id).values());
+    this.NodeManager.emit("disconnect", this, {
+      code,
+      reason
+    });
+    if (code !== 1e3 || reason !== "Node-Destroy") {
+      if (this.NodeManager.nodes.has(this.id)) this.reconnect();
+    }
+    if (this._LManager.options.autoMove && players.length) await this.movePlayersToReplacementNode(players, "freeze");
+    else if (!this._LManager.options.autoMove) players.forEach((p) => p.playing = false);
+    else if (this.NodeManager.nodes.filter((n) => n.connected && !!n.sessionId).size === 0) players.forEach((p) => p.playing = false);
+  }
+  /** @private util function for handling error events from websocket */
+  error(error62) {
+    if (!error62) return;
+    this.NodeManager.emit("error", this, error62);
+    this.reconnectionState = "IDLE";
+    if (this.options.closeOnError) {
+      if (this.heartBeatInterval) clearInterval(this.heartBeatInterval);
+      if (this.pingTimeout) clearTimeout(this.pingTimeout);
+      this.socket?.close(500, "Node-Error - Force Reconnect");
+      return;
+    }
+    this.reconnect();
+  }
+  /** @private util function for handling message events from websocket */
+  async message(d) {
+    if (Array.isArray(d)) d = Buffer.concat(d);
+    else if (d instanceof ArrayBuffer) d = Buffer.from(d);
+    let payload;
+    try {
+      payload = JSON.parse(d.toString());
+    } catch (e) {
+      this.NodeManager.emit("error", this, e);
+      return;
+    }
+    if (!payload.op) return;
+    this.NodeManager.emit("raw", this, payload);
+    switch (payload.op) {
+      case "stats":
+        if (this.options.enablePingOnStatsCheck) this.heartBeat();
+        delete payload.op;
+        this.stats = { ...payload };
+        break;
+      case "playerUpdate":
+        {
+          const player = this._LManager.getPlayer(payload.guildId);
+          if (!player) return this._emitDebugEvent("PlayerUpdateNoPlayer", {
+            state: "error",
+            message: `PlayerUpdate Event Triggered, but no player found of payload.guildId: ${payload.guildId}`,
+            functionLayer: "LavalinkNode > nodeEvent > playerUpdate"
+          });
+          const oldPlayer = player?.toJSON();
+          player.lastPositionChange = Date.now();
+          player.lastPosition = payload.state.position || 0;
+          player.connected = payload.state.connected;
+          player.ping.ws = payload.state.ping >= 0 ? payload.state.ping : player.ping.ws <= 0 && player.connected ? null : player.ping.ws || 0;
+          if (!player.createdTimeStamp && payload.state.time) player.createdTimeStamp = payload.state.time;
+          if (player.filterManager.filterUpdatedState === true && ((player.queue.current?.info?.duration || 0) <= (player.LavalinkManager.options.advancedOptions.maxFilterFixDuration || 6e5) || player.queue.current?.info?.uri && (0, import_node_path2.isAbsolute)(player.queue.current?.info?.uri))) {
+            player.filterManager.filterUpdatedState = false;
+            this._emitDebugEvent("PlayerUpdateFilterFixApply", {
+              state: "log",
+              message: `Fixing FilterState on "${player.guildId}" because player.options.instaUpdateFiltersFix === true`,
+              functionLayer: "LavalinkNode > nodeEvent > playerUpdate"
+            });
+            await player.seek(player.position);
+          }
+          this._LManager.emit("playerUpdate", oldPlayer, player);
+        }
+        break;
+      case "event":
+        this.handleEvent(payload);
+        break;
+      case "ready":
+        this.resetReconnectionAttempts();
+        this.sessionId = payload.sessionId;
+        this.resuming.enabled = payload.resumed;
+        if (payload.resumed === true) try {
+          this.NodeManager.emit("resumed", this, payload, await this.fetchAllPlayers());
+        } catch (e) {
+          this._emitDebugEvent("ResumingFetchingError", {
+            state: "error",
+            message: `Failed to fetch players for resumed event, falling back without players array`,
+            error: e,
+            functionLayer: "LavalinkNode > nodeEvent > resumed"
+          });
+          this.NodeManager.emit("resumed", this, payload, []);
+        }
+        break;
+      default:
+        this.NodeManager.emit("error", this, /* @__PURE__ */ new Error(`Unexpected op "${payload.op}" with data`), payload);
+        return;
+    }
+  }
+  /** @private middleware util function for handling all kind of events from websocket */
+  async handleEvent(payload) {
+    if (!payload?.guildId) return;
+    const player = this._LManager.getPlayer(payload.guildId);
+    if (!player) return;
+    const NodeLinkEventType = payload.type;
+    if (NodeLinkExclusiveEvents.includes(NodeLinkEventType) && (!this.info || this.info.isNodelink)) return this.nodeLinkEventHandler(NodeLinkEventType, player, player.queue.current, payload);
+    switch (payload.type) {
+      case "TrackStartEvent":
+        this.trackStart(player, player.queue.current, payload);
+        break;
+      case "TrackEndEvent":
+        this.trackEnd(player, player.queue.current, payload);
+        break;
+      case "TrackStuckEvent":
+        this.trackStuck(player, player.queue.current, payload);
+        break;
+      case "TrackExceptionEvent":
+        this.trackError(player, player.queue.current, payload);
+        break;
+      case "WebSocketClosedEvent":
+        this.socketClosed(player, payload);
+        break;
+      case "SegmentsLoaded":
+        this.SponsorBlockSegmentLoaded(player, player.queue.current, payload);
+        break;
+      case "SegmentSkipped":
+        this.SponsorBlockSegmentSkipped(player, player.queue.current, payload);
+        break;
+      case "ChaptersLoaded":
+        this.SponsorBlockChaptersLoaded(player, player.queue.current, payload);
+        break;
+      case "ChapterStarted":
+        this.SponsorBlockChapterStarted(player, player.queue.current, payload);
+        break;
+      case "LyricsLineEvent":
+        this.LyricsLine(player, player.queue.current, payload);
+        break;
+      case "LyricsFoundEvent":
+        this.LyricsFound(player, player.queue.current, payload);
+        break;
+      case "LyricsNotFoundEvent":
+        this.LyricsNotFound(player, player.queue.current, payload);
+        break;
+      default:
+        this.NodeManager.emit("error", this, /* @__PURE__ */ new Error(`Node#event unknown event '${payload.type}'.`), payload);
+    }
+  }
+  /**
+  * nodeLink specific events handling https://nodelink.js.org/docs/api/websocket#incoming-events-server--client
+  * @param eventName
+  * @param player
+  * @param track
+  * @param payload
+  */
+  async nodeLinkEventHandler(eventName, player, track, payload) {
+    this.NodeManager.emit("nodeLinkEvent", this, eventName, player, track, payload);
+  }
+  getTrackOfPayload(payload) {
+    return "track" in payload ? this._LManager.utils.buildTrack(payload.track, void 0) : null;
+  }
+  /** @private util function for handling trackStart event */
+  async trackStart(player, track, payload) {
+    if (!player.getData("internal_nodeChanging")) {
+      player.playing = true;
+      player.paused = false;
+    }
+    if (this._LManager.options?.emitNewSongsOnly === true && player.queue.previous[0]?.info?.identifier === track?.info?.identifier) return this._emitDebugEvent("TrackStartNewSongsOnly", {
+      state: "log",
+      message: `TrackStart not Emitting, because playing the previous song again.`,
+      functionLayer: "LavalinkNode > trackStart()"
+    });
+    if (!player.queue.current) {
+      player.queue.current = this.getTrackOfPayload(payload);
+      if (player.queue.current) await player.queue.utils.save();
+      else this._emitDebugEvent("TrackStartNoTrack", {
+        state: "warn",
+        message: `Trackstart emitted but there is no track on player.queue.current, trying to get the track of the payload failed too.`,
+        functionLayer: "LavalinkNode > trackStart()"
+      });
+    }
+    this._LManager.emit("trackStart", player, player.queue.current, payload);
+  }
+  /** @private util function for handling trackEnd event */
+  async trackEnd(player, track, payload) {
+    if (player.getData("internal_nodeChanging") === true) return;
+    const trackToUse = track || this.getTrackOfPayload(payload);
+    if (payload.reason === "replaced") {
+      this._emitDebugEvent("TrackEndReplaced", {
+        state: "warn",
+        message: `TrackEnd Event does not handle any playback, because the track was replaced.`,
+        functionLayer: "LavalinkNode > trackEnd()"
+      });
+      this._LManager.emit("trackEnd", player, trackToUse, payload);
+      return;
+    }
+    if (!player.queue.tracks.length && (player.repeatMode === "off" || player.getData("internal_stopPlaying"))) return this.queueEnd(player, track, payload);
+    if (["loadFailed", "cleanup"].includes(payload.reason)) {
+      if (player.getData("internal_destroystatus") === true) return;
+      await queueTrackEnd(player);
+      if (!player.queue.current) return this.queueEnd(player, trackToUse, payload);
+      this._LManager.emit("trackEnd", player, trackToUse, payload);
+      if (this._LManager.options.autoSkip && player.queue.current) player.play({ noReplace: true });
+      return;
+    }
+    if (player.repeatMode !== "track" || player.getData("internal_skipped")) await queueTrackEnd(player);
+    else if (trackToUse && !trackToUse?.pluginInfo?.clientData?.previousTrack) {
+      player.queue.previous.unshift(trackToUse);
+      if (player.queue.previous.length > player.queue.options.maxPreviousTracks) player.queue.previous.splice(player.queue.options.maxPreviousTracks, player.queue.previous.length);
+      await player.queue.utils.save();
+    }
+    if (!player.queue.current) return this.queueEnd(player, trackToUse, payload);
+    player.setData("internal_skipped", false);
+    this._LManager.emit("trackEnd", player, trackToUse, payload);
+    if (this._LManager.options.autoSkip && player.queue.current) player.play({ noReplace: true });
+  }
+  /** @private util function for handling trackStuck event */
+  async trackStuck(player, track, payload) {
+    if (this._LManager.options.playerOptions.maxErrorsPerTime?.threshold > 0 && this._LManager.options.playerOptions.maxErrorsPerTime?.maxAmount >= 0) {
+      const oldTimestamps = (player.getData("internal_erroredTracksTimestamps") || []).filter((v) => Date.now() - v < this._LManager.options.playerOptions.maxErrorsPerTime?.threshold);
+      player.setData("internal_erroredTracksTimestamps", [...oldTimestamps, Date.now()]);
+      if (oldTimestamps.length >= this._LManager.options.playerOptions.maxErrorsPerTime?.maxAmount) {
+        this._emitDebugEvent("TrackStuckMaxTracksErroredPerTime", {
+          state: "log",
+          message: `trackStuck Event was triggered too often within a given threshold (LavalinkManager.options.playerOptions.maxErrorsPerTime). Threshold: "${this._LManager.options.playerOptions.maxErrorsPerTime?.threshold}ms", maxAmount: "${this._LManager.options.playerOptions.maxErrorsPerTime?.maxAmount}"`,
+          functionLayer: "LavalinkNode > trackStuck()"
+        });
+        player.destroy("TrackStuckMaxTracksErroredPerTime");
+        return;
+      }
+    }
+    this._LManager.emit("trackStuck", player, track || this.getTrackOfPayload(payload), payload);
+    if (!player.queue.tracks.length && (player.repeatMode === "off" || player.getData("internal_stopPlaying"))) try {
+      await player.node.updatePlayer({
+        guildId: player.guildId,
+        playerOptions: { track: { encoded: null } }
+      });
+      return;
+    } catch {
+      return this.queueEnd(player, track || this.getTrackOfPayload(payload), payload);
+    }
+    await queueTrackEnd(player);
+    if (!player.queue.current) return this.queueEnd(player, track || this.getTrackOfPayload(payload), payload);
+    if (this._LManager.options.autoSkip && player.queue.current) player.play({
+      track: player.queue.current,
+      noReplace: false
+    });
+  }
+  /** @private util function for handling trackError event */
+  async trackError(player, track, payload) {
+    if (this._LManager.options.playerOptions.maxErrorsPerTime?.threshold > 0 && this._LManager.options.playerOptions.maxErrorsPerTime?.maxAmount >= 0) {
+      const oldTimestamps = (player.getData("internal_erroredTracksTimestamps") || []).filter((v) => Date.now() - v < this._LManager.options.playerOptions.maxErrorsPerTime?.threshold);
+      player.setData("internal_erroredTracksTimestamps", [...oldTimestamps, Date.now()]);
+      if (oldTimestamps.length >= this._LManager.options.playerOptions.maxErrorsPerTime?.maxAmount) {
+        this._emitDebugEvent("TrackErrorMaxTracksErroredPerTime", {
+          state: "log",
+          message: `TrackError Event was triggered too often within a given threshold (LavalinkManager.options.playerOptions.maxErrorsPerTime). Threshold: "${this._LManager.options.playerOptions.maxErrorsPerTime?.threshold}ms", maxAmount: "${this._LManager.options.playerOptions.maxErrorsPerTime?.maxAmount}"`,
+          functionLayer: "LavalinkNode > trackError()"
+        });
+        player.destroy("TrackErrorMaxTracksErroredPerTime");
+        return;
+      }
+    }
+    this._LManager.emit("trackError", player, track || this.getTrackOfPayload(payload), payload);
+  }
+  /** @private util function for handling socketClosed event */
+  socketClosed(player, payload) {
+    this._LManager.emit("playerSocketClosed", player, payload);
+  }
+  /** @private util function for handling SponsorBlock Segmentloaded event */
+  SponsorBlockSegmentLoaded(player, track, payload) {
+    this._LManager.emit("SegmentsLoaded", player, track || this.getTrackOfPayload(payload), payload);
+  }
+  /** @private util function for handling SponsorBlock SegmentSkipped event */
+  SponsorBlockSegmentSkipped(player, track, payload) {
+    this._LManager.emit("SegmentSkipped", player, track || this.getTrackOfPayload(payload), payload);
+  }
+  /** @private util function for handling SponsorBlock Chaptersloaded event */
+  SponsorBlockChaptersLoaded(player, track, payload) {
+    this._LManager.emit("ChaptersLoaded", player, track || this.getTrackOfPayload(payload), payload);
+  }
+  /** @private util function for handling SponsorBlock Chaptersstarted event */
+  SponsorBlockChapterStarted(player, track, payload) {
+    this._LManager.emit("ChapterStarted", player, track || this.getTrackOfPayload(payload), payload);
+  }
+  /**
+  * Get the current sponsorblocks for the sponsorblock plugin
+  * @param player passthrough the player
+  * @returns sponsorblock seggment from lavalink
+  *
+  * @example
+  * ```ts
+  * // use it on the player via player.getSponsorBlock();
+  * const sponsorBlockSegments = await player.node.getSponsorBlock(player);
+  * ```
+  */
+  async getSponsorBlock(player) {
+    if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "sponsorblock-plugin")) throw new RangeError(`there is no sponsorblock-plugin available in the lavalink node: ${this.id}`);
+    return await this.request(`/sessions/${this.sessionId}/players/${player.guildId}/sponsorblock/categories`);
+  }
+  /**
+  * Set the current sponsorblocks for the sponsorblock plugin
+  * @param player passthrough the player
+  * @returns void
+  *
+  * @example
+  * ```ts
+  * // use it on the player via player.setSponsorBlock();
+  * const sponsorBlockSegments = await player.node.setSponsorBlock(player, ["sponsor", "selfpromo"]);
+  * ```
+  */
+  async setSponsorBlock(player, segments = ["sponsor", "selfpromo"]) {
+    if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "sponsorblock-plugin")) throw new RangeError(`there is no sponsorblock-plugin available in the lavalink node: ${this.id}`);
+    if (!segments.length) throw new RangeError("No Segments provided. Did you ment to use 'deleteSponsorBlock'?");
+    if (segments.some((v) => !validSponsorBlocks.includes(v.toLowerCase()))) throw new SyntaxError(`You provided a sponsorblock which isn't valid, valid ones are: ${validSponsorBlocks.map((v) => `'${v}'`).join(", ")}`);
+    await this.request(`/sessions/${this.sessionId}/players/${player.guildId}/sponsorblock/categories`, (r) => {
+      r.method = "PUT";
+      r.headers = {
+        Authorization: this.options.authorization,
+        "Content-Type": "application/json"
+      };
+      r.body = safeStringify(segments.map((v) => v.toLowerCase()));
+    });
+    player.setData("internal_sponsorBlockCategories", segments.map((v) => v.toLowerCase()));
+    this._emitDebugEvent("SetSponsorBlock", {
+      state: "log",
+      message: `SponsorBlock was set for Player: ${player.guildId} to: ${segments.map((v) => `'${v.toLowerCase()}'`).join(", ")}`,
+      functionLayer: "LavalinkNode > setSponsorBlock()"
+    });
+  }
+  /**
+  * Delete the sponsorblock plugins
+  * @param player passthrough the player
+  * @returns void
+  *
+  * @example
+  * ```ts
+  * // use it on the player via player.deleteSponsorBlock();
+  * const sponsorBlockSegments = await player.node.deleteSponsorBlock(player);
+  * ```
+  */
+  async deleteSponsorBlock(player) {
+    if (this._checkForPlugins && !this.info?.plugins?.find?.((v) => v.name === "sponsorblock-plugin")) throw new RangeError(`there is no sponsorblock-plugin available in the lavalink node: ${this.id}`);
+    await this.request(`/sessions/${this.sessionId}/players/${player.guildId}/sponsorblock/categories`, (r) => {
+      r.method = "DELETE";
+    });
+    player.setData("internal_sponsorBlockCategories", []);
+    this._emitDebugEvent("DeleteSponsorBlock", {
+      state: "log",
+      message: `SponsorBlock was deleted for Player: ${player.guildId}`,
+      functionLayer: "LavalinkNode > deleteSponsorBlock()"
+    });
+  }
+  /** private util function for handling the queue end event */
+  async queueEnd(player, track, payload) {
+    if (player.getData("internal_nodeChanging") === true) return;
+    player.queue.current = null;
+    player.playing = false;
+    player.setData("internal_stopPlaying", void 0);
+    this._emitDebugEvent("QueueEnded", {
+      state: "log",
+      message: `Queue Ended because no more Tracks were in the Queue, due to EventName: "${payload.type}"`,
+      functionLayer: "LavalinkNode > queueEnd()"
+    });
+    if (typeof this._LManager.options?.playerOptions?.onEmptyQueue?.autoPlayFunction === "function" && typeof player.getData("internal_autoplayStopPlaying") === "undefined") {
+      this._emitDebugEvent("AutoplayExecution", {
+        state: "log",
+        message: `Now Triggering Autoplay.`,
+        functionLayer: "LavalinkNode > queueEnd() > autoplayFunction"
+      });
+      const previousAutoplayTime = player.getData("internal_previousautoplay");
+      const duration3 = previousAutoplayTime ? Date.now() - previousAutoplayTime : 0;
+      if (!duration3 || duration3 > this._LManager.options.playerOptions.minAutoPlayMs || !!player.getData("internal_skipped")) {
+        await this._LManager.options?.playerOptions?.onEmptyQueue?.autoPlayFunction(player, track);
+        player.setData("internal_previousautoplay", Date.now());
+        if (player.queue.tracks.length > 0) await queueTrackEnd(player);
+        else this._emitDebugEvent("AutoplayNoSongsAdded", {
+          state: "warn",
+          message: `Autoplay was triggered but no songs were added to the queue.`,
+          functionLayer: "LavalinkNode > queueEnd() > autoplayFunction"
+        });
+      }
+      if (player.queue.current) {
+        if (payload.type === "TrackEndEvent") this._LManager.emit("trackEnd", player, track, payload);
+        if (this._LManager.options.autoSkip) return player.play({
+          noReplace: true,
+          paused: false
+        });
+      } else this._emitDebugEvent("AutoplayThresholdSpamLimiter", {
+        state: "warn",
+        message: `Autoplay was triggered after the previousautoplay too early. Threshold is: ${this._LManager.options.playerOptions.minAutoPlayMs}ms and the Duration was ${duration3}ms`,
+        functionLayer: "LavalinkNode > queueEnd() > autoplayFunction"
+      });
+    }
+    player.setData("internal_skipped", false);
+    player.setData("internal_autoplayStopPlaying", void 0);
+    if (track && !track?.pluginInfo?.clientData?.previousTrack) {
+      player.queue.previous.unshift(track);
+      if (player.queue.previous.length > player.queue.options.maxPreviousTracks) player.queue.previous.splice(player.queue.options.maxPreviousTracks, player.queue.previous.length);
+      await player.queue.utils.save();
+    }
+    if (payload?.reason !== "stopped") await player.queue.utils.save();
+    if (typeof this._LManager.options.playerOptions?.onEmptyQueue?.destroyAfterMs === "number" && !isNaN(this._LManager.options.playerOptions.onEmptyQueue?.destroyAfterMs) && this._LManager.options.playerOptions.onEmptyQueue?.destroyAfterMs >= 0) {
+      if (this._LManager.options.playerOptions.onEmptyQueue?.destroyAfterMs === 0) {
+        player.destroy("QueueEmpty");
+        return;
+      } else {
+        this._emitDebugEvent("TriggerQueueEmptyInterval", {
+          state: "log",
+          message: `Trigger Queue Empty Interval was Triggered because playerOptions.onEmptyQueue.destroyAfterMs is set to ${this._LManager.options.playerOptions.onEmptyQueue?.destroyAfterMs}ms`,
+          functionLayer: "LavalinkNode > queueEnd() > destroyAfterMs"
+        });
+        this._LManager.emit("playerQueueEmptyStart", player, this._LManager.options.playerOptions.onEmptyQueue?.destroyAfterMs);
+        if (player.getData("internal_queueempty")) clearTimeout(player.getData("internal_queueempty"));
+        player.setData("internal_queueempty", setTimeout(() => {
+          player.setData("internal_queueempty", void 0);
+          if (player.queue.current) return this._LManager.emit("playerQueueEmptyCancel", player);
+          this._LManager.emit("playerQueueEmptyEnd", player);
+          player.destroy("QueueEmpty");
+        }, this._LManager.options.playerOptions.onEmptyQueue?.destroyAfterMs));
+      }
+    }
+    this._LManager.emit("queueEnd", player, track, payload);
+  }
+  /**
+  * Emitted whenever a line of lyrics gets emitted
+  * @event
+  * @param {Player} player The player that emitted the event
+  * @param {Track} track The track that emitted the event
+  * @param {LyricsLineEvent} payload The payload of the event
+  */
+  async LyricsLine(player, track, payload) {
+    if (!player.queue.current) {
+      player.queue.current = this.getTrackOfPayload(payload);
+      if (player.queue.current) await player.queue.utils.save();
+      else this._emitDebugEvent("TrackStartNoTrack", {
+        state: "warn",
+        message: `Trackstart emitted but there is no track on player.queue.current, trying to get the track of the payload failed too.`,
+        functionLayer: "LavalinkNode > trackStart()"
+      });
+    }
+    this._LManager.emit("LyricsLine", player, track, payload);
+  }
+  /**
+  * Emitted whenever the lyrics for a track got found
+  * @event
+  * @param {Player} player The player that emitted the event
+  * @param {Track} track The track that emitted the event
+  * @param {LyricsFoundEvent} payload The payload of the event
+  */
+  async LyricsFound(player, track, payload) {
+    if (!player.queue.current) {
+      player.queue.current = this.getTrackOfPayload(payload);
+      if (player.queue.current) await player.queue.utils.save();
+      else this._emitDebugEvent("TrackStartNoTrack", {
+        state: "warn",
+        message: `Trackstart emitted but there is no track on player.queue.current, trying to get the track of the payload failed too.`,
+        functionLayer: "LavalinkNode > trackStart()"
+      });
+    }
+    this._LManager.emit("LyricsFound", player, track, payload);
+  }
+  /**
+  * Emitted whenever the lyrics for a track got not found
+  * @event
+  * @param {Player} player The player that emitted the event
+  * @param {Track} track The track that emitted the event
+  * @param {LyricsNotFoundEvent} payload The payload of the event
+  */
+  async LyricsNotFound(player, track, payload) {
+    if (!player.queue.current) {
+      player.queue.current = this.getTrackOfPayload(payload);
+      if (player.queue.current) await player.queue.utils.save();
+      else this._emitDebugEvent("TrackStartNoTrack", {
+        state: "warn",
+        message: `Trackstart emitted but there is no track on player.queue.current, trying to get the track of the payload failed too.`,
+        functionLayer: "LavalinkNode > trackStart()"
+      });
+    }
+    this._LManager.emit("LyricsNotFound", player, track, payload);
+  }
+  /**
+  * @private
+  * util function to check if a provided source is valid with current node.
+  * @param {LavalinkSearchPlatform} src
+  * @returns {boolean} True if provided source is valid.
+  */
+  isLavaSrcSource(src) {
+    const source = /* @__PURE__ */ new Set([]);
+    if (this.info?.sourceManagers.includes("spotify")) source.add("spsearch").add("sprec");
+    if (this.info?.sourceManagers.includes("applemusic")) source.add("amsearch");
+    if (this.info?.sourceManagers.includes("deezer")) source.add("dzsearch").add("dzrec").add("dzisrc");
+    if (this.info?.sourceManagers.includes("yandexmusic")) source.add("ymsearch").add("ymrec");
+    if (this.info?.sourceManagers.includes("vkmusic")) source.add("vksearch").add("vkrec");
+    if (this.info?.sourceManagers.includes("tidal")) source.add("tdsearch").add("tdrec");
+    if (this.info?.sourceManagers.includes("qobuz")) source.add("qbsearch").add("qbisrc").add("qbrec");
+    if (this.info?.sourceManagers.includes("youtube")) source.add("ytsearch").add("ytmsearch");
+    return typeof src === "string" && source.has(src);
+  }
+};
+var NodeLinkNode = class extends LavalinkNode {
+  static {
+    __name(this, "NodeLinkNode");
+  }
+  nodeType = "NodeLink";
+  constructor(options, manager) {
+    super(options, manager);
+    if (this.options.nodeType === "Lavalink" && (this.constructor.name === "NodeLinkNode" || this.constructor.name === "NodeLink")) return new LavalinkNode(options, manager);
+    this.nodeType = "NodeLink";
+  }
+  /**
+  * Uses the gapless feature to set the next track to be played.
+  * @param player current player
+  * @param track if no track provided, it will use the next track from queue
+  */
+  async setNextTrackGapLess(player, track) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    const nextTrack = track || player.queue.tracks[0];
+    if (!nextTrack) throw new Error("No track provided");
+    await this.updatePlayer({
+      guildId: player.guildId,
+      playerOptions: { nextTrack: {
+        encoded: nextTrack.encoded,
+        userData: nextTrack.userData || {}
+      } }
+    });
+    return true;
+  }
+  /**
+  * Removes the nextTrackGapLess configuration
+  * @param player current player
+  * @param track if no track provided, it will use the next track from queue
+  */
+  async removeNextTrackGapLess(player) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    await this.updatePlayer({
+      guildId: player.guildId,
+      playerOptions: { nextTrack: { encoded: null } }
+    });
+    return true;
+  }
+  /**
+  * Retrieves the meaning of a track.
+  * @param track
+  * @returns {MeaningResponse}
+  * @link {https://nodelink.js.org/docs/api/nodelink-features#meaning-system}
+  */
+  async getMeaning(track) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    const encodedTrack = track?.encoded;
+    if (!encodedTrack) throw new Error("No track provided");
+    return await this.request(`/meaning?encodedTrack=${encodedTrack}`, (m) => {
+      m.method = "GET";
+    });
+  }
+  /**
+  * Adds a new audio track to be mixed over the current playback.
+  * @param player The player to add the mixer layer to.
+  * @param trackToAdd The track to add to the mixer layer.
+  * @param volume The volume of the track to add to the mixer layer. (0 - 100)
+  * @link {https://nodelink.js.org/docs/api/rest#add-mix-layer} documentiation
+  */
+  async addMixerLayer(player, trackToAdd, volume) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    return await this.request(`/sessions/${this.sessionId}/players/${player.guildId}/mix`, (m) => {
+      m.method = "POST";
+      m.body = safeStringify({
+        track: {
+          encoded: trackToAdd.encoded,
+          userData: trackToAdd.userData
+        },
+        volume: volume / 100
+      });
+    });
+  }
+  /**
+  * Retrieves a list of currently active mix layers.
+  * @param player The player to list the mixer layers for.
+  * @link {https://nodelink.js.org/docs/api/rest#get-active-mixes} documentiation
+  */
+  async listMixerLayers(player) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    return await this.request(`/sessions/${this.sessionId}/players/${player.guildId}/mix`, (m) => {
+      m.method = "GET";
+    });
+  }
+  /**
+  * Updates the volume of a specific mix layer.
+  * @param player The player to update the mixer layer volume for.
+  * @param mixId The ID of the mix layer to update.
+  * @param volume The volume of the mix layer to update. (0 - 100)
+  * @link {https://nodelink.js.org/docs/api/rest#update-mix-volume} documentiation
+  */
+  async updateMixerLayerVolume(player, mixId, volume) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    await this.request(`/sessions/${this.sessionId}/players/${player.guildId}/mix/${mixId}`, (m) => {
+      m.method = "PATCH";
+      m.body = safeStringify({ volume: volume / 100 });
+    });
+    return true;
+  }
+  /**
+  * Removes a specific mix layer.
+  * @param player The player to remove the mix layer from.
+  * @param mixId The ID of the mix layer to remove.
+  * @link {https://nodelink.js.org/docs/api/rest#remove-mix-layer} documentiation
+  */
+  async removeMixerLayer(player, mixId) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    await this.request(`/sessions/${this.sessionId}/players/${player.guildId}/mix/${mixId}`, (m) => {
+      m.method = "DELETE";
+    });
+    return true;
+  }
+  /**
+  * @description
+  * NodeLink has a lot of filters SPECIFICALLY for NodeLink, check the documentation for more information.
+  * @link {https://nodelink.js.org/docs/api/nodelink-features#additional-filters} documentiation
+  */
+  specificFilters = {
+    /**
+    * Creates delay-based echo with feedback control
+    * @param player The player to apply the filter to
+    * @param options The echo filter options
+    */
+    echo: /* @__PURE__ */ __name(async (player, options, disableFilter = false) => {
+      if (disableFilter) delete player.filterManager.data.echo;
+      else player.filterManager.data.echo = options;
+      await player.filterManager.applyPlayerFilters();
+      return player.filterManager.filters.nodeLinkEcho;
+    }, "echo"),
+    /**
+    * Simulates multiple voices playing together with modulated delays
+    * @param player The player to apply the filter to
+    * @param options The chorus filter options
+    */
+    chorus: /* @__PURE__ */ __name(async (player, options, disableFilter = false) => {
+      if (disableFilter) delete player.filterManager.data.chorus;
+      else player.filterManager.data.chorus = options;
+      await player.filterManager.applyPlayerFilters();
+      return player.filterManager.filters.nodeLinkChorus;
+    }, "chorus"),
+    /**
+    * Dynamic range compression for balanced audio levels
+    * @param player The player to apply the filter to
+    * @param options The compressor filter options
+    */
+    compressor: /* @__PURE__ */ __name(async (player, options, disableFilter = false) => {
+      if (disableFilter) delete player.filterManager.data.compressor;
+      else player.filterManager.data.compressor = options;
+      await player.filterManager.applyPlayerFilters();
+      return player.filterManager.filters.nodeLinkCompressor;
+    }, "compressor"),
+    /**
+    * Filters out low frequencies, letting high frequencies pass through
+    * @param player The player to apply the filter to
+    * @param options The highpass filter options
+    */
+    highPass: /* @__PURE__ */ __name(async (player, options, disableFilter = false) => {
+      if (disableFilter) delete player.filterManager.data.highPass;
+      else player.filterManager.data.highPass = options;
+      await player.filterManager.applyPlayerFilters();
+      return player.filterManager.filters.nodeLinkHighPass;
+    }, "highPass"),
+    /**
+    * Sweeps all-pass filters across the frequency spectrum for a swooshing effect
+    * @param player The player to apply the filter to
+    * @param options The phaser filter options
+    */
+    phaser: /* @__PURE__ */ __name(async (player, options, disableFilter = false) => {
+      if (disableFilter) delete player.filterManager.data.phaser;
+      else player.filterManager.data.phaser = options;
+      await player.filterManager.applyPlayerFilters();
+      return player.filterManager.filters.nodeLinkPhaser;
+    }, "phaser"),
+    /**
+    * Creates spatial audio using cross-channel delays and modulation
+    * @param player The player to apply the filter to
+    * @param options The spatial filter options
+    */
+    spatial: /* @__PURE__ */ __name(async (player, options, disableFilter = false) => {
+      if (disableFilter) delete player.filterManager.data.spatial;
+      else player.filterManager.data.spatial = options;
+      await player.filterManager.applyPlayerFilters();
+      return player.filterManager.filters.nodeLinkSpatial;
+    }, "spatial"),
+    /**
+    * Resets all NodeLink filters
+    * @param player The player to reset the filters for
+    */
+    resetNodeLinkFilters: /* @__PURE__ */ __name(async (player) => {
+      delete player.filterManager.data.spatial;
+      delete player.filterManager.data.echo;
+      delete player.filterManager.data.chorus;
+      delete player.filterManager.data.compressor;
+      delete player.filterManager.data.highPass;
+      delete player.filterManager.data.phaser;
+      player.filterManager.checkFiltersState();
+      await player.filterManager.applyPlayerFilters();
+      return true;
+    }, "resetNodeLinkFilters")
+  };
+  /**
+  * Retrieve Lyrics of Youtube Videos.
+  * @param player The Player you use with that node.
+  * @param track if not provided, it will use the current track
+  * @param language if not provided, it will use the default language (en)
+  * @link {https://nodelink.js.org/docs/api/nodelink-features#lyrics--chapters}
+  * @returns NodeLinkLyrics either synced/unsynced or NodeLinkNoLyrics
+  */
+  async nodeLinkLyrics(player, track, language = "en") {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    const encodedTrack = track?.encoded || player.queue.current?.encoded;
+    if (!encodedTrack) throw new Error("No track provided");
+    return await this.request(`/sessions/${this.sessionId}/players/${player.guildId}/lyrics?encodedTrack=${encodedTrack}&lang=${language}`, (m) => {
+      m.method = "GET";
+    });
+  }
+  /**
+  * Retrieve Chapters of Youtube Videos.
+  * @link {https://nodelink.js.org/docs/api/nodelink-features#loadchapters}
+  * @param player The Player you use with that node.
+  * @param track if not provided, it will use the current track
+  * @returns Array of NodeLinkChapter objects (if empty than there are no chapters available)
+  */
+  async getChapters(player, track) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    const encodedTrack = track?.encoded || player.queue.current?.encoded;
+    if (!encodedTrack) throw new Error("No track provided");
+    return await this.request(`/sessions/${this.sessionId}/players/${player.guildId}/chapters?encodedTrack=${encodedTrack}`, (m) => {
+      m.method = "GET";
+    });
+  }
+  /**
+  * @link {https://nodelink.js.org/docs/api/rest#node-information}
+  * @returns
+  */
+  async getConnectionMetrics() {
+    return await this.request(`/connection`, (m) => {
+      m.method = "GET";
+    });
+  }
+  /**
+  * Stream audio directly from NodeLink without Discord voice connection. | Note this must be enabled by NodeLink...
+  * @link {https://nodelink.js.org/docs/api/nodelink-features#direct-streaming}
+  */
+  async getDirectStream(track) {
+    return await this.request(`/trackstream?encodedTrack=${track.encoded}`, (m) => {
+      m.method = "GET";
+    });
+  }
+  /**
+  * Stream raw PCM audio for custom processing or recording.
+  * @link {https://nodelink.js.org/docs/api/nodelink-features#loadstream}
+  * @param track The track to stream
+  * @param volume The volume to stream at
+  * @param position The position to stream from
+  * @param filters The filters to apply to the stream
+  * @returns Returns a raw PCM stream with Content-Type: audio/l16;rate=48000;channels=2.
+  */
+  async loadDirectStream(track, volume, position, filters) {
+    let requestPath = `/loadstream?encodedTrack=${track.encoded}`;
+    if (volume && volume > 0 && volume <= 100) requestPath += `&volume=${volume / 100}`;
+    if (position && position > 0) requestPath += `&position=${position}`;
+    if (filters) requestPath += `&filters=${typeof filters === "object" ? safeStringify(filters) : filters}`;
+    return (await this.rawRequest(requestPath, (m) => {
+      m.method = "GET";
+    })).response;
+  }
+  /**
+  * NodeLink supports selecting specific audio tracks for videos that contain multiple audio streams (e.g., Netflixstyle dubs, multi-language YouTube videos).
+  * This function changes the current language of the audio, in place at the same position of the current track.
+  * You can always do it manually by providing extra field in the track object "audioTrackId"
+  * @link {https://nodelink.js.org/docs/api/nodelink-features#additional-filters}
+  * @param player The player to apply the filter to
+  * @param language_audioTrackId The language of the audio track to select, see it in the pluginInfo.audioTracks
+  */
+  async changeAudioTrackLanguage(player, language_audioTrackId) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    return await this.request(`/sessions/${this.sessionId}/players/${player.guildId}`, (r) => {
+      r.method = "PATCH";
+      r.headers["Content-Type"] = "application/json";
+      r.body = safeStringify({ track: {
+        encoded: player.queue.current?.encoded,
+        position: player.position,
+        audioTrackId: language_audioTrackId
+      } });
+    });
+  }
+  /**
+  * Updates the YouTube configuration (RefreshToken or VisitorData) in real-time.
+  * @link {https://nodelink.js.org/docs/api/nodelink-features#update-config}
+  */
+  async updateYoutubeConfig(refreshToken, visitorData) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    return await this.request(`/youtube/config`, (r) => {
+      r.method = "PATCH";
+      r.headers["Content-Type"] = "application/json";
+      r.body = safeStringify({
+        refreshToken,
+        visitorData
+      });
+    });
+  }
+  async getYoutubeConfig(validate2 = false) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    return await this.request(`/youtube/config${validate2 ? "?validate=true" : ""}`, (r) => {
+      r.method = "GET";
+    });
+  }
+  /**
+  * @link {https://nodelink.js.org/docs/api/nodelink-features#oauth}
+  */
+  async getYoutubeOAUTH(refreshToken) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    return await this.request(`/youtube/oauth?refreshToken=${refreshToken}`, (m) => {
+      m.method = "GET";
+    });
+  }
+  /**
+  * @link {https://nodelink.js.org/docs/api/nodelink-features#oauth}
+  */
+  async updateYoutubeOAUTH(refreshToken) {
+    if (!this.sessionId) throw new Error("The Lavalink Node is either not ready, or not up to date!");
+    return await this.request(`/youtube/oauth`, (m) => {
+      m.method = "POST";
+      m.body = safeStringify({ refreshToken });
+    });
+  }
+};
+LavalinkNode._NodeLinkClass = NodeLinkNode;
+var NodeManager = class extends import_node_events.EventEmitter {
+  static {
+    __name(this, "NodeManager");
+  }
+  /**
+  * Emit an event
+  * @param event The event to emit
+  * @param args The arguments to pass to the event
+  * @returns
+  */
+  emit(event, ...args) {
+    return super.emit(event, ...args);
+  }
+  /**
+  * Add an event listener
+  * @param event The event to listen to
+  * @param listener The listener to add
+  * @returns
+  */
+  on(event, listener) {
+    return super.on(event, listener);
+  }
+  /**
+  * Add an event listener that only fires once
+  * @param event The event to listen to
+  * @param listener The listener to add
+  * @returns
+  */
+  once(event, listener) {
+    return super.once(event, listener);
+  }
+  /**
+  * Remove an event listener
+  * @param event The event to remove the listener from
+  * @param listener The listener to remove
+  * @returns
+  */
+  off(event, listener) {
+    return super.off(event, listener);
+  }
+  /**
+  * Remove an event listener
+  * @param event The event to remove the listener from
+  * @param listener The listener to remove
+  * @returns
+  */
+  removeListener(event, listener) {
+    return super.removeListener(event, listener);
+  }
+  /**
+  * The LavalinkManager that created this NodeManager
+  */
+  LavalinkManager;
+  /**
+  * A map of all nodes in the nodeManager
+  */
+  nodes = new MiniMap();
+  /** @internal Coordinates player migrations between nodes owned by this manager. */
+  playerMigration = {
+    reservations: /* @__PURE__ */ new Map(),
+    capacityWaiters: /* @__PURE__ */ new Set()
+  };
+  /** @internal Wakes migrations waiting for capacity on one of this manager's nodes. */
+  signalPlayerMigrationCapacityChange() {
+    for (const resolve3 of this.playerMigration.capacityWaiters) resolve3();
+    this.playerMigration.capacityWaiters.clear();
+  }
+  /**
+  * @param LavalinkManager The LavalinkManager that created this NodeManager
+  */
+  constructor(LavalinkManager3) {
+    super();
+    this.LavalinkManager = LavalinkManager3;
+    if (this.LavalinkManager.options.nodes) this.LavalinkManager.options.nodes.forEach((node2) => this.createNode(node2));
+  }
+  /**
+  * Disconnects all Nodes from lavalink ws sockets
+  * @param deleteAllNodes if the nodes should also be deleted from nodeManager.nodes
+  * @param destroyPlayers if the players should be destroyed
+  * @returns amount of disconnected Nodes
+  */
+  async disconnectAll(deleteAllNodes = false, destroyPlayers = true) {
+    if (!this.nodes.size) throw new Error("There are no nodes to disconnect (no nodes in the nodemanager)");
+    if (!this.nodes.filter((v) => v.connected).size) throw new Error("There are no nodes to disconnect (all nodes disconnected)");
+    let counter = 0;
+    for (const node2 of this.nodes.values()) {
+      if (!node2.connected) continue;
+      if (destroyPlayers) await node2.destroy("DisconnectAllNodes", deleteAllNodes);
+      else await node2.disconnect("DisconnectAllNodes");
+      counter++;
+    }
+    return counter;
+  }
+  /**
+  * Connects all not connected nodes
+  * @returns Amount of connected Nodes
+  */
+  async connectAll() {
+    if (!this.nodes.size) throw new Error("There are no nodes to connect (no nodes in the nodemanager)");
+    if (!this.nodes.filter((v) => !v.connected).size) throw new Error("There are no nodes to connect (all nodes connected)");
+    let counter = 0;
+    for (const node2 of this.nodes.values()) {
+      if (node2.connected) continue;
+      await node2.connect();
+      counter++;
+    }
+    return counter;
+  }
+  /**
+  * Forcefully reconnects all nodes
+  * @returns amount of nodes
+  */
+  async reconnectAll() {
+    if (!this.nodes.size) throw new Error("There are no nodes to reconnect (no nodes in the nodemanager)");
+    let counter = 0;
+    for (const node2 of this.nodes.values()) {
+      const sessionId = node2.sessionId ? `${node2.sessionId}` : void 0;
+      await node2.destroy("ReconnectAllNodes", false);
+      await node2.connect(sessionId);
+      counter++;
+    }
+    return counter;
+  }
+  /**
+  * Create a node and add it to the nodeManager
+  * @param options The options for the node
+  * @returns The node that was created
+  */
+  createNode(options) {
+    if (options instanceof NodeLinkNode) {
+      const preExistingNode = this.nodes.get(options.id);
+      if (preExistingNode) return preExistingNode;
+      this.nodes.set(options.id, options);
+      return options;
+    }
+    if (options instanceof LavalinkNode) {
+      const preExistingNode = this.nodes.get(options.id);
+      if (preExistingNode) return preExistingNode;
+      this.nodes.set(options.id, options);
+      return options;
+    }
+    if (this.nodes.has(options.id || `${options.host}:${options.port}`)) return this.nodes.get(options.id || `${options.host}:${options.port}`);
+    const newNode = options.nodeType === "NodeLink" ? new NodeLinkNode(options, this) : new LavalinkNode(options, this);
+    this.nodes.set(newNode.id, newNode);
+    return newNode;
+  }
+  /**
+  * Get the nodes sorted for the least usage, by a sorttype
+  * @param sortType The type of sorting to use
+  * @returns
+  */
+  leastUsedNodes(sortType = "players", filterForNodeTypes) {
+    const normalizedFilterForNodeTypes = filterForNodeTypes?.length ? filterForNodeTypes : ["Lavalink", "NodeLink"];
+    const connectedNodes = Array.from(this.nodes.values()).filter((node2) => node2.connected);
+    const normalizedNodeTypes = new Set(normalizedFilterForNodeTypes.map((nodeTypeFilter) => Object.values(NodeType).includes(nodeTypeFilter) ? nodeTypeFilter : nodeTypeFilter.nodeType));
+    const filteredConnectedNodes = connectedNodes.filter((node2) => normalizedNodeTypes.has(node2.nodeType));
+    switch (sortType) {
+      case "memory":
+        return filteredConnectedNodes.sort((a, b2) => (a.stats?.memory?.used || 0) - (b2.stats?.memory?.used || 0));
+      case "cpuLavalink":
+        return filteredConnectedNodes.sort((a, b2) => (a.stats?.cpu?.lavalinkLoad || 0) - (b2.stats?.cpu?.lavalinkLoad || 0));
+      case "cpuSystem":
+        return filteredConnectedNodes.sort((a, b2) => (a.stats?.cpu?.systemLoad || 0) - (b2.stats?.cpu?.systemLoad || 0));
+      case "calls":
+        return filteredConnectedNodes.sort((a, b2) => a.calls - b2.calls);
+      case "playingPlayers":
+        return filteredConnectedNodes.sort((a, b2) => (a.stats?.playingPlayers || 0) - (b2.stats?.playingPlayers || 0));
+      case "players":
+        return filteredConnectedNodes.sort((a, b2) => (a.stats?.players || 0) - (b2.stats?.players || 0));
+      default:
+        return filteredConnectedNodes.sort((a, b2) => (a.stats?.players || 0) - (b2.stats?.players || 0));
+    }
+  }
+  /**
+  * Delete a node from the nodeManager and destroy it
+  * @param node The node to delete
+  * @param movePlayers whether to movePlayers to different connected node before deletion. @default false
+  * @returns
+  *
+  * @example
+  * Deletes the node
+  * ```ts
+  * client.lavalink.nodeManager.deleteNode("nodeId to delete");
+  * ```
+  * Moves players to a different node before deleting
+  * ```ts
+  * client.lavalink.nodeManager.deleteNode("nodeId to delete", true);
+  * ```
+  */
+  deleteNode(node2, movePlayers = false) {
+    const decodeNode = typeof node2 === "string" ? this.nodes.get(node2) : node2;
+    if (!(decodeNode instanceof LavalinkNode)) throw new RangeError("nodeManager.deleteNode: The node you provided is not valid or doesn't exist.");
+    if (typeof movePlayers !== "boolean") throw new TypeError("nodeManager.deleteNode: movePlayers must be a boolean");
+    decodeNode.destroy("NodeDeleted", true, movePlayers);
+    this.nodes.delete(decodeNode.id);
+  }
+  /**
+  * Get a node from the nodeManager
+  * @param node The node to get either by idetnifier, by class or by enum
+  * @returns The node that was retrieved
+  */
+  getNode(node2) {
+    if (!!node2 && Object.values(NodeType).includes(node2)) return this.leastUsedNodes().filter((node3) => node3.nodeType === node3)[0];
+    if (!!node2 && node2 instanceof NodeLinkNode) return this.leastUsedNodes().filter((node3) => node3 instanceof NodeLinkNode)[0];
+    if (!!node2 && node2 instanceof LavalinkNode) return this.leastUsedNodes().filter((node3) => node3 instanceof LavalinkNode)[0];
+    const decodeNode = typeof node2 === "string" ? this.nodes.get(node2) : node2;
+    if (!decodeNode) return void 0;
+    if (decodeNode.nodeType === "NodeLink") return decodeNode;
+    return decodeNode;
+  }
+};
+var bandCampSearch = /* @__PURE__ */ __name(async (player, query, requestUser) => {
+  let error62 = null;
+  let tracks = [];
+  if (player.LavalinkManager.options.advancedOptions.debugOptions.logCustomSearches) console.log(`Lavalink-Client-Debug | SEARCHING | - ${query} on lavalink-client`);
+  player.LavalinkManager.utils.validateQueryString(player.node, query);
+  try {
+    const requestUrl = new URL("https://bandcamp.com/api/nusearch/2/autocomplete");
+    requestUrl.searchParams.append("q", query);
+    const data = await fetch(requestUrl.toString(), { headers: {
+      "User-Agent": "android-async-http/1.4.1 (http://loopj.com/android-async-http)",
+      Cookie: "$Version=1"
+    } });
+    if (!data.ok) throw new Error(`Bandcamp Error: ${data.statusText}`);
+    let json3 = null;
+    try {
+      json3 = await data.json();
+    } catch {
+      throw new Error("Invalid JSON response from Bandcamp");
+    }
+    tracks = json3?.results?.filter((x) => !!x && typeof x === "object" && "type" in x && x.type === "t").map?.((item) => player.LavalinkManager.utils.buildUnresolvedTrack({
+      uri: item.url || item.uri,
+      artworkUrl: item.img,
+      author: item.band_name,
+      title: item.name,
+      identifier: item.id ? `${item.id}` : item.url?.split("/")?.reverse()[0]
+    }, requestUser));
+  } catch (e) {
+    error62 = e;
+  }
+  return {
+    loadType: "search",
+    exception: error62,
+    pluginInfo: {},
+    playlist: null,
+    tracks
+  };
+}, "bandCampSearch");
+var DEFAULT_FILTER_DATAS = {
+  volume: 1,
+  lowPass: { smoothing: 0 },
+  karaoke: {
+    level: 0,
+    monoLevel: 0,
+    filterBand: 0,
+    filterWidth: 0
+  },
+  timescale: {
+    speed: 1,
+    pitch: 1,
+    rate: 1
+  },
+  rotation: { rotationHz: 0 },
+  tremolo: {
+    frequency: 0,
+    depth: 0
+  },
+  vibrato: {
+    frequency: 0,
+    depth: 0
+  },
+  channelMix: audioOutputsData.stereo,
+  echo: {
+    delay: 0,
+    feedback: 0,
+    mix: 0
+  },
+  chorus: {
+    rate: 0,
+    depth: 0,
+    delay: 0,
+    mix: 0,
+    feedback: 0
+  },
+  compressor: {
+    threshold: 0,
+    ratio: 1,
+    attack: 0,
+    release: 0,
+    gain: 0
+  },
+  highPass: { smoothing: 0 },
+  phaser: {
+    stages: 0,
+    rate: 0,
+    depth: 0,
+    feedback: 0,
+    mix: 0,
+    minFrequency: 0,
+    maxFrequency: 0
+  },
+  spatial: {
+    depth: 0,
+    rate: 0
+  },
+  pluginFilters: {
+    "lavalink-filter-plugin": {
+      echo: {
+        delay: 0,
+        decay: 0
+      },
+      reverb: {
+        delays: [],
+        gains: []
+      }
+    },
+    "high-pass": {},
+    "low-pass": {},
+    normalization: {},
+    echo: {}
+  }
+};
+var FilterManager = class {
+  static {
+    __name(this, "FilterManager");
+  }
+  static EQList = EQList;
+  /** The Equalizer bands currently applied to the Lavalink Server */
+  equalizerBands = [];
+  /** Private Util for the instaFix Filters option */
+  filterUpdatedState = false;
+  /** All "Active" / "disabled" Player Filters */
+  filters = {
+    volume: false,
+    vaporwave: false,
+    custom: false,
+    nightcore: false,
+    rotation: false,
+    karaoke: false,
+    tremolo: false,
+    vibrato: false,
+    lowPass: false,
+    nodeLinkEcho: false,
+    nodeLinkChorus: false,
+    nodeLinkCompressor: false,
+    nodeLinkHighPass: false,
+    nodeLinkPhaser: false,
+    nodeLinkSpatial: false,
+    lavalinkFilterPlugin: {
+      echo: false,
+      reverb: false
+    },
+    lavalinkLavaDspxPlugin: {
+      lowPass: false,
+      highPass: false,
+      normalization: false,
+      echo: false
+    },
+    audioOutput: "stereo"
+  };
+  /** The Filter Data sent to Lavalink, only if the filter is enabled (ofc.) */
+  data = structuredClone(DEFAULT_FILTER_DATAS);
+  /** The Player assigned to this Filter Manager */
+  player;
+  /** The Constructor for the FilterManager */
+  constructor(player) {
+    this.player = player;
+  }
+  /**
+  * Apply Player filters for lavalink filter sending data, if the filter is enabled / not
+  *
+  * @returns {Promise<void>}
+  *
+  * @example
+  * ```ts
+  * // Apply the filters after changing them manually:
+  * player.filterManager.data.volume = 0.5;
+  * // maybe you wanna manually set a distorition filter? then do it like this...
+  * player.filterManager.data.distortion = { sinOffset: 0.5, sinScale: 2, cosOffset: 0.5, cosScale: 2, tanOffset: 0.5, tanScale: 2, offset: 0.5, scale: 2 };
+  * await player.filterManager.applyPlayerFilters();
+  * ```
+  */
+  async applyPlayerFilters() {
+    const sendData = { ...this.data };
+    this.checkFiltersState();
+    if (!this.filters.volume) delete sendData.volume;
+    if (!this.filters.tremolo) delete sendData.tremolo;
+    if (!this.filters.vibrato) delete sendData.vibrato;
+    if (!this.filters.lavalinkFilterPlugin.echo) delete sendData.pluginFilters?.["lavalink-filter-plugin"]?.echo;
+    if (!this.filters.lavalinkFilterPlugin.reverb) delete sendData.pluginFilters?.["lavalink-filter-plugin"]?.reverb;
+    if (!this.filters.lavalinkLavaDspxPlugin.echo) delete sendData.pluginFilters?.echo;
+    if (!this.filters.lavalinkLavaDspxPlugin.normalization) delete sendData.pluginFilters?.normalization;
+    if (!this.filters.lavalinkLavaDspxPlugin.highPass) delete sendData.pluginFilters?.["high-pass"];
+    if (!this.filters.lavalinkLavaDspxPlugin.lowPass) delete sendData.pluginFilters?.["low-pass"];
+    if (sendData.pluginFilters?.["lavalink-filter-plugin"] && Object.values(sendData.pluginFilters?.["lavalink-filter-plugin"]).length === 0) delete sendData.pluginFilters["lavalink-filter-plugin"];
+    if (sendData.pluginFilters && Object.values(sendData.pluginFilters).length === 0) delete sendData.pluginFilters;
+    if (!this.filters.lowPass) delete sendData.lowPass;
+    if (!this.filters.karaoke) delete sendData.karaoke;
+    if (!this.filters.rotation) delete sendData.rotation;
+    if (this.filters.audioOutput === "stereo") delete sendData.channelMix;
+    if (!this.filters.nodeLinkEcho) delete sendData.echo;
+    if (!this.filters.nodeLinkChorus) delete sendData.chorus;
+    if (!this.filters.nodeLinkCompressor) delete sendData.compressor;
+    if (!this.filters.nodeLinkHighPass) delete sendData.highPass;
+    if (!this.filters.nodeLinkPhaser) delete sendData.phaser;
+    if (!this.filters.nodeLinkSpatial) delete sendData.spatial;
+    if (Object.values(this.data.timescale ?? {}).every((v) => v === 1)) delete sendData.timescale;
+    if (!this.player.node.sessionId) throw new Error("The Lavalink-Node is either not ready or not up to date");
+    sendData.equalizer = [...this.equalizerBands];
+    if (sendData.equalizer.length === 0) delete sendData.equalizer;
+    for (const key of Object.keys(sendData)) if (key === "pluginFilters") {
+    } else if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.(key)) delete sendData[key];
+    const now = performance.now();
+    if (this.player.options.instaUpdateFiltersFix === true) this.filterUpdatedState = true;
+    this.player.triggerPlayerClientUpdate();
+    await this.player.node.updatePlayer({
+      guildId: this.player.guildId,
+      playerOptions: { filters: sendData }
+    });
+    this.player.ping.lavalink = Math.round((performance.now() - now) / 10) / 100;
+  }
+  privateNot0(value, numToCheckAgains = 0) {
+    return typeof value === "number" && value !== numToCheckAgains;
+  }
+  getLavalinkFilterData() {
+    return this.data.pluginFilters?.["lavalink-filter-plugin"] || {
+      echo: {
+        decay: this.data.pluginFilters?.echo?.decay && !this.data.pluginFilters?.echo?.echoLength ? this.data.pluginFilters?.echo?.decay : 0,
+        delay: this.data.pluginFilters?.echo?.delay || 0
+      },
+      reverb: {
+        gains: [],
+        delays: [],
+        ...this.data.pluginFilters?.reverb
+      }
+    };
+  }
+  /**
+  * Checks if the filters are correctly stated (active / not-active) - mostly used internally.
+  * @param oldFilterTimescale
+  * @returns {boolean} True, if the check was successfull
+  *
+  * @example
+  * ```ts
+  * // Check the filter states
+  * player.filterManager.checkFiltersState();
+  * // Apply the filters after checking
+  * await player.filterManager.applyPlayerFilters();
+  * ```
+  */
+  checkFiltersState(oldFilterTimescale) {
+    this.data = this.data ?? {};
+    this.filters.rotation = this.privateNot0(this.data.rotation?.rotationHz);
+    this.filters.vibrato = this.privateNot0(this.data.vibrato?.frequency) || this.privateNot0(this.data.vibrato?.depth);
+    this.filters.tremolo = this.privateNot0(this.data.tremolo?.frequency) || this.privateNot0(this.data.tremolo?.depth);
+    const lavalinkFilterData = this.getLavalinkFilterData();
+    this.filters.lavalinkFilterPlugin = {
+      echo: this.privateNot0(lavalinkFilterData?.echo?.decay) || this.privateNot0(lavalinkFilterData?.echo?.delay),
+      reverb: this.privateNot0(lavalinkFilterData?.reverb?.delays?.length) || this.privateNot0(lavalinkFilterData?.reverb?.gains?.length)
+    };
+    this.filters.lavalinkLavaDspxPlugin = {
+      lowPass: Object.values(this.data.pluginFilters?.["low-pass"] || {})?.length > 0,
+      highPass: Object.values(this.data.pluginFilters?.["high-pass"] || {})?.length > 0,
+      normalization: Object.values(this.data.pluginFilters?.normalization || {})?.length > 0,
+      echo: Object.values(this.data.pluginFilters?.echo || {})?.length > 0 && typeof this.data.pluginFilters?.echo?.delay === "undefined"
+    };
+    this.filters.lowPass = this.privateNot0(this.data.lowPass?.smoothing);
+    this.filters.nodeLinkEcho = this.privateNot0(this.data.echo?.delay) || this.privateNot0(this.data.echo?.feedback) || this.privateNot0(this.data.echo?.mix);
+    this.filters.nodeLinkChorus = this.privateNot0(this.data.chorus?.rate) || this.privateNot0(this.data.chorus?.depth) || this.privateNot0(this.data.chorus?.delay) || this.privateNot0(this.data.chorus?.mix) || this.privateNot0(this.data.chorus?.feedback);
+    this.filters.nodeLinkCompressor = this.privateNot0(this.data.compressor?.threshold) || this.privateNot0(this.data.compressor?.ratio, 1) || this.privateNot0(this.data.compressor?.attack) || this.privateNot0(this.data.compressor?.release) || this.privateNot0(this.data.compressor?.gain);
+    this.filters.nodeLinkHighPass = this.privateNot0(this.data.highPass?.smoothing);
+    this.filters.nodeLinkPhaser = this.privateNot0(this.data.phaser?.stages) || this.privateNot0(this.data.phaser?.rate) || this.privateNot0(this.data.phaser?.depth) || this.privateNot0(this.data.phaser?.feedback) || this.privateNot0(this.data.phaser?.mix) || this.privateNot0(this.data.phaser?.minFrequency) || this.privateNot0(this.data.phaser?.maxFrequency);
+    this.filters.nodeLinkSpatial = this.privateNot0(this.data.spatial?.depth) || this.privateNot0(this.data.spatial?.rate);
+    this.filters.karaoke = Object.values(this.data.karaoke ?? {}).some((v) => v !== 0);
+    if ((this.filters.nightcore || this.filters.vaporwave) && oldFilterTimescale) {
+      if (oldFilterTimescale.pitch !== this.data.timescale?.pitch || oldFilterTimescale.rate !== this.data.timescale?.rate || oldFilterTimescale.speed !== this.data.timescale?.speed) {
+        this.filters.custom = Object.values(this.data.timescale || {}).some((v) => v !== 1);
+        this.filters.nightcore = false;
+        this.filters.vaporwave = false;
+      }
+    }
+    return true;
+  }
+  /**
+  * Reset all Filters
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Reset all filters
+  * await player.filterManager.resetFilters();
+  * ```
+  */
+  async resetFilters() {
+    this.filters.lavalinkLavaDspxPlugin.echo = false;
+    this.filters.lavalinkLavaDspxPlugin.normalization = false;
+    this.filters.lavalinkLavaDspxPlugin.highPass = false;
+    this.filters.lavalinkLavaDspxPlugin.lowPass = false;
+    this.filters.lavalinkFilterPlugin.echo = false;
+    this.filters.lavalinkFilterPlugin.reverb = false;
+    this.filters.nightcore = false;
+    this.filters.lowPass = false;
+    this.filters.rotation = false;
+    this.filters.tremolo = false;
+    this.filters.vibrato = false;
+    this.filters.karaoke = false;
+    this.filters.vaporwave = false;
+    this.filters.volume = false;
+    this.filters.nodeLinkEcho = false;
+    this.filters.nodeLinkChorus = false;
+    this.filters.nodeLinkCompressor = false;
+    this.filters.nodeLinkHighPass = false;
+    this.filters.nodeLinkPhaser = false;
+    this.filters.nodeLinkSpatial = false;
+    this.filters.audioOutput = "stereo";
+    this.data = structuredClone(DEFAULT_FILTER_DATAS);
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Set the Filter Volume
+  * @param volume the volume (0.0 - 5.0)
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Set Volume to 50%
+  * await player.filterManager.setVolume(0.5);
+  * // note this is a filter, so it will "jump" to the volume, i think it's like a "volume boost effect" so i marketed it as a filter
+  * ```
+  */
+  async setVolume(volume) {
+    if (volume < 0 || volume > 5) throw new SyntaxError("Volume-Filter must be between 0 and 5");
+    this.data = this.data ?? {};
+    this.data.volume = volume;
+    this.filters.volume = volume !== 1;
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Set the AudioOutput Filter
+  * @param {AudioOutputs} type the audio output type
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Set Audio Output to Mono
+  * await player.filterManager.setAudioOutput("mono");
+  *
+  * // Set Audio Output to Stereo
+  * await player.filterManager.setAudioOutput("stereo");
+  *
+  * // Set Audio Output to Left
+  * await player.filterManager.setAudioOutput("left");
+  *
+  * // Set Audio Output to Right
+  * await player.filterManager.setAudioOutput("right");
+  * ```
+  */
+  async setAudioOutput(type) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("channelMix")) throw new Error("Node#Info#filters does not include the 'channelMix' Filter (Node has it not enable)");
+    if (!type || !audioOutputsData[type]) throw "Invalid audio type added, must be 'mono' / 'stereo' / 'left' / 'right'";
+    this.data = this.data ?? {};
+    this.data.channelMix = audioOutputsData[type];
+    this.filters.audioOutput = type;
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Set custom filter.timescale#speed . This method disabled both: nightcore & vaporwave. use 1 to reset it to normal
+  * @param {number} speed set the speed of the filter
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Set Speed to 1.25 (disableds nightcore and vaporwave effect which are pre-made timescale settings of rate,pitch and speed)
+  * await player.filterManager.setSpeed(1.25);
+  * ```
+  */
+  async setSpeed(speed = 1) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("timescale")) throw new Error("Node#Info#filters does not include the 'timescale' Filter (Node has it not enable)");
+    this.data = this.data ?? {};
+    this.filters.nightcore = false;
+    this.filters.vaporwave = false;
+    this.data.timescale = {
+      ...DEFAULT_FILTER_DATAS.timescale,
+      ...this.data.timescale,
+      speed
+    };
+    this.isCustomFilterActive();
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Set custom filter.timescale#pitch . This method disabled both: nightcore & vaporwave. use 1 to reset it to normal
+  * @param  {number} pitch set the pitch of the filter
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Set Pitch to 1.25 (disableds nightcore and vaporwave effect which are pre-made timescale settings of rate,pitch and speed)
+  * await player.filterManager.setPitch(1.25);
+  * ```
+  */
+  async setPitch(pitch = 1) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("timescale")) throw new Error("Node#Info#filters does not include the 'timescale' Filter (Node has it not enable)");
+    this.data = this.data ?? {};
+    this.filters.nightcore = false;
+    this.filters.vaporwave = false;
+    this.data.timescale = {
+      ...DEFAULT_FILTER_DATAS.timescale,
+      ...this.data.timescale,
+      pitch
+    };
+    this.isCustomFilterActive();
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Set custom filter.timescale#rate . This method disabled both: nightcore & vaporwave. use 1 to reset it to normal
+  * @param {number} rate set the rate of the filter
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Set Rate to 1.25 (disableds nightcore and vaporwave effect which are pre-made timescale settings of rate,pitch and speed)
+  * await player.filterManager.setRate(1.25);
+  * ```
+  */
+  async setRate(rate = 1) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("timescale")) throw new Error("Node#Info#filters does not include the 'timescale' Filter (Node has it not enable)");
+    this.data = this.data ?? {};
+    this.filters.nightcore = false;
+    this.filters.vaporwave = false;
+    this.data.timescale = {
+      ...DEFAULT_FILTER_DATAS.timescale,
+      ...this.data.timescale,
+      rate
+    };
+    this.isCustomFilterActive();
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Enables / Disables the rotation effect, (Optional: provide your Own Data)
+  * @param {number} rotationHz set the rotationHz of the filter
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Toggle Rotation filter with custom settings
+  * await player.filterManager.toggleRotation(0.4);
+  * // or use the defaults
+  * await player.filterManager.toggleRotation();
+  * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+  * ```
+  */
+  async toggleRotation(rotationHz = 0.2) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("rotation")) throw new Error("Node#Info#filters does not include the 'rotation' Filter (Node has it not enable)");
+    this.data = this.data ?? {};
+    this.data.rotation = this.filters.rotation ? DEFAULT_FILTER_DATAS.rotation : { rotationHz };
+    this.filters.rotation = !this.filters.rotation;
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Enables / Disables the Vibrato effect, (Optional: provide your Own Data)
+  * @param {number} frequency set the frequency of the filter
+  * @param {number} depth set the depth of the filter
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Toggle Vibrato filter with custom settings
+  * await player.filterManager.toggleVibrato(8, 0.5);
+  * // or use the defaults
+  * await player.filterManager.toggleVibrato();
+  * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+  * ```
+  */
+  async toggleVibrato(frequency = 10, depth = 1) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("vibrato")) throw new Error("Node#Info#filters does not include the 'vibrato' Filter (Node has it not enable)");
+    this.data = this.data ?? {};
+    this.data.vibrato = this.filters.vibrato ? DEFAULT_FILTER_DATAS.vibrato : {
+      depth,
+      frequency
+    };
+    this.filters.vibrato = !this.filters.vibrato;
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Enables / Disables the Tremolo effect, (Optional: provide your Own Data)
+  * @param {number} frequency set the frequency of the filter
+  * @param {number} depth set the depth of the filter
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Toggle Tremolo filter with custom settings
+  * await player.filterManager.toggleTremolo(5, 0.7);
+  * // or use the defaults
+  * await player.filterManager.toggleTremolo();
+  * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+  * ```
+  */
+  async toggleTremolo(frequency = 4, depth = 0.8) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("tremolo")) throw new Error("Node#Info#filters does not include the 'tremolo' Filter (Node has it not enable)");
+    this.data = this.data ?? {};
+    this.data.tremolo = this.filters.tremolo ? DEFAULT_FILTER_DATAS.tremolo : {
+      depth,
+      frequency
+    };
+    this.filters.tremolo = !this.filters.tremolo;
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Enables / Disables the LowPass effect, (Optional: provide your Own Data)
+  * @param {number} smoothing set the smoothing of the filter
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Toggle LowPass filter with custom settings
+  * await player.filterManager.toggleLowPass(30);
+  * // or use the defaults
+  * await player.filterManager.toggleLowPass();
+  * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+  * ```
+  */
+  async toggleLowPass(smoothing = 20) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("lowPass")) throw new Error("Node#Info#filters does not include the 'lowPass' Filter (Node has it not enable)");
+    this.data = this.data ?? {};
+    this.data.lowPass = this.filters.lowPass ? DEFAULT_FILTER_DATAS.lowPass : { smoothing };
+    this.filters.lowPass = !this.filters.lowPass;
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Lavalink LavaDspx Plugin Filters
+  */
+  lavalinkLavaDspxPlugin = {
+    /**
+    * Enables / Disables the LowPass effect, (Optional: provide your Own Data)
+    * @param {number} boostFactor set the boost factor of the filter
+    * @param {number} cutoffFrequency set the cutoff frequency of the filter
+    * @returns  {Promise<boolean>} the state of the filter after execution.
+    *
+    * @example
+    * ```ts
+    * // Toggle LowPass filter with custom settings
+    * await player.filterManager.lavalinkLavaDspxPlugin.toggleLowPass(1.2, 300);
+    * // or use the defaults
+    * await player.filterManager.lavalinkLavaDspxPlugin.toggleLowPass();
+    * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+    * ```
+    */
+    toggleLowPass: /* @__PURE__ */ __name(async (boostFactor = 1, cutoffFrequency = 80) => {
+      if (this.player.node._checkForPlugins && !this.player?.node?.info?.plugins?.find?.((v) => v.name === "lavadspx-plugin")) throw new Error("Node#Info#plugins does not include the lavadspx plugin");
+      if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("low-pass")) throw new Error("Node#Info#filters does not include the 'low-pass' Filter (Node has it not enable)");
+      this.data = this.data ?? {};
+      this.data.pluginFilters = this.data.pluginFilters ?? {};
+      if (this.filters.lavalinkLavaDspxPlugin.lowPass) delete this.data.pluginFilters["low-pass"];
+      else this.data.pluginFilters["low-pass"] = {
+        boostFactor,
+        cutoffFrequency
+      };
+      this.filters.lavalinkLavaDspxPlugin.lowPass = !this.filters.lavalinkLavaDspxPlugin.lowPass;
+      await this.applyPlayerFilters();
+      return this;
+    }, "toggleLowPass"),
+    /**
+    * Enables / Disables the HighPass effect, (Optional: provide your Own Data)
+    * @param {number} boostFactor [] set the boost factor of the filter
+    * @param {number} cutoffFrequency set the cutoff frequency of the filter
+    * @returns  {Promise<boolean>} the state of the filter after execution.
+    *
+    * @example
+    * ```ts
+    * // Toggle HighPass filter with custom settings
+    * await player.filterManager.lavalinkLavaDspxPlugin.toggleHighPass(1.2, 150); // custom values
+    * // or use the defaults
+    * await player.filterManager.lavalinkLavaDspxPlugin.toggleHighPass();
+    * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+    * ```
+    */
+    toggleHighPass: /* @__PURE__ */ __name(async (boostFactor = 1, cutoffFrequency = 80) => {
+      if (this.player.node._checkForPlugins && !this.player?.node?.info?.plugins?.find?.((v) => v.name === "lavadspx-plugin")) throw new Error("Node#Info#plugins does not include the lavadspx plugin");
+      if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("high-pass")) throw new Error("Node#Info#filters does not include the 'high-pass' Filter (Node has it not enable)");
+      this.data = this.data ?? {};
+      this.data.pluginFilters = this.data.pluginFilters ?? {};
+      if (this.filters.lavalinkLavaDspxPlugin.highPass) delete this.data.pluginFilters["high-pass"];
+      else this.data.pluginFilters["high-pass"] = {
+        boostFactor,
+        cutoffFrequency
+      };
+      this.filters.lavalinkLavaDspxPlugin.highPass = !this.filters.lavalinkLavaDspxPlugin.highPass;
+      await this.applyPlayerFilters();
+      return this;
+    }, "toggleHighPass"),
+    /**
+    * Enables / Disables the Normalization effect.
+    * @param {number} [maxAmplitude=0.75] - The maximum amplitude of the audio.
+    * @param {boolean} [adaptive=true] Whether to use adaptive normalization or not.
+    * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+    *
+    * @example
+    * ```ts
+    * // Toggle Normalization filter with custom settings
+    * await player.filterManager.lavalinkLavaDspxPlugin.toggleNormalization(0.9, false); // custom values
+    * // or use the defaults
+    * await player.filterManager.lavalinkLavaDspxPlugin.toggleNormalization();
+    * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+    * ```
+    */
+    toggleNormalization: /* @__PURE__ */ __name(async (maxAmplitude = 0.75, adaptive = true) => {
+      if (this.player.node._checkForPlugins && !this.player?.node?.info?.plugins?.find?.((v) => v.name === "lavadspx-plugin")) throw new Error("Node#Info#plugins does not include the lavadspx plugin");
+      if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("normalization")) throw new Error("Node#Info#filters does not include the 'normalization' Filter (Node has it not enable)");
+      this.data = this.data ?? {};
+      this.data.pluginFilters = this.data.pluginFilters ?? {};
+      if (this.filters.lavalinkLavaDspxPlugin.normalization) delete this.data.pluginFilters.normalization;
+      else this.data.pluginFilters.normalization = {
+        adaptive,
+        maxAmplitude
+      };
+      this.filters.lavalinkLavaDspxPlugin.normalization = !this.filters.lavalinkLavaDspxPlugin.normalization;
+      await this.applyPlayerFilters();
+      return this;
+    }, "toggleNormalization"),
+    /**
+    * Enables / Disables the Echo effect, IMPORTANT! Only works with the correct Lavalink Plugin installed. (Optional: provide your Own Data)
+    * @param {number} [decay=0.5] The decay of the echo effect.
+    * @param {number} [echoLength=0.5] The length of the echo effect.
+    * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+    *
+    * @example
+    * ```ts
+    * // Toggle Echo filter with custom settings
+    * await player.filterManager.lavalinkLavaDspxPlugin.toggleEcho(0.7, 0.6); // custom values
+    * // or use the defaults
+    * await player.filterManager.lavalinkLavaDspxPlugin.toggleEcho();
+    * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+    * ```
+    */
+    toggleEcho: /* @__PURE__ */ __name(async (decay = 0.5, echoLength = 0.5) => {
+      if (this.player.node._checkForPlugins && !this.player?.node?.info?.plugins?.find?.((v) => v.name === "lavadspx-plugin")) throw new Error("Node#Info#plugins does not include the lavadspx plugin");
+      if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("echo")) throw new Error("Node#Info#filters does not include the 'echo' Filter (Node has it not enable)");
+      this.data = this.data ?? {};
+      this.data.pluginFilters = this.data.pluginFilters ?? {};
+      if (this.filters.lavalinkLavaDspxPlugin.echo) delete this.data.pluginFilters.echo;
+      else this.data.pluginFilters.echo = {
+        decay,
+        echoLength
+      };
+      this.filters.lavalinkLavaDspxPlugin.echo = !this.filters.lavalinkLavaDspxPlugin.echo;
+      await this.applyPlayerFilters();
+      return this;
+    }, "toggleEcho")
+  };
+  /**
+  * LavalinkFilter Plugin specific Filters
+  */
+  lavalinkFilterPlugin = {
+    /**
+    * Enables / Disables the Echo effect, IMPORTANT! Only works with the correct Lavalink Plugin installed. (Optional: provide your Own Data)
+    * @param {number} delay set the delay of the echo
+    * @param {number} decay set the decay of the echo
+    * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+    *
+    * @example
+    * ```ts
+    * // Toggle Echo filter with custom settings
+    * await player.filterManager.lavalinkFilterPlugin.toggleEcho(3, 0.7); // custom values
+    * // or use the defaults
+    * await player.filterManager.lavalinkFilterPlugin.toggleEcho();
+    * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+    * ```
+    */
+    toggleEcho: /* @__PURE__ */ __name(async (delay = 4, decay = 0.8) => {
+      if (this.player.node._checkForPlugins && !this.player?.node?.info?.plugins?.find?.((v) => v.name === "lavalink-filter-plugin")) throw new Error("Node#Info#plugins does not include the lavalink-filter-plugin plugin");
+      if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("echo")) throw new Error("Node#Info#filters does not include the 'echo' Filter (Node has it not enable aka not installed!)");
+      this.data = this.data ?? {};
+      const { echo, reverb } = DEFAULT_FILTER_DATAS.pluginFilters["lavalink-filter-plugin"];
+      this.data.pluginFilters = {
+        ...this.data.pluginFilters,
+        ["lavalink-filter-plugin"]: {
+          reverb: this.data.pluginFilters?.["lavalink-filter-plugin"]?.reverb ?? reverb,
+          echo: this.filters.lavalinkFilterPlugin.echo ? echo : {
+            delay,
+            decay
+          }
+        }
+      };
+      this.filters.lavalinkFilterPlugin.echo = !this.filters.lavalinkFilterPlugin.echo;
+      await this.applyPlayerFilters();
+      return this;
+    }, "toggleEcho"),
+    /**
+    * Enables / Disables the Echo effect, IMPORTANT! Only works with the correct Lavalink Plugin installed. (Optional: provide your Own Data)
+    * @param {number} delays set the delays of the reverb
+    * @param {number} gains set the gains of the reverb
+    * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+    *
+    * @example
+    * ```ts
+    * // Toggle Reverb filter with custom settings
+    * await player.filterManager.lavalinkFilterPlugin.toggleReverb([0.04, 0.045, 0.05, 0.055], [0.85, 0.84, 0.83, 0.82]);
+    * // or use the defaults
+    * await player.filterManager.lavalinkFilterPlugin.toggleReverb();
+    * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+    * ```
+    */
+    toggleReverb: /* @__PURE__ */ __name(async (delays = [
+      0.037,
+      0.042,
+      0.048,
+      0.053
+    ], gains = [
+      0.84,
+      0.83,
+      0.82,
+      0.81
+    ]) => {
+      if (this.player.node._checkForPlugins && !this.player?.node?.info?.plugins?.find?.((v) => v.name === "lavalink-filter-plugin")) throw new Error("Node#Info#plugins does not include the lavalink-filter-plugin plugin");
+      if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("reverb")) throw new Error("Node#Info#filters does not include the 'reverb' Filter (Node has it not enable aka not installed!)");
+      this.data = this.data ?? {};
+      const { echo, reverb } = DEFAULT_FILTER_DATAS.pluginFilters["lavalink-filter-plugin"];
+      this.data.pluginFilters = {
+        ...this.data.pluginFilters,
+        ["lavalink-filter-plugin"]: {
+          echo: this.data.pluginFilters?.["lavalink-filter-plugin"]?.echo ?? echo,
+          reverb: this.filters.lavalinkFilterPlugin.reverb ? reverb : {
+            delays,
+            gains
+          }
+        }
+      };
+      this.filters.lavalinkFilterPlugin.reverb = !this.filters.lavalinkFilterPlugin.reverb;
+      await this.applyPlayerFilters();
+      return this;
+    }, "toggleReverb")
+  };
+  /**
+  * Enables / Disables a Nightcore-like filter Effect. Disables/Overrides both: custom and Vaporwave Filter
+  * @param {number} speed set the speed of the filter
+  * @param {number} pitch set the pitch of the filter
+  * @param {number} rate set the rate of the filter
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Toggle Nightcore filter with custom settings
+  * await player.filterManager.toggleNightcore(1.3, 1.3, 0.9);
+  * // or use the defaults
+  * await player.filterManager.toggleNightcore();
+  * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+  * ```
+  */
+  async toggleNightcore(speed = 1.289999523162842, pitch = 1.289999523162842, rate = 0.9365999523162842) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("timescale")) throw new Error("Node#Info#filters does not include the 'timescale' Filter (Node has it not enable)");
+    this.data = this.data ?? {};
+    this.data.timescale = this.filters.nightcore ? DEFAULT_FILTER_DATAS.timescale : {
+      speed,
+      pitch,
+      rate
+    };
+    this.filters.nightcore = !this.filters.nightcore;
+    this.filters.vaporwave = false;
+    this.filters.custom = false;
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Enables / Disables a Vaporwave-like filter Effect. Disables/Overrides both: custom and nightcore Filter
+  * @param {number} speed set the speed of the filterq
+  * @param {number} pitch set the pitch of the filter
+  * @param {number} rate set the rate of the filter
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Toggle Vaporwave filter with custom settings
+  * await player.filterManager.toggleVaporwave(0.9, 0.7, 1);
+  * // or use the defaults
+  * await player.filterManager.toggleVaporwave();
+  * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+  * ```
+  */
+  async toggleVaporwave(speed = 0.8500000238418579, pitch = 0.800000011920929, rate = 1) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("timescale")) throw new Error("Node#Info#filters does not include the 'timescale' Filter (Node has it not enable)");
+    this.data = this.data ?? {};
+    this.data.timescale = this.filters.vaporwave ? DEFAULT_FILTER_DATAS.timescale : {
+      speed,
+      pitch,
+      rate
+    };
+    this.filters.vaporwave = !this.filters.vaporwave;
+    this.filters.nightcore = false;
+    this.filters.custom = false;
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Enable / Disables a Karaoke like Filter Effect
+  * @param {number} level set the level of the filter
+  * @param {number} monoLevel set the mono level of the filter
+  * @param {number} filterBand set the filter band of the filter
+  * @param {number} filterWidth set the filter width of the filter
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Toggle Karaoke filter with custom settings
+  * await player.filterManager.toggleKaraoke(1.5, 1.0, 220, 100);
+  * // or use the defaults
+  * await player.filterManager.toggleKaraoke();
+  * // when it's enabled before calling the toggle function, it disables it, so you might need to do some if/else logic.
+  * ```
+  */
+  async toggleKaraoke(level = 1, monoLevel = 1, filterBand = 220, filterWidth = 100) {
+    if (this.player.node._checkForSources && !this.player?.node?.info?.filters?.includes?.("karaoke")) throw new Error("Node#Info#filters does not include the 'karaoke' Filter (Node has it not enable)");
+    this.data = this.data ?? {};
+    this.data.karaoke = this.filters.karaoke ? DEFAULT_FILTER_DATAS.karaoke : {
+      level,
+      monoLevel,
+      filterBand,
+      filterWidth
+    };
+    this.filters.karaoke = !this.filters.karaoke;
+    await this.applyPlayerFilters();
+    return this;
+  }
+  /**
+  * Function to find out if currently there is a custom timescamle etc. filter applied
+  * @returns {boolean} whether a custom filter is active
+  *
+  * @example
+  * ```ts
+  * // Check if a custom filter is active
+  * const isCustom = player.filterManager.isCustomFilterActive();
+  * console.log(`Is custom filter active? ${isCustom}`);
+  * ```
+  */
+  isCustomFilterActive() {
+    this.filters.custom = !this.filters.nightcore && !this.filters.vaporwave && Object.values(this.data.timescale).some((d) => d !== 1);
+    return this.filters.custom;
+  }
+  /**
+  * Sets the players equalizer bands using one of the predefined presets.
+  * @param {keyof typeof EQList} preset The preset to use.
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Set EQ preset
+  * await player.filterManager.setEQPreset('BassboostMedium');
+  * ```
+  */
+  async setEQPreset(preset) {
+    const bands = EQList[preset];
+    return this.setEQ(bands);
+  }
+  /**
+  * Sets the players equalizer band on-top of the existing ones.
+  * @param {number} bands
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Set EQ bands
+  * await player.filterManager.setEQ([
+  *   { band: 0, gain: 0.3 },
+  *   { band: 1, gain: -0.2 },
+  *   { band: 2, gain: 0.1 }
+  * ]);
+  *
+  * // or use one of the templates:
+  * await player.filterManager.setEQ(player.filterManager.EQList.BassboostMedium); // you can also import EQList from somewhere package if wanted.
+  * ```
+  */
+  async setEQ(bands) {
+    if (!Array.isArray(bands)) bands = [bands];
+    if (!bands.length || !bands.every((band) => safeStringify(Object.keys(band).sort()) === '["band","gain"]')) throw new TypeError("Bands must be a non-empty object array containing 'band' and 'gain' properties.");
+    for (const { band, gain } of bands) this.equalizerBands[band] = {
+      band,
+      gain
+    };
+    if (!this.player.node.sessionId) throw new Error("The Lavalink-Node is either not ready or not up to date");
+    const now = performance.now();
+    if (this.player.options.instaUpdateFiltersFix === true) this.filterUpdatedState = true;
+    this.player.triggerPlayerClientUpdate();
+    await this.player.node.updatePlayer({
+      guildId: this.player.guildId,
+      playerOptions: { filters: { equalizer: this.equalizerBands } }
+    });
+    this.player.ping.lavalink = Math.round((performance.now() - now) / 10) / 100;
+    return this;
+  }
+  /**
+  * Clears the equalizer bands.
+  * @returns {Promise<FilterManager>} The Filter Manager, for chaining.
+  *
+  * @example
+  * ```ts
+  * // Clear all EQ bands
+  * await player.filterManager.clearEQ();
+  * ```
+  */
+  async clearEQ() {
+    return this.setEQ(Array.from({ length: 15 }, (_v, i) => ({
+      band: i,
+      gain: 0
+    })));
+  }
+};
+var QueueSaver = class {
+  static {
+    __name(this, "QueueSaver");
+  }
+  /**
+  * The queue store manager
+  */
+  _;
+  /**
+  * The options for the queue saver
+  */
+  options;
+  constructor(options) {
+    this._ = options?.queueStore || new DefaultQueueStore();
+    this.options = { maxPreviousTracks: options?.maxPreviousTracks || 25 };
+  }
+  /**
+  * Get the queue for a guild
+  * @param guildId The guild ID
+  * @returns The queue for the guild
+  */
+  async get(guildId) {
+    return this._.parse(await this._.get(guildId));
+  }
+  /**
+  * Delete the queue for a guild
+  * @param guildId The guild ID
+  * @returns The queue for the guild
+  */
+  async delete(guildId) {
+    return this._.delete(guildId);
+  }
+  /**
+  * Set the queue for a guild
+  * @param guildId The guild ID
+  * @param valueToStringify The queue to set
+  * @returns The queue for the guild
+  */
+  async set(guildId, valueToStringify) {
+    return this._.set(guildId, await this._.stringify(valueToStringify));
+  }
+  /**
+  * Sync the queue for a guild
+  * @param guildId The guild ID
+  * @returns The queue for the guild
+  */
+  async sync(guildId) {
+    return this.get(guildId);
+  }
+};
+var DefaultQueueStore = class {
+  static {
+    __name(this, "DefaultQueueStore");
+  }
+  data = new MiniMap();
+  constructor() {
+  }
+  /**
+  * Get the queue for a guild
+  * @param guildId The guild ID
+  * @returns The queue for the guild
+  */
+  get(guildId) {
+    return this.data.get(guildId);
+  }
+  /**
+  * Set the queue for a guild
+  * @param guildId The guild ID
+  * @param valueToStringify The queue to set
+  * @returns The queue for the guild
+  */
+  set(guildId, valueToStringify) {
+    return this.data.set(guildId, valueToStringify) ? true : false;
+  }
+  /**
+  * Delete the queue for a guild
+  * @param guildId The guild ID
+  * @returns The queue for the guild
+  */
+  delete(guildId) {
+    return this.data.delete(guildId);
+  }
+  /**
+  * Stringify the queue for a guild
+  * @param value The queue to stringify
+  * @returns The stringified queue
+  */
+  stringify(value) {
+    return value;
+  }
+  /**
+  * Parse the queue for a guild
+  * @param value The queue to parse
+  * @returns The parsed queue
+  */
+  parse(value) {
+    return value;
+  }
+};
+var Queue2 = class {
+  static {
+    __name(this, "Queue");
+  }
+  tracks = [];
+  previous = [];
+  current = null;
+  options = { maxPreviousTracks: 25 };
+  guildId = "";
+  QueueSaver = null;
+  managerUtils = new ManagerUtils();
+  queueChanges;
+  /**
+  * Create a new Queue
+  * @param guildId The guild ID
+  * @param data The data to initialize the queue with
+  * @param QueueSaver The queue saver to use
+  * @param queueOptions
+  */
+  constructor(guildId, data = {}, QueueSaver2, queueOptions) {
+    this.queueChanges = queueOptions?.queueChangesWatcher || null;
+    this.guildId = guildId;
+    this.QueueSaver = QueueSaver2;
+    this.options.maxPreviousTracks = this.QueueSaver?.options?.maxPreviousTracks ?? this.options.maxPreviousTracks;
+    this.current = this.managerUtils.isTrack(data.current) ? data.current : null;
+    this.previous = Array.isArray(data.previous) && data.previous.some((track) => this.managerUtils.isTrack(track) || this.managerUtils.isUnresolvedTrack(track)) ? data.previous.filter((track) => this.managerUtils.isTrack(track) || this.managerUtils.isUnresolvedTrack(track)) : [];
+    this.tracks = Array.isArray(data.tracks) && data.tracks.some((track) => this.managerUtils.isTrack(track) || this.managerUtils.isUnresolvedTrack(track)) ? data.tracks.filter((track) => this.managerUtils.isTrack(track) || this.managerUtils.isUnresolvedTrack(track)) : [];
+    Object.defineProperty(this, QueueSymbol, {
+      configurable: true,
+      value: true
+    });
+  }
+  /**
+  * Utils for a Queue
+  */
+  utils = {
+    /**
+    * Save the current cached Queue on the database/server (overides the server)
+    */
+    save: /* @__PURE__ */ __name(async () => {
+      if (this.previous.length > this.options.maxPreviousTracks) this.previous.splice(this.options.maxPreviousTracks, this.previous.length);
+      return await this.QueueSaver.set(this.guildId, this.utils.toJSON());
+    }, "save"),
+    /**
+    * Sync the current queue database/server with the cached one
+    * @returns {void}
+    */
+    sync: /* @__PURE__ */ __name(async (override = true, dontSyncCurrent = true) => {
+      const data = await this.QueueSaver.get(this.guildId);
+      if (!data) throw new Error(`No data found to sync for guildId: ${this.guildId}`);
+      if (!dontSyncCurrent && !this.current && this.managerUtils.isTrack(data.current)) this.current = data.current;
+      if (Array.isArray(data.tracks) && data?.tracks.length && data.tracks.some((track) => this.managerUtils.isTrack(track) || this.managerUtils.isUnresolvedTrack(track))) this.tracks.splice(override ? 0 : this.tracks.length, override ? this.tracks.length : 0, ...data.tracks.filter((track) => this.managerUtils.isTrack(track) || this.managerUtils.isUnresolvedTrack(track)));
+      if (Array.isArray(data.previous) && data?.previous.length && data.previous.some((track) => this.managerUtils.isTrack(track) || this.managerUtils.isUnresolvedTrack(track))) this.previous.splice(0, override ? this.previous.length : 0, ...data.previous.filter((track) => this.managerUtils.isTrack(track) || this.managerUtils.isUnresolvedTrack(track)));
+      await this.utils.save();
+    }, "sync"),
+    destroy: /* @__PURE__ */ __name(async () => {
+      return await this.QueueSaver.delete(this.guildId);
+    }, "destroy"),
+    /**
+    * @returns {{current:Track|null, previous:Track[], tracks:Track[]}}The Queue, but in a raw State, which allows easier handling for the QueueStoreManager
+    */
+    toJSON: /* @__PURE__ */ __name(() => {
+      if (this.previous?.length > this.options?.maxPreviousTracks) this.previous?.splice(this.options?.maxPreviousTracks, this.previous.length);
+      return {
+        current: this.current ? { ...this.current } : null,
+        previous: this.previous ? [...this.previous] : [],
+        tracks: this.tracks ? [...this.tracks] : []
+      };
+    }, "toJSON"),
+    /**
+    * Get the Total Duration of the Queue-Songs summed up
+    * @returns {number}
+    */
+    totalDuration: /* @__PURE__ */ __name(() => {
+      return this.tracks.reduce((acc, cur) => acc + (cur.info.duration || 0), this.current?.info.duration || 0);
+    }, "totalDuration"),
+    /**
+    * Find tracks in the queue matching specific criteria.
+    * **This method DOES NOT MUTATE the queue** - it returns a new array without modifying the original queue.
+    * @param predicate Function to test each track, or an object with criteria to match
+    * @returns Array of matching tracks with their indexes
+    *
+    * @example
+    * ```ts
+    * // Find by author
+    * const artistTracks = player.queue.utils.filterTracks({ author: "Artist Name" });
+    *
+    * // Find by duration range (5-10 minutes)
+    * const longTracks = player.queue.utils.filterTracks({ duration: { min: 300000, max: 600000 } });
+    *
+    * // Find by title (partial match)
+    * const titleMatches = player.queue.utils.filterTracks({ title: "Never Gonna" });
+    *
+    * // Custom predicate
+    * const customFilter = player.queue.utils.filterTracks(track => track.info.isStream);
+    * ```
+    */
+    filterTracks: /* @__PURE__ */ __name((predicate) => {
+      if (typeof predicate === "function") return this.tracks.map((track, index2) => ({
+        track,
+        index: index2
+      })).filter(({ track, index: index2 }) => predicate(track, index2));
+      return this.tracks.map((track, index2) => ({
+        track,
+        index: index2
+      })).filter(({ track }) => {
+        if (predicate.title && !track.info?.title?.toLowerCase().includes(predicate.title.toLowerCase())) return false;
+        if (predicate.author && !track.info?.author?.toLowerCase().includes(predicate.author.toLowerCase())) return false;
+        if (predicate.duration !== void 0) {
+          const duration3 = track.info?.duration || 0;
+          if (typeof predicate.duration === "number") {
+            if (duration3 !== predicate.duration) return false;
+          } else {
+            if (predicate.duration.min !== void 0 && duration3 < predicate.duration.min) return false;
+            if (predicate.duration.max !== void 0 && duration3 > predicate.duration.max) return false;
+          }
+        }
+        if (predicate.uri && track.info?.uri !== predicate.uri) return false;
+        if (predicate.identifier && track.info?.identifier !== predicate.identifier) return false;
+        if (predicate.sourceName && track.info?.sourceName?.toLowerCase() !== predicate.sourceName.toLowerCase()) return false;
+        if (predicate.isStream !== void 0 && track.info?.isStream !== predicate.isStream) return false;
+        if (predicate.isSeekable !== void 0 && track.info?.isSeekable !== predicate.isSeekable) return false;
+        return true;
+      });
+    }, "filterTracks"),
+    /**
+    * Find a single track in the queue matching specific criteria.
+    * **This method DOES NOT MUTATE the queue** - it searches without modifying the original queue.
+    * @param predicate Function to test each track, or an object with criteria to match
+    * @returns First matching track with its index, or null if not found
+    *
+    * @example
+    * ```ts
+    * // Find first track by author
+    * const track = player.queue.utils.findTrack({ author: "Artist Name" });
+    * if (track) {
+    *   console.log(`Found at index ${track.index}: ${track.track.info.title}`);
+    * }
+    *
+    * // Find with custom predicate
+    * const liveStream = player.queue.utils.findTrack(track => track.info.isStream);
+    * ```
+    */
+    findTrack: /* @__PURE__ */ __name((predicate) => {
+      const results = this.utils.filterTracks(predicate);
+      return results.length > 0 ? results[0] : null;
+    }, "findTrack")
+  };
+  /**
+  * Shuffles the current Queue, then saves it
+  * @returns Amount of Tracks in the Queue
+  */
+  async shuffle() {
+    const oldStored = typeof this.queueChanges?.shuffled === "function" ? this.utils.toJSON() : null;
+    if (this.tracks.length <= 1) return this.tracks.length;
+    if (this.tracks.length === 2) [this.tracks[0], this.tracks[1]] = [this.tracks[1], this.tracks[0]];
+    else for (let i = this.tracks.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.tracks[i], this.tracks[j]] = [this.tracks[j], this.tracks[i]];
+    }
+    if (typeof this.queueChanges?.shuffled === "function") this.queueChanges.shuffled(this.guildId, oldStored, this.utils.toJSON());
+    await this.utils.save();
+    return this.tracks.length;
+  }
+  /**
+  * Add a Track to the Queue, and after saved in the "db" it returns the amount of the Tracks
+  * @param {Track | Track[]} TrackOrTracks
+  * @param {number} index At what position to add the Track
+  * @returns {number} Queue-Size (for the next Tracks)
+  */
+  async add(TrackOrTracks, index2) {
+    if (typeof index2 === "number" && index2 >= 0 && index2 < this.tracks.length) return await this.splice(index2, 0, (Array.isArray(TrackOrTracks) ? TrackOrTracks : [TrackOrTracks]).flat(2).filter((v) => this.managerUtils.isTrack(v) || this.managerUtils.isUnresolvedTrack(v)));
+    const oldStored = typeof this.queueChanges?.tracksAdd === "function" ? this.utils.toJSON() : null;
+    this.tracks.push(...(Array.isArray(TrackOrTracks) ? TrackOrTracks : [TrackOrTracks]).flat(2).filter((v) => this.managerUtils.isTrack(v) || this.managerUtils.isUnresolvedTrack(v)));
+    if (typeof this.queueChanges?.tracksAdd === "function") try {
+      this.queueChanges.tracksAdd(this.guildId, (Array.isArray(TrackOrTracks) ? TrackOrTracks : [TrackOrTracks]).flat(2).filter((v) => this.managerUtils.isTrack(v) || this.managerUtils.isUnresolvedTrack(v)), this.tracks.length, oldStored, this.utils.toJSON());
+    } catch {
+    }
+    await this.utils.save();
+    return this.tracks.length;
+  }
+  /**
+  * Splice the tracks in the Queue
+  * @param {number} index Where to remove the Track
+  * @param {number} amount How many Tracks to remove?
+  * @param {Track | Track[]} TrackOrTracks Want to Add more Tracks?
+  * @returns {Track} Spliced Track
+  */
+  async splice(index2, amount, TrackOrTracks) {
+    const oldStored = typeof this.queueChanges?.tracksAdd === "function" || typeof this.queueChanges?.tracksRemoved === "function" ? this.utils.toJSON() : null;
+    if (!this.tracks.length) {
+      if (TrackOrTracks) return await this.add(TrackOrTracks);
+      return null;
+    }
+    if (TrackOrTracks && typeof this.queueChanges?.tracksAdd === "function") try {
+      this.queueChanges.tracksAdd(this.guildId, (Array.isArray(TrackOrTracks) ? TrackOrTracks : [TrackOrTracks]).flat(2).filter((v) => this.managerUtils.isTrack(v) || this.managerUtils.isUnresolvedTrack(v)), index2, oldStored, this.utils.toJSON());
+    } catch {
+    }
+    const spliced = TrackOrTracks ? this.tracks.splice(index2, amount, ...(Array.isArray(TrackOrTracks) ? TrackOrTracks : [TrackOrTracks]).flat(2).filter((v) => this.managerUtils.isTrack(v) || this.managerUtils.isUnresolvedTrack(v))) : this.tracks.splice(index2, amount);
+    if (typeof this.queueChanges?.tracksRemoved === "function") try {
+      this.queueChanges.tracksRemoved(this.guildId, spliced, index2, oldStored, this.utils.toJSON());
+    } catch {
+    }
+    await this.utils.save();
+    return spliced.length === 1 ? spliced[0] : spliced;
+  }
+  /**
+  * Remove stuff from the queue.tracks array
+  *  - single Track | UnresolvedTrack
+  *  - multiple Track | UnresovedTrack
+  *  - at the index or multiple indexes
+  *  - Since v2.7 the removed tracks get unshifted into the previous queue state instead of pushed (indexed at the start instead of end - as it should)
+  * @param removeQueryTrack
+  * @returns null (if nothing was removed) / { removed } where removed is an array with all removed elements
+  *
+  * @example
+  * ```js
+  * // remove single track
+  *
+  * const track = player.queue.tracks[4];
+  * await player.queue.remove(track);
+  *
+  * // if you already have the index you can straight up pass it too
+  * await player.queue.remove(4);
+  *
+  *
+  * // if you want to remove multiple tracks, e.g. from position 4 to position 10 you can do smt like this
+  * await player.queue.remove(player.queue.tracks.slice(4, 10)) // get's the tracks from 4 - 10, which then get's found in the remove function to be removed
+  *
+  * // I still highly suggest to use .splice!
+  *
+  * await player.queue.splice(4, 10); // removes at index 4, 10 tracks
+  *
+  * await player.queue.splice(1, 1); // removes at index 1, 1 track
+  *
+  * await player.queue.splice(4, 0, ...tracks) // removes 0 tracks at position 4, and then inserts all tracks after position 4.
+  * ```
+  */
+  async remove(removeQueryTrack) {
+    if (removeQueryTrack === null || removeQueryTrack === void 0 || Array.isArray(removeQueryTrack) && removeQueryTrack.length === 0) return null;
+    const oldStored = typeof this.queueChanges?.tracksRemoved === "function" ? this.utils.toJSON() : null;
+    if (typeof removeQueryTrack === "number") {
+      if (!this.tracks[removeQueryTrack]) return null;
+      const removed2 = this.tracks.splice(removeQueryTrack, 1);
+      if (typeof this.queueChanges?.tracksRemoved === "function") try {
+        this.queueChanges.tracksRemoved(this.guildId, removed2, removeQueryTrack, oldStored, this.utils.toJSON());
+      } catch {
+      }
+      await this.utils.save();
+      return { removed: removed2 };
+    }
+    if (Array.isArray(removeQueryTrack)) {
+      if (removeQueryTrack.every((v) => typeof v === "number")) {
+        const removed3 = [];
+        const sortedIndexes = removeQueryTrack.sort((a, b2) => b2 - a);
+        for (const i of sortedIndexes) if (this.tracks[i]) removed3.unshift(...this.tracks.splice(i, 1));
+        if (!removed3.length) return null;
+        if (typeof this.queueChanges?.tracksRemoved === "function") try {
+          this.queueChanges.tracksRemoved(this.guildId, removed3, removeQueryTrack, oldStored, this.utils.toJSON());
+        } catch {
+        }
+        await this.utils.save();
+        return { removed: removed3 };
+      }
+      const tracksToRemove = this.tracks.map((v, i) => ({
+        v,
+        i
+      })).filter(({ v, i }) => removeQueryTrack.find((t) => typeof t === "number" && t === i || typeof t === "object" && (t.encoded && t.encoded === v.encoded || t.info?.identifier && t.info.identifier === v.info?.identifier || t.info?.uri && t.info.uri === v.info?.uri || t.info?.title && t.info.title === v.info?.title || t.info?.isrc && t.info.isrc === v.info?.isrc || t.info?.artworkUrl && t.info.artworkUrl === v.info?.artworkUrl)));
+      if (!tracksToRemove.length) return null;
+      const removed2 = [];
+      tracksToRemove.sort((a, b2) => b2.i - a.i);
+      for (const { i } of tracksToRemove) if (this.tracks[i]) removed2.unshift(...this.tracks.splice(i, 1));
+      if (typeof this.queueChanges?.tracksRemoved === "function") try {
+        this.queueChanges.tracksRemoved(this.guildId, removed2, tracksToRemove.map((v) => v.i), oldStored, this.utils.toJSON());
+      } catch {
+      }
+      await this.utils.save();
+      return { removed: removed2 };
+    }
+    const toRemove = this.tracks.findIndex((v) => removeQueryTrack.encoded && removeQueryTrack.encoded === v.encoded || removeQueryTrack.info?.identifier && removeQueryTrack.info.identifier === v.info?.identifier || removeQueryTrack.info?.uri && removeQueryTrack.info.uri === v.info?.uri || removeQueryTrack.info?.title && removeQueryTrack.info.title === v.info?.title || removeQueryTrack.info?.isrc && removeQueryTrack.info.isrc === v.info?.isrc || removeQueryTrack.info?.artworkUrl && removeQueryTrack.info.artworkUrl === v.info?.artworkUrl);
+    if (toRemove < 0) return null;
+    const removed = this.tracks.splice(toRemove, 1);
+    if (typeof this.queueChanges?.tracksRemoved === "function") try {
+      this.queueChanges.tracksRemoved(this.guildId, removed, toRemove, oldStored, this.utils.toJSON());
+    } catch {
+    }
+    await this.utils.save();
+    return { removed };
+  }
+  /**
+  * Shifts the previous array, to return the last previous track & thus remove it from the previous queue
+  * @returns
+  *
+  * @example
+  * ```js
+  * // example on how to play the previous track again
+  * const previous = await player.queue.shiftPrevious(); // get the previous track and remove it from the previous queue array!!
+  * if(!previous) return console.error("No previous track found");
+  * await player.play({ clientTrack: previous }); // play it again
+  * ```
+  */
+  async shiftPrevious() {
+    const removed = this.previous.shift();
+    if (removed) await this.utils.save();
+    return removed ?? null;
+  }
+  /**
+  * Find tracks in the queue matching specific criteria.
+  * **This method DOES NOT MUTATE the queue** - it returns a new array without modifying the original queue.
+  * @deprecated Use `player.queue.utils.filterTracks()` instead.
+  * @param predicate Function to test each track, or an object with criteria to match
+  * @returns Array of matching tracks with their indexes
+  *
+  * @example
+  * ```ts
+  * // Use the new method instead:
+  * const artistTracks = player.queue.utils.filterTracks({ author: "Artist Name" });
+  * ```
+  */
+  filter(predicate) {
+    return this.utils.filterTracks(predicate);
+  }
+  /**
+  * Find a single track in the queue matching specific criteria.
+  * **This method DOES NOT MUTATE the queue** - it searches without modifying the original queue.
+  * @deprecated Use `player.queue.utils.findTrack()` instead.
+  * @param predicate Function to test each track, or an object with criteria to match
+  * @returns First matching track with its index, or null if not found
+  *
+  * @example
+  * ```ts
+  * // Use the new method instead:
+  * const track = player.queue.utils.findTrack({ author: "Artist Name" });
+  * ```
+  */
+  find(predicate) {
+    return this.utils.findTrack(predicate);
+  }
+  /**
+  * Sort the queue tracks by a specific property.
+  * **⚠️ This method MUTATES the queue** - it modifies the original queue in place.
+  * @param sortBy Property to sort by or custom comparator function
+  * @param order Sort order: 'asc' or 'desc' (default: 'asc')
+  * @returns The queue instance for chaining
+  *
+  * @example
+  * ```ts
+  * // Sort by duration (shortest first)
+  * await player.queue.sortBy("duration", "asc");
+  *
+  * // Sort by title alphabetically (Z-A)
+  * await player.queue.sortBy("title", "desc");
+  *
+  * // Custom sorting
+  * await player.queue.sortBy((a, b) => {
+  *   return a.info.title.localeCompare(b.info.title);
+  * });
+  * ```
+  */
+  async sortBy(sortBy, order = "asc") {
+    if (typeof sortBy === "function") this.tracks.sort(sortBy);
+    else this.tracks.sort((a, b2) => {
+      let comparison = 0;
+      switch (sortBy) {
+        case "duration":
+          comparison = (a.info?.duration || 0) - (b2.info?.duration || 0);
+          break;
+        case "title":
+          comparison = (a.info?.title || "").localeCompare(b2.info?.title || "");
+          break;
+        case "author":
+          comparison = (a.info?.author || "").localeCompare(b2.info?.author || "");
+          break;
+        default:
+          return 0;
+      }
+      return order === "desc" ? -comparison : comparison;
+    });
+    await this.utils.save();
+    return this;
+  }
+  /**
+  * Get a sorted copy of the queue tracks without modifying the original queue.
+  * **This method DOES NOT MUTATE the queue** - it returns a new sorted array, similar to `Array.toSorted()`.
+  * @param sortBy Property to sort by or custom comparator function
+  * @param order Sort order: 'asc' or 'desc' (default: 'asc')
+  * @returns A new sorted array of tracks (does not modify the queue)
+  *
+  * @example
+  * ```ts
+  * // Get sorted copy by duration (shortest first)
+  * const sortedTracks = player.queue.toSortedBy("duration", "asc");
+  * // Original queue remains unchanged
+  *
+  * // Get sorted copy by title alphabetically (Z-A)
+  * const sortedByTitle = player.queue.toSortedBy("title", "desc");
+  *
+  * // Custom sorting
+  * const customSorted = player.queue.toSortedBy((a, b) => {
+  *   return a.info.title.localeCompare(b.info.title);
+  * });
+  * ```
+  */
+  toSortedBy(sortBy, order = "asc") {
+    const tracksCopy = [...this.tracks];
+    if (typeof sortBy === "function") return tracksCopy.sort(sortBy);
+    return tracksCopy.sort((a, b2) => {
+      let comparison = 0;
+      switch (sortBy) {
+        case "duration":
+          comparison = (a.info?.duration || 0) - (b2.info?.duration || 0);
+          break;
+        case "title":
+          comparison = (a.info?.title || "").localeCompare(b2.info?.title || "");
+          break;
+        case "author":
+          comparison = (a.info?.author || "").localeCompare(b2.info?.author || "");
+          break;
+        default:
+          return 0;
+      }
+      return order === "desc" ? -comparison : comparison;
+    });
+  }
+  /**
+  * Get a range of tracks from the queue.
+  * **This method DOES NOT MUTATE the queue** - it returns a new array slice, similar to `Array.slice()`.
+  * @param start Start index (inclusive)
+  * @param end End index (exclusive)
+  * @returns Array of tracks in the specified range
+  *
+  * @example
+  * ```ts
+  * // Get tracks 5-15
+  * const tracks = player.queue.getTracks(5, 15);
+  *
+  * // Get first 10 tracks
+  * const firstTen = player.queue.getTracks(0, 10);
+  * ```
+  */
+  getTracks(start, end) {
+    return this.tracks.slice(start, end);
+  }
+};
+var Player = class {
+  static {
+    __name(this, "Player");
+  }
+  /** Filter Manager per player */
+  filterManager;
+  /** circular reference to the lavalink Manager from the Player for easier use */
+  LavalinkManager;
+  /** Player options currently used, mutation doesn't affect player's state */
+  options;
+  /** The lavalink node assigned the the player, don't change it manually */
+  node;
+  /** The queue from the player */
+  queue;
+  /** The Guild Id of the Player */
+  guildId;
+  /** The Voice Channel Id of the Player */
+  voiceChannelId = null;
+  /** The Text Channel Id of the Player */
+  textChannelId = null;
+  /** States if the Bot is supposed to be outputting audio */
+  playing = false;
+  /** States if the Bot is paused or not */
+  paused = false;
+  /** Repeat Mode of the Player */
+  repeatMode = "off";
+  /** Player's ping */
+  ping = {
+    lavalink: 0,
+    ws: 0
+  };
+  /** The Display Volume */
+  volume = 100;
+  /** The Volume Lavalink actually is outputting */
+  lavalinkVolume = 100;
+  /** The current Positin of the player (Calculated) */
+  get position() {
+    return this.lastPosition + (this.lastPositionChange ? Date.now() - this.lastPositionChange : 0);
+  }
+  /** The timestamp when the last position change update happened */
+  lastPositionChange = null;
+  /** The current Positin of the player (from Lavalink) */
+  lastPosition = 0;
+  lastSavedPosition = 0;
+  /** When the player was created [Timestamp in Ms] (from lavalink) */
+  createdTimeStamp;
+  /** The Player Connection's State (from Lavalink) */
+  connected = false;
+  /** Voice Server Data (from Lavalink) */
+  voice = {
+    endpoint: null,
+    sessionId: null,
+    token: null,
+    channelId: void 0
+  };
+  voiceState = {
+    selfDeaf: false,
+    selfMute: false,
+    serverDeaf: false,
+    serverMute: false,
+    suppress: false
+  };
+  /** Custom data for the player */
+  data = {};
+  /**
+  * Emits a debug event to the LavalinkManager
+  * @param name name of the event
+  * @param eventData event data
+  */
+  _emitDebugEvent(name, eventData) {
+    if (!this.LavalinkManager.options?.advancedOptions?.enableDebugEvents) return;
+    this.LavalinkManager.emit("debug", name, eventData);
+  }
+  /**
+  * Create a new Player
+  * @param options
+  * @param LavalinkManager
+  */
+  constructor(options, LavalinkManager3, dontEmitPlayerCreateEvent) {
+    if (typeof options?.customData === "object") for (const [key, value] of Object.entries(options.customData)) this.setData(key, value);
+    this.options = options;
+    this.filterManager = new FilterManager(this);
+    this.LavalinkManager = LavalinkManager3;
+    this.guildId = this.options.guildId;
+    this.voiceChannelId = this.options.voiceChannelId;
+    this.textChannelId = this.options.textChannelId || null;
+    this.node = typeof this.options.node === "string" ? this.LavalinkManager.nodeManager.nodes.get(this.options.node) : this.options.node;
+    if (!this.node || typeof this.node.request !== "function") {
+      if (typeof this.options.node === "string") this._emitDebugEvent("PlayerCreateNodeNotFound", {
+        state: "warn",
+        message: `Player was created with provided node Id: ${this.options.node}, but no node with that Id was found.`,
+        functionLayer: "Player > constructor()"
+      });
+      const least = this.LavalinkManager.nodeManager.leastUsedNodes();
+      this.node = least.filter((v) => options.vcRegion ? v.options?.regions?.includes(options.vcRegion) : true)[0] || least[0] || null;
+    }
+    if (!this.node) throw new Error("No available Node was found, please add a LavalinkNode to the Manager via Manager.NodeManager#createNode");
+    if (typeof options.volume === "number" && !isNaN(options.volume)) this.volume = Number(options.volume);
+    this.volume = Math.round(Math.max(Math.min(this.volume, 1e3), 0));
+    this.lavalinkVolume = Math.round(Math.max(Math.min(Math.round(this.LavalinkManager.options.playerOptions.volumeDecrementer ? this.volume * this.LavalinkManager.options.playerOptions.volumeDecrementer : this.volume), 1e3), 0));
+    if (!dontEmitPlayerCreateEvent) this.LavalinkManager.emit("playerCreate", this);
+    this.queue = new Queue2(this.guildId, {}, new QueueSaver(this.LavalinkManager.options.queueOptions), this.LavalinkManager.options.queueOptions);
+  }
+  /**
+  * Set custom data. (Deprecated - Use Player#setData instead.)
+  * @param key
+  * @param value
+  * @deprecated Use Player#setData instead.
+  */
+  set(key, value) {
+    this.data[key] = value;
+    return this;
+  }
+  /**
+  * Get custom data. (Deprecated - Use Player#getData instead.)
+  * @param key
+  * @deprecated Use Player#getData instead.
+  */
+  get(key) {
+    return this.data[key];
+  }
+  /**
+  * Set custom data.
+  * @param key
+  * @param value
+  */
+  setData(key, value) {
+    this.data[key] = value;
+    return this;
+  }
+  /**
+  * Get custom data.
+  * @param key
+  */
+  getData(key) {
+    return this.data[key];
+  }
+  /**
+  * Delete specific custom data.
+  * @param key
+  */
+  deleteData(key) {
+    if (key.startsWith("internal_")) return this;
+    delete this.data[key];
+    return this;
+  }
+  /**
+  * CLears all the custom data.
+  */
+  clearData() {
+    const toKeep = Object.keys(this.data).filter((v) => v.startsWith("internal_"));
+    for (const key in this.data) {
+      if (toKeep.includes(key)) continue;
+      delete this.data[key];
+    }
+    return this;
+  }
+  /**
+  * Get all custom Data
+  */
+  getAllData() {
+    return Object.fromEntries(Object.entries(this.data).filter((v) => !v[0].startsWith("internal_")));
+  }
+  /**
+  * Play the next track from the queue / a specific track, with playoptions for Lavalink
+  * @param options
+  */
+  async play(options = {}) {
+    if (this.getData("internal_queueempty")) {
+      this._emitDebugEvent("PlayerPlayQueueEmptyTimeoutClear", {
+        state: "log",
+        message: `Player was called to play something, while there was a queueEmpty Timeout set, clearing the timeout.`,
+        functionLayer: "Player > play()"
+      });
+      this.LavalinkManager.emit("playerQueueEmptyCancel", this);
+      clearTimeout(this.getData("internal_queueempty"));
+      this.setData("internal_queueempty", void 0);
+    }
+    if (options?.clientTrack && (this.LavalinkManager.utils.isTrack(options?.clientTrack) || this.LavalinkManager.utils.isUnresolvedTrack(options.clientTrack))) {
+      if (this.LavalinkManager.utils.isUnresolvedTrack(options.clientTrack)) try {
+        await options.clientTrack.resolve(this);
+      } catch (error62) {
+        this._emitDebugEvent("PlayerPlayUnresolvedTrackFailed", {
+          state: "error",
+          error: error62,
+          message: `Player Play was called with clientTrack, Song is unresolved, but couldn't resolve it`,
+          functionLayer: "Player > play() > resolve currentTrack"
+        });
+        this.LavalinkManager.emit("trackError", this, this.queue.current, error62);
+        if (options && "clientTrack" in options) delete options.clientTrack;
+        if (options && "track" in options) delete options.track;
+        if (this.LavalinkManager.options?.autoSkipOnResolveError === true && this.queue.tracks[0]) return this.play(options);
+        return this;
+      }
+      if ((typeof options.track?.userData === "object" || typeof options.clientTrack?.userData === "object") && options.clientTrack) options.clientTrack.userData = {
+        ...typeof options?.clientTrack?.requester === "object" ? { requester: this.LavalinkManager.utils.getTransformedRequester(options?.clientTrack?.requester || {}) } : {},
+        ...options?.clientTrack.userData,
+        ...options.track?.userData
+      };
+      options.track = {
+        encoded: options.clientTrack?.encoded,
+        requester: options.clientTrack?.requester,
+        userData: options.clientTrack?.userData,
+        audioTrackId: options.track?.audioTrackId ?? options.clientTrack?.audioTrackId
+      };
+      if (options.track.audioTrackId && !this.node.isNodeLink()) delete options.track.audioTrackId;
+    }
+    if (options?.track?.encoded || options?.track?.identifier) {
+      this.queue.current = options.clientTrack || null;
+      this.queue.utils.save();
+      if (typeof options?.volume === "number" && !isNaN(options?.volume)) {
+        this.volume = Math.max(Math.min(options?.volume, 1e3), 0);
+        let vol = Number(this.volume);
+        if (this.LavalinkManager.options.playerOptions.volumeDecrementer) vol *= this.LavalinkManager.options.playerOptions.volumeDecrementer;
+        this.lavalinkVolume = Math.round(vol);
+        options.volume = this.lavalinkVolume;
+      }
+      const track = Object.fromEntries(Object.entries({
+        encoded: options.track.encoded,
+        identifier: options.track.identifier,
+        userData: {
+          ...typeof options?.track?.requester === "object" ? { requester: this.LavalinkManager.utils.getTransformedRequester(options?.track?.requester || {}) } : {},
+          ...options.track.userData
+        },
+        audioTrackId: options.track.audioTrackId
+      }).filter((v) => typeof v[1] !== "undefined"));
+      this._emitDebugEvent("PlayerPlayWithTrackReplace", {
+        state: "log",
+        message: `Player was called to play something, with a specific track provided. Replacing the current Track and resolving the track on trackStart Event.`,
+        functionLayer: "Player > play()"
+      });
+      if (track.audioTrackId && !this.node.isNodeLink()) delete track.audioTrackId;
+      return this.node.updatePlayer({
+        guildId: this.guildId,
+        noReplace: false,
+        playerOptions: Object.fromEntries(Object.entries({
+          track,
+          position: options.position ?? void 0,
+          paused: options.paused ?? void 0,
+          endTime: options?.endTime ?? void 0,
+          filters: options?.filters ?? void 0,
+          volume: options.volume ?? this.lavalinkVolume ?? void 0,
+          voice: options.voice ?? void 0
+        }).filter((v) => typeof v[1] !== "undefined"))
+      });
+    }
+    if (!this.queue.current && this.queue.tracks.length) await queueTrackEnd(this);
+    if (this.queue.current && this.LavalinkManager.utils.isUnresolvedTrack(this.queue.current)) {
+      this._emitDebugEvent("PlayerPlayUnresolvedTrack", {
+        state: "log",
+        message: `Player Play was called, current Queue Song is unresolved, resolving the track.`,
+        functionLayer: "Player > play()"
+      });
+      try {
+        await this.queue.current.resolve(this);
+        if (typeof options.track?.userData === "object" && this.queue.current) this.queue.current.userData = {
+          ...typeof this.queue.current?.requester === "object" ? { requester: this.LavalinkManager.utils.getTransformedRequester(this.queue.current?.requester || {}) } : {},
+          ...this.queue.current?.userData,
+          ...options.track?.userData
+        };
+      } catch (error62) {
+        this._emitDebugEvent("PlayerPlayUnresolvedTrackFailed", {
+          state: "error",
+          error: error62,
+          message: `Player Play was called, current Queue Song is unresolved, but couldn't resolve it`,
+          functionLayer: "Player > play() > resolve currentTrack"
+        });
+        this.LavalinkManager.emit("trackError", this, this.queue.current, error62);
+        if (options && "clientTrack" in options) delete options.clientTrack;
+        if (options && "track" in options) delete options.track;
+        await queueTrackEnd(this, true);
+        if (this.LavalinkManager.options?.autoSkipOnResolveError === true && this.queue.tracks[0]) return this.play(options);
+        return this;
+      }
+    }
+    if (!this.queue.current) throw new Error(`There is no Track in the Queue, nor provided in the PlayOptions`);
+    if (typeof options?.volume === "number" && !isNaN(options?.volume)) {
+      this.volume = Math.max(Math.min(options?.volume, 1e3), 0);
+      let vol = Number(this.volume);
+      if (this.LavalinkManager.options.playerOptions.volumeDecrementer) vol *= this.LavalinkManager.options.playerOptions.volumeDecrementer;
+      this.lavalinkVolume = Math.round(vol);
+      options.volume = this.lavalinkVolume;
+    }
+    const finalOptions = Object.fromEntries(Object.entries({
+      track: {
+        encoded: this.queue.current?.encoded || null,
+        userData: {
+          ...typeof this.queue.current?.requester === "object" ? { requester: this.LavalinkManager.utils.getTransformedRequester(this.queue.current?.requester || {}) } : {},
+          ...options?.track?.userData,
+          ...this.queue.current?.userData
+        },
+        audioTrackId: options?.track?.audioTrackId
+      },
+      volume: this.lavalinkVolume,
+      position: options?.position ?? 0,
+      endTime: options?.endTime ?? void 0,
+      filters: options?.filters ?? void 0,
+      paused: options?.paused ?? void 0,
+      voice: options?.voice ?? void 0
+    }).filter((v) => typeof v[1] !== "undefined"));
+    if (finalOptions.track.audioTrackId && !this.node.isNodeLink()) delete finalOptions.track.audioTrackId;
+    if (typeof finalOptions.position !== "undefined" && isNaN(finalOptions.position) || typeof finalOptions.position === "number" && finalOptions.position < 0 || typeof finalOptions.position === "number" && this.queue.current.info.duration > 0 && finalOptions.position >= this.queue.current.info.duration) throw new Error("PlayerOption#position must be a positive number, less than track's duration");
+    if (typeof finalOptions.volume !== "undefined" && isNaN(finalOptions.volume) || typeof finalOptions.volume === "number" && finalOptions.volume < 0) throw new Error("PlayerOption#volume must be a positive number");
+    if (typeof finalOptions.endTime !== "undefined" && isNaN(finalOptions.endTime) || typeof finalOptions.endTime === "number" && finalOptions.endTime < 0 || typeof finalOptions.endTime === "number" && this.queue.current.info.duration > 0 && finalOptions.endTime >= this.queue.current.info.duration) throw new Error("PlayerOption#endTime must be a positive number, less than track's duration");
+    if (typeof finalOptions.position === "number" && typeof finalOptions.endTime === "number" && finalOptions.endTime < finalOptions.position) throw new Error("PlayerOption#endTime must be bigger than PlayerOption#position");
+    const now = performance.now();
+    await this.node.updatePlayer({
+      guildId: this.guildId,
+      noReplace: options?.noReplace ?? false,
+      playerOptions: finalOptions
+    });
+    this.ping.lavalink = Math.round((performance.now() - now) / 10) / 100;
+    return this;
+  }
+  /**
+  * The old JSON of the player, used for the "playerClientUpdate" event, which is emitted on every update of the player via a function call, so that you can compare the old data with the new data and do something with it if you want to.
+  */
+  oldJSON = this.toJSON();
+  /**
+  * Emits the "playerClientUpdate" event, which is emitted on every update of the player via a function call, so that you can compare the old data with the new data and do something with it if you want to.
+  */
+  triggerPlayerClientUpdate() {
+    this.LavalinkManager.emit("playerClientUpdate", this.oldJSON, this);
+    this.oldJSON = this.toJSON();
+  }
+  /**
+  * Set the Volume for the Player
+  * @param volume The Volume in percent
+  * @param ignoreVolumeDecrementer If it should ignore the volumedecrementer option
+  */
+  async setVolume(volume, ignoreVolumeDecrementer = false) {
+    volume = Number(volume);
+    if (isNaN(volume)) throw new TypeError("Volume must be a number.");
+    this.volume = Math.round(Math.max(Math.min(volume, 1e3), 0));
+    this.lavalinkVolume = Math.round(Math.max(Math.min(Math.round(this.LavalinkManager.options.playerOptions.volumeDecrementer && !ignoreVolumeDecrementer ? this.volume * this.LavalinkManager.options.playerOptions.volumeDecrementer : this.volume), 1e3), 0));
+    this.triggerPlayerClientUpdate();
+    const now = performance.now();
+    if (this.LavalinkManager.options.playerOptions.applyVolumeAsFilter) {
+      this._emitDebugEvent("PlayerVolumeAsFilter", {
+        state: "log",
+        message: `Player Volume was set as a Filter, because LavalinkManager option "playerOptions.applyVolumeAsFilter" is true`,
+        functionLayer: "Player > setVolume()"
+      });
+      await this.node.updatePlayer({
+        guildId: this.guildId,
+        playerOptions: { filters: { volume: this.lavalinkVolume / 100 } }
+      });
+    } else await this.node.updatePlayer({
+      guildId: this.guildId,
+      playerOptions: { volume: this.lavalinkVolume }
+    });
+    this.ping.lavalink = Math.round((performance.now() - now) / 10) / 100;
+    return this;
+  }
+  /**
+  * Search for a track
+  * @param query The query to search for
+  * @param requestUser The user that requested the track
+  * @param throwOnEmpty If an error should be thrown if no track is found
+  * @returns The search result
+  */
+  async lavaSearch(query, requestUser, throwOnEmpty = false) {
+    return this.node.lavaSearch(query, requestUser, throwOnEmpty);
+  }
+  /**
+  * Set the SponsorBlock
+  * @param segments The segments to set
+  */
+  async setSponsorBlock(segments = ["sponsor", "selfpromo"]) {
+    return this.node.setSponsorBlock(this, segments);
+  }
+  /**
+  * Get the SponsorBlock
+  */
+  async getSponsorBlock() {
+    return this.node.getSponsorBlock(this);
+  }
+  /**
+  * Delete the SponsorBlock
+  */
+  async deleteSponsorBlock() {
+    return this.node.deleteSponsorBlock(this);
+  }
+  /**
+  *
+  * @param query Query for your data
+  * @param requestUser
+  */
+  async search(query, requestUser, throwOnEmpty = false) {
+    const Query2 = this.LavalinkManager.utils.transformQuery(query);
+    if (["bcsearch", "bandcamp"].includes(Query2.source) && !this.node.info?.sourceManagers.includes("bandcamp")) {
+      this._emitDebugEvent("BandcampSearchLokalEngine", {
+        state: "log",
+        message: `Player.search was called with a Bandcamp Query, but no bandcamp search was enabled on lavalink, searching with the custom Search Engine.`,
+        functionLayer: "Player > search()"
+      });
+      return await bandCampSearch(this, Query2.query, requestUser);
+    }
+    return this.node.search(Query2, requestUser, throwOnEmpty);
+  }
+  /**
+  * Pause the player
+  */
+  async pause() {
+    if (this.paused && !this.playing) throw new Error("Player is already paused - not able to pause.");
+    this.paused = true;
+    this.lastPositionChange = null;
+    const now = performance.now();
+    this.triggerPlayerClientUpdate();
+    await this.node.updatePlayer({
+      guildId: this.guildId,
+      playerOptions: { paused: true }
+    });
+    this.ping.lavalink = Math.round((performance.now() - now) / 10) / 100;
+    this.LavalinkManager.emit("playerPaused", this, this.queue.current);
+    return this;
+  }
+  /**
+  * Resume the Player
+  */
+  async resume() {
+    if (!this.paused) throw new Error("Player isn't paused - not able to resume.");
+    this.paused = false;
+    const now = performance.now();
+    this.triggerPlayerClientUpdate();
+    await this.node.updatePlayer({
+      guildId: this.guildId,
+      playerOptions: { paused: false }
+    });
+    this.ping.lavalink = Math.round((performance.now() - now) / 10) / 100;
+    this.LavalinkManager.emit("playerResumed", this, this.queue.current);
+    return this;
+  }
+  /**
+  * Seek to a specific Position
+  * @param position
+  */
+  async seek(position) {
+    if (!this.queue.current) return void 0;
+    position = Number(position);
+    if (isNaN(position)) throw new RangeError("Position must be a number.");
+    if (!this.queue.current.info.isSeekable || this.queue.current.info.isStream) throw new RangeError("Current Track is not seekable / a stream");
+    if (position < 0 || position > this.queue.current.info.duration) position = Math.max(Math.min(position, this.queue.current.info.duration), 0);
+    this.lastPositionChange = Date.now();
+    this.lastPosition = position;
+    const now = performance.now();
+    this.triggerPlayerClientUpdate();
+    await this.node.updatePlayer({
+      guildId: this.guildId,
+      playerOptions: { position }
+    });
+    this.ping.lavalink = Math.round((performance.now() - now) / 10) / 100;
+    return this;
+  }
+  /**
+  * Set the Repeatmode of the Player
+  * @param repeatMode
+  */
+  async setRepeatMode(repeatMode) {
+    if (![
+      "off",
+      "track",
+      "queue"
+    ].includes(repeatMode)) throw new RangeError("Repeatmode must be either 'off', 'track', or 'queue'");
+    this.repeatMode = repeatMode;
+    this.triggerPlayerClientUpdate();
+    return this;
+  }
+  /**
+  * Skip the current song, or a specific amount of songs
+  * @param amount provide the index of the next track to skip to
+  */
+  async skip(skipTo = 0, throwError = true) {
+    if (!this.queue.tracks.length && (throwError || typeof skipTo === "boolean" && skipTo === true)) throw new RangeError("Can't skip more than the queue size");
+    if (typeof skipTo === "number" && skipTo > 1) {
+      if (skipTo > this.queue.tracks.length) throw new RangeError("Can't skip more than the queue size");
+      await this.queue.splice(0, skipTo - 1);
+    }
+    if (!this.playing && !this.queue.current) return this.play(), this;
+    const now = performance.now();
+    this.setData("internal_skipped", true);
+    await this.node.updatePlayer({
+      guildId: this.guildId,
+      playerOptions: {
+        track: { encoded: null },
+        paused: false
+      }
+    });
+    this.ping.lavalink = Math.round((performance.now() - now) / 10) / 100;
+    return this;
+  }
+  /**
+  * Clears the queue and stops playing. Does not destroy the Player and not leave the channel
+  * @returns
+  */
+  async stopPlaying(clearQueue = true, executeAutoplay = false) {
+    this.setData("internal_stopPlaying", true);
+    if (this.queue.tracks.length && clearQueue === true) await this.queue.splice(0, this.queue.tracks.length);
+    if (executeAutoplay === false) this.setData("internal_autoplayStopPlaying", true);
+    else this.setData("internal_autoplayStopPlaying", void 0);
+    const now = performance.now();
+    await this.node.updatePlayer({
+      guildId: this.guildId,
+      playerOptions: this.node.isNodeLink() ? {
+        track: { encoded: null },
+        nextTrack: { encoded: null }
+      } : { track: { encoded: null } }
+    });
+    this.paused = false;
+    this.ping.lavalink = Math.round((performance.now() - now) / 10) / 100;
+    return this;
+  }
+  /**
+  * Connects the Player to the Voice Channel
+  * @returns
+  */
+  async connect() {
+    if (!this.options.voiceChannelId) {
+      if (this.voiceChannelId) this.options.voiceChannelId = this.voiceChannelId;
+      else throw new RangeError("No Voice Channel id has been set. (player.options.voiceChannelId)");
+    }
+    await this.LavalinkManager.options.sendToShard(this.guildId, {
+      op: 4,
+      d: {
+        guild_id: this.guildId,
+        channel_id: this.options.voiceChannelId,
+        self_mute: this.options.selfMute ?? false,
+        self_deaf: this.options.selfDeaf ?? true
+      }
+    });
+    this.voiceChannelId = this.options.voiceChannelId;
+    return this;
+  }
+  async changeVoiceState(data) {
+    if (this.options.voiceChannelId === data.voiceChannelId) throw new RangeError("New Channel can't be equal to the old Channel.");
+    await this.LavalinkManager.options.sendToShard(this.guildId, {
+      op: 4,
+      d: {
+        guild_id: this.guildId,
+        channel_id: data.voiceChannelId,
+        self_mute: data.selfMute ?? this.options.selfMute ?? false,
+        self_deaf: data.selfDeaf ?? this.options.selfDeaf ?? true
+      }
+    });
+    this.options.voiceChannelId = data.voiceChannelId;
+    this.options.selfMute = data.selfMute;
+    this.options.selfDeaf = data.selfDeaf;
+    this.voiceChannelId = data.voiceChannelId;
+    return this;
+  }
+  /**
+  * Disconnects the Player from the Voice Channel, but keeps the player in the cache
+  * @param force If false it throws an error, if player thinks it's already disconnected
+  * @returns
+  */
+  async disconnect(force = false) {
+    if (!force && !this.options.voiceChannelId) {
+      if (this.voiceChannelId) this.options.voiceChannelId = this.voiceChannelId;
+      else throw new RangeError("No Voice Channel id has been set. (player.options.voiceChannelId)");
+    }
+    await this.LavalinkManager.options.sendToShard(this.guildId, {
+      op: 4,
+      d: {
+        guild_id: this.guildId,
+        channel_id: null,
+        self_mute: false,
+        self_deaf: false
+      }
+    });
+    this.voiceChannelId = null;
+    return this;
+  }
+  /**
+  * Destroy the player and disconnect from the voice channel
+  */
+  async destroy(reason, disconnect = true) {
+    if (this.LavalinkManager.options.advancedOptions?.debugOptions.playerDestroy.debugLog) console.log(`Lavalink-Client-Debug | PlayerDestroy [::] destroy Function, [guildId ${this.guildId}] - Destroy-Reason: ${String(reason)}`);
+    if (this.getData("internal_queueempty")) {
+      clearTimeout(this.getData("internal_queueempty"));
+      this.setData("internal_queueempty", void 0);
+    }
+    if (this.getData("internal_destroystatus") === true) {
+      this._emitDebugEvent("PlayerDestroyingSomewhereElse", {
+        state: "warn",
+        message: `Player is already destroying somewhere else..`,
+        functionLayer: "Player > destroy()"
+      });
+      if (this.LavalinkManager.options.advancedOptions?.debugOptions.playerDestroy.debugLog) console.log(`Lavalink-Client-Debug | PlayerDestroy [::] destroy Function, [guildId ${this.guildId}] - Already destroying somewhere else..`);
+      return;
+    }
+    this.setData("internal_destroystatus", true);
+    if (disconnect) await this.disconnect(true);
+    else this.setData("internal_destroywithoutdisconnect", true);
+    await this.queue.utils.destroy();
+    this.LavalinkManager.deletePlayer(this.guildId);
+    await this.node.destroyPlayer(this.guildId);
+    if (this.LavalinkManager.options.advancedOptions?.debugOptions.playerDestroy.debugLog) console.log(`Lavalink-Client-Debug | PlayerDestroy [::] destroy Function, [guildId ${this.guildId}] - Player got destroyed successfully`);
+    this.LavalinkManager.emit("playerDestroy", this, reason);
+    return this;
+  }
+  /**
+  * Get the current lyrics of the track currently playing on the guild
+  * @param guildId The guild id to get the current lyrics for
+  * @param skipTrackSource If true, it will not try to get the lyrics from the track source
+  * @returns The current lyrics
+  * @example
+  * ```ts
+  * const lyrics = await player.getCurrentLyrics();
+  * ```
+  */
+  async getCurrentLyrics(skipTrackSource) {
+    return await this.node.lyrics.getCurrent(this.guildId, skipTrackSource);
+  }
+  /**
+  * Get the lyrics of a specific track
+  * @param track The track to get the lyrics for
+  * @param skipTrackSource If true, it will not try to get the lyrics from the track source
+  * @returns The lyrics of the track
+  * @example
+  * ```ts
+  * const lyrics = await player.getLyrics(player.queue.tracks[0], true);
+  * ```
+  */
+  async getLyrics(track, skipTrackSource) {
+    return await this.node.lyrics.get(track, skipTrackSource);
+  }
+  /**
+  * Subscribe to the lyrics event on a specific guild to active live lyrics events}
+  * @param skipTrackSource If true, it will not try to get the lyrics from the track source
+  * @returns The unsubscribe function
+  * @example
+  * ```ts
+  * const lyrics = await player.subscribeLyrics();
+  * ```
+  */
+  subscribeLyrics(skipTrackSource) {
+    return this.node.lyrics.subscribe(this.guildId, skipTrackSource);
+  }
+  /**
+  * Unsubscribe from the lyrics event on a specific guild to disable live lyrics events
+  * @returns The unsubscribe function
+  * @example
+  * ```ts
+  * const lyrics = await player.unsubscribeLyrics();
+  * ```
+  */
+  unsubscribeLyrics() {
+    return this.node.lyrics.unsubscribe(this.guildId);
+  }
+  /**
+  * Move the player on a different Audio-Node
+  * @param newNode New Node / New Node Id
+  * @param checkSources If it should check if the sources are supported by the new node @default true
+  * @return The new Node Id
+  * @example
+  * ```ts
+  * const changeNode = await player.changeNode(newNode, true);
+  * ```
+  */
+  async changeNode(newNode, checkSources = true) {
+    const updateNode = typeof newNode === "string" ? this.LavalinkManager.nodeManager.nodes.get(newNode) : newNode;
+    if (!updateNode) throw new Error("Could not find the new Node");
+    if (!updateNode.connected) throw new Error("The provided Node is not active or disconnected");
+    if (this.node.id === updateNode.id) throw new Error("Player is already on the provided Node");
+    if (this.getData("internal_nodeChanging") === true) throw new Error("Player is already changing the node please wait");
+    if (checkSources) {
+      const isDefaultSource = /* @__PURE__ */ __name(() => {
+        try {
+          this.LavalinkManager.utils.validateSourceString(updateNode, this.LavalinkManager.options.playerOptions.defaultSearchPlatform);
+          return true;
+        } catch {
+          return false;
+        }
+      }, "isDefaultSource");
+      if (!isDefaultSource()) throw new RangeError(`defaultSearchPlatform "${this.LavalinkManager.options.playerOptions.defaultSearchPlatform}" is not supported by the newNode`);
+      if (this.queue.current || this.queue.tracks.length) {
+        const missingSources = [...new Set([this.queue.current, ...this.queue.tracks].map((track) => track?.info?.sourceName).filter(Boolean))].filter((source) => !updateNode.info?.sourceManagers.includes(source));
+        if (updateNode._checkForSources && missingSources.length) throw new RangeError(`Sources missing for Node ${updateNode.id}: ${missingSources.join(", ")}`);
+      }
+    }
+    this._emitDebugEvent("PlayerChangeNode", {
+      state: "log",
+      message: `Player.changeNode() was executed, trying to change from "${this.node.id}" to "${updateNode.id}"`,
+      functionLayer: "Player > changeNode()"
+    });
+    const data = this.toJSON();
+    const currentTrack = this.queue.current;
+    if (!this.voice.endpoint || !this.voice.sessionId || !this.voice.token) throw new Error("Voice Data is missing, can't change the node");
+    this.setData("internal_nodeChanging", true);
+    if (this.node.connected) await this.node.destroyPlayer(this.guildId);
+    this.node = updateNode;
+    const now = performance.now();
+    try {
+      await this.connect();
+      if (!this.node._checkForPlugins || this.node.info?.plugins?.find((v) => v.name === "sponsorblock-plugin")) {
+        const sponsorBlockCategories = this.getData("internal_sponsorBlockCategories");
+        if (Array.isArray(sponsorBlockCategories) && sponsorBlockCategories.length) await this.setSponsorBlock(sponsorBlockCategories).catch((error62) => {
+          this._emitDebugEvent("PlayerChangeNode", {
+            state: "error",
+            error: error62,
+            message: `Player > changeNode() Unable to set SponsorBlock Segments`,
+            functionLayer: "Player > changeNode()"
+          });
+        });
+        else if (this.LavalinkManager.options?.playerOptions?.enforceSponsorBlockRequestForEventEnablement !== false) await this.setSponsorBlock().catch((error62) => {
+          this._emitDebugEvent("PlayerChangeNode", {
+            state: "error",
+            error: error62,
+            message: `Player > changeNode() Unable to set SponsorBlock Segments`,
+            functionLayer: "Player > changeNode()"
+          });
+        });
+      }
+      await this.node.updatePlayer({
+        guildId: this.guildId,
+        noReplace: false,
+        playerOptions: {
+          ...currentTrack && {
+            track: currentTrack,
+            position: data.lastPosition || 0,
+            volume: this.lavalinkVolume,
+            paused: this.paused
+          },
+          voice: {
+            token: this.voice.token,
+            endpoint: this.voice.endpoint,
+            sessionId: this.voice.sessionId,
+            channelId: this.voice.channelId
+          }
+        }
+      });
+      this.filterManager.applyPlayerFilters();
+      this.ping.lavalink = Math.round((performance.now() - now) / 10) / 100;
+      return this.node.id;
+    } catch (error62) {
+      this._emitDebugEvent("PlayerChangeNode", {
+        state: "error",
+        error: error62,
+        message: `Player.changeNode() execution failed`,
+        functionLayer: "Player > changeNode()"
+      });
+      throw new Error(`Failed to change the node: ${error62}`);
+    } finally {
+      this.setData("internal_nodeChanging", void 0);
+    }
+  }
+  /**
+  * (Wrapper-FN for changeNode) Move the player to a different node. If no node is provided, it will find the least used node that is not the same as the current node.
+  * @param node the id of the node to move to
+  * @returns the player
+  * @throws RangeError if there is no available nodes.
+  * @throws Error if the node to move to is the same as the current node.
+  * @example
+  * ```ts
+  * const newNodeMovedTo = await player.moveNode(); // no need to specify the new node, it will find a least used node automatically, but you can ofc. use a custom node id.
+  * ```
+  */
+  async moveNode(node2) {
+    try {
+      if (!node2) node2 = Array.from(this.LavalinkManager.nodeManager.leastUsedNodes("playingPlayers")).find((n) => n.connected && !!n.sessionId && n.options.id !== this.node.options.id)?.id;
+      if (!node2 || !this.LavalinkManager.nodeManager.nodes.get(node2)) throw new RangeError("No nodes are available.");
+      if (this.node.options.id === node2) return this;
+      this.LavalinkManager.emit("debug", "PlayerChangeNode", {
+        state: "log",
+        message: `Player.moveNode() was executed, trying to move from "${this.node.id}" to "${node2}"`,
+        functionLayer: "Player > moveNode()"
+      });
+      const updateNode = this.LavalinkManager.nodeManager.nodes.get(node2);
+      if (!updateNode) throw new RangeError("No nodes are available.");
+      return await this.changeNode(updateNode);
+    } catch (error62) {
+      throw new Error(`Failed to move the node: ${error62}`);
+    }
+  }
+  /** Converts the Player including Queue to a Json state */
+  toJSON() {
+    return {
+      guildId: this.guildId,
+      options: this.options,
+      voiceChannelId: this.voiceChannelId,
+      textChannelId: this.textChannelId,
+      position: this.position,
+      lastPosition: this.lastPosition,
+      lastPositionChange: this.lastPositionChange,
+      volume: this.volume,
+      lavalinkVolume: this.lavalinkVolume,
+      repeatMode: this.repeatMode,
+      paused: this.paused,
+      playing: this.playing,
+      createdTimeStamp: this.createdTimeStamp,
+      filters: this.filterManager?.data || {},
+      equalizer: this.filterManager?.equalizerBands || [],
+      nodeId: this.node?.id,
+      nodeSessionId: this.node?.sessionId,
+      ping: this.ping,
+      queue: this.queue?.utils?.toJSON?.()
+    };
+  }
+};
+var LavalinkManager = class LavalinkManager2 extends import_node_events.EventEmitter {
+  static {
+    __name(this, "LavalinkManager");
+  }
+  /**
+  * Emit an event
+  * @param event The event to emit
+  * @param args The arguments to pass to the event
+  * @returns
+  */
+  emit(event, ...args) {
+    return super.emit(event, ...args);
+  }
+  /**
+  * Add an event listener
+  * @param event The event to listen to
+  * @param listener The listener to add
+  * @returns
+  */
+  on(event, listener) {
+    return super.on(event, listener);
+  }
+  /**
+  * Add an event listener that only fires once
+  * @param event The event to listen to
+  * @param listener The listener to add
+  * @returns
+  */
+  once(event, listener) {
+    return super.once(event, listener);
+  }
+  /**
+  * Remove an event listener
+  * @param event The event to remove the listener from
+  * @param listener The listener to remove
+  * @returns
+  */
+  off(event, listener) {
+    return super.off(event, listener);
+  }
+  /**
+  * Remove an event listener
+  * @param event The event to remove the listener from
+  * @param listener The listener to remove
+  * @returns
+  */
+  removeListener(event, listener) {
+    return super.removeListener(event, listener);
+  }
+  /** The Options of LavalinkManager (changeable) */
+  options;
+  /** LavalinkManager's NodeManager to manage all Nodes */
+  nodeManager;
+  /** LavalinkManager's Utils Class */
+  utils;
+  /** Whether the manager was initiated or not */
+  initiated = false;
+  /** All Players stored in a MiniMap */
+  players = new MiniMap();
+  /**
+  * Applies the options provided by the User
+  * @param options
+  * @returns
+  */
+  applyOptions(options) {
+    const optionsToAssign = {
+      ...options,
+      client: {
+        ...options?.client,
+        id: options?.client?.id,
+        username: options?.client?.username ?? "lavalink-client"
+      },
+      sendToShard: options?.sendToShard,
+      autoMove: options?.autoMove ?? false,
+      nodes: options?.nodes,
+      playerClass: options?.playerClass ?? Player,
+      playerOptions: {
+        applyVolumeAsFilter: options?.playerOptions?.applyVolumeAsFilter ?? false,
+        clientBasedPositionUpdateInterval: options?.playerOptions?.clientBasedPositionUpdateInterval ?? 100,
+        defaultSearchPlatform: options?.playerOptions?.defaultSearchPlatform ?? "ytsearch",
+        allowCustomSources: options?.playerOptions?.allowCustomSources ?? false,
+        onDisconnect: {
+          destroyPlayer: options?.playerOptions?.onDisconnect?.destroyPlayer ?? true,
+          autoReconnect: options?.playerOptions?.onDisconnect?.autoReconnect ?? false,
+          autoReconnectOnlyWithTracks: options?.playerOptions?.onDisconnect?.autoReconnectOnlyWithTracks ?? false
+        },
+        onEmptyQueue: {
+          autoPlayFunction: options?.playerOptions?.onEmptyQueue?.autoPlayFunction ?? null,
+          destroyAfterMs: options?.playerOptions?.onEmptyQueue?.destroyAfterMs ?? void 0
+        },
+        volumeDecrementer: options?.playerOptions?.volumeDecrementer ?? 1,
+        requesterTransformer: options?.playerOptions?.requesterTransformer ?? null,
+        useUnresolvedData: options?.playerOptions?.useUnresolvedData ?? false,
+        minAutoPlayMs: options?.playerOptions?.minAutoPlayMs ?? 1e4,
+        maxErrorsPerTime: {
+          threshold: options?.playerOptions?.maxErrorsPerTime?.threshold ?? 35e3,
+          maxAmount: options?.playerOptions?.maxErrorsPerTime?.maxAmount ?? 3
+        },
+        enforceSponsorBlockRequestForEventEnablement: options?.playerOptions?.enforceSponsorBlockRequestForEventEnablement ?? true
+      },
+      linksWhitelist: options?.linksWhitelist ?? [],
+      linksBlacklist: options?.linksBlacklist ?? [],
+      linksAllowed: options?.linksAllowed ?? true,
+      autoSkip: options?.autoSkip ?? true,
+      autoSkipOnResolveError: options?.autoSkipOnResolveError ?? true,
+      emitNewSongsOnly: options?.emitNewSongsOnly ?? false,
+      queueOptions: {
+        maxPreviousTracks: options?.queueOptions?.maxPreviousTracks ?? 25,
+        queueChangesWatcher: options?.queueOptions?.queueChangesWatcher ?? null,
+        queueStore: options?.queueOptions?.queueStore ?? new DefaultQueueStore()
+      },
+      httpHeaders: options?.httpHeaders ?? {},
+      advancedOptions: {
+        enableDebugEvents: options?.advancedOptions?.enableDebugEvents ?? false,
+        maxFilterFixDuration: options?.advancedOptions?.maxFilterFixDuration ?? 6e5,
+        playerMigration: {
+          concurrency: options?.advancedOptions?.playerMigration?.concurrency ?? 5,
+          perTargetConcurrency: options?.advancedOptions?.playerMigration?.perTargetConcurrency ?? 2,
+          backpressureDelayMs: options?.advancedOptions?.playerMigration?.backpressureDelayMs ?? 50
+        },
+        debugOptions: {
+          logCustomSearches: options?.advancedOptions?.debugOptions?.logCustomSearches ?? false,
+          noAudio: options?.advancedOptions?.debugOptions?.noAudio ?? false,
+          playerDestroy: {
+            dontThrowError: options?.advancedOptions?.debugOptions?.playerDestroy?.dontThrowError ?? false,
+            debugLog: options?.advancedOptions?.debugOptions?.playerDestroy?.debugLog ?? false
+          }
+        }
+      }
+    };
+    this.options = optionsToAssign;
+  }
+  /**
+  * Validates the current manager's options
+  * @param options
+  */
+  validateOptions(options) {
+    if (typeof options?.sendToShard !== "function") throw new SyntaxError("ManagerOption.sendToShard was not provided, which is required!");
+    if (options?.autoSkip && typeof options?.autoSkip !== "boolean") throw new SyntaxError("ManagerOption.autoSkip must be either false | true aka boolean");
+    if (options?.autoSkipOnResolveError && typeof options?.autoSkipOnResolveError !== "boolean") throw new SyntaxError("ManagerOption.autoSkipOnResolveError must be either false | true aka boolean");
+    if (options?.emitNewSongsOnly && typeof options?.emitNewSongsOnly !== "boolean") throw new SyntaxError("ManagerOption.emitNewSongsOnly must be either false | true aka boolean");
+    if (!options?.nodes || !Array.isArray(options?.nodes) || !options?.nodes.every((node2) => node2 instanceof NodeLinkNode || node2 instanceof LavalinkNode || this.utils.isNodeOptions(node2))) throw new SyntaxError("ManagerOption.nodes must be an Array of NodeOptions or the Node-Classes 'NodeLinkNode' or 'LavalinkNode' and is required of at least 1 Node");
+    if (options?.queueOptions?.queueStore) {
+      const keys = Object.getOwnPropertyNames(Object.getPrototypeOf(options?.queueOptions?.queueStore));
+      const requiredKeys = [
+        "get",
+        "set",
+        "stringify",
+        "parse",
+        "delete"
+      ];
+      if (!requiredKeys.every((v) => keys.includes(v)) || !requiredKeys.every((v) => typeof options?.queueOptions?.queueStore[v] === "function")) throw new SyntaxError(`The provided ManagerOption.QueueStore, does not have all required functions: ${requiredKeys.join(", ")}`);
+    }
+    if (options?.queueOptions?.queueChangesWatcher) {
+      const keys = Object.getOwnPropertyNames(Object.getPrototypeOf(options?.queueOptions?.queueChangesWatcher));
+      const requiredKeys = [
+        "tracksAdd",
+        "tracksRemoved",
+        "shuffled"
+      ];
+      if (!requiredKeys.every((v) => keys.includes(v)) || !requiredKeys.every((v) => typeof options?.queueOptions?.queueChangesWatcher[v] === "function")) throw new SyntaxError(`The provided ManagerOption.DefaultQueueChangesWatcher, does not have all required functions: ${requiredKeys.join(", ")}`);
+    }
+    if (typeof options?.queueOptions?.maxPreviousTracks !== "number" || options?.queueOptions?.maxPreviousTracks < 0) options.queueOptions.maxPreviousTracks = 25;
+    if (options?.httpHeaders) {
+      if (typeof options.httpHeaders !== "object" || Array.isArray(options.httpHeaders)) throw new SyntaxError("ManagerOption.httpHeaders must be an object with string keys and string values");
+      const forbiddenHeaders = [
+        "authorization",
+        "user-id",
+        "client-name",
+        "session-id"
+      ];
+      for (const header in options.httpHeaders) {
+        if (forbiddenHeaders.includes(header.toLowerCase())) throw new SyntaxError(`ManagerOption.httpHeaders cannot have the following headers: ${forbiddenHeaders.join(", ")}`);
+        if (typeof options.httpHeaders[header] !== "string") throw new SyntaxError(`ManagerOption.httpHeaders values must be of type string :: ${header}`);
+      }
+    }
+  }
+  /**
+  * Emits a debug event to the LavalinkManager
+  * @param name name of the event
+  * @param eventData event data
+  */
+  _emitDebugEvent(name, eventData) {
+    if (!this.options?.advancedOptions?.enableDebugEvents) return;
+    this.emit("debug", name, eventData);
+  }
+  static _noAudioDebugPrefix = "Lavalink-Client-Debug | NO-AUDIO [::] sendRawData function, ";
+  /**
+  * Emits NoAudioDebug and optionally logs to console when debugOptions.noAudio is enabled.
+  */
+  _debugNoAudio(state, functionLayer, messages2, ...consoleArgs) {
+    this._emitDebugEvent("NoAudioDebug", {
+      state,
+      functionLayer,
+      message: messages2.message
+    });
+    if (this.options?.advancedOptions?.debugOptions?.noAudio === true) {
+      const consoleMsg = messages2.consoleMessage ?? messages2.message;
+      console.debug(LavalinkManager2._noAudioDebugPrefix + consoleMsg, ...consoleArgs);
+    }
+  }
+  /**
+  * Create the Lavalink Manager
+  * @param options
+  *
+  * @example
+  * ```ts
+  * //const client = new Client({...}); // create your BOT Client (e.g. via discord.js)
+  * client.lavalink = new LavalinkManager({
+  *   nodes: [
+  *     {
+  *       authorization: "yourverystrongpassword",
+  *       host: "localhost",
+  *       port: 2333,
+  *       id: "testnode"
+  *     },
+  *     // you can also use the util like this, and it will return a valid node option object. must start with: lavalink:// | nodelink://
+  *     // parseLavalinkConnUrl("nodelink://<nodeId>:<nodeAuthorization(Password)>@<NodeHost>:<NodePort>")
+  *     sendToShard(guildId, payload) => client.guilds.cache.get(guildId)?.shard?.send(payload),
+  *   ],
+  *   client: {
+  *     id: process.env.CLIENT_ID,
+  *     username: "TESTBOT"
+  *   },
+  *   // optional Options:
+  *   autoSkip: true,
+  *   playerOptions: {
+  *     applyVolumeAsFilter: false,
+  *     clientBasedPositionUpdateInterval: 150,
+  *     defaultSearchPlatform: "ytmsearch",
+  *     allowCustomSources: false,
+  *     volumeDecrementer: 0.75,
+  *     //requesterTransformer: YourRequesterTransformerFunction,
+  *     onDisconnect: {
+  *       autoReconnect: true,
+  *       destroyPlayer: false
+  *     },
+  *     onEmptyQueue: {
+  *       destroyAfterMs: 30_000,
+  *       //autoPlayFunction: YourAutoplayFunction,
+  *     },
+  *     useUnresolvedData: true
+  *   },
+  *   queueOptions: {
+  *     maxPreviousTracks: 25,
+  *     //queueStore: yourCustomQueueStoreManagerClass,
+  *     //queueChangesWatcher: yourCustomQueueChangesWatcherClass
+  *   },
+  *   linksBlacklist: [],
+  *   linksWhitelist: [],
+  *   advancedOptions: {
+  *     maxFilterFixDuration: 600_000,
+  *     debugOptions: {
+  *       noAudio: false,
+  *       playerDestroy: {
+  *         dontThrowError: false,
+  *         debugLogs: false
+  *       }
+  *     }
+  *   }
+  * })
+  * ```
+  */
+  constructor(options) {
+    super();
+    if (!options) throw new SyntaxError("No Manager Options Provided");
+    this.utils = new ManagerUtils(this);
+    this.applyOptions(options);
+    this.validateOptions(this.options);
+    this.nodeManager = new NodeManager(this);
+  }
+  /**
+  * Get a Player from Lava
+  * @param guildId The guildId of the player
+  *
+  * @example
+  * ```ts
+  * const player = client.lavalink.getPlayer(interaction.guildId);
+  * ```
+  * A quicker and easier way than doing:
+  * ```ts
+  * const player = client.lavalink.players.get(interaction.guildId);
+  * ```
+  * @returns
+  */
+  getPlayer(guildId) {
+    return this.players.get(guildId);
+  }
+  /**
+  * Create a Music-Player. If a player exists, then it returns it before creating a new one
+  * @param options
+  * @returns
+  *
+  * @example
+  * ```ts
+  * const player = client.lavalink.createPlayer({
+  *   guildId: interaction.guildId,
+  *   voiceChannelId: interaction.member.voice.channelId,
+  *   // everything below is optional
+  *   textChannelId: interaction.channelId,
+  *   volume: 100,
+  *   selfDeaf: true,
+  *   selfMute: false,
+  *   instaUpdateFiltersFix: true,
+  *   applyVolumeAsFilter: false
+  *   //only needed if you want to autopick node by region (configured by you)
+  *   // vcRegion: interaction.member.voice.rtcRegion,
+  *   // provide a specific node
+  *   // node: client.lavalink.nodeManager.leastUsedNodes("memory")[0]
+  * });
+  * ```
+  */
+  createPlayer(options) {
+    const oldPlayer = this.getPlayer(options?.guildId);
+    if (oldPlayer) return oldPlayer;
+    const newPlayer = new this.options.playerClass(options, this, true);
+    this.players.set(newPlayer.guildId, newPlayer);
+    this.emit("playerCreate", newPlayer);
+    return newPlayer;
+  }
+  /**
+  * Destroy a player with optional destroy reason and disconnect it from the voice channel
+  * @param guildId
+  * @param destroyReason
+  * @returns
+  *
+  * @example
+  * ```ts
+  * client.lavalink.destroyPlayer(interaction.guildId, "forcefully destroyed the player");
+  * // recommend to do it on the player tho: player.destroy("forcefully destroyed the player");
+  * ```
+  */
+  destroyPlayer(guildId, destroyReason) {
+    const oldPlayer = this.getPlayer(guildId);
+    if (!oldPlayer) return;
+    return oldPlayer.destroy(destroyReason);
+  }
+  /**
+  * Delete's a player from the cache without destroying it on lavalink (only works when it's disconnected)
+  * @param guildId
+  * @returns
+  *
+  * @example
+  * ```ts
+  * client.lavalink.deletePlayer(interaction.guildId);
+  * // shouldn't be used except you know what you are doing.
+  * ```
+  */
+  deletePlayer(guildId) {
+    const oldPlayer = this.getPlayer(guildId);
+    if (!oldPlayer) return;
+    if (typeof oldPlayer.voiceChannelId === "string" && oldPlayer.connected && !oldPlayer.getData("internal_destroywithoutdisconnect")) {
+      if (!this.options?.advancedOptions?.debugOptions?.playerDestroy?.dontThrowError) throw new Error(`Use Player#destroy() not LavalinkManager#deletePlayer() to stop the Player ${safeStringify(oldPlayer.toJSON?.())}`);
+      this._emitDebugEvent("PlayerDeleteInsteadOfDestroy", {
+        state: "warn",
+        message: "Use Player#destroy() not LavalinkManager#deletePlayer() to stop the Player",
+        functionLayer: "LavalinkManager > deletePlayer()"
+      });
+    }
+    return this.players.delete(guildId);
+  }
+  /**
+  * Checks whether the the lib is useable based on if any node is connected
+  *
+  * @example
+  * ```ts
+  * if(!client.lavalink.useable) return console.error("can'T search yet, because there is no useable lavalink node.")
+  * // continue with code e.g. createing a player and searching
+  * ```
+  */
+  get useable() {
+    return this.nodeManager.nodes.filter((v) => v.connected).size > 0;
+  }
+  /**
+  * Initiates the Manager, creates all nodes and connects all of them
+  * @param clientData
+  *
+  * @example
+  * ```ts
+  * // on the bot ready event
+  * client.on("ready", () => {
+  *   client.lavalink.init({
+  *     id: client.user.id,
+  *     username: client.user.username
+  *   });
+  * });
+  * ```
+  */
+  async init(clientData) {
+    if (this.initiated) return this;
+    clientData = clientData ?? {};
+    this.options.client = {
+      ...this.options?.client,
+      ...clientData
+    };
+    if (!this.options?.client.id) throw new Error('"client.id" is not set. Pass it in Manager#init() or as a option in the constructor.');
+    if (typeof this.options?.client.id !== "string") throw new Error('"client.id" set is not type of "string"');
+    let success2 = 0;
+    for (const node2 of this.nodeManager.nodes.values()) try {
+      await node2.connect();
+      success2++;
+    } catch (err) {
+      console.error(err);
+      this.nodeManager.emit("error", node2, err);
+    }
+    if (success2 > 0) this.initiated = true;
+    else this._emitDebugEvent("FailedToConnectToNodes", {
+      state: "error",
+      message: "Failed to connect to at least 1 Node",
+      functionLayer: "LavalinkManager > init()"
+    });
+    return this;
+  }
+  /**
+  * Sends voice data to the Lavalink server.
+  * ! Without this the library won't work
+  * @param data
+  *
+  * @example
+  *
+  * ```ts
+  * // on the bot "raw" event
+  * client.on("raw", (d) => {
+  *   // required in order to send audio updates and register channel deletion etc.
+  *   client.lavalink.sendRawData(d)
+  * })
+  * ```
+  */
+  async sendRawData(data) {
+    if (!this.initiated) {
+      this._debugNoAudio("log", "LavalinkManager > sendRawData()", {
+        message: "Manager is not initated yet",
+        consoleMessage: "manager is not initated yet"
+      });
+      return;
+    }
+    if (!("t" in data)) {
+      this._debugNoAudio("error", "LavalinkManager > sendRawData()", {
+        message: "No 't' in payload-data of the raw event:",
+        consoleMessage: "no 't' in payload-data of the raw event:"
+      }, data);
+      return;
+    }
+    if ("CHANNEL_DELETE" === data.t) {
+      const update = "d" in data ? data.d : data;
+      if (!update.guild_id) return;
+      const player = this.getPlayer(update.guild_id);
+      if (player && player.voiceChannelId === update.id) return void player.destroy("ChannelDeleted");
+    }
+    if (["VOICE_STATE_UPDATE", "VOICE_SERVER_UPDATE"].includes(data.t)) {
+      const update = "d" in data ? data.d : data;
+      if (!update) {
+        this._debugNoAudio("warn", "LavalinkManager > sendRawData()", {
+          message: `No Update data found in payload :: ${safeStringify(data, 2)}`,
+          consoleMessage: "no update data found in payload:"
+        }, data);
+        return;
+      }
+      if (!("token" in update) && !("session_id" in update)) {
+        this._debugNoAudio("error", "LavalinkManager > sendRawData()", {
+          message: `No 'token' nor 'session_id' found in payload :: ${safeStringify(data, 2)}`,
+          consoleMessage: "no 'token' nor 'session_id' found in payload:"
+        }, data);
+        return;
+      }
+      const player = this.getPlayer(update.guild_id);
+      if (!player) {
+        this._debugNoAudio("warn", "LavalinkManager > sendRawData()", {
+          message: `No Lavalink Player found via key: 'guild_id' of update-data :: ${safeStringify(update, 2)}`,
+          consoleMessage: "No Lavalink Player found via key: 'guild_id' of update-data:"
+        }, update);
+        return;
+      }
+      if (player.getData("internal_destroystatus") === true) {
+        this._debugNoAudio("warn", "LavalinkManager > sendRawData()", { message: "Player is in a destroying state. can't signal the voice states" });
+        return;
+      }
+      if ("token" in update) {
+        if (!player.node?.sessionId) throw new Error("Lavalink Node is either not ready or not up to date");
+        const sessionId2Use = player.voice?.sessionId || ("sessionId" in update ? update.sessionId : void 0);
+        const channelId2Use = player.voice?.channelId || ("channel_id" in update ? update.channel_id : void 0);
+        const voiceData = {
+          token: update.token,
+          endpoint: update.endpoint,
+          sessionId: sessionId2Use,
+          channelId: channelId2Use
+        };
+        if (!sessionId2Use) this._debugNoAudio("error", "LavalinkManager > sendRawData()", {
+          message: `Can't send updatePlayer for voice token session - Missing sessionId :: ${safeStringify({
+            voice: voiceData,
+            update,
+            playerVoice: player.voice
+          }, 2)}`,
+          consoleMessage: "Can't send updatePlayer for voice token session - Missing sessionId"
+        }, {
+          voice: voiceData,
+          update,
+          playerVoice: player.voice
+        });
+        else if (!channelId2Use) this._debugNoAudio("error", "LavalinkManager > sendRawData()", {
+          message: `Can't send updatePlayer for voice token session - Missing channelId :: ${safeStringify({
+            voice: voiceData,
+            update,
+            playerVoice: player.voice
+          }, 2)}`,
+          consoleMessage: "Can't send updatePlayer for voice token session - Missing channelId"
+        }, {
+          voice: voiceData,
+          update,
+          playerVoice: player.voice
+        });
+        else {
+          await player.node.updatePlayer({
+            guildId: player.guildId,
+            playerOptions: { voice: voiceData }
+          });
+          this._debugNoAudio("log", "LavalinkManager > sendRawData()", {
+            message: `Sent updatePlayer for voice token session :: ${safeStringify({
+              voice: voiceData,
+              update,
+              playerVoice: player.voice
+            }, 2)}`,
+            consoleMessage: "Sent updatePlayer for voice token session"
+          }, {
+            voice: voiceData,
+            playerVoice: player.voice,
+            update
+          });
+        }
+        return;
+      }
+      if (update.user_id !== this.options?.client.id) {
+        if (update.user_id && player.voiceChannelId) this.emit(update.channel_id === player.voiceChannelId ? "playerVoiceJoin" : "playerVoiceLeave", player, update.user_id);
+        this._debugNoAudio("warn", "LavalinkManager > sendRawData()", {
+          message: `voice update user is not equal to provided client id of the LavalinkManager.options.client.id :: user: "${update.user_id}" manager client id: "${this.options?.client.id}"`,
+          consoleMessage: "voice update user is not equal to provided client id of the manageroptions#client#id"
+        }, "user:", update.user_id, "manager client id:", this.options?.client.id);
+        return;
+      }
+      if (update.channel_id) {
+        if (player.voiceChannelId !== update.channel_id) this.emit("playerMove", player, player.voiceChannelId, update.channel_id);
+        player.voice.sessionId = update.session_id || player.voice.sessionId;
+        player.voice.channelId = update.channel_id || player.voice.channelId;
+        if (!player.voice.sessionId) this._debugNoAudio("warn", "LavalinkManager > sendRawData()", {
+          message: `Function to assing sessionId provided, but no found in Payload: ${safeStringify({
+            update,
+            playerVoice: player.voice
+          }, 2)}`,
+          consoleMessage: `Function to assing sessionId provided, but no found in Payload: ${safeStringify(update, 2)}`
+        });
+        player.voiceChannelId = update.channel_id;
+        player.options.voiceChannelId = update.channel_id;
+        const selfMuteChanged = typeof update.self_mute === "boolean" && player.voiceState.selfMute !== update.self_mute;
+        const serverMuteChanged = typeof update.mute === "boolean" && player.voiceState.serverMute !== update.mute;
+        const selfDeafChanged = typeof update.self_deaf === "boolean" && player.voiceState.selfDeaf !== update.self_deaf;
+        const serverDeafChanged = typeof update.deaf === "boolean" && player.voiceState.serverDeaf !== update.deaf;
+        const suppressChange = typeof update.suppress === "boolean" && player.voiceState.suppress !== update.suppress;
+        player.voiceState.selfDeaf = update.self_deaf ?? player.voiceState?.selfDeaf;
+        player.voiceState.selfMute = update.self_mute ?? player.voiceState?.selfMute;
+        player.voiceState.serverDeaf = update.deaf ?? player.voiceState?.serverDeaf;
+        player.voiceState.serverMute = update.mute ?? player.voiceState?.serverMute;
+        player.voiceState.suppress = update.suppress ?? player.voiceState?.suppress;
+        if (selfMuteChanged || serverMuteChanged) this.emit("playerMuteChange", player, player.voiceState.selfMute, player.voiceState.serverMute);
+        if (selfDeafChanged || serverDeafChanged) this.emit("playerDeafChange", player, player.voiceState.selfDeaf, player.voiceState.serverDeaf);
+        if (suppressChange) this.emit("playerSuppressChange", player, player.voiceState.suppress);
+      } else {
+        const { autoReconnectOnlyWithTracks, destroyPlayer, autoReconnect } = this.options?.playerOptions?.onDisconnect ?? {};
+        if (destroyPlayer === true) {
+          await player.destroy("Disconnected");
+          return;
+        }
+        if (autoReconnect === true) try {
+          const previousPosition = player.position;
+          const previousPaused = player.paused;
+          this._emitDebugEvent("PlayerAutoReconnect", {
+            state: "log",
+            message: `Auto reconnecting player because LavalinkManager.options.playerOptions.onDisconnect.autoReconnect is true`,
+            functionLayer: "LavalinkManager > sendRawData()"
+          });
+          if (!autoReconnectOnlyWithTracks || autoReconnectOnlyWithTracks && (player.queue.current || player.queue.tracks.length)) {
+            await player.connect();
+            this.emit("playerReconnect", player, player.voiceChannelId);
+          }
+          if (player.queue.current) {
+            await player.play({
+              position: previousPosition,
+              paused: previousPaused,
+              clientTrack: player.queue.current
+            });
+            return;
+          }
+          if (player.queue.tracks.length) {
+            await player.play({ paused: previousPaused });
+            return;
+          }
+          this._emitDebugEvent("PlayerAutoReconnect", {
+            state: "log",
+            message: `Auto reconnected, but nothing to play`,
+            functionLayer: "LavalinkManager > sendRawData()"
+          });
+          return;
+        } catch (e) {
+          console.error(e);
+          await player.destroy("PlayerReconnectFail");
+          return;
+        }
+        this.emit("playerDisconnect", player, player.voiceChannelId);
+        player.voiceChannelId = null;
+        player.voice = Object.assign({});
+        return;
+      }
+    }
+  }
+};
+
+// apps/bot/src/modules/music/service.ts
+var EMPTY_QUEUE_DESTROY_MS = 3e4;
+function describeTrack(track) {
+  const title = truncate(track.info.title || "Unknown title", 100);
+  const author = truncate(track.info.author || "Unknown artist", 60);
+  const length = track.info.isStream ? "LIVE" : formatDuration(track.info.duration ?? 0);
+  return `**${title}** \u2014 ${author} \`${length}\``;
+}
+__name(describeTrack, "describeTrack");
+function requesterId(track) {
+  const requester = track.requester;
+  return typeof requester?.id === "string" ? requester.id : null;
+}
+__name(requesterId, "requesterId");
+var MusicService = class {
+  constructor(client) {
+    this.client = client;
+  }
+  client;
+  static {
+    __name(this, "MusicService");
+  }
+  manager = null;
+  rawListener = null;
+  emptyTimers = /* @__PURE__ */ new Map();
+  get available() {
+    return this.manager?.useable ?? false;
+  }
+  start() {
+    if (this.manager || this.client.env.SMOKE_TEST) return;
+    if (!this.client.env.MUSIC_ENABLED) {
+      this.client.logger.info("music disabled by MUSIC_ENABLED");
+      return;
+    }
+    const user = this.client.user;
+    if (!user) {
+      this.client.logger.warn("music manager not started before the bot user was ready");
+      return;
+    }
+    const url2 = this.client.env.LAVALINK_URL;
+    const authorization = this.client.env.LAVALINK_AUTH;
+    if (!url2 || !authorization) {
+      this.client.logger.warn(
+        "music is enabled but LAVALINK_URL/LAVALINK_AUTH are missing \u2014 music commands will report it as unconfigured"
+      );
+      return;
+    }
+    const endpoint = parseLavalinkUrl(url2, this.client.env.LAVALINK_SECURE);
+    if (!endpoint) {
+      this.client.logger.error({ url: url2 }, "LAVALINK_URL is not a valid host:port or URL");
+      return;
+    }
+    try {
+      const manager = new LavalinkManager({
+        nodes: [
+          {
+            id: "main",
+            host: endpoint.host,
+            port: endpoint.port,
+            authorization,
+            secure: endpoint.secure,
+            retryAmount: 5,
+            retryDelay: 15e3,
+            requestSignalTimeoutMS: 1e4
+          }
+        ],
+        sendToShard: /* @__PURE__ */ __name((guildId, payload) => {
+          const guild = this.client.guilds.cache.get(guildId);
+          if (guild) guild.shard.send(payload);
+        }, "sendToShard"),
+        client: { id: user.id, username: user.username },
+        autoSkip: true,
+        autoMove: true,
+        queueOptions: { maxPreviousTracks: 10 },
+        playerOptions: {
+          defaultSearchPlatform: "scsearch",
+          volumeDecrementer: 1,
+          clientBasedPositionUpdateInterval: 500,
+          onDisconnect: {
+            autoReconnect: true,
+            autoReconnectOnlyWithTracks: true,
+            destroyPlayer: false
+          }
+        }
+      });
+      this.manager = manager;
+      this.registerEvents(manager);
+      this.attachRawEvents(manager);
+      this.client.logger.info(
+        {
+          host: endpoint.host,
+          port: endpoint.port,
+          secure: endpoint.secure
+        },
+        "connecting to Lavalink"
+      );
+      void manager.init({ id: user.id, username: user.username }).catch((error62) => {
+        this.client.logger.error({ err: error62 }, "Lavalink manager init failed");
+      });
+    } catch (error62) {
+      this.manager = null;
+      this.client.logger.error({ err: error62 }, "could not create the Lavalink manager");
+    }
+  }
+  async stop() {
+    const manager = this.manager;
+    this.manager = null;
+    if (this.rawListener) {
+      this.client.off(import_discord38.Events.Raw, this.rawListener);
+      this.rawListener = null;
+    }
+    for (const timer2 of this.emptyTimers.values()) clearTimeout(timer2);
+    this.emptyTimers.clear();
+    if (!manager) return;
+    manager.removeAllListeners();
+    try {
+      await manager.nodeManager.disconnectAll(true, true);
+    } catch (error62) {
+      this.client.logger.warn({ err: error62 }, "failed to disconnect Lavalink nodes");
+    }
+  }
+  getPlayer(guildId) {
+    return this.manager?.getPlayer(guildId);
+  }
+  /**
+   * Searches first, then joins voice. A failed search therefore does not leave
+   * the bot sitting alone in a channel or create a player with no queue.
+   */
+  async play(input2) {
+    const manager = this.requireManager();
+    const existing = manager.getPlayer(input2.guildId);
+    if (existing?.voiceChannelId && existing.voiceChannelId !== input2.voiceChannelId) {
+      throw new UserFacingError(
+        `I am already connected to <#${existing.voiceChannelId}>. Join me there or use \`/disconnect\`.`
+      );
+    }
+    const before = existing ? existing.queue.tracks.length + (existing.queue.current ? 1 : 0) : 0;
+    const room = input2.maxQueue - before;
+    if (room <= 0) {
+      throw new UserFacingError(
+        `The queue is full (${input2.maxQueue} tracks). Wait for it to drain or use \`/clear\`.`
+      );
+    }
+    const result = await this.searchTracks(input2.query, input2.requester);
+    const candidates = result.loadType === "playlist" ? result.tracks : result.tracks.slice(0, 1);
+    const selected = candidates.slice(0, room);
+    if (selected.length === 0) {
+      throw new UserFacingError("No playable tracks were found for that search.");
+    }
+    const hadPlayer = Boolean(existing);
+    const player = await this.connect({
+      guildId: input2.guildId,
+      voiceChannelId: input2.voiceChannelId,
+      textChannelId: input2.textChannelId
+    });
+    try {
+      await player.queue.add(selected);
+      if (!player.playing && !player.paused) await player.play();
+    } catch (error62) {
+      this.client.logger.error(
+        { err: error62, guildId: input2.guildId },
+        "failed to add tracks or start playback"
+      );
+      if (!hadPlayer && !player.queue.current && player.queue.tracks.length === 0) {
+        await player.destroy("Playback could not start", true).catch(() => {
+        });
+      }
+      throw new UserFacingError(
+        "Could not start playback. The music node may be unavailable \u2014 try again shortly."
+      );
+    }
+    return {
+      tracks: selected,
+      playlist: result.playlist?.name ?? null,
+      truncated: result.loadType === "playlist" && selected.length < result.tracks.length,
+      queueSize: player.queue.tracks.length + (player.queue.current ? 1 : 0)
+    };
+  }
+  requireManager() {
+    if (!this.manager) {
+      throw new UserFacingError(
+        "Music is not configured. Set `LAVALINK_URL` and `LAVALINK_AUTH` in the bot environment."
+      );
+    }
+    if (!this.manager.useable) {
+      throw new UserFacingError("The music node is offline. Try again in a moment.");
+    }
+    return this.manager;
+  }
+  async connect(input2) {
+    const manager = this.requireManager();
+    const existing = manager.getPlayer(input2.guildId);
+    if (existing) {
+      if (existing.voiceChannelId && existing.voiceChannelId !== input2.voiceChannelId) {
+        throw new UserFacingError(
+          `I am already connected to <#${existing.voiceChannelId}>. Join me there or use \`/disconnect\`.`
+        );
+      }
+      existing.textChannelId = input2.textChannelId;
+      if (!existing.voiceChannelId) {
+        existing.options.voiceChannelId = input2.voiceChannelId;
+      }
+      if (!existing.connected) {
+        try {
+          await existing.connect();
+        } catch (error62) {
+          this.client.logger.error(
+            { err: error62, guildId: input2.guildId },
+            "failed to reconnect the music player"
+          );
+          throw new UserFacingError("I could not join that voice channel.");
+        }
+      }
+      return existing;
+    }
+    const player = manager.createPlayer({
+      guildId: input2.guildId,
+      voiceChannelId: input2.voiceChannelId,
+      textChannelId: input2.textChannelId,
+      volume: this.client.settings.music.defaultVolume,
+      selfDeaf: true,
+      selfMute: false
+    });
+    try {
+      await player.connect();
+    } catch (error62) {
+      this.client.logger.error(
+        { err: error62, guildId: input2.guildId },
+        "failed to connect the music player"
+      );
+      await player.destroy("Voice connection failed", true).catch(() => {
+      });
+      throw new UserFacingError("I could not join that voice channel.");
+    }
+    return player;
+  }
+  async searchTracks(query, requester) {
+    const manager = this.requireManager();
+    const trimmed = query.trim();
+    if (!trimmed) throw new UserFacingError("Enter a track name or URL.");
+    const node2 = manager.nodeManager.leastUsedNodes()[0];
+    if (!node2?.connected) {
+      throw new UserFacingError("The music node is offline. Try again in a moment.");
+    }
+    const sources = isUrlQuery(trimmed) ? [void 0] : buildSearchSources(node2.info?.sourceManagers ?? []);
+    let lastError = null;
+    for (const source of sources) {
+      try {
+        const result = await node2.search(
+          source ? { query: trimmed, source } : { query: trimmed },
+          requester
+        );
+        if (result.loadType !== "error" && result.tracks.length > 0) return result;
+        if (result.loadType === "error") lastError = result.exception?.message ?? null;
+      } catch (error62) {
+        lastError = error62 instanceof Error ? error62.message : String(error62);
+        this.client.logger.debug(
+          { err: error62, source: source ?? "url" },
+          "Lavalink search attempt failed"
+        );
+      }
+    }
+    if (lastError) {
+      this.client.logger.debug({ query: trimmed, lastError }, "all Lavalink searches failed");
+    }
+    const spotify = /open\.spotify\.com|spotify:/i.test(trimmed);
+    throw new UserFacingError(
+      spotify ? "No playable tracks were found. Spotify links need a Lavalink node with the LavaSrc plugin enabled." : "No playable tracks were found. Try a different search or link."
+    );
+  }
+  registerEvents(manager) {
+    manager.on("trackStart", (player, track) => {
+      this.clearEmptyTimer(player.guildId);
+      this.client.stats?.recordMusicPlay();
+      if (track) {
+        this.client.logger.debug(
+          {
+            guildId: player.guildId,
+            title: track.info.title,
+            author: track.info.author
+          },
+          "music track started"
+        );
+      }
+    });
+    manager.on("trackError", (player, track, payload) => {
+      this.client.logger.warn(
+        {
+          guildId: player.guildId,
+          track: track?.info.title,
+          error: payload.exception?.message ?? payload.error
+        },
+        "music track error"
+      );
+    });
+    manager.on("queueEnd", (player) => {
+      this.clearEmptyTimer(player.guildId);
+      if (this.client.settings.music.stay247) return;
+      const timer2 = setTimeout(() => {
+        this.emptyTimers.delete(player.guildId);
+        const current = this.manager?.getPlayer(player.guildId);
+        if (!current) return;
+        if (current.queue.current || current.queue.tracks.length > 0) return;
+        void current.destroy("Queue empty", true).catch((error62) => {
+          this.client.logger.warn({ err: error62, guildId: player.guildId }, "music cleanup failed");
+        });
+      }, EMPTY_QUEUE_DESTROY_MS);
+      timer2.unref();
+      this.emptyTimers.set(player.guildId, timer2);
+    });
+    manager.on("playerDestroy", (player) => {
+      this.clearEmptyTimer(player.guildId);
+    });
+    manager.nodeManager.on("connect", (node2) => {
+      this.client.logger.info({ node: node2.options.id }, "Lavalink node connected");
+    });
+    manager.nodeManager.on("disconnect", (node2, reason) => {
+      this.client.logger.warn(
+        { node: node2.options.id, code: reason.code, reason: reason.reason },
+        "Lavalink node disconnected"
+      );
+    });
+    manager.nodeManager.on("error", (node2, error62) => {
+      this.client.logger.error({ err: error62, node: node2.options.id }, "Lavalink node error");
+    });
+  }
+  attachRawEvents(manager) {
+    const listener = /* @__PURE__ */ __name((data) => {
+      void manager.sendRawData(data).catch((error62) => {
+        this.client.logger.debug({ err: error62 }, "failed to forward a raw voice packet");
+      });
+    }, "listener");
+    this.rawListener = listener;
+    this.client.on(import_discord38.Events.Raw, listener);
+  }
+  clearEmptyTimer(guildId) {
+    const timer2 = this.emptyTimers.get(guildId);
+    if (!timer2) return;
+    clearTimeout(timer2);
+    this.emptyTimers.delete(guildId);
+  }
+};
+
+// apps/bot/src/commands/music/shared.ts
+var import_discord39 = __toESM(require_src(), 1);
+function musicService(client) {
+  if (!client.music) {
+    throw new UserFacingError(
+      "Music is not configured. Set `LAVALINK_URL` and `LAVALINK_AUTH` in the bot environment."
+    );
+  }
+  return client.music;
+}
+__name(musicService, "musicService");
+function requireMusicPlayer(client, guildId) {
+  const player = musicService(client).getPlayer(guildId);
+  if (!player) throw new UserFacingError("I am not playing anything. Use `/play` first.");
+  return player;
+}
+__name(requireMusicPlayer, "requireMusicPlayer");
+function requireVoice(member) {
+  const channel = member.voice.channel;
+  if (!channel) throw new UserFacingError("Join a voice channel first.");
+  if (channel.type === import_discord39.ChannelType.GuildStageVoice) {
+    throw new UserFacingError("Music does not support stage channels. Use a voice channel.");
+  }
+  const me = member.guild.members.me;
+  const permissions = me ? channel.permissionsFor(me) : null;
+  if (!permissions?.has([
+    import_discord39.PermissionFlagsBits.ViewChannel,
+    import_discord39.PermissionFlagsBits.Connect,
+    import_discord39.PermissionFlagsBits.Speak
+  ])) {
+    throw new UserFacingError("I need View Channel, Connect, and Speak in that voice channel.");
+  }
+  return channel;
+}
+__name(requireVoice, "requireVoice");
+function assertSameVoice(member, player) {
+  if (!player.voiceChannelId) {
+    throw new UserFacingError("I am not connected to a voice channel.");
+  }
+  if (member.voice.channelId !== player.voiceChannelId) {
+    throw new UserFacingError(`Join <#${player.voiceChannelId}> to control the player.`);
+  }
+}
+__name(assertSameVoice, "assertSameVoice");
+function assertDj(member, config2) {
+  if (!config2.djRoleId) return;
+  if (member.roles.cache.has(config2.djRoleId)) return;
+  if (member.permissions.has(import_discord39.PermissionFlagsBits.ManageGuild)) return;
+  const humans = member.voice.channel?.members.filter((candidate) => !candidate.user.bot).size ?? 0;
+  if (humans <= 1) return;
+  throw new UserFacingError(
+    `Only members with <@&${config2.djRoleId}> can control music while other people are listening.`
+  );
+}
+__name(assertDj, "assertDj");
+function assertControl(member, player, config2) {
+  assertSameVoice(member, player);
+  assertDj(member, config2);
+}
+__name(assertControl, "assertControl");
+
+// apps/bot/src/commands/music/controls.ts
+function controlled({ client, interaction, member, settings: settings2 }) {
+  const player = requireMusicPlayer(client, interaction.guildId);
+  assertControl(member, player, settings2.music);
+  return player;
+}
+__name(controlled, "controlled");
+var pauseCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("pause").setDescription("Pause the current track."),
+  category: "music",
+  cooldownSeconds: 1,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    if (player.paused) throw new UserFacingError("The player is already paused.");
+    if (!player.queue.current) throw new UserFacingError("Nothing is playing right now.");
+    await player.pause();
+    await context.interaction.editReply({ content: "Paused." });
+  }
+};
+var resumeCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("resume").setDescription("Resume the paused track."),
+  category: "music",
+  cooldownSeconds: 1,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    if (!player.paused) throw new UserFacingError("The player is not paused.");
+    await player.resume();
+    await context.interaction.editReply({ content: "Resumed." });
+  }
+};
+var skipCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("skip").setDescription("Skip the current track.").addIntegerOption(
+    (option) => option.setName("amount").setDescription("How many tracks to skip (default 1)").setMinValue(1).setMaxValue(25)
+  ),
+  category: "music",
+  cooldownSeconds: 1,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    if (!player.queue.current) throw new UserFacingError("Nothing is playing right now.");
+    const amount = context.interaction.options.getInteger("amount") ?? 1;
+    const upcoming = player.queue.tracks.length;
+    if (amount > upcoming + 1) {
+      await player.stopPlaying(true, false);
+      await context.interaction.editReply({
+        content: "Skipped to the end of the queue."
+      });
+      return;
+    }
+    if (amount > upcoming) {
+      await player.stopPlaying(true, false);
+      await context.interaction.editReply({
+        content: "Skipped the last track. The queue is now empty."
+      });
+      return;
+    }
+    await player.skip(amount);
+    await context.interaction.editReply({
+      content: `Skipped **${amount}** track${amount === 1 ? "" : "s"}.`
+    });
+  }
+};
+var stopCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("stop").setDescription("Stop playback, clear the queue, and disconnect."),
+  category: "music",
+  cooldownSeconds: 2,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    await player.destroy("Stopped by a member", true);
+    await context.interaction.editReply({
+      content: "Stopped playback and cleared the queue."
+    });
+  }
+};
+var disconnectCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("disconnect").setDescription("Disconnect the music player from voice."),
+  category: "music",
+  cooldownSeconds: 2,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    await player.destroy("Disconnected by a member", true);
+    await context.interaction.editReply({ content: "Disconnected." });
+  }
+};
+var volumeCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("volume").setDescription("Set the player volume.").addIntegerOption(
+    (option) => option.setName("percent").setDescription("Volume from 1 to 100").setRequired(true).setMinValue(1).setMaxValue(100)
+  ),
+  category: "music",
+  cooldownSeconds: 1,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    const percent = context.interaction.options.getInteger("percent", true);
+    await player.setVolume(percent);
+    await context.interaction.editReply({ content: `Volume set to **${percent}%**.` });
+  }
+};
+var loopCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("loop").setDescription("Set the repeat mode.").addStringOption(
+    (option) => option.setName("mode").setDescription("What to repeat").setRequired(true).addChoices(
+      { name: "Off", value: "off" },
+      { name: "Track", value: "track" },
+      { name: "Queue", value: "queue" }
+    )
+  ),
+  category: "music",
+  cooldownSeconds: 1,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    const mode = context.interaction.options.getString("mode", true);
+    await player.setRepeatMode(mode);
+    await context.interaction.editReply({ content: `Loop mode set to **${mode}**.` });
+  }
+};
+var shuffleCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("shuffle").setDescription("Shuffle the upcoming queue."),
+  category: "music",
+  cooldownSeconds: 2,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    if (player.queue.tracks.length < 2) {
+      throw new UserFacingError("There are not enough upcoming tracks to shuffle.");
+    }
+    const count2 = await player.queue.shuffle();
+    await context.interaction.editReply({
+      content: `Shuffled **${count2}** track${count2 === 1 ? "" : "s"}.`
+    });
+  }
+};
+var removeCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("remove").setDescription("Remove one upcoming track from the queue.").addIntegerOption(
+    (option) => option.setName("position").setDescription("Queue position from /queue").setRequired(true).setMinValue(1).setMaxValue(500)
+  ),
+  category: "music",
+  cooldownSeconds: 1,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    const position = context.interaction.options.getInteger("position", true);
+    if (position > player.queue.tracks.length) {
+      throw new UserFacingError(
+        `There are only **${player.queue.tracks.length}** upcoming track${player.queue.tracks.length === 1 ? "" : "s"}.`
+      );
+    }
+    const removed = await player.queue.remove(position - 1);
+    const track = removed?.removed[0];
+    if (!track) throw new UserFacingError("That track could not be removed.");
+    await context.interaction.editReply({
+      content: `Removed **#${position}** \u2014 ${describeTrack(track)}`,
+      allowedMentions: { parse: [] }
+    });
+  }
+};
+var clearCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("clear").setDescription("Clear the upcoming queue without stopping the current track."),
+  category: "music",
+  cooldownSeconds: 2,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    const count2 = player.queue.tracks.length;
+    if (count2 === 0) throw new UserFacingError("There are no upcoming tracks to clear.");
+    await player.queue.splice(0, count2);
+    await context.interaction.editReply({
+      content: `Cleared **${count2}** upcoming track${count2 === 1 ? "" : "s"}.`
+    });
+  }
+};
+var seekCommand = {
+  data: new import_discord40.SlashCommandBuilder().setName("seek").setDescription("Seek within the current track.").addStringOption(
+    (option) => option.setName("time").setDescription("Position: 1:30, 1:02:03, 90s, or 2m").setRequired(true).setMaxLength(32)
+  ),
+  category: "music",
+  cooldownSeconds: 1,
+  async execute(context) {
+    await deferEphemeral(context.interaction);
+    const player = controlled(context);
+    const track = player.queue.current;
+    if (!track) throw new UserFacingError("Nothing is playing right now.");
+    if (track.info.isStream || !track.info.isSeekable) {
+      throw new UserFacingError("This track cannot be seeked.");
+    }
+    const position = parseSeek(context.interaction.options.getString("time", true));
+    if (position === null) {
+      throw new UserFacingError("Use a position like `1:30`, `1:02:03`, or `90s`.");
+    }
+    if (position >= track.info.duration) {
+      throw new UserFacingError(
+        `Seek within the track length (${formatDuration(track.info.duration)}).`
+      );
+    }
+    await player.seek(position);
+    await context.interaction.editReply({
+      content: `Seeked to **${formatDuration(position)}**.`
+    });
+  }
+};
+
+// apps/bot/src/commands/music/nowplaying.ts
+var import_discord41 = __toESM(require_src(), 1);
+var PAGE_SIZE = 10;
+var nowPlayingCommand = {
+  data: new import_discord41.SlashCommandBuilder().setName("nowplaying").setDescription("Show the track that is currently playing."),
+  category: "music",
+  cooldownSeconds: 2,
+  async execute({ client, interaction }) {
+    await deferPublic(interaction);
+    const player = requireMusicPlayer(client, interaction.guildId);
+    const track = player.queue.current;
+    if (!track) throw new UserFacingError("Nothing is playing right now.");
+    const position = Math.max(0, player.position);
+    const timing = track.info.isStream ? "\u{1F534} LIVE" : `${progressBar2(position, track.info.duration)} \`${formatDuration(
+      position
+    )} / ${formatDuration(track.info.duration)}\``;
+    const embed = new import_discord41.EmbedBuilder().setColor(BRAND.color).setTitle("Now playing").setDescription(`${describeTrack(track)}
+${timing}`).addFields(
+      { name: "Volume", value: `**${player.volume}%**`, inline: true },
+      { name: "Loop", value: `**${player.repeatMode}**`, inline: true },
+      { name: "Up next", value: `**${player.queue.tracks.length}**`, inline: true }
+    ).setFooter({ text: BRAND.footer });
+    const requester = requesterId(track);
+    if (requester) {
+      embed.addFields({ name: "Requested by", value: `<@${requester}>`, inline: true });
+    }
+    if (track.info.artworkUrl?.startsWith("https://")) {
+      embed.setThumbnail(track.info.artworkUrl);
+    }
+    await interaction.editReply({
+      embeds: [embed],
+      allowedMentions: { parse: [] }
+    });
+  }
+};
+var queueCommand = {
+  data: new import_discord41.SlashCommandBuilder().setName("queue").setDescription("Show the current track and the upcoming queue.").addIntegerOption(
+    (option) => option.setName("page").setDescription("Queue page (10 tracks per page)").setMinValue(1).setMaxValue(50)
+  ),
+  category: "music",
+  cooldownSeconds: 2,
+  async execute({ client, interaction }) {
+    await deferPublic(interaction);
+    const player = requireMusicPlayer(client, interaction.guildId);
+    const current = player.queue.current;
+    const upcoming = player.queue.tracks;
+    if (!current && upcoming.length === 0) {
+      throw new UserFacingError("The queue is empty. Use `/play` to add something.");
+    }
+    const totalPages = Math.max(1, Math.ceil(upcoming.length / PAGE_SIZE));
+    const page = interaction.options.getInteger("page") ?? 1;
+    if (page > totalPages) {
+      throw new UserFacingError(
+        `There ${totalPages === 1 ? "is" : "are"} only **${totalPages}** page${totalPages === 1 ? "" : "s"} in the queue.`
+      );
+    }
+    const start = (page - 1) * PAGE_SIZE;
+    const tracks = upcoming.slice(start, start + PAGE_SIZE);
+    const lines = [];
+    if (current) {
+      lines.push(`**Now:** ${describeTrack(current)}`);
+    }
+    if (tracks.length > 0) {
+      lines.push(
+        ...tracks.map((track, index2) => `**${start + index2 + 1}.** ${describeTrack(track)}`)
+      );
+    } else {
+      lines.push("*No upcoming tracks.*");
+    }
+    const totalDuration = (current?.info.duration ?? 0) + player.queue.utils.totalDuration();
+    const embed = new import_discord41.EmbedBuilder().setColor(BRAND.color).setTitle("Music queue").setDescription(lines.join("\n")).setFooter({
+      text: `Page ${page}/${totalPages} \xB7 ${upcoming.length} upcoming \xB7 ${formatDuration(
+        totalDuration
+      )}`
+    });
+    await interaction.editReply({
+      embeds: [embed],
+      allowedMentions: { parse: [] }
+    });
+  }
+};
+
+// apps/bot/src/commands/music/play.ts
+var import_discord42 = __toESM(require_src(), 1);
+var playCommand = {
+  data: new import_discord42.SlashCommandBuilder().setName("play").setDescription("Play a track or playlist from a URL or search.").addStringOption(
+    (option) => option.setName("query").setDescription("Track name, SoundCloud/Spotify/YouTube URL, or playlist link").setRequired(true).setMaxLength(500)
+  ),
+  category: "music",
+  cooldownSeconds: 2,
+  async execute({ client, interaction, member, settings: settings2 }) {
+    await deferPublic(interaction);
+    const voice = requireVoice(member);
+    assertDj(member, settings2.music);
+    const result = await musicService(client).play({
+      guildId: interaction.guildId,
+      voiceChannelId: voice.id,
+      textChannelId: interaction.channelId,
+      query: interaction.options.getString("query", true),
+      requester: interaction.user,
+      maxQueue: settings2.music.maxQueue
+    });
+    await interaction.editReply({
+      embeds: [buildPlayEmbed(result)],
+      allowedMentions: { parse: [] }
+    });
+  }
+};
+function buildPlayEmbed(result) {
+  const embed = new import_discord42.EmbedBuilder().setColor(BRAND.color).setFooter({ text: BRAND.footer });
+  if (result.playlist) {
+    embed.setTitle("Playlist queued").setDescription(
+      `Added **${result.tracks.length}** track${result.tracks.length === 1 ? "" : "s"} from **${truncate(
+        result.playlist,
+        150
+      )}**.`
+    );
+  } else {
+    const track = result.tracks[0];
+    embed.setTitle("Added to queue").setDescription(track ? describeTrack(track) : "Added the track to the queue.");
+  }
+  embed.addFields({
+    name: "Queue",
+    value: `**${result.queueSize}** track${result.queueSize === 1 ? "" : "s"}`,
+    inline: true
+  });
+  if (result.truncated) {
+    embed.addFields({
+      name: "Queue limit",
+      value: "Only the first tracks that fit under the configured queue limit were added."
+    });
+  }
+  return embed;
+}
+__name(buildPlayEmbed, "buildPlayEmbed");
+
 // apps/bot/src/commands/utility/announce.ts
-var import_discord23 = __toESM(require_src(), 1);
+var import_discord43 = __toESM(require_src(), 1);
 function sendable(channel) {
   if (!channel?.isSendable()) {
     throw new UserFacingError("Pick a text channel.");
@@ -116552,16 +125860,16 @@ function sendable(channel) {
 }
 __name(sendable, "sendable");
 var announceCommand = {
-  data: new import_discord23.SlashCommandBuilder().setName("announce").setDescription("Post an announcement, optionally pinging one role.").addStringOption(
+  data: new import_discord43.SlashCommandBuilder().setName("announce").setDescription("Post an announcement, optionally pinging one role.").addStringOption(
     (option) => option.setName("message").setDescription("Announcement text").setRequired(true).setMaxLength(2e3)
   ).addChannelOption(
     (option) => option.setName("channel").setDescription("Where to post (defaults to this channel)")
   ).addRoleOption(
     (option) => option.setName("role").setDescription("Optional role to ping (never @everyone)")
-  ).setDefaultMemberPermissions(import_discord23.PermissionFlagsBits.ManageMessages),
+  ).setDefaultMemberPermissions(import_discord43.PermissionFlagsBits.ManageMessages),
   category: "utility",
-  userPermissions: [import_discord23.PermissionFlagsBits.ManageMessages],
-  botPermissions: [import_discord23.PermissionFlagsBits.SendMessages],
+  userPermissions: [import_discord43.PermissionFlagsBits.ManageMessages],
+  botPermissions: [import_discord43.PermissionFlagsBits.SendMessages],
   cooldownSeconds: 3,
   async execute({ interaction }) {
     await deferEphemeral(interaction);
@@ -116584,9 +125892,9 @@ var announceCommand = {
 };
 
 // apps/bot/src/commands/utility/avatar.ts
-var import_discord24 = __toESM(require_src(), 1);
+var import_discord44 = __toESM(require_src(), 1);
 var avatarCommand = {
-  data: new import_discord24.SlashCommandBuilder().setName("avatar").setDescription("Show a user\u2019s avatar.").addUserOption(
+  data: new import_discord44.SlashCommandBuilder().setName("avatar").setDescription("Show a user\u2019s avatar.").addUserOption(
     (option) => option.setName("user").setDescription("User to inspect (defaults to you)")
   ),
   category: "utility",
@@ -116597,7 +125905,7 @@ var avatarCommand = {
     const member = await guild.members.fetch(user.id).catch(() => null);
     const global2 = user.displayAvatarURL({ size: 1024, extension: "png" });
     const server = member?.avatarURL({ size: 1024, extension: "png" }) ?? null;
-    const embed = new import_discord24.EmbedBuilder().setColor(BRAND.color).setTitle(`${user.username}\u2019s avatar`).setImage(server ?? global2).addFields({ name: "Global avatar", value: `[Open](${global2})` });
+    const embed = new import_discord44.EmbedBuilder().setColor(BRAND.color).setTitle(`${user.username}\u2019s avatar`).setImage(server ?? global2).addFields({ name: "Global avatar", value: `[Open](${global2})` });
     if (server) {
       embed.addFields({ name: "Server avatar", value: `[Open](${server})` });
     }
@@ -116606,9 +125914,9 @@ var avatarCommand = {
 };
 
 // apps/bot/src/commands/utility/banner.ts
-var import_discord25 = __toESM(require_src(), 1);
+var import_discord45 = __toESM(require_src(), 1);
 var bannerCommand = {
-  data: new import_discord25.SlashCommandBuilder().setName("banner").setDescription("Show a user\u2019s profile banner.").addUserOption(
+  data: new import_discord45.SlashCommandBuilder().setName("banner").setDescription("Show a user\u2019s profile banner.").addUserOption(
     (option) => option.setName("user").setDescription("User to inspect (defaults to you)")
   ),
   category: "utility",
@@ -116624,7 +125932,7 @@ var bannerCommand = {
       await interaction.editReply({ content: `${target} does not have a banner.` });
       return;
     }
-    const embed = new import_discord25.EmbedBuilder().setColor(BRAND.color).setTitle(`${target.username}\u2019s banner`).setImage(server ?? global2);
+    const embed = new import_discord45.EmbedBuilder().setColor(BRAND.color).setTitle(`${target.username}\u2019s banner`).setImage(server ?? global2);
     if (global2) embed.addFields({ name: "Profile banner", value: `[Open](${global2})` });
     if (server) embed.addFields({ name: "Server banner", value: `[Open](${server})` });
     await interaction.editReply({ embeds: [embed] });
@@ -116632,9 +125940,9 @@ var bannerCommand = {
 };
 
 // apps/bot/src/commands/utility/channelinfo.ts
-var import_discord26 = __toESM(require_src(), 1);
+var import_discord46 = __toESM(require_src(), 1);
 var channelInfoCommand = {
-  data: new import_discord26.SlashCommandBuilder().setName("channelinfo").setDescription("Show information about a channel.").addChannelOption(
+  data: new import_discord46.SlashCommandBuilder().setName("channelinfo").setDescription("Show information about a channel.").addChannelOption(
     (option) => option.setName("channel").setDescription("Channel to inspect (defaults to this one)")
   ),
   category: "utility",
@@ -116643,9 +125951,9 @@ var channelInfoCommand = {
     await deferPublic(interaction);
     const channel = interaction.options.getChannel("channel") ?? interaction.channel;
     if (!channel) throw new UserFacingError("Could not resolve that channel.");
-    const embed = new import_discord26.EmbedBuilder().setColor(BRAND.color).setTitle(`#${channel.name}`).addFields(
+    const embed = new import_discord46.EmbedBuilder().setColor(BRAND.color).setTitle(`#${channel.name}`).addFields(
       { name: "Channel ID", value: `\`${channel.id}\``, inline: true },
-      { name: "Type", value: String(import_discord26.ChannelType[channel.type]), inline: true },
+      { name: "Type", value: String(import_discord46.ChannelType[channel.type]), inline: true },
       {
         name: "Category",
         value: channel.parentId ? `<#${channel.parentId}>` : "None",
@@ -116684,7 +125992,7 @@ var channelInfoCommand = {
 };
 
 // apps/bot/src/commands/utility/embed.ts
-var import_discord27 = __toESM(require_src(), 1);
+var import_discord47 = __toESM(require_src(), 1);
 function sendable2(channel) {
   if (!channel?.isSendable()) {
     throw new UserFacingError("Pick a text channel.");
@@ -116693,7 +126001,7 @@ function sendable2(channel) {
 }
 __name(sendable2, "sendable");
 var embedCommand = {
-  data: new import_discord27.SlashCommandBuilder().setName("embed").setDescription("Post a custom embed.").addChannelOption(
+  data: new import_discord47.SlashCommandBuilder().setName("embed").setDescription("Post a custom embed.").addChannelOption(
     (option) => option.setName("channel").setDescription("Where to post (defaults to this channel)")
   ).addStringOption(
     (option) => option.setName("description").setDescription("Embed body").setRequired(true).setMaxLength(4e3)
@@ -116705,10 +126013,10 @@ var embedCommand = {
     (option) => option.setName("footer").setDescription("Footer text").setMaxLength(2048)
   ).addStringOption(
     (option) => option.setName("image").setDescription("Image URL").setMaxLength(2048)
-  ).setDefaultMemberPermissions(import_discord27.PermissionFlagsBits.ManageMessages),
+  ).setDefaultMemberPermissions(import_discord47.PermissionFlagsBits.ManageMessages),
   category: "utility",
-  userPermissions: [import_discord27.PermissionFlagsBits.ManageMessages],
-  botPermissions: [import_discord27.PermissionFlagsBits.SendMessages, import_discord27.PermissionFlagsBits.EmbedLinks],
+  userPermissions: [import_discord47.PermissionFlagsBits.ManageMessages],
+  botPermissions: [import_discord47.PermissionFlagsBits.SendMessages, import_discord47.PermissionFlagsBits.EmbedLinks],
   cooldownSeconds: 3,
   async execute({ interaction }) {
     await deferEphemeral(interaction);
@@ -116725,7 +126033,7 @@ var embedCommand = {
       }
       color = Number.parseInt(colorInput.replace("#", ""), 16);
     }
-    const embed = new import_discord27.EmbedBuilder().setColor(color ?? BRAND.color).setDescription(description);
+    const embed = new import_discord47.EmbedBuilder().setColor(color ?? BRAND.color).setDescription(description);
     if (title) embed.setTitle(title);
     if (footer) embed.setFooter({ text: footer });
     if (image) embed.setImage(image);
@@ -116735,17 +126043,17 @@ var embedCommand = {
 };
 
 // apps/bot/src/commands/utility/emojis.ts
-var import_discord28 = __toESM(require_src(), 1);
+var import_discord48 = __toESM(require_src(), 1);
 var MAX_PER_FIELD = 40;
 var emojisCommand = {
-  data: new import_discord28.SlashCommandBuilder().setName("emojis").setDescription("List this server\u2019s custom emojis and stickers."),
+  data: new import_discord48.SlashCommandBuilder().setName("emojis").setDescription("List this server\u2019s custom emojis and stickers."),
   category: "utility",
   cooldownSeconds: 3,
   async execute({ interaction, guild }) {
     await deferPublic(interaction);
     const emojis = [...guild.emojis.cache.values()];
     const stickers = [...guild.stickers.cache.values()];
-    const embed = new import_discord28.EmbedBuilder().setColor(BRAND.color).setTitle("Server emojis and stickers").setFooter({
+    const embed = new import_discord48.EmbedBuilder().setColor(BRAND.color).setTitle("Server emojis and stickers").setFooter({
       text: `${emojis.length} emoji(s) \xB7 ${stickers.length} sticker(s) \xB7 showing up to ${MAX_PER_FIELD} each`
     });
     const emojiText = emojis.slice(0, MAX_PER_FIELD).map(
@@ -116761,11 +126069,11 @@ var emojisCommand = {
 };
 
 // apps/bot/src/commands/utility/poll.ts
-var import_discord29 = __toESM(require_src(), 1);
+var import_discord49 = __toESM(require_src(), 1);
 var MAX_OPTIONS = 10;
 var MAX_ANSWER_LENGTH = 55;
 var pollCommand = {
-  data: new import_discord29.SlashCommandBuilder().setName("poll").setDescription("Create a native Discord poll.").addStringOption(
+  data: new import_discord49.SlashCommandBuilder().setName("poll").setDescription("Create a native Discord poll.").addStringOption(
     (option) => option.setName("question").setDescription("What should people vote on?").setRequired(true).setMaxLength(300)
   ).addStringOption(
     (option) => option.setName("options").setDescription("2\u201310 answers, separated by | or new lines").setRequired(true).setMaxLength(900)
@@ -116776,7 +126084,7 @@ var pollCommand = {
   ),
   category: "utility",
   cooldownSeconds: 10,
-  botPermissions: [import_discord29.PermissionFlagsBits.SendMessages, import_discord29.PermissionFlagsBits.SendPolls],
+  botPermissions: [import_discord49.PermissionFlagsBits.SendMessages, import_discord49.PermissionFlagsBits.SendPolls],
   async execute({ interaction }) {
     await deferEphemeral(interaction);
     const channel = interaction.channel;
@@ -116813,11 +126121,11 @@ var pollCommand = {
 };
 
 // apps/bot/src/commands/utility/remind.ts
-var import_discord30 = __toESM(require_src(), 1);
+var import_discord50 = __toESM(require_src(), 1);
 var MIN_DELAY_MS = 1e4;
 var MAX_MESSAGE = 500;
 var remindCommand = {
-  data: new import_discord30.SlashCommandBuilder().setName("remind").setDescription("Schedule and manage personal reminders.").addSubcommand(
+  data: new import_discord50.SlashCommandBuilder().setName("remind").setDescription("Schedule and manage personal reminders.").addSubcommand(
     (sub) => sub.setName("set").setDescription("Get a DM (or channel ping) at a future time.").addStringOption(
       (option) => option.setName("when").setDescription("When: 10m, 2h, 3d, 2w").setRequired(true).setMaxLength(32)
     ).addStringOption(
@@ -116868,7 +126176,7 @@ var remindCommand = {
         await interaction.editReply({ content: "You have no pending reminders." });
         return;
       }
-      const embed = new import_discord30.EmbedBuilder().setColor(5793266).setTitle("Your reminders").setDescription(
+      const embed = new import_discord50.EmbedBuilder().setColor(5793266).setTitle("Your reminders").setDescription(
         rows.map(
           (row) => `**#${row.id}** \u2014 <t:${Math.floor(row.remindAt.getTime() / 1e3)}:R> \u2014 ${truncate(
             row.message,
@@ -116895,9 +126203,9 @@ var remindCommand = {
 };
 
 // apps/bot/src/commands/utility/roleinfo.ts
-var import_discord31 = __toESM(require_src(), 1);
+var import_discord51 = __toESM(require_src(), 1);
 var roleInfoCommand = {
-  data: new import_discord31.SlashCommandBuilder().setName("roleinfo").setDescription("Show information about a role.").addRoleOption(
+  data: new import_discord51.SlashCommandBuilder().setName("roleinfo").setDescription("Show information about a role.").addRoleOption(
     (option) => option.setName("role").setDescription("Role to inspect").setRequired(true)
   ),
   category: "utility",
@@ -116906,7 +126214,7 @@ var roleInfoCommand = {
     await deferPublic(interaction);
     const role = interaction.options.getRole("role", true);
     const permissions = role.permissions.toArray();
-    const embed = new import_discord31.EmbedBuilder().setColor(role.color || BRAND.color).setTitle(role.name).addFields(
+    const embed = new import_discord51.EmbedBuilder().setColor(role.color || BRAND.color).setTitle(role.name).addFields(
       { name: "Role ID", value: `\`${role.id}\``, inline: true },
       { name: "Color", value: `\`${role.hexColor}\``, inline: true },
       { name: "Position", value: String(role.position), inline: true },
@@ -116928,7 +126236,7 @@ var roleInfoCommand = {
 };
 
 // apps/bot/src/commands/utility/serverinfo.ts
-var import_discord32 = __toESM(require_src(), 1);
+var import_discord52 = __toESM(require_src(), 1);
 var VERIFICATION = {
   0: "None",
   1: "Low",
@@ -116937,12 +126245,12 @@ var VERIFICATION = {
   4: "Very high"
 };
 var serverInfoCommand = {
-  data: new import_discord32.SlashCommandBuilder().setName("serverinfo").setDescription("Show information about this server."),
+  data: new import_discord52.SlashCommandBuilder().setName("serverinfo").setDescription("Show information about this server."),
   category: "utility",
   cooldownSeconds: 3,
   async execute({ interaction, guild }) {
     await deferPublic(interaction);
-    const embed = new import_discord32.EmbedBuilder().setColor(BRAND.color).setTitle(guild.name).setThumbnail(guild.iconURL({ size: 256 })).addFields(
+    const embed = new import_discord52.EmbedBuilder().setColor(BRAND.color).setTitle(guild.name).setThumbnail(guild.iconURL({ size: 256 })).addFields(
       { name: "Owner", value: `<@${guild.ownerId}>`, inline: true },
       { name: "Server ID", value: `\`${guild.id}\``, inline: true },
       {
@@ -116977,7 +126285,7 @@ var serverInfoCommand = {
 };
 
 // apps/bot/src/commands/utility/timestamp.ts
-var import_discord33 = __toESM(require_src(), 1);
+var import_discord53 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/utility/time.ts
 var DISCORD_TIMESTAMP = /^<t:(\d{1,13})(?::[tTdDfFR])?>$/;
@@ -117014,7 +126322,7 @@ var STYLES = [
   ["Short time", "t"]
 ];
 var timestampCommand = {
-  data: new import_discord33.SlashCommandBuilder().setName("timestamp").setDescription("Convert a time into copy-ready Discord timestamps.").addStringOption(
+  data: new import_discord53.SlashCommandBuilder().setName("timestamp").setDescription("Convert a time into copy-ready Discord timestamps.").addStringOption(
     (option) => option.setName("time").setDescription("10m, 2h, 2026-12-31 18:00, a Unix timestamp, or <t:...>").setRequired(true).setMaxLength(100)
   ),
   category: "utility",
@@ -117029,7 +126337,7 @@ var timestampCommand = {
       );
     }
     const unix = Math.floor(epoch / 1e3);
-    const embed = new import_discord33.EmbedBuilder().setColor(5793266).setTitle("Discord timestamps").setDescription(`Input: \`${raw}\``).addFields(
+    const embed = new import_discord53.EmbedBuilder().setColor(5793266).setTitle("Discord timestamps").setDescription(`Input: \`${raw}\``).addFields(
       STYLES.map(([name, style]) => ({
         name,
         value: `\`<t:${unix}:${style}>\` \u2192 <t:${unix}:${style}>`
@@ -117040,9 +126348,9 @@ var timestampCommand = {
 };
 
 // apps/bot/src/commands/utility/userinfo.ts
-var import_discord34 = __toESM(require_src(), 1);
+var import_discord54 = __toESM(require_src(), 1);
 var userInfoCommand = {
-  data: new import_discord34.SlashCommandBuilder().setName("userinfo").setDescription("Show information about a user or member.").addUserOption(
+  data: new import_discord54.SlashCommandBuilder().setName("userinfo").setDescription("Show information about a user or member.").addUserOption(
     (option) => option.setName("user").setDescription("User to inspect (defaults to you)")
   ),
   category: "utility",
@@ -117051,7 +126359,7 @@ var userInfoCommand = {
     await deferPublic(interaction);
     const user = interaction.options.getUser("user") ?? interaction.user;
     const member = await guild.members.fetch(user.id).catch(() => null);
-    const embed = new import_discord34.EmbedBuilder().setColor(BRAND.color).setTitle(member?.displayName ?? user.username).setThumbnail(user.displayAvatarURL({ size: 256 })).addFields(
+    const embed = new import_discord54.EmbedBuilder().setColor(BRAND.color).setTitle(member?.displayName ?? user.username).setThumbnail(user.displayAvatarURL({ size: 256 })).addFields(
       { name: "Username", value: `\`${user.username}\``, inline: true },
       { name: "User ID", value: `\`${user.id}\``, inline: true },
       { name: "Bot", value: user.bot ? "Yes" : "No", inline: true },
@@ -117099,8 +126407,19 @@ var commands = [
   pingCommand,
   helpCommand,
   setupCommand,
+  statsCommand,
   rankCommand,
   leaderboardCommand,
+  balanceCommand,
+  baltopCommand,
+  dailyCommand,
+  workCommand,
+  payCommand,
+  gambleCommand,
+  shopCommand,
+  buyCommand,
+  inventoryCommand,
+  ecoAdminCommand,
   warnCommand,
   warningsCommand,
   clearWarningsCommand,
@@ -117126,12 +126445,28 @@ var commands = [
   timestampCommand,
   embedCommand,
   announceCommand,
-  ticketCommand
+  ticketCommand,
+  giveawayCommand,
+  reactionRoleCommand,
+  playCommand,
+  pauseCommand,
+  resumeCommand,
+  skipCommand,
+  stopCommand,
+  disconnectCommand,
+  nowPlayingCommand,
+  queueCommand,
+  volumeCommand,
+  loopCommand,
+  shuffleCommand,
+  removeCommand,
+  clearCommand,
+  seekCommand
 ];
 
 // apps/bot/src/config/env.ts
 var import_node_fs = require("node:fs");
-var import_node_path2 = require("node:path");
+var import_node_path3 = require("node:path");
 var booleanish = /* @__PURE__ */ __name((defaultValue) => external_exports.union([external_exports.boolean(), external_exports.string()]).optional().transform((value) => {
   if (value === void 0 || value === "") return defaultValue;
   if (typeof value === "boolean") return value;
@@ -117160,9 +126495,9 @@ var EnvSchema = external_exports.object({
 });
 function findEnvFile() {
   const candidates = [
-    (0, import_node_path2.resolve)(process.cwd(), ".env"),
-    (0, import_node_path2.resolve)(process.cwd(), "../../.env"),
-    (0, import_node_path2.resolve)(process.cwd(), "../../../.env")
+    (0, import_node_path3.resolve)(process.cwd(), ".env"),
+    (0, import_node_path3.resolve)(process.cwd(), "../../.env"),
+    (0, import_node_path3.resolve)(process.cwd(), "../../../.env")
   ];
   return candidates.find((candidate) => (0, import_node_fs.existsSync)(candidate)) ?? null;
 }
@@ -117186,12 +126521,12 @@ ${details}`);
 __name(loadEnv, "loadEnv");
 
 // apps/bot/src/core/client.ts
-var import_discord35 = __toESM(require_src(), 1);
-var NervanaClient = class extends import_discord35.Client {
+var import_discord55 = __toESM(require_src(), 1);
+var NervanaClient = class extends import_discord55.Client {
   static {
     __name(this, "NervanaClient");
   }
-  commands = new import_discord35.Collection();
+  commands = new import_discord55.Collection();
   startedAt = Date.now();
   env;
   logger;
@@ -117204,20 +126539,24 @@ var NervanaClient = class extends import_discord35.Client {
   automod = null;
   heartbeat = null;
   reminders = null;
+  giveaways = null;
+  stats = null;
+  music = null;
   constructor() {
     super({
       intents: [
-        import_discord35.GatewayIntentBits.Guilds,
-        import_discord35.GatewayIntentBits.GuildMembers,
-        import_discord35.GatewayIntentBits.GuildMessages,
-        import_discord35.GatewayIntentBits.MessageContent,
-        import_discord35.GatewayIntentBits.DirectMessages,
-        import_discord35.GatewayIntentBits.GuildVoiceStates
+        import_discord55.GatewayIntentBits.Guilds,
+        import_discord55.GatewayIntentBits.GuildMembers,
+        import_discord55.GatewayIntentBits.GuildMessages,
+        import_discord55.GatewayIntentBits.MessageContent,
+        import_discord55.GatewayIntentBits.DirectMessages,
+        import_discord55.GatewayIntentBits.GuildVoiceStates,
+        import_discord55.GatewayIntentBits.GuildMessageReactions
       ],
-      partials: [import_discord35.Partials.Message, import_discord35.Partials.Channel, import_discord35.Partials.GuildMember],
+      partials: [import_discord55.Partials.Message, import_discord55.Partials.Channel, import_discord55.Partials.GuildMember, import_discord55.Partials.Reaction],
       allowedMentions: { parse: ["users"], repliedUser: false },
-      makeCache: import_discord35.Options.cacheWithLimits({
-        ...import_discord35.Options.DefaultMakeCacheSettings,
+      makeCache: import_discord55.Options.cacheWithLimits({
+        ...import_discord55.Options.DefaultMakeCacheSettings,
         // Bound the caches that grow with traffic, keep the ones needed for a
         // single guild's member lookups.
         MessageManager: 100,
@@ -117323,9 +126662,9 @@ __name(createLogger, "createLogger");
 
 // apps/bot/src/db/migrations-dir.ts
 var import_node_fs2 = require("node:fs");
-var import_node_path3 = require("node:path");
+var import_node_path4 = require("node:path");
 function resolveMigrationsDir() {
-  const candidates = [(0, import_node_path3.resolve)(process.cwd(), "drizzle"), (0, import_node_path3.resolve)(process.cwd(), "../../drizzle")];
+  const candidates = [(0, import_node_path4.resolve)(process.cwd(), "drizzle"), (0, import_node_path4.resolve)(process.cwd(), "../../drizzle")];
   for (const candidate of candidates) {
     if ((0, import_node_fs2.existsSync)(candidate)) return candidate;
   }
@@ -117337,10 +126676,10 @@ ${candidates.map((candidate) => `  - ${candidate}`).join("\n")}`
 __name(resolveMigrationsDir, "resolveMigrationsDir");
 
 // apps/bot/src/events/channel-update.ts
-var import_discord37 = __toESM(require_src(), 1);
+var import_discord57 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/logging/service.ts
-var import_discord36 = __toESM(require_src(), 1);
+var import_discord56 = __toESM(require_src(), 1);
 function isLogIgnored(client, channelId, userId) {
   const config2 = client.settings.logging;
   if (channelId && config2.ignoreChannelIds.includes(channelId)) return true;
@@ -117349,7 +126688,7 @@ function isLogIgnored(client, channelId, userId) {
 }
 __name(isLogIgnored, "isLogIgnored");
 function logEmbed(title, color = BRAND.muted) {
-  return new import_discord36.EmbedBuilder().setColor(color).setTitle(title);
+  return new import_discord56.EmbedBuilder().setColor(color).setTitle(title);
 }
 __name(logEmbed, "logEmbed");
 async function sendLog(client, event, embed) {
@@ -117369,7 +126708,7 @@ __name(sendLog, "sendLog");
 
 // apps/bot/src/events/channel-update.ts
 var channelUpdateEvent = {
-  name: import_discord37.Events.ChannelUpdate,
+  name: import_discord57.Events.ChannelUpdate,
   async execute(client, oldChannel, newChannel) {
     if (newChannel.isDMBased()) return;
     if (newChannel.guild.id !== client.env.GUILD_ID) return;
@@ -117418,24 +126757,24 @@ var channelUpdateEvent = {
 };
 
 // apps/bot/src/events/client-error.ts
-var import_discord38 = __toESM(require_src(), 1);
+var import_discord58 = __toESM(require_src(), 1);
 var errorEvent = {
-  name: import_discord38.Events.Error,
+  name: import_discord58.Events.Error,
   execute(client, error62) {
     client.logger.error({ err: error62 }, "discord client error");
   }
 };
 var warnEvent = {
-  name: import_discord38.Events.Warn,
+  name: import_discord58.Events.Warn,
   execute(client, message) {
     client.logger.warn({ message }, "discord client warning");
   }
 };
 
 // apps/bot/src/events/guild-create.ts
-var import_discord39 = __toESM(require_src(), 1);
+var import_discord59 = __toESM(require_src(), 1);
 var guildCreateEvent = {
-  name: import_discord39.Events.GuildCreate,
+  name: import_discord59.Events.GuildCreate,
   async execute(client, guild) {
     if (guild.id === client.env.GUILD_ID) {
       client.logger.info({ guildId: guild.id, name: guild.name }, "joined the target guild");
@@ -117457,10 +126796,10 @@ var guildCreateEvent = {
 };
 
 // apps/bot/src/events/interaction-create.ts
-var import_discord42 = __toESM(require_src(), 1);
+var import_discord63 = __toESM(require_src(), 1);
 
 // apps/bot/src/core/interaction-handler.ts
-var import_discord40 = __toESM(require_src(), 1);
+var import_discord60 = __toESM(require_src(), 1);
 
 // apps/bot/src/core/cooldowns.ts
 var cooldowns = /* @__PURE__ */ new Map();
@@ -117485,7 +126824,7 @@ async function handleChatInputCommand(client, interaction) {
   if (!interaction.inCachedGuild()) {
     await interaction.reply({
       content: "Nervana only works inside its configured server.",
-      flags: import_discord40.MessageFlags.Ephemeral
+      flags: import_discord60.MessageFlags.Ephemeral
     }).catch(() => {
     });
     return;
@@ -117507,7 +126846,7 @@ async function handleChatInputCommand(client, interaction) {
       if (missing.length > 0) {
         await replyError(
           interaction,
-          `You need the following permissions: ${new import_discord40.PermissionsBitField(missing).toArray().join(", ")}.`
+          `You need the following permissions: ${new import_discord60.PermissionsBitField(missing).toArray().join(", ")}.`
         );
         return;
       }
@@ -117517,7 +126856,7 @@ async function handleChatInputCommand(client, interaction) {
       if (missing.length > 0) {
         await replyError(
           interaction,
-          `I am missing permissions: ${new import_discord40.PermissionsBitField(missing).toArray().join(", ")}.`
+          `I am missing permissions: ${new import_discord60.PermissionsBitField(missing).toArray().join(", ")}.`
         );
         return;
       }
@@ -117528,9 +126867,10 @@ async function handleChatInputCommand(client, interaction) {
       command.cooldownSeconds ?? 1
     );
     if (remaining > 0) {
-      await replyError(interaction, `Slow down \u2014 try again in ${(remaining / 1e3).toFixed(1)}s.`);
+      await replyError(interaction, `Slow down - try again in ${(remaining / 1e3).toFixed(1)}s.`);
       return;
     }
+    client.stats?.recordCommand(command.data.name);
     await command.execute({
       client,
       interaction,
@@ -117555,11 +126895,59 @@ async function handleChatInputCommand(client, interaction) {
 }
 __name(handleChatInputCommand, "handleChatInputCommand");
 
+// apps/bot/src/modules/community/interactions.ts
+var import_discord61 = __toESM(require_src(), 1);
+async function handleCommunityInteraction(client, interaction) {
+  if (!interaction.inCachedGuild()) return;
+  if (interaction.guildId !== client.env.GUILD_ID) return;
+  const customId = interaction.customId;
+  const isGiveaway = customId.startsWith("giveaway:enter:");
+  const isRoleSelect = customId === "rr:select";
+  if (!isGiveaway && !isRoleSelect) return;
+  const errorId = newErrorId();
+  try {
+    await deferEphemeral(interaction);
+    if (isGiveaway && interaction.isButton()) {
+      const id = Number(customId.slice("giveaway:enter:".length));
+      if (!Number.isInteger(id) || id <= 0) {
+        throw new UserFacingError("That giveaway button is invalid.");
+      }
+      const result = await enterGiveaway(client, interaction.guild, interaction.user, id);
+      await interaction.editReply({
+        content: result.alreadyEntered ? `You are already entered in **#${result.giveaway.id}**.` : `You are entered in **#${result.giveaway.id}** for **${result.giveaway.prize}**. Good luck!`
+      });
+      return;
+    }
+    if (isRoleSelect && interaction.isStringSelectMenu()) {
+      const result = await applySelectRoles(
+        client,
+        interaction.member,
+        interaction.message.id,
+        interaction.values
+      );
+      await interaction.editReply({
+        content: `Roles updated \xB7 ${result.added} added, ${result.removed} removed.`
+      });
+    }
+  } catch (error62) {
+    client.logger.error(
+      { err: error62, errorId, customId, userId: interaction.user.id },
+      "community interaction failed"
+    );
+    await replyError(
+      interaction,
+      error62 instanceof UserFacingError ? error62.message : "Something went wrong while handling that community action.",
+      errorId
+    );
+  }
+}
+__name(handleCommunityInteraction, "handleCommunityInteraction");
+
 // apps/bot/src/modules/tickets/interactions.ts
-var import_discord41 = __toESM(require_src(), 1);
+var import_discord62 = __toESM(require_src(), 1);
 function requireTextChannel(interaction) {
   const channel = interaction.channel;
-  if (!channel || channel.type !== import_discord41.ChannelType.GuildText) {
+  if (!channel || channel.type !== import_discord62.ChannelType.GuildText) {
     throw new UserFacingError("This action only works inside a ticket channel.");
   }
   return channel;
@@ -117590,9 +126978,9 @@ async function handleTicketInteraction(client, interaction) {
         return;
       }
       if (customId === "ticket:close") {
-        const modal = new import_discord41.ModalBuilder().setCustomId("ticket:close:modal").setTitle("Close ticket").addComponents(
-          new import_discord41.ActionRowBuilder().addComponents(
-            new import_discord41.TextInputBuilder().setCustomId("reason").setLabel("Reason (optional)").setStyle(import_discord41.TextInputStyle.Paragraph).setRequired(false).setMaxLength(500)
+        const modal = new import_discord62.ModalBuilder().setCustomId("ticket:close:modal").setTitle("Close ticket").addComponents(
+          new import_discord62.ActionRowBuilder().addComponents(
+            new import_discord62.TextInputBuilder().setCustomId("reason").setLabel("Reason (optional)").setStyle(import_discord62.TextInputStyle.Paragraph).setRequired(false).setMaxLength(500)
           )
         );
         await interaction.showModal(modal);
@@ -117637,7 +127025,7 @@ __name(handleTicketInteraction, "handleTicketInteraction");
 
 // apps/bot/src/events/interaction-create.ts
 var interactionCreateEvent = {
-  name: import_discord42.Events.InteractionCreate,
+  name: import_discord63.Events.InteractionCreate,
   async execute(client, interaction) {
     if (interaction.isChatInputCommand()) {
       await handleChatInputCommand(client, interaction);
@@ -117646,11 +127034,14 @@ var interactionCreateEvent = {
     if (interaction.isButton() || interaction.isModalSubmit()) {
       await handleTicketInteraction(client, interaction);
     }
+    if (interaction.isButton() || interaction.isStringSelectMenu()) {
+      await handleCommunityInteraction(client, interaction);
+    }
   }
 };
 
 // apps/bot/src/events/member-add.ts
-var import_discord43 = __toESM(require_src(), 1);
+var import_discord64 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/welcome/service.ts
 function render(template, member, serverName) {
@@ -117698,9 +127089,10 @@ __name(onMemberLeave, "onMemberLeave");
 
 // apps/bot/src/events/member-add.ts
 var guildMemberAddEvent = {
-  name: import_discord43.Events.GuildMemberAdd,
+  name: import_discord64.Events.GuildMemberAdd,
   async execute(client, member) {
     if (member.guild.id !== client.env.GUILD_ID) return;
+    client.stats?.recordJoin();
     if (!isLogIgnored(client, null, member.id)) {
       const embed = logEmbed("Member joined", BRAND.success).setThumbnail(member.displayAvatarURL({ size: 128 })).addFields(
         { name: "Member", value: `${member} \`${member.id}\``, inline: true },
@@ -117720,11 +127112,12 @@ var guildMemberAddEvent = {
 };
 
 // apps/bot/src/events/member-remove.ts
-var import_discord44 = __toESM(require_src(), 1);
+var import_discord65 = __toESM(require_src(), 1);
 var guildMemberRemoveEvent = {
-  name: import_discord44.Events.GuildMemberRemove,
+  name: import_discord65.Events.GuildMemberRemove,
   async execute(client, member) {
     if (member.guild.id !== client.env.GUILD_ID) return;
+    client.stats?.recordLeave();
     if (!isLogIgnored(client, null, member.id)) {
       const avatar = member.user?.displayAvatarURL({ size: 128 });
       const embed = logEmbed("Member left", BRAND.danger).addFields(
@@ -117748,9 +127141,9 @@ var guildMemberRemoveEvent = {
 };
 
 // apps/bot/src/events/member-update.ts
-var import_discord45 = __toESM(require_src(), 1);
+var import_discord66 = __toESM(require_src(), 1);
 var guildMemberUpdateEvent = {
-  name: import_discord45.Events.GuildMemberUpdate,
+  name: import_discord66.Events.GuildMemberUpdate,
   async execute(client, oldMember, newMember) {
     if (newMember.guild.id !== client.env.GUILD_ID) return;
     if (newMember.user.bot) return;
@@ -117789,9 +127182,9 @@ var guildMemberUpdateEvent = {
 };
 
 // apps/bot/src/events/message-bulk-delete.ts
-var import_discord46 = __toESM(require_src(), 1);
+var import_discord67 = __toESM(require_src(), 1);
 var messageBulkDeleteEvent = {
-  name: import_discord46.Events.MessageBulkDelete,
+  name: import_discord67.Events.MessageBulkDelete,
   async execute(client, messages2, channel) {
     if (!channel.guildId || channel.guildId !== client.env.GUILD_ID) return;
     if (isLogIgnored(client, channel.id)) return;
@@ -117809,11 +127202,12 @@ var messageBulkDeleteEvent = {
 };
 
 // apps/bot/src/events/message-create.ts
-var import_discord47 = __toESM(require_src(), 1);
+var import_discord68 = __toESM(require_src(), 1);
 var messageCreateEvent = {
-  name: import_discord47.Events.MessageCreate,
+  name: import_discord68.Events.MessageCreate,
   async execute(client, message) {
     if (message.author.bot) return;
+    client.stats?.recordMessage();
     const handled = await client.automod?.handleMessage(message) ?? false;
     if (handled) return;
     await client.leveling?.record(message);
@@ -117821,9 +127215,9 @@ var messageCreateEvent = {
 };
 
 // apps/bot/src/events/message-delete.ts
-var import_discord48 = __toESM(require_src(), 1);
+var import_discord69 = __toESM(require_src(), 1);
 var messageDeleteEvent = {
-  name: import_discord48.Events.MessageDelete,
+  name: import_discord69.Events.MessageDelete,
   async execute(client, message) {
     if (!message.inGuild() || message.guildId !== client.env.GUILD_ID) return;
     if (message.author?.bot) return;
@@ -117853,10 +127247,123 @@ var messageDeleteEvent = {
   }
 };
 
+// apps/bot/src/events/message-reaction-add.ts
+var import_discord71 = __toESM(require_src(), 1);
+
+// apps/bot/src/modules/community/starboard.ts
+var import_discord70 = __toESM(require_src(), 1);
+var STAR = "\u2B50";
+function starEmbed(message, count2) {
+  const embed = new import_discord70.EmbedBuilder().setColor(15844367).setAuthor({
+    name: message.author.tag,
+    iconURL: message.author.displayAvatarURL({ size: 64 })
+  }).setTimestamp(message.createdAt).setFooter({ text: `${count2} ${STAR}` });
+  const content = message.content.trim();
+  if (content) embed.setDescription(content.slice(0, 2e3));
+  else embed.setDescription("*No text content*");
+  const image = message.attachments.find(
+    (attachment) => attachment.contentType?.startsWith("image/")
+  );
+  if (image) embed.setImage(image.url);
+  embed.addFields({
+    name: "Source",
+    value: `[Jump to message](${message.url})`,
+    inline: false
+  });
+  return embed;
+}
+__name(starEmbed, "starEmbed");
+async function resolveReaction(reaction) {
+  const resolvedReaction = reaction.partial ? await reaction.fetch().catch(() => null) : reaction;
+  if (!resolvedReaction) return null;
+  const message = resolvedReaction.message.partial ? await resolvedReaction.message.fetch().catch(() => null) : resolvedReaction.message;
+  if (!message) return null;
+  return { reaction: resolvedReaction, message };
+}
+__name(resolveReaction, "resolveReaction");
+async function handleStarboard(client, reaction, user) {
+  if (user.bot) return;
+  const config2 = client.settings.community.starboard;
+  if (!config2.enabled || !config2.channelId) return;
+  if (!reaction.message.inGuild()) return;
+  if (reaction.message.guildId !== client.env.GUILD_ID) return;
+  if (reaction.message.channelId === config2.channelId) return;
+  if (config2.ignoreChannelIds.includes(reaction.message.channelId)) return;
+  if (reaction.emoji.name !== STAR && reaction.emoji.toString() !== STAR) return;
+  const resolved = await resolveReaction(reaction);
+  if (!resolved) return;
+  const { message } = resolved;
+  if (message.author.bot || message.system) return;
+  const db = requireDb(client);
+  const count2 = resolved.reaction.count;
+  const existing = await db.select().from(starboardPosts).where(eq(starboardPosts.originalMessageId, message.id)).limit(1);
+  const boardChannel = await client.channels.fetch(config2.channelId).catch(() => null);
+  if (!boardChannel?.isTextBased() || !boardChannel.isSendable()) return;
+  if (count2 >= config2.threshold) {
+    const embed = starEmbed(message, count2);
+    if (existing[0]) {
+      const boardMessage = await boardChannel.messages.fetch(existing[0].starboardMessageId).catch(() => null);
+      if (boardMessage) {
+        await boardMessage.edit({ embeds: [embed], allowedMentions: { parse: [] } }).catch((error62) => {
+          client.logger.warn(
+            { err: error62, messageId: message.id },
+            "starboard message edit failed"
+          );
+        });
+        await db.update(starboardPosts).set({ count: count2, updatedAt: /* @__PURE__ */ new Date() }).where(eq(starboardPosts.originalMessageId, message.id));
+      }
+      return;
+    }
+    const sent = await boardChannel.send({
+      content: `<#${message.channelId}>`,
+      embeds: [embed],
+      allowedMentions: { parse: [] }
+    }).catch((error62) => {
+      client.logger.warn({ err: error62, messageId: message.id }, "starboard send failed");
+      return null;
+    });
+    if (!sent) return;
+    const inserted = await db.insert(starboardPosts).values({
+      originalMessageId: message.id,
+      starboardMessageId: sent.id,
+      count: count2
+    }).onConflictDoNothing().returning({ originalMessageId: starboardPosts.originalMessageId });
+    if (inserted.length === 0) await sent.delete().catch(() => {
+    });
+    return;
+  }
+  if (existing[0]) {
+    const boardMessage = await boardChannel.messages.fetch(existing[0].starboardMessageId).catch(() => null);
+    if (boardMessage) await boardMessage.delete().catch(() => {
+    });
+    await db.delete(starboardPosts).where(eq(starboardPosts.originalMessageId, message.id));
+  }
+}
+__name(handleStarboard, "handleStarboard");
+
+// apps/bot/src/events/message-reaction-add.ts
+var messageReactionAddEvent = {
+  name: import_discord71.Events.MessageReactionAdd,
+  async execute(client, reaction, user) {
+    await handleReactionRoleAdd(client, reaction, user);
+    await handleStarboard(client, reaction, user);
+  }
+};
+
+// apps/bot/src/events/message-reaction-remove.ts
+var import_discord72 = __toESM(require_src(), 1);
+var messageReactionRemoveEvent = {
+  name: import_discord72.Events.MessageReactionRemove,
+  async execute(client, reaction, user) {
+    await handleReactionRoleRemove(client, reaction, user);
+    await handleStarboard(client, reaction, user);
+  }
+};
+
 // apps/bot/src/events/message-update.ts
-var import_discord49 = __toESM(require_src(), 1);
+var import_discord73 = __toESM(require_src(), 1);
 var messageUpdateEvent = {
-  name: import_discord49.Events.MessageUpdate,
+  name: import_discord73.Events.MessageUpdate,
   async execute(client, oldMessage, newMessage) {
     if (!newMessage.inGuild() || newMessage.guildId !== client.env.GUILD_ID) return;
     if (newMessage.author?.bot) return;
@@ -117881,9 +127388,9 @@ var messageUpdateEvent = {
 };
 
 // apps/bot/src/events/ready.ts
-var import_discord50 = __toESM(require_src(), 1);
+var import_discord74 = __toESM(require_src(), 1);
 var readyEvent = {
-  name: import_discord50.Events.ClientReady,
+  name: import_discord74.Events.ClientReady,
   once: true,
   async execute(client) {
     if (!client.user) return;
@@ -117945,9 +127452,9 @@ var readyEvent = {
 };
 
 // apps/bot/src/events/role-update.ts
-var import_discord51 = __toESM(require_src(), 1);
+var import_discord75 = __toESM(require_src(), 1);
 var roleUpdateEvent = {
-  name: import_discord51.Events.GuildRoleUpdate,
+  name: import_discord75.Events.GuildRoleUpdate,
   async execute(client, oldRole, newRole) {
     if (newRole.guild.id !== client.env.GUILD_ID) return;
     const changes = [];
@@ -117974,12 +127481,12 @@ var roleUpdateEvent = {
       const removed = before & ~after;
       if (added !== 0n) {
         changes.push(
-          `**Permissions added:** ${new import_discord51.PermissionsBitField(added).toArray().join(", ")}`
+          `**Permissions added:** ${new import_discord75.PermissionsBitField(added).toArray().join(", ")}`
         );
       }
       if (removed !== 0n) {
         changes.push(
-          `**Permissions removed:** ${new import_discord51.PermissionsBitField(removed).toArray().join(", ")}`
+          `**Permissions removed:** ${new import_discord75.PermissionsBitField(removed).toArray().join(", ")}`
         );
       }
     }
@@ -117993,13 +127500,14 @@ var roleUpdateEvent = {
 };
 
 // apps/bot/src/events/voice-update.ts
-var import_discord52 = __toESM(require_src(), 1);
+var import_discord76 = __toESM(require_src(), 1);
 var voiceUpdateEvent = {
-  name: import_discord52.Events.VoiceStateUpdate,
+  name: import_discord76.Events.VoiceStateUpdate,
   async execute(client, oldState, newState) {
     if (newState.guild.id !== client.env.GUILD_ID) return;
     const member = newState.member;
     if (!member || member.user.bot) return;
+    client.stats?.handleVoiceState(oldState, newState);
     if (isLogIgnored(client, newState.channelId ?? oldState.channelId, member.id)) return;
     const changes = [];
     let title = "Voice state updated";
@@ -118040,6 +127548,8 @@ var events = [
   interactionCreateEvent,
   messageCreateEvent,
   messageDeleteEvent,
+  messageReactionAddEvent,
+  messageReactionRemoveEvent,
   messageUpdateEvent,
   messageBulkDeleteEvent,
   guildMemberAddEvent,
@@ -118053,7 +127563,7 @@ var events = [
 ];
 
 // apps/bot/src/modules/automod/service.ts
-var import_discord53 = __toESM(require_src(), 1);
+var import_discord77 = __toESM(require_src(), 1);
 
 // apps/bot/src/modules/automod/rules.ts
 var INVITE_PATTERN = /(?:discord\.gg|discord(?:app)?\.com\/invite)\/[a-z0-9-]+/i;
@@ -118093,16 +127603,16 @@ function capsStats(content) {
   };
 }
 __name(capsStats, "capsStats");
-function escapeRegExp(value) {
+function escapeRegExp2(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
-__name(escapeRegExp, "escapeRegExp");
+__name(escapeRegExp2, "escapeRegExp");
 function findBannedWord(content, words) {
   for (const word of words) {
     const candidate = word.trim();
     if (!candidate) continue;
     const pattern = new RegExp(
-      `(^|[^\\p{L}\\p{N}_])${escapeRegExp(candidate)}($|[^\\p{L}\\p{N}_])`,
+      `(^|[^\\p{L}\\p{N}_])${escapeRegExp2(candidate)}($|[^\\p{L}\\p{N}_])`,
       "iu"
     );
     if (pattern.test(content)) return candidate;
@@ -118208,7 +127718,7 @@ var AutomodService = class {
     if (!active) {
       this.raidUntil = now + windowMs;
       this.joinTimes.length = 0;
-      const alert = new import_discord53.EmbedBuilder().setColor(BRAND.danger).setTitle("Possible raid detected").setDescription(
+      const alert = new import_discord77.EmbedBuilder().setColor(BRAND.danger).setTitle("Possible raid detected").setDescription(
         `**${count2}** joins within **${automod.raid.windowSeconds}s**.
 Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.raid.action}**.`
       ).setTimestamp();
@@ -118227,7 +127737,7 @@ Raid mode is active for ${automod.raid.windowSeconds}s \xB7 action: **${automod.
     if (!member) return true;
     if (member.id === message.guild?.ownerId) return true;
     if (config2.exemptRoleIds.some((roleId) => member.roles.cache.has(roleId))) return true;
-    return member.permissions.has(import_discord53.PermissionFlagsBits.ManageMessages);
+    return member.permissions.has(import_discord77.PermissionFlagsBits.ManageMessages);
   }
   isSpam(userId, threshold, windowSeconds) {
     const now = Date.now();
@@ -118606,7 +128116,7 @@ var LevelingService = class {
 };
 
 // apps/bot/src/modules/moderation/scheduler.ts
-var TICK_MS = 6e4;
+var TICK_MS2 = 6e4;
 var UNKNOWN_BAN = 10026;
 var ModerationScheduler = class {
   constructor(client) {
@@ -118622,7 +128132,7 @@ var ModerationScheduler = class {
     if (this.timer) return;
     this.timer = setInterval(() => {
       void this.tick();
-    }, TICK_MS);
+    }, TICK_MS2);
     this.timer.unref();
     void this.tick();
   }
@@ -118715,7 +128225,7 @@ var ModerationScheduler = class {
 };
 
 // apps/bot/src/modules/reminders/service.ts
-var TICK_MS2 = 3e4;
+var TICK_MS3 = 3e4;
 var BATCH_SIZE = 20;
 var ReminderService = class {
   constructor(client) {
@@ -118731,7 +128241,7 @@ var ReminderService = class {
     if (this.timer || !this.client.isReady()) return;
     this.timer = setInterval(() => {
       void this.tick();
-    }, TICK_MS2);
+    }, TICK_MS3);
     this.timer.unref();
     void this.tick();
   }
@@ -118811,7 +128321,10 @@ async function main() {
       client.heartbeat?.stop();
       client.moderation?.stop();
       client.reminders?.stop();
+      client.giveaways?.stop();
+      await client.stats?.stop();
       await client.leveling?.stop();
+      await client.music?.stop();
       stopSettingsPoller(client);
       await client.destroy().catch((error62) => {
         logger.warn({ err: error62 }, "client destroy failed");
@@ -118882,15 +128395,24 @@ async function main() {
     client.heartbeat = new HeartbeatService(client);
     client.heartbeat.start();
     client.reminders = new ReminderService(client);
+    client.giveaways = new GiveawayScheduler(client);
+    client.stats = new StatsService(client);
+    client.stats.start();
+    client.music = new MusicService(client);
     await client.login(env.DISCORD_TOKEN);
+    client.music.start();
     client.reminders.start();
+    client.giveaways.start();
   } catch (error62) {
     logger.fatal({ err: error62 }, "fatal startup error");
     if (client) {
       client.heartbeat?.stop();
       client.moderation?.stop();
       client.reminders?.stop();
+      client.giveaways?.stop();
+      await client.stats?.stop();
       await client.leveling?.stop();
+      await client.music?.stop();
       stopSettingsPoller(client);
       await client.destroy().catch(() => {
       });
